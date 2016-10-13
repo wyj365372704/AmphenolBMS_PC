@@ -30,7 +30,7 @@ img{border:none;}
 
 /*  头部样式  */
 .head_body_bg{background:url(../images/hgheader.png) left top repeat-x;height:88px; overflow:hidden;}
-.head{background:url(../images/hglogo.png) left top no-repeat; height:88px; overflow:hidden;}
+/* .head{background:url(../images/hglogo.png) left top no-repeat; height:88px; overflow:hidden;} */
 .head_top{hegiht:100%; overflow:hidden;}
 .logo{background:url(../images/logo.png) left top no-repeat; width:332px; height:51px; float:left;}
 .head_top_r{float:right; display:inline; width:455px; color:#FFF; padding:15px 15px 0 0;}
@@ -127,7 +127,7 @@ img{border:none;}
 /*  登录页面  */
 .logo_div{background:url(../images/login_bg_02.jpg) center 50% no-repeat #003474; width:100%; height:100%; text-align:center;}
 .logo_info{width:480px; height:350px; margin:auto;}
-.logo_table{width:260px; margin:120px 0px 0px 0px; float:right;}
+.logo_table{width:260px; margin:152px 0px 0px 0px; float:right;}
 .logo_table td{font-size:12px; padding:3px 0px;}
 .logo_table td.text_r{width:70px; line-height:20px; font-size:12px; font-weight:bold; color:#002e4b;}
 .logo_i_1{width:150px; font-weight:bold; border:1px solid #a8bccd;}
