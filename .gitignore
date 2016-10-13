@@ -4,3 +4,5 @@
 .project
 .mymetadata
 webapp/WEB-INF/classes/
+.classpath
+webapp/WEB-INF/classes.rar
