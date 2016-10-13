@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="Role" >
+
+	<!-- 别名 -->
+	<typeAlias alias="role" type="com.eclink.hgpj.role.vo.RoleVO" />
+	<typeAlias alias="roleRes" type="com.eclink.hgpj.role.vo.RoleResourceVO"/>
+  
+	<resultMap id="roleMap" class="role" >
+	  <result column="ROLE_ID" property="roleId" jdbcType="INTEGER" />
+	  <result column="ROLE_NAME" property="roleName" jdbcType="VARCHAR" />
+	  <result column="ROLE_DESC" property="roleDesc" jdbcType="VARCHAR" />
+	  <result column="CUSTOMS_ID" property="customsId" jdbcType="INTEGER" />
+	  <result column="ORG_ID" property="orgId" jdbcType="INTEGER" />
+	  <result column="CREATE_USER" property="createUser" jdbcType="VARCHAR" />
+	  <result column="CREATE_DATE" property="createDate" jdbcType="TIMESTAMP" />
+	  <result column="LAST_UPDATE_USER" property="lastUpdateUser" jdbcType="VARCHAR" />
+	  <result column="LAST_UPDATE_DATE" property="lastUpdateDate" jdbcType="TIMESTAMP" />
+	</resultMap>
+	
+	<resultMap id="roleResMap" class="roleRes" >
+	  <result column="OPER_KEY" property="operKey" jdbcType="VARCHAR" />
+	  <result column="ORG_ID" property="orgId" jdbcType="INTEGER" />
+	  <result column="MENU_ID" property="menuId" jdbcType="INTEGER" />
+	  <result column="ROLE_ID" property="roleId" jdbcType="INTEGER" />
+	</resultMap>
+	
+	<!-- 角色列表查询条件 -->
+	<sql id="rolelist.condition">
+		<dynamic prepend="AND">
+			<isNotEmpty prepend="AND" property="roleName">
+				R.ROLE_NAME LIKE '%'+#roleName#+'%' 
+			</isNotEmpty>
+			<isNotEmpty prepend="AND" property="customsId">
+				R.CUSTOMS_ID = #customsId#
+			</isNotEmpty>
+			<isNotEmpty prepend="AND" property="orgId">
+				R.ORG_ID = #orgId#
+			</isNotEmpty>
+			<isNotEmpty prepend="AND" property="orgIds">
+				R.ORG_ID in ($orgIds$)
+			</isNotEmpty>
+		</dynamic>
+	</sql>
+	
+	<!-- 条件查询用户列表 -->
+	<select id="queryRoleList" parameterClass="role" resultClass="role">
+		SELECT TOP $pageSize$ * FROM (SELECT ROW_NUMBER() OVER(ORDER BY customsName,orgName DESC) as rownum,x.* from (
+			SELECT R.ROLE_ID AS roleId, R.ROLE_NAME AS roleName, R.ROLE_DESC AS roleDesc, R.CUSTOMS_ID AS customsId,
+			  R.ORG_ID AS orgId, R.CREATE_USER AS createUser, R.CREATE_DATE AS createDate, R.LAST_UPDATE_USER AS lastUpdateUser,
+			  R.LAST_UPDATE_DATE AS lastUpdateDate, ORG.ORG_NAME AS customsName,O.ORG_NAME AS orgName
+		    FROM ROLE R,ORGANIZATION ORG,ORGANIZATION O
+		    WHERE R.CUSTOMS_ID = ORG.ORG_ID AND R.ORG_ID = O.ORG_ID
+		    <include refid="rolelist.condition"/>
+	    )as x) y where y.rownum > #from#
+	</select>
+	
+	<!-- 条件查询用户总记录数 -->
+	<select id="queryRoleListCount" parameterClass="role" resultClass="int">
+		SELECT COUNT(1) FROM ROLE R WHERE 1=1
+	    <include refid="rolelist.condition"/>
+	</select>
+	
+	<!-- 根据角色ID获取角色 -->
+	<select id="queryRoleById" parameterClass="int" resultClass="role">
+		SELECT R.ROLE_ID AS roleId, R.ROLE_NAME AS roleName, R.ROLE_DESC AS roleDesc, R.CUSTOMS_ID AS customsId,
+		  R.ORG_ID AS orgId, R.CREATE_USER AS createUser, R.CREATE_DATE AS createDate, R.LAST_UPDATE_USER AS lastUpdateUser,
+		  R.LAST_UPDATE_DATE AS lastUpdateDate, ORG.ORG_NAME AS customsName,O.ORG_NAME AS orgName
+	    FROM ROLE R,ORGANIZATION ORG,ORGANIZATION O
+	    WHERE R.CUSTOMS_ID = ORG.ORG_ID AND R.ORG_ID = O.ORG_ID AND ROLE_ID = #roleId#
+	</select>
+	
+	<!-- 根据组织ID获取分关管理员角色 -->
+	<select id="queryAdminRoleByOrgId" parameterClass="int" resultClass="role">
+		SELECT R.ROLE_ID AS roleId, R.ROLE_NAME AS roleName, R.ROLE_DESC AS roleDesc, R.CUSTOMS_ID AS customsId,
+		  R.ORG_ID AS orgId, R.CREATE_USER AS createUser, R.CREATE_DATE AS createDate, R.LAST_UPDATE_USER AS lastUpdateUser,
+		  R.LAST_UPDATE_DATE AS lastUpdateDate, ORG.ORG_NAME AS customsName,O.ORG_NAME AS orgName
+	    FROM ROLE R,ORGANIZATION ORG,ORGANIZATION O
+	    WHERE R.CUSTOMS_ID = ORG.ORG_ID AND R.ORG_ID = O.ORG_ID AND R.ROLE_NAME = '分关管理员' AND R.ORG_ID = #orgId# 
+	</select>
+
+	<!-- 新增角色 -->
+	<insert id="insertRole"  parameterClass="role" >
+		<selectKey resultClass="int" keyProperty="roleId" >   
+	   		insert into ROLE (ROLE_NAME, ROLE_DESC, CUSTOMS_ID, ORG_ID, CREATE_USER)
+	    	values (#roleName:VARCHAR#, #roleDesc:VARCHAR#, #customsId:INTEGER#,
+	     	#orgId:INTEGER#, #createUser:VARCHAR#)
+	     	SELECT SCOPE_IDENTITY() AS roleId    
+	 	</selectKey>    
+	</insert>
+	
+	<!-- 修改角色 -->
+	<update id="updateRole" parameterClass="role" >
+	  update ROLE
+	  set ROLE_NAME = #roleName:VARCHAR#,
+	    ROLE_DESC = #roleDesc:VARCHAR#,
+	    ORG_ID = #orgId:INTEGER#,
+	    CUSTOMS_ID = #customsId:INTEGER#,
+	    LAST_UPDATE_USER = #lastUpdateUser:VARCHAR#,
+	    LAST_UPDATE_DATE = getDate()
+	  where ROLE_ID = #roleId:INTEGER#
+	</update>
+	
+	<!-- 删除角色 -->
+	<delete id="deleteRole" parameterClass="int" >
+	  delete from ROLE
+	  where ROLE_ID = #roleId:INTEGER#
+	</delete>
+  
+	<!--判断某组织下是否存在相同角色-->
+	<select id="exitsRoleName"   resultClass="int" parameterClass="role">
+		SELECT COUNT(1) FROM ROLE WHERE ROLE_NAME = #roleName:VARCHAR# AND ORG_ID =#orgId:NUMBER#
+	</select>
+	
+	<!-- 新增角色资源 -->
+	<insert id="insertRoleRes" parameterClass="roleRes" >
+	  insert into ROLE_RESOURCE (OPER_KEY, ORG_ID, MENU_ID, ROLE_ID)
+	  values (#operKey#, #orgId#, #menuId#, #roleId#)
+	</insert>
+	
+	<!-- 删除角色资源 -->
+	<delete id="deleteRoleRes" parameterClass="int" >
+	  	delete from ROLE_RESOURCE
+	  		where ROLE_ID = #roleId:NUMBER#
+	</delete>
+	
+	<!-- 删除某组织下的所有角色 -->
+	<delete id="deleteRoleByOrgId" parameterClass="int" >
+	  	delete from ROLE
+	  		where ORG_ID = #orgId:NUMBER#
+	</delete>
+	
+	<!-- 角色是否已经关联用户 -->
+ 	<select id="getUserRoleCountByRoleId" resultClass="int" parameterClass="int">
+		 SELECT COUNT(1) FROM USER_ROLE WHERE ROLE_ID = #roleId:INTEGER#
+	</select>
+	
+	<!-- 根据用户ID获取角色列表 -->
+  	<select id="queryRoleByUserId" parameterClass="int" resultClass="role">
+  	 	SELECT R.ROLE_ID AS roleId, R.ROLE_NAME AS roleName, R.ROLE_DESC AS roleDesc, R.CUSTOMS_ID AS customsId,
+		  R.ORG_ID AS orgId, R.CREATE_USER AS createUser, R.CREATE_DATE AS createDate, R.LAST_UPDATE_USER AS lastUpdateUser,
+		  R.LAST_UPDATE_DATE AS lastUpdateDate, ORG.ORG_NAME AS customsName,O.ORG_NAME AS orgName
+	    FROM ROLE R,USER_ROLE UR,ORGANIZATION ORG,ORGANIZATION O
+	    WHERE R.CUSTOMS_ID = ORG.ORG_ID AND R.ORG_ID = O.ORG_ID AND UR.ROLE_ID = R.ROLE_ID AND UR.USER_ID = #userId:INTEGER#
+  	</select>
+  	
+  	<!-- 根据组织ID获取角色列表 -->
+  	<select id="queryRoleByOrgId" parameterClass="int" resultClass="role">
+  	 	SELECT R.ROLE_ID AS roleId, R.ROLE_NAME AS roleName, R.ROLE_DESC AS roleDesc, R.CUSTOMS_ID AS customsId,
+		  R.ORG_ID AS orgId, R.CREATE_USER AS createUser, R.CREATE_DATE AS createDate, R.LAST_UPDATE_USER AS lastUpdateUser,
+		  R.LAST_UPDATE_DATE AS lastUpdateDate, ORG.ORG_NAME AS customsName,O.ORG_NAME AS orgName
+	    FROM ROLE R,ORGANIZATION ORG,ORGANIZATION O
+	    WHERE R.CUSTOMS_ID = ORG.ORG_ID AND R.ORG_ID = O.ORG_ID AND R.ORG_ID = #orgId#
+  	</select>
+  
+  	<!-- 备份历史角色资源表记录（组织ID等于系统根组织ID值，并且角色ID不等于系统管理员角色的ID值 -->
+	<statement id="backupRoleResource" parameterClass="java.util.Map">
+		<![CDATA[
+		SELECT * INTO $tableName$ FROM ROLE_RESOURCE WHERE ORG_ID = #orgId:NUMBER# AND ROLE_ID <> #roleId:NUMBER#
+		]]> 
+	</statement>
+	
+	<!-- 将备份表中角色资源记录合并到正式表 -->
+	<insert id="mergeRoleResource" parameterClass="java.util.Map">
+		INSERT INTO ROLE_RESOURCE
+		  SELECT BAK_RR.MENU_ID,
+		         BAK_RR.OPER_KEY,
+		         BAK_RR.ORG_ID, 
+		  		 BAK_RR.ROLE_ID 
+		    FROM ORG_RESOURCE UOR, $tableName$ BAK_RR
+		   WHERE UOR.ORG_ID = #orgId#
+		     AND UOR.ORG_ID = BAK_RR.ORG_ID
+		     AND UOR.MENU_ID = BAK_RR.MENU_ID
+		     AND UOR.OPER_KEY = BAK_RR.OPER_KEY
+	</insert>
+	
+	<!-- 删除角色资源本地临时表  -->
+	<statement id="dropRoleResTmpTable" parameterClass="java.lang.String">
+		<![CDATA[ DROP TABLE $tableName$ ]]>
+	</statement>
+	
+	<!-- 获取角色资源数量 -->
+	<select id="queryRoleResourceCount" parameterClass="roleRes" resultClass="int">
+		SELECT COUNT(1) FROM ROLE_RESOURCE WHERE ROLE_ID = #roleId# AND ORG_ID = #orgId# AND MENU_ID = #menuId# AND OPER_KEY = #operKey#
+	</select>
+</sqlMap>

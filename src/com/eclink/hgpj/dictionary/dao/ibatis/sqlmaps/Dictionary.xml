@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="Dictionary">
+<!--type Alias-->
+<typeAlias alias="Dictionary" type="com.eclink.hgpj.dictionary.vo.DictionaryVO"/>
+<!--result Map--> 
+<resultMap id="dictionary_result" class="Dictionary">
+	<result property="typeDesc" column="TYPE_DESC"  jdbcType="VARCHAR" nullValue="" />
+	<result property="value" column="VALUE"  jdbcType="VARCHAR" nullValue="" />
+	<result property="orderId" column="ORDER_ID" />
+	<result property="key" column="KEY"  jdbcType="VARCHAR" nullValue="" />
+	<result property="isValid" column="IS_VALID"  jdbcType="CHAR" nullValue="" />
+	<result property="codeType" column="CODE_TYPE"  jdbcType="VARCHAR" nullValue="" />
+</resultMap>
+
+<!-- 数据字典列表查询 -->
+<select id="queryDictionaryList" resultMap="dictionary_result" parameterClass="Dictionary">	 
+	<![CDATA[
+	    SELECT CODE_TYPE, TYPE_DESC, [KEY], [VALUE], IS_VALID, ORDER_ID
+	  		FROM DICTIONARY ORDER BY CODE_TYPE,ORDER_ID
+	]]>			
+</select>
+
+<!-- 数据字典代码类型列表分页查询 -->
+<select id="queryDictionaryCodeType" resultClass="Dictionary" parameterClass="Dictionary">
+	<![CDATA[ select rnum, y.* from ( select x.*, rownum rnum from ( ]]>
+		SELECT CODE_TYPE AS codeType, TYPE_DESC AS typeDesc FROM DICTIONARY
+        <dynamic prepend="WHERE">
+    		<isNotEmpty prepend="AND" property="codeType">
+    			CODE_TYPE LIKE '%'||#codeType:VARCHAR#||'%'
+    		</isNotEmpty>
+    		<isNotEmpty prepend="AND" property="typeDesc">
+    			TYPE_DESC LIKE '%'||#typeDesc:VARCHAR#||'%'
+    		</isNotEmpty>
+    	</dynamic>
+	<![CDATA[ GROUP BY CODE_TYPE,TYPE_DESC ORDER BY CODE_TYPE) x where rownum <= #to# ) y where rnum >= #from#]]>	 		
+</select>
+
+<!-- 数据字典代码类型总记录数 -->
+<select id="queryDictionaryCodeTypeCount" resultClass="int" parameterClass="Dictionary">
+	SELECT COUNT(COUNT(CODE_TYPE)) FROM DICTIONARY 
+       <dynamic prepend="WHERE">
+   		<isNotEmpty prepend="AND" property="codeType">
+   			CODE_TYPE LIKE '%'||#codeType:VARCHAR#||'%'
+   		</isNotEmpty>
+   		<isNotEmpty prepend="AND" property="typeDesc">
+   			TYPE_DESC LIKE '%'||#typeDesc:VARCHAR#||'%'
+   		</isNotEmpty>
+   	</dynamic>
+   	GROUP BY CODE_TYPE
+</select>
+
+</sqlMap>

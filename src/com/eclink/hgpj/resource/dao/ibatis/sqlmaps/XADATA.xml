@@ -1,0 +1,447 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="XADATA">
+	<typeAlias alias="ITMRVAVO" type="com.eclink.hgpj.resource.vo.ITMRVAVO" />
+	<typeAlias alias="ITMSITVO" type="com.eclink.hgpj.resource.vo.ITMSITVO" />
+	<typeAlias alias="SLQNTYVO" type="com.eclink.hgpj.resource.vo.SLQNTYVO" />
+	<typeAlias alias="MOMASTVO" type="com.eclink.hgpj.resource.vo.MOMASTVO" />
+	<typeAlias alias="MODATAVO" type="com.eclink.hgpj.resource.vo.MODATAVO" />
+
+	<typeAlias alias="SLDATAVO" type="com.eclink.hgpj.resource.vo.SLDATAVO" />
+	<typeAlias alias="MOPORFVO" type="com.eclink.hgpj.resource.vo.MOPORFVO" />
+	<typeAlias alias="POMASTVO" type="com.eclink.hgpj.resource.vo.POMASTVO" />
+	<typeAlias alias="POITEMVO" type="com.eclink.hgpj.resource.vo.POITEMVO" />
+	<typeAlias alias="SHPMSTVO" type="com.eclink.hgpj.resource.vo.SHPMSTVO" />
+	<typeAlias alias="POBLKTVO" type="com.eclink.hgpj.resource.vo.POBLKTVO" />
+	<typeAlias alias="MOROUTVO" type="com.eclink.hgpj.resource.vo.MOROUTVO" />
+	<typeAlias alias="VENNAMVO" type="com.eclink.hgpj.resource.vo.VENNAMVO" />
+	<resultMap id="MODATAVOMap" class="MODATAVO">
+		<result property="ordno" column="ORDNO" />
+		<result property="citem" column="CITEM" />
+		<result property="citwh" column="CITWH" />
+		<result property="qtypre" column="QTYPRE" />
+		<result property="qtreq" column="QTREQ" />
+		<result property="isqty" column="ISQTY" />
+		<result property="unmsr" column="UNMSR" />
+		<result property="cdesc" column="CDESC" />
+		<result property="seqnm" column="SEQNM" />
+		<result property="seqnm" column="SEQNM" />
+		<result property="seqnm" column="SEQNM" />
+		<result property="turna" column="TURNA" />
+		<result property="turnn" column="TURNN" />
+		<result property="turnc" column="TURNC" />
+		<result property="usrsq" column="USRSQ" />
+		<result property="listd" column="LISDT" />
+
+
+		<result property="fitem" column="fitem" />
+
+		<result property="dptno" column="dptno" />
+
+		<result property="blcf" column="blcf" />
+
+		<result property="orqty" column="orqty" />
+
+		<result property="qtdev" column="qtdev" />
+		<result property="lblot" column="LBLOT" />
+	</resultMap>
+
+	<resultMap id="ITMRVAVOMap" class="ITMRVAVO">
+		<result property="house" column="STID" />
+		<result property="itnbr" column="ITNBR" />
+		<result property="itrv" column="ITRV" />
+		<result property="blcf" column="BLCF" />
+		<result property="unmsr" column="UNMSR" />
+		<result property="itdsc" column="ITDSC" />
+		<result property="ittyp" column="ITTYP" />
+		<result property="weght" column="WEGHT" />
+		<result property="b2cqcd" column="B2CQCD" />
+		<result property="b2z95s" column="B2Z95S" />
+		<result property="b2z93r" column="B2Z93R" />
+		<result property="b2z95t" column="B2Z95T" />
+	</resultMap>
+	<resultMap id="SLQNTYVOMap" class="SLQNTYVO">
+		<result column="ITNBR" property="itnbr" />
+		<result column="HOUSE" property="house" />
+		<result column="LLOCN" property="llocn" />
+		<result column="LBHNO" property="lbhno" />
+		<result column="FDATE" property="fdate" />
+		<result column="LQNTY" property="lqnty" />
+		<result column="UMSTT9" property="unpurum" />
+		<result column="uucalm" property="uucalm" />
+	</resultMap>
+
+	<resultMap id="MOMASTVOMap" class="MOMASTVO">
+		<result column="ORDNO" property="ordno" />
+		<result column="ORQTY" property="orqty" />
+		<result column="QTDEV" property="qtdev" />
+		<result column="OSTAT" property="ostat" />
+		<result column="JOBNO" property="jobno" />
+		<result column="REFNO" property="refno" />
+		<result column="SSTDT" property="sstdt" />
+		<result column="QTYRC" property="qtyrc" />
+		<result column="ASTDT" property="astdt" />
+		<result column="ODUDT" property="odudt" />
+		<result column="FDESC" property="fdesc" />
+		<result column="FITEM" property="fitem" />
+		<result column="FITWH" property="fitwh" />
+		<result column="PLANN" property="plann" />
+		<result column="DPTNO" property="dptno" />
+		<result column="SSTTM" property="ssttm" />
+		<result column="ODUTM" property="odutm" />
+		<result column="ORDNC" property="ordnc" />
+		<result column="CONO" property="cono" />
+		<result column="ORTP" property="ortp" />
+		<result column="ITMSQ" property="itmsq" />
+		<result column="RLNB" property="rlnb" />
+		<result column="KTRL" property="ktrl" />
+
+		<result column="unmsr" property="unmsr" />
+		<result column="UUSAMY" property="uusamy" />
+		<result column="moqty" property="moqty" />
+		<result column="mounqty" property="mounqty" />
+	</resultMap>
+
+	<select id="queryModatas" resultMap="MODATAVOMap"
+		parameterClass="MODATAVO">
+		<![CDATA[ select a.*, b.fitem, b.dptno, b.orqty, b.qtdev ,c.blcf                       
+					from modata a                                
+					left join momast b
+					on a.ordno = b.ordno
+					left join itmrva c
+					on b.stid = c.stid and a.citem = c.itnbr and a.citr = c.itrv
+					
+					
+					where a.citwh = #citwh# 
+		]]>
+		<dynamic>
+			<isNotEmpty prepend="AND" property="ordno">
+				a.ORDNO = #ordno#
+			</isNotEmpty>
+		</dynamic>
+		<dynamic>
+			<isNotEmpty prepend="AND" property="fitem">
+				b.fitem = #fitem#
+			</isNotEmpty>
+		</dynamic>
+		<dynamic>
+			<isNotEmpty prepend="AND" property="citem">
+				a.CITEM = #citem#
+			</isNotEmpty>
+		</dynamic>
+		<dynamic>
+			<isNotEmpty prepend="AND" property="seqnm">
+				a.SEQNM = #seqnm#
+			</isNotEmpty>
+		</dynamic>
+		<![CDATA[ order by a.SEQNM ]]>
+
+	</select>
+
+	<select id="queryItrvt" resultClass="String" parameterClass="ITMSITVO">
+		<![CDATA[ select  ITRVT9  from  ITMSIT where STIDT9=#house# and ITNOT9=#itnot9#
+		]]>
+	</select>
+
+	<select id="queryItrvtAll" resultClass="ITMSITVO"
+		parameterClass="ITMSITVO">
+		<![CDATA[ select  *  from  ITMSIT where STIDT9=#house# and ITNOT9=#itnot9#
+		]]>
+	</select>
+
+	<select id="queryItmrva" resultMap="ITMRVAVOMap" parameterClass="ITMRVAVO">
+		<![CDATA[ select  * from  ITMRVA where STID=#house# and ITNBR=#itnbr# 
+		]]>
+		<dynamic>
+			<isNotEmpty prepend="AND" property="itrv">
+				ITRV = #itrv#
+			</isNotEmpty>
+		</dynamic>
+	</select>
+	<select id="querySlqnty" resultMap="SLQNTYVOMap" parameterClass="Map">
+		<![CDATA[ select a.*,c.UMSTT9,b.uucalm from slqnty a  left join sldata b on a.house = b.house and a.llocn = b.llocn 
+				left outer join ITMSIT c on a.ITNBR=c.ITNOT9  
+				where a.house = #warehouse# AND c.STIDT9=#stid#  
+		]]>
+		<dynamic>
+			<isNotEmpty prepend="AND" property="shard">
+				b.uucalm = #shard#
+			</isNotEmpty>
+		</dynamic>
+		<dynamic>
+			<isNotEmpty prepend="AND" property="location">
+				a.llocn = #location#
+			</isNotEmpty>
+		</dynamic>
+		<dynamic>
+			<isNotEmpty prepend="AND" property="itnbr">
+				a.ITNBR = #itnbr#
+			</isNotEmpty>
+		</dynamic>
+		<dynamic>
+			<isNotEmpty prepend="AND" property="lbhno">
+				a.LBHNO = #lbhno#
+			</isNotEmpty>
+		</dynamic>
+		<![CDATA[ order by a.fdate ]]>
+	</select>
+
+	<select id="querySldata" resultClass="SLDATAVO" parameterClass="Map">
+		<![CDATA[ select b.* from sldata b  
+				where b.house = #warehouse#   
+		]]>
+		<dynamic>
+			<isNotEmpty prepend="AND" property="shard">
+				b.uucalm = #shard#
+			</isNotEmpty>
+		</dynamic>
+		<dynamic>
+			<isNotEmpty prepend="AND" property="location">
+				b.llocn = #location#
+			</isNotEmpty>
+		</dynamic>
+	</select>
+
+	<select id="queryMomast" resultMap="MOMASTVOMap" parameterClass="MOMASTVO">
+		<![CDATA[ select  a.*,b.unmsr,(a.ORQTY+a.QTDEV) as moqty, (a.ORQTY+a.QTDEV-QTYRC) as mounqty from  MOMAST a left join itmrva b                                     
+				on a.stid = b.stid and a.fitem = b.itnbr                       
+				and a.itrv = b.itrv 
+		 		where a.FITWH=#fitwh#  and a.UUSAMY <> '1' AND OSTAT IN ('10','40','45','50','55') 
+		]]>
+		<dynamic>
+			<isNotEmpty prepend="AND" property="dptno">
+				a.DPTNO like
+				('%'||#dptno#||'%')
+			</isNotEmpty>
+		</dynamic>
+		<dynamic>
+			<isNotEmpty prepend="AND" property="fitem">
+				a.FITEM like
+				('%'||#fitem#||'%' )
+			</isNotEmpty>
+		</dynamic>
+		<dynamic>
+			<isNotEmpty prepend="AND" property="ordnoF">
+				(a.ORDNO IN (#ordnoF#)
+				or a.ORDNO like ('%'||#ordnoF#||'%'))
+			</isNotEmpty>
+		</dynamic>
+		<dynamic>
+			<isNotEmpty prepend="AND" property="ordnodown">
+				(a.ORDNO >=
+				#ordnodown#)
+			</isNotEmpty>
+		</dynamic>
+		<dynamic>
+			<isNotEmpty prepend="AND" property="ordnoup">
+               <![CDATA[ (a.ORDNO <= #ordnoup#)  ]]>
+			</isNotEmpty>
+		</dynamic>
+
+		<dynamic>
+			<isNotEmpty prepend="AND" property="startDateB">
+				(a.ASTDT >=
+				#startDateB#)
+			</isNotEmpty>
+		</dynamic>
+		<dynamic>
+			<isNotEmpty prepend="AND" property="endDateB">
+               <![CDATA[ (a.ASTDT <= #endDateB#)  ]]>
+			</isNotEmpty>
+		</dynamic>
+		<![CDATA[ order by a.ASTDT desc 
+		]]>
+	</select>
+
+	<select id="queryMomastByordno" resultMap="MOMASTVOMap"
+		parameterClass="MOMASTVO">
+		<![CDATA[ select  a.*,'' AS unmsr,0 as moqty, 0 as mounqty  from  MOMAST a  
+		 		where a.ORDNO=#ordno# 
+		]]>
+
+	</select>
+
+	<select id="queryMomastBystate" resultMap="MOMASTVOMap"
+		parameterClass="MOMASTVO">
+		<![CDATA[ select  a.*,b.unmsr AS unmsr,(a.ORQTY+a.QTDEV) as moqty, (a.ORQTY+a.QTDEV-QTYRC) as mounqty  from  MOMAST a  left join itmrva b                                     
+				on a.stid = b.stid and a.fitem = b.itnbr                       
+				and a.itrv = b.itrv 
+		 		where a.ORLCD=5 AND a.OSTAT in ('10', '40', '50')  
+		]]>
+		<dynamic>
+			<isNotEmpty prepend="AND" property="ordno">
+               <![CDATA[ (a.ORDNO = #ordno#)  ]]>
+			</isNotEmpty>
+		</dynamic>
+		<dynamic>
+			<isNotEmpty prepend="AND" property="fitwh">
+               <![CDATA[ (a.FITWH = #fitwh#)  ]]>
+			</isNotEmpty>
+		</dynamic>
+
+	</select>
+
+	<select id="queryMoporf" resultClass="MOPORFVO" parameterClass="MOPORFVO">
+		<![CDATA[ select  a.*,c.SCTKJI from  MOPORF  a  left outer join SCHRCP c on 
+		       c.ORDRJI = a.PONR and c.PISQJI = a.PISQ
+			   and c.BKSQJI = a.BKSQ 		        
+		 		where a.MONR=#monr# AND a.PONR like 'P%' 
+		]]>
+
+	</select>
+	<select id="queryPomast" resultClass="POMASTVO" parameterClass="Map">
+		<![CDATA[ select  a.*,c.vn35,c.vcont,c.txsuf from  pomast   a  left outer join vennam  c on 
+		       c.vndnr  = a.vndnr 	        
+		 		where a.pstts in ('10', '20' , '30', '35', '40') 
+		 		and a.ORDNO NOT IN (select d.PONR from MOPORF d where d.MONR is not null AND d.MONR<>'') 
+		]]>
+		<dynamic>
+			<isNotEmpty prepend="AND" property="ordnoO">
+				a.ORDNO =(#ordnoO#)
+			</isNotEmpty>
+		</dynamic>
+		<dynamic>
+			<isNotEmpty prepend="AND" property="ordno">
+				(a.ORDNO IN (#ordno#)
+				or a.ORDNO like ('%'||#ordno#||'%'))
+			</isNotEmpty>
+		</dynamic>
+		<dynamic>
+			<isNotEmpty prepend="AND" property="house">
+				(a.HOUSE =#house#)
+			</isNotEmpty>
+		</dynamic>
+		<dynamic>
+			<isNotEmpty prepend="AND" property="vn35">
+				c.vn35 like
+				('%'||#vn35#||'%' )
+			</isNotEmpty>
+		</dynamic>
+		<dynamic>
+			<isNotEmpty prepend="AND" property="buyno">
+				(a.BUYNO =#buyno#)
+			</isNotEmpty>
+		</dynamic>
+
+		<dynamic>
+			<isNotEmpty prepend="AND" property="startDateB">
+				(a.actdt >=
+				#startDateB#)
+			</isNotEmpty>
+		</dynamic>
+		<dynamic>
+			<isNotEmpty prepend="AND" property="endDateB">
+               <![CDATA[ (a.actdt <= #endDateB#)  ]]>
+			</isNotEmpty>
+		</dynamic>
+
+	</select>
+	<select id="queryPoitem" resultClass="POITEMVO" parameterClass="Map">
+		<![CDATA[ select  a.* from  POITEM   a   
+		 		where a.ORDNO=#ordno#        
+		]]>
+		<dynamic>
+			<isNotEmpty prepend="AND" property="house">
+               <![CDATA[ (a.HOUSE <= #house#)  ]]>
+			</isNotEmpty>
+		</dynamic>
+		<dynamic>
+			<isNotEmpty prepend="AND" property="poisq">
+               <![CDATA[ (a.POISQ <= #poisq#)  ]]>
+			</isNotEmpty>
+		</dynamic>
+	</select>
+
+	<select id="queryVennam" resultClass="VENNAMVO" parameterClass="Map">
+		<![CDATA[ select  a.* from  VENNAM   a   
+		 		where a.VNDNR =#vndnr#        
+		]]>
+
+	</select>
+
+	<select id="queryBuyer" resultClass="String" parameterClass="Map">
+		<![CDATA[ 
+		Select BUYNM from BUYERF Where buyno = #buyno#
+		         
+		]]>
+
+	</select>
+
+	<select id="queryShpmst" resultClass="SHPMSTVO" parameterClass="Map">
+		<![CDATA[ Select * from  SHPMST Where HOUSE = #house# and SHPID like ('%'||#shpid#||'%')         
+		]]>
+
+	</select>
+
+	<select id="queryPoblkt" resultClass="POBLKTVO" parameterClass="Map">
+		<![CDATA[ select  a.* from  POBLKT   a   
+		 		where a.ORDNO=#ordno#        
+		]]>
+		<dynamic>
+			<isNotEmpty prepend="AND" property="house">
+               <![CDATA[ (a.HOUSE <= #house#)  ]]>
+			</isNotEmpty>
+		</dynamic>
+		<dynamic>
+			<isNotEmpty prepend="AND" property="poisq">
+               <![CDATA[ (a.POISQ <= #poisq#)  ]]>
+			</isNotEmpty>
+		</dynamic>
+		<dynamic>
+			<isNotEmpty prepend="AND" property="blksq">
+               <![CDATA[ (a.BLKSQ <= #blksq#)  ]]>
+			</isNotEmpty>
+		</dynamic>
+	</select>
+
+	<select id="queryMBC6REP" resultClass="String" parameterClass="Map">
+		<![CDATA[ Select a.C6CANB from MBC6REP a
+        where a.C6AENB = #cono# and a.c6dccd = #ortp# 
+        and a.C6CVNB = #ordnc# 
+       
+		]]>
+
+	</select>
+
+	<select id="queryCusnm" resultClass="String" parameterClass="Map">
+		<![CDATA[ Select a.cusnm from MBBFREP a
+       where a.COMNO = #cono# and a.CUSNO = #c6bcanb# 
+		]]>
+	</select>
+
+	<select id="queryBMCBTX" resultClass="String" parameterClass="Map">
+		<![CDATA[ Select a.BMCBTX from MBBMCPP a
+       where a.BMAENB = #cono# and a.BMDCCD = #ortp# 
+       and a.BMCVNB = #ordnc# 
+		]]>
+	</select>
+
+	<select id="queryMBCDREP" resultClass="String" parameterClass="Map">
+		<![CDATA[ Select a.CDFXVA ||'-'||a.CDZ901 from MBCDREP a
+       where a.CDAENB = #cono# and a.CDDCCD = #ortp#
+       and a.CDCVNB = #ordnc# and a.CDFCNB = #itmsq# 
+ 
+		]]>
+	</select>
+
+	<select id="queryMBADREP" resultClass="String" parameterClass="Map">
+		<![CDATA[ Select a.ADBIDT from MBADREP a
+       where a.ADAENB = #cono# and a.ADDCCD = #ortp#
+       and a.ADCVNB = #ordnc# and a.ADFCNB = #itmsq#
+		]]>
+	</select>
+
+	<select id="queryMorout" resultClass="MOROUTVO" parameterClass="Map">
+		<![CDATA[ Select * from MOROUT 
+		]]>
+		<dynamic prepend="WHERE">
+			<isNotNull prepend="AND" property="ordno">
+				ORDNO = #ordno#
+			</isNotNull>
+			<isNotNull prepend="AND" property="opseq">
+				OPSEQ = #opseq#
+			</isNotNull>
+		</dynamic>
+	</select>
+
+</sqlMap>

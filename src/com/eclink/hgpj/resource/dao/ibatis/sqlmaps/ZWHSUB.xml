@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="ZWHSUB">
+	<typeAlias alias="ZWHSUBVO" type="com.eclink.hgpj.resource.vo.ZWHSUBVO" />
+	<resultMap id="ZWHSUBVOMap" class="ZWHSUBVO">
+		<result column="HOUSE" property="house" />
+		<result column="WHSUB" property="whsub" />
+		<result column="DSP1" property="dsp1" />
+		<result column="DSP2" property="dsp2" />
+		<result column="GRLOC" property="grloc" />
+		<result column="NRLOC" property="nrloc" />
+		<result column="SUBTYP" property="subtype" />
+		<result column="FLABEL" property="flabel" />
+	</resultMap>
+	<select id="queryZwhsub" resultMap="ZWHSUBVOMap" parameterClass="ZWHSUBVO">
+		<![CDATA[ select  *  from  ZWHSUB where HOUSE=#house#   
+		]]>
+		<dynamic>
+			<isNotEmpty prepend="AND" property="whsub">
+				WHSUB = #whsub#
+			</isNotEmpty>
+		</dynamic>
+	</select>
+
+</sqlMap>

@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="ZTWHDR">
+
+	<typeAlias alias="ZTWHDRVO" type="com.eclink.hgpj.resource.vo.ZTWHDRVO" />
+	<typeAlias alias="ZTWDTLVO" type="com.eclink.hgpj.resource.vo.ZTWDTLVO" />
+	<typeAlias alias="ZTWBCHVO" type="com.eclink.hgpj.resource.vo.ZTWBCHVO" />
+
+	<resultMap id="ZTWHDRVOMap" class="ZTWHDRVO">
+		<result property="twdno" column="TWDNO" />
+		<result property="twtyp" column="TWTYP" />
+		<result property="twsrc" column="TWSRC" />
+		<result property="twlin" column="TWLIN" />
+		<result property="twus1" column="TWUS1" />
+		<result property="twdp1" column="TWDP1" />
+		<result property="twdt1" column="TWDT1" />
+		<result property="twtm1" column="TWTM1" />
+		<result property="ostat" column="OSTAT" />
+		<result property="cmmt" column="CMMT" />
+		<result property="plant" column="PLANT" />
+		<result property="itemList" column="TWDNO" resultMap="ZTWHDR.ZTWDTLVOMap" />
+	</resultMap>
+
+	<resultMap id="ZTWDTLVOMap" class="ZTWDTLVO">
+		<result property="twdno" column="TWDNO" />
+		<result property="twdln" column="TWDLN" />
+		<result property="itnbr" column="ITNBR" />
+		<result property="blcf" column="BLCF" />
+		<result property="unmsr" column="UNMSR" />
+		<result property="finsp" column="FINSP" />
+		<result property="frwhs" column="FRWHS" />
+		<result property="frsub" column="FRSUB" />
+		<result property="frloc" column="FRLOC" />
+		<result property="plnqt" column="PLNQT" />
+		<result property="actqt" column="ACTQT" />
+		<result property="towhs" column="TOWHS" />
+		<result property="tosub" column="TOSUB" />
+		<result property="toloc" column="TOLOC" />
+		<result property="lstat" column="LSTAT" />
+		<result property="lprt" column="LPRT" />
+		<result property="twus2" column="TWUS2" />
+		<result property="twdp2" column="TWDP2" />
+		<result property="twdt2" column="TWDT2" />
+		<result property="twtm2" column="TWTM2" />
+	</resultMap>
+
+	<select id="queryZtwhdrList" resultMap="ZTWHDRVOMap"
+		parameterClass="Map">
+		<![CDATA[ select  z.*, item.*  
+		from ZTWDTL as item left join ZTWHDR as z  on z.TWDNO = item.TWDNO
+		where (z.TWTYP = '1' or z.TWTYP = '2') 
+				]]>
+
+		<dynamic prepend="and">
+			<isNotEmpty prepend="and" property="showFinished">
+				(item.LSTAT = '50' or
+				item.LSTAT = '10')
+			</isNotEmpty>
+			<isEmpty prepend="and" property="showFinished">
+				( item.LSTAT = '10')
+			</isEmpty>
+			<isNotEmpty prepend="and" property="showPrinted">
+				(item.LPRT = '0' or
+				item.LPRT = '1')
+			</isNotEmpty>
+			<isEmpty prepend="and" property="showPrinted">
+				(item.LPRT = '0'  )
+			</isEmpty>
+			<isNotEmpty prepend="and" property="frwhs">
+				item.FRWHS = #frwhs#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="frsub">
+				item.FRSUB = #frsub#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="towhs">
+				item.TOWHS = #towhs#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="tosub">
+				item.TOSUB = #tosub#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="twdno">
+				item.TWDNO = #twdno#
+			</isNotEmpty>
+
+		</dynamic>
+		<![CDATA[ 
+		order by z.TWDNO ASC 
+	]]>
+	</select>
+
+	<select id="getCoutsByDt" resultClass="Integer" parameterClass="java.math.BigDecimal">
+		<![CDATA[ select  count(*) as ct   
+		from  ZTWHDR where TWDT1=#twdt1#  
+		]]>
+	</select>
+
+	<select id="queryZtwhdr" resultClass="ZTWHDRVO" parameterClass="ZTWHDRVO">
+		<![CDATA[ select * from ZTWHDR where TWDNO=#twdno# 
+		]]>
+	</select>
+
+	<select id="queryZtwdtl" resultClass="ZTWDTLVO" parameterClass="ZTWDTLVO">
+		<![CDATA[ select * from ZTWDTL   where TWDNO=#twdno#  AND LSTAT='10' 
+		]]>
+		<dynamic>
+			<isNotEmpty prepend="AND" property="twdln">
+				TWDLN = #twdln#
+			</isNotEmpty>
+		</dynamic>
+	</select>
+
+	<select id="queryZtwbch" resultClass="ZTWBCHVO" parameterClass="ZTWBCHVO">
+		<![CDATA[ select * from ZTWBCH where TWDNO=#twdno#   
+		]]>
+		<dynamic>
+			<isNotEmpty prepend="AND" property="twdln">
+				TWDLN = #twdln#
+			</isNotEmpty>
+		</dynamic>
+		<dynamic>
+			<isNotEmpty prepend="AND" property="twdbn">
+				TWDBN = #twdbn#
+			</isNotEmpty>
+		</dynamic>
+	</select>
+
+
+	<!-- 插入操作 -->
+	<insert id="insertZtwbch" parameterClass="ZTWBCHVO">
+	<![CDATA[
+	INSERT  INTO ZTWBCH (
+		TWDNO,
+		TWDLN,
+		TWDBN,
+		ITNBR,
+		FRWHS,
+		FRSUB,
+		FRLOC,
+		TOWHS,
+		TOSUB,
+		TOLOC,
+		ACTBH,
+		ACTQT
+		)	
+       VALUES (
+       		#twdno#,
+            #twdln#,
+	        #twdbn#,
+	        #itnbr#,
+	        #frwhs#,		        
+	        #frsub#,
+	        
+	        #frloc#,
+            #towhs#,
+	        #tosub#,
+	        #toloc#,		        
+	        #actbh#,
+	        
+	        #actqt#)
+	]]>
+	</insert>
+
+	<!-- 插入操作 -->
+	<insert id="insertZtwdtl" parameterClass="ZTWDTLVO">
+	<![CDATA[
+	INSERT  INTO ZTWDTL (
+		TWDNO,
+		TWDLN,
+		ITNBR,
+		BLCF,
+		UNMSR,
+		FINSP,
+		FRWHS,
+		FRSUB,
+		FRLOC,
+		PLNQT,
+		ACTQT,
+		TOWHS,
+		
+		TOSUB,
+		TOLOC,
+		LSTAT,
+		LPRT,
+		TWUS2,
+		TWDP2,
+		TWDT2,
+		
+		TWTM2
+		)	
+       VALUES (
+       	#twdno#,
+		#twdln#,
+		#itnbr#,
+		#blcf#,
+		#unmsr#,
+		#finsp#,
+		#frwhs#,
+		#frsub#,
+		#frloc#,
+		#plnqt#,
+		#actqt#,
+		#towhs#,
+		
+		#tosub#,
+		#toloc#,
+		#lstat#,
+		#lprt#,
+		#twus2#,
+		#twdp2#,
+		#twdt2#,
+		
+		#twtm2#)
+	]]>
+	</insert>
+
+	<!-- 插入操作 -->
+	<insert id="insertZtwhdr" parameterClass="ZTWHDRVO">
+	<![CDATA[
+	INSERT  INTO ZTWHDR (
+		TWDNO,
+		TWTYP,
+		TWSRC,
+		TWLIN,
+		TWUS1,
+		TWDP1,
+		TWDT1,
+		TWTM1,
+		OSTAT,
+		CMMT,
+		PLANT)	
+       VALUES (
+       	#twdno#,
+		#twtyp#,
+		#twsrc#,
+		#twlin#,
+		#twus1#,
+		#twdp1#,
+		#twdt1#,
+		#twtm1#,
+		#ostat#,
+		#cmmt#,
+		#plant#)
+	]]>
+	</insert>
+
+	<!-- 更新资源操作 -->
+	<update id="updateItemStat" parameterClass="ZTWDTLVO">
+		UPDATE ZTWDTL SET
+		LSTAT=#lstat# where TWDNO=#twdno# and TWDLN=#twdln#
+	</update>
+
+	<update id="updateHdrStat" parameterClass="ZTWHDRVO">
+		UPDATE ZTWHDR SET
+		OSTAT=#ostat# where TWDNO=#twdno#
+	</update>
+	<update id="updateItemBch" parameterClass="ZTWBCHVO">
+		UPDATE ZTWBCH SET
+		TOWHS=#towhs#,TOSUB=#tosub#,TOLOC=#toloc#,ACTQT=#actqt#
+		where
+		TWDNO=#twdno# and TWDLN=#twdln# and TWDBN=1
+	</update>
+
+	<update id="updateItemDtl" parameterClass="ZTWDTLVO">
+		UPDATE ZTWDTL SET
+		TWUS2=#twus2#,TWDP2=#twdp2#,TWDT2=#twdt2#,TWTM2=#twtm2#,LSTAT=#lstat#
+		where TWDNO=#twdno# and TWDLN=#twdln#
+	</update>
+</sqlMap>

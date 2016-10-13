@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="ZBMSU01" >
+	<typeAlias alias="ZBMSU01VO" type="com.eclink.hgpj.resource.vo.ZBMSU01VO"/>
+ 	  <resultMap id="ZBMSU01VOMap" class="ZBMSU01VO" >
+	    <result column="BMSUSR" property="bmsusr" />
+	    <result column="HOUSE" property="house"  />
+	    <result column="DFLT" property="dlft" />
+	  </resultMap>
+	<select id="queryZbmsu" resultMap="ZBMSU01VOMap" parameterClass="ZBMSU01VO">
+		<![CDATA[ select  *  from  ZBMSU01 where BMSUSR=#bmsusr#   			
+		]]>
+		<dynamic>
+		   	<isNotEmpty prepend="AND" property="dlft">
+                DFLT = #dlft#
+            </isNotEmpty>
+		</dynamic>
+	</select>
+
+</sqlMap>

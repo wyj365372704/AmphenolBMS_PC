@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="ZDEPT">
+	<typeAlias alias="ZDEPTVO" type="com.eclink.hgpj.resource.vo.ZDEPTVO" />
+	<resultMap id="ZDEPTVOMap" class="ZDEPTVO">
+		<result column="PLANT" property="plant" />
+		<result column="DEPT" property="dept" />
+		<result column="DNAME" property="dname" />
+	</resultMap>
+
+	<select id="queryZdeptByMap" resultMap="ZDEPTVOMap" parameterClass="Map">
+		<![CDATA[ select * from ZDEPT
+		]]>
+		<dynamic prepend="WHERE">
+		<isNotNull prepend="AND" property="plant">
+			PLANT = #plant#
+		</isNotNull>
+		<isNotNull prepend="AND" property="dept">
+			DEPT = #dept#
+		</isNotNull>
+		</dynamic>
+	</select>
+
+</sqlMap>

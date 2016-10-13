@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="ZMOJOB">
+	<typeAlias alias="ZMOJOBVO" type="com.eclink.hgpj.resource.vo.ZMOJOBVO" />
+	<resultMap id="ZMOJOBVOMap" class="ZMOJOBVO">
+		<result column="HOUSE" property="house" />
+		<result column="CRUS" property="crus" />
+		<result column="MJDNO" property="mjdno" />
+		<result column="ORDNO" property="ordno" />
+		<result column="OPSEQ" property="opseq" />
+		<result column="PLINE" property="pline" />
+		<result column="OSTAT" property="ostat" />
+		<result column="DPTNO" property="dptno" />
+		<result column="CRDT" property="crdt" />
+		<result column="CRTM" property="crtm" />
+		<result column="FCLS" property="fcls" />
+		<result column="FITEM" property="fitem" />
+		<result column="JBQTY" property="jbqty" />
+		<result column="SLHRS" property="slhrs" />
+		<result column="RLHRS1" property="rlhrs1" />
+		<result column="RLHRS2" property="rlhrs2" />
+		<result column="RMHRS1" property="rmhrs1" />
+		<result column="RMHRS2" property="rmhrs2" />
+		<result column="ABRSN" property="abrsn" />
+		<result column="ABLHR" property="ablhr" />
+		<result column="FSHPAC" property="fshpac" />
+		<result column="JSTRDT" property="jstrdt" />
+		<result column="JSTRTM" property="jstrtm" />
+		<result column="JENDDT" property="jenddt" />
+		<result column="JENDTM" property="jendtm" />
+	</resultMap>
+	<select id="queryZmojobByMap" resultMap="ZMOJOBVOMap"
+		parameterClass="Map">
+		<![CDATA[ select  *  from  ZMOJOB 
+		]]>
+		<dynamic prepend="WHERE">
+			<isNotNull prepend="AND" property="ostat">
+				OSTAT = #ostat#
+			</isNotNull>
+			<isNotNull prepend="AND" property="mjdno">
+				MJDNO = #mjdno#
+			</isNotNull>
+			<isNotNull prepend="AND" property="ordno">
+				ORDNO = #ordno#
+			</isNotNull>
+			<isNotNull prepend="AND" property="opseq">
+				OPSEQ = #opseq#
+			</isNotNull>
+			<isNotNull prepend="AND" property="pline">
+				PLINE = #pline#
+			</isNotNull>
+			<isNotNull prepend="AND" property="house">
+				HOUSE = #house#
+			</isNotNull>
+			<isNotNull prepend="AND" property="ostat">
+				OSTAT = #ostat#
+			</isNotNull>
+			<isNotNull prepend="AND" property="crus">
+				CRUS = #crus#
+			</isNotNull>
+		</dynamic>
+	</select>
+
+	<select id="queryMaxIndex" resultClass="String" parameterClass="String">
+			<![CDATA[ select  MJDNO  from  ZMOJOB WHERE MJDNO like ('%'||#mjdno_pre#||'%')  ORDER BY MJDNO DESC
+		]]>
+	</select>
+
+	<insert id="insertZmojob" parameterClass="ZMOJOBVO">
+		INSERT INTO ZMOJOB (
+		<dynamic prepend=" ">
+			<isNotNull prepend="," property="mjdno">MJDNO</isNotNull>
+			<isNotNull prepend="," property="house">HOUSE</isNotNull>
+			<isNotNull prepend="," property="ordno">ORDNO</isNotNull>
+			<isNotNull prepend="," property="opseq">OPSEQ</isNotNull>
+			<isNotNull prepend="," property="pline">PLINE</isNotNull>
+			<isNotNull prepend="," property="ostat">OSTAT</isNotNull>
+			<isNotNull prepend="," property="fcls">FCLS</isNotNull>
+			<isNotNull prepend="," property="fitem">FITEM</isNotNull>
+			<isNotNull prepend="," property="dptno">DPTNO</isNotNull>
+
+			<isNotNull prepend="," property="jbqty">JBQTY</isNotNull>
+			<isNotNull prepend="," property="slhrs">SLHRS</isNotNull>
+			<isNotNull prepend="," property="rlhrs1">RLHRS1</isNotNull>
+			<isNotNull prepend="," property="rlhrs2">RLHRS2</isNotNull>
+			<isNotNull prepend="," property="rmhrs1">RMHRS1</isNotNull>
+			<isNotNull prepend="," property="rmhrs2">RMHRS2</isNotNull>
+			<isNotNull prepend="," property="abrsn">ABRSN</isNotNull>
+			<isNotNull prepend="," property="ablhr">ABLHR</isNotNull>
+
+			<isNotNull prepend="," property="fshpac">FSHPAC</isNotNull>
+			<isNotNull prepend="," property="jstrdt">JSTRDT</isNotNull>
+			<isNotNull prepend="," property="jstrtm">JSTRTM</isNotNull>
+			<isNotNull prepend="," property="jenddt">JENDDT</isNotNull>
+			<isNotNull prepend="," property="jendtm">JENDTM</isNotNull>
+			<isNotNull prepend="," property="crus">CRUS</isNotNull>
+			<isNotNull prepend="," property="crdt">CRDT</isNotNull>
+			<isNotNull prepend="," property="crtm">CRTM</isNotNull>
+		</dynamic>
+	 <![CDATA[ 
+        ) VALUES ( 
+    ]]>
+		<dynamic prepend=" ">
+			<isNotNull prepend="," property="mjdno">#mjdno#</isNotNull>
+			<isNotNull prepend="," property="house">#house#</isNotNull>
+			<isNotNull prepend="," property="ordno">#ordno#</isNotNull>
+			<isNotNull prepend="," property="opseq">#opseq#</isNotNull>
+			<isNotNull prepend="," property="pline">#pline#</isNotNull>
+			<isNotNull prepend="," property="ostat">#ostat#</isNotNull>
+			<isNotNull prepend="," property="fcls">#fcls#</isNotNull>
+			<isNotNull prepend="," property="fitem">#fitem#</isNotNull>
+			<isNotNull prepend="," property="dptno">#dptno#</isNotNull>
+
+			<isNotNull prepend="," property="jbqty">#jbqty#</isNotNull>
+			<isNotNull prepend="," property="slhrs">#slhrs#</isNotNull>
+			<isNotNull prepend="," property="rlhrs1">#rlhrs1#</isNotNull>
+			<isNotNull prepend="," property="rlhrs2">#rlhrs2#</isNotNull>
+			<isNotNull prepend="," property="rmhrs1">#rmhrs1#</isNotNull>
+			<isNotNull prepend="," property="rmhrs2">#rmhrs2#</isNotNull>
+			<isNotNull prepend="," property="abrsn">#abrsn#</isNotNull>
+			<isNotNull prepend="," property="ablhr">#ablhr#</isNotNull>
+
+			<isNotNull prepend="," property="fshpac">#fshpac#</isNotNull>
+			<isNotNull prepend="," property="jstrdt">#jstrdt#</isNotNull>
+			<isNotNull prepend="," property="jstrtm">#jstrtm#</isNotNull>
+			<isNotNull prepend="," property="jenddt">#jenddt#</isNotNull>
+			<isNotNull prepend="," property="jendtm">#jendtm#</isNotNull>
+			<isNotNull prepend="," property="crus">#crus#</isNotNull>
+			<isNotNull prepend="," property="crdt">#crdt#</isNotNull>
+			<isNotNull prepend="," property="crtm">#crtm#</isNotNull>
+		</dynamic>
+		   <![CDATA[ 
+        ) 
+    ]]>
+	</insert>
+
+	<update id="updateZmojob" parameterClass="ZMOJOBVO">
+		UPDATE ZMOJOB
+		<dynamic prepend=" SET ">
+			<isNotNull prepend="," property="ostat">
+				OSTAT = #ostat#
+			</isNotNull>
+			<isNotNull prepend="," property="fcls">
+				FCLS = #fcls#
+			</isNotNull>
+			<isNotNull prepend="," property="jbqty">
+				JBQTY = #jbqty#
+			</isNotNull>
+			<isNotNull prepend="," property="slhrs">
+				SLHRS = #slhrs#
+			</isNotNull>
+			<isNotNull prepend="," property="rlhrs1">
+				RLHRS1 = #rlhrs1#
+			</isNotNull>
+			<isNotNull prepend="," property="rlhrs2">
+				RLHRS2 = #rlhrs2#
+			</isNotNull>
+			<isNotNull prepend="," property="rmhrs1">
+				RMHRS1 = #rmhrs1#
+			</isNotNull>
+			<isNotNull prepend="," property="rmhrs2">
+				RMHRS2 = #rmhrs2#
+			</isNotNull>
+			<isNotNull prepend="," property="abrsn">
+				ABRSN = #abrsn#
+			</isNotNull>
+			<isNotNull prepend="," property="ablhr">
+				ABLHR = #ablhr#
+			</isNotNull>
+			<isNotNull prepend="," property="fshpac">
+				FSHPAC = #fshpac#
+			</isNotNull>
+			<isNotNull prepend="," property="jenddt">
+				JENDDT = #jenddt#
+			</isNotNull>
+			<isNotNull prepend="," property="jendtm">
+				JENDTM = #jendtm#
+			</isNotNull>
+		</dynamic>
+
+		<dynamic prepend=" WHERE">
+			<isNotNull prepend="AND" property="mjdno">
+				MJDNO = #mjdno#
+			</isNotNull>
+			
+		</dynamic>
+	</update>
+
+</sqlMap>

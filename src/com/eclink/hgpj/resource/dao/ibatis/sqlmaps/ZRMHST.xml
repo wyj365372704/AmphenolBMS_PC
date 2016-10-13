@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="ZRMHST" >
+	<typeAlias alias="ZRMHSTVO" type="com.eclink.hgpj.resource.vo.ZRMHSTVO"/>
+ 	 
+	
+	<select id="getCoutsByDt" resultClass="Integer" parameterClass="java.math.BigDecimal">
+		<![CDATA[ select  count(*) as ct   
+		from  ZRMHST where RMDAT=#rmdat#  
+		]]>	 		
+	</select>
+	
+	 <insert id="insertZrmhst" parameterClass="ZRMHSTVO">
+	<![CDATA[
+	INSERT  INTO ZRMHST (
+		RMDNO,
+		HOUSE,
+		ORDNO,
+		DEPT,
+		FITEM,
+		RMSUB,
+		RMLOC,
+		RMBCH,
+		RMQTY,
+		FQCD,
+		RMUSR,
+		RMDPT,
+		RMDAT,
+		RMTME)	
+       VALUES (
+       		#rmdno#,
+            #house#,
+	        #ordno#,
+	        #dept#,		        
+	        #fitem#,		        
+	        #rmsub#,
+	        
+	        #rmloc#,
+            #rmbch#,
+	        #rmqty#,
+	        #fqcd#,		        
+	        #rmusr#,
+	        
+	        #rmdpt#,
+            #rmdat#,
+	        #rmtme#)
+	]]>	
+  </insert>
+  <delete id="deleteZrmhst" parameterClass="String">
+	DELETE FROM ZRMHST WHERE RMDNO = #rmdno#
+  </delete>
+</sqlMap>

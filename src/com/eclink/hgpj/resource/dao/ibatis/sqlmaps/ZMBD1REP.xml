@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="ZMBD1REP" >
+	<typeAlias alias="ZMBD1REPVO" type="com.eclink.hgpj.resource.vo.ZMBD1REPVO"/>
+ 	  <resultMap id="ZMBD1REPVOMap" class="ZMBD1REPVO" >
+	    <result column="DBCQCD" property="dbcqcd" />
+	    <result column="DBDCML" property="dbdcml"  />
+	    <result column="DBRND" property="dbrnd" />
+	  </resultMap>
+	<select id="queryZmbd1erp" resultMap="ZMBD1REPVOMap" parameterClass="ZMBD1REPVO">
+		<![CDATA[ select  *  from  ZMBD1REP where DBCQCD=#dbcqcd#  
+		]]>
+	</select>
+
+</sqlMap>

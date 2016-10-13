@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee 
+	http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+	<distributable/>
+	<welcome-file-list>
+		<welcome-file>login.jsp</welcome-file>
+	</welcome-file-list>
+	<listener>
+		<listener-class>com.eclink.hgpj.util.ConfigListener</listener-class>
+	</listener>
+	<!-- 指定Spring ApplicationContext配置文件的路径，可使用通配符，多个路径用','逗号分隔 -->
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>classpath*:spring-config-*.xml</param-value>
+	</context-param>
+	
+	<!-- HGPJ系统初始化Servlet配置 -->
+	<servlet>
+		<servlet-name>SystemInit</servlet-name>
+		<servlet-class>com.eclink.hgpj.init.SystemInitServlet</servlet-class>
+		<init-param>
+			<param-name>systemName</param-name>
+			<param-value>HGPJ</param-value>
+		</init-param>
+		<init-param>
+			<param-name>log4jConfigFile</param-name>
+			<param-value>log4j.xml</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	
+	<!-- 按键式评价器接口Servlet配置 -->
+	<servlet>
+		<servlet-name>keyEvaluatorInterface</servlet-name>
+		<servlet-class>com.eclink.hgpj.servlet.KeyEvaluatorServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>keyEvaluatorInterface</servlet-name>
+		<url-pattern>/keyEvaluatorInterface</url-pattern>
+	</servlet-mapping>
+	
+	<!-- 关员图片跨服务器代理访问Servlet配置 -->
+	<servlet>
+		<servlet-name>photoProxy</servlet-name>
+		<servlet-class>com.eclink.hgpj.servlet.PhotoProxyServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>photoProxy</servlet-name>
+		<url-pattern>/photoProxy</url-pattern>
+	</servlet-mapping>
+	
+	<!-- Session会话检查过滤器 -->
+	<filter>
+		<filter-name>sessonFilter</filter-name>
+		<filter-class>com.eclink.hgpj.servlet.SessionFilter</filter-class>
+		<init-param>
+			<param-name>exclude</param-name>
+			<param-value>/login.jsp,
+						/commons/error.jsp,
+						/commons/info.jsp,
+						/login!userLogin.action,
+						/logout!logout.action,
+						/user!viewPhoto.action,
+						/domainAuth!auth.action,
+						/keyEvaluatorInterface,
+						/photoProxy,
+						/resource/resource!*.action,
+						/eval/*
+			</param-value>
+			<!--<param-value>/*.*
+			</param-value>-->
+		</init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>sessonFilter</filter-name>
+		<url-pattern>*.action</url-pattern>
+	</filter-mapping>
+	<filter-mapping>
+		<filter-name>sessonFilter</filter-name>
+		<url-pattern>*.jsp</url-pattern>
+	</filter-mapping>
+	
+	<!-- URL权限检查过滤器 -->
+	<filter>
+		<filter-name>permFilter</filter-name>
+		<filter-class>com.eclink.hgpj.servlet.PermFilter</filter-class>
+		<init-param>
+			<param-name>exclude</param-name>
+			<param-value>/login.jsp,
+						/index.jsp,
+						/commons/error.jsp,
+						/commons/info.jsp,
+						/commons/home.jsp,
+						/login!userLogin.action,
+						/logout!logout.action,
+						/commons/right.jsp,
+						/commons/top.jsp,
+						/login!listResources.action,
+						/commons/explorer_scroll.jsp,
+						/user!toModifyUserInfo.action,
+						/user!modifyUserInfo.action,
+						/user!viewPhoto.action,
+						/domainAuth!auth.action,
+						/setting/window!getChildWindow.action,
+						/keyEvaluatorInterface,
+						/photoProxy,
+						/eval/*
+			</param-value>
+		</init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>permFilter</filter-name>
+		<url-pattern>*.action</url-pattern>
+	</filter-mapping>
+	<filter-mapping>
+		<filter-name>permFilter</filter-name>
+		<url-pattern>*.jsp</url-pattern>
+	</filter-mapping>
+	
+	<!-- Gzip压缩过滤器配置 -->
+	<!-- <filter>
+		<filter-name>Compress</filter-name>
+		<filter-class>com.jspbook.GZIPFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>Compress</filter-name>
+		<url-pattern>*.css</url-pattern>
+	</filter-mapping>
+	<filter-mapping>
+		<filter-name>Compress</filter-name>
+		<url-pattern>*.js</url-pattern>
+	</filter-mapping>
+	<filter-mapping>
+		<filter-name>Compress</filter-name>
+		<url-pattern>*.jsp</url-pattern>
+	</filter-mapping>
+	<filter-mapping>
+		<filter-name>Compress</filter-name>
+		<url-pattern>*.html</url-pattern>
+	</filter-mapping>
+	<filter-mapping>
+		<filter-name>Compress</filter-name>
+		<url-pattern>*.action</url-pattern>
+	</filter-mapping>
+	-->
+	<!-- 字符编码过滤器配置 -->
+	<filter>
+		<filter-name>encodingFilter</filter-name>
+		<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+		<init-param>
+			<param-name>encoding</param-name>
+			<param-value>utf-8</param-value>
+		</init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>encodingFilter</filter-name>
+		<url-pattern>*.action</url-pattern>
+	</filter-mapping>
+	<filter-mapping>
+		<filter-name>encodingFilter</filter-name>
+		<url-pattern>*.jsp</url-pattern>
+	</filter-mapping>
+
+	<!-- 定义Struts2的核心控制器FilterDispathcer -->
+	<filter>
+		<filter-name>struts2</filter-name>
+		<filter-class>org.apache.struts2.dispatcher.ng.filter.StrutsPrepareAndExecuteFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>struts2</filter-name>
+		<url-pattern>*.action</url-pattern>
+	</filter-mapping>
+	<filter-mapping>
+		<filter-name>struts2</filter-name>
+		<url-pattern>*.jsp</url-pattern>
+	</filter-mapping>
+	<filter>
+		<filter-name>struts-cleanup</filter-name>
+		<filter-class>org.apache.struts2.dispatcher.ActionContextCleanUp</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>struts-cleanup</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	
+	<!-- 指定Listener方式加载Spring的ApplicationContext -->
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
+
+	<!-- Spring刷新Introspector防止内存泄露 -->
+	<listener>
+		<listener-class>org.springframework.web.util.IntrospectorCleanupListener</listener-class>
+	</listener>
+	
+	<!-- session超时定义，单位为分钟 -->
+	<session-config>
+		<session-timeout>60</session-timeout>
+	</session-config>
+	
+	<!-- 出错页面定义 -->
+	<error-page>
+		<exception-type>java.lang.Throwable</exception-type>
+		<location>/commons/500.jsp</location>
+	</error-page>
+	<error-page>
+		<error-code>500</error-code>
+		<location>/commons/500.jsp</location>
+	</error-page>
+	<error-page>
+		<error-code>404</error-code>
+		<location>/commons/404.jsp</location>
+	</error-page>
+	<error-page>
+		<error-code>403</error-code>
+		<location>/commons/403.jsp</location>
+	</error-page>
+	<jsp-config>
+	<taglib>
+	<taglib-uri>http://java.sun.com/jstl/fmt</taglib-uri>
+	<taglib-location>/WEB-INF/fmt.tld</taglib-location>
+	</taglib>
+	<taglib>
+	<taglib-uri>http://java.sun.com/jstl/fmt-rt</taglib-uri>
+	<taglib-location>/WEB-INF/fmt-rt.tld</taglib-location>
+	</taglib>
+	<taglib>
+	<taglib-uri>http://java.sun.com/jstl/core</taglib-uri>
+	<taglib-location>/WEB-INF/c.tld</taglib-location>
+	</taglib>
+	<taglib>
+	<taglib-uri>http://java.sun.com/jstl/core-rt</taglib-uri>
+	<taglib-location>/WEB-INF/c-rt.tld</taglib-location>
+	</taglib>
+	<taglib>
+	<taglib-uri>http://java.sun.com/jstl/sql</taglib-uri>
+	<taglib-location>/WEB-INF/sql.tld</taglib-location>
+	</taglib>
+	<taglib>
+	<taglib-uri>http://java.sun.com/jstl/sql-rt</taglib-uri>
+	<taglib-location>/WEB-INF/sql-rt.tld</taglib-location>
+	</taglib>
+	<taglib>
+	<taglib-uri>http://java.sun.com/jstl/x</taglib-uri>
+	<taglib-location>/WEB-INF/x.tld</taglib-location>
+	</taglib>
+	<taglib>
+	<taglib-uri>http://java.sun.com/jstl/x-rt</taglib-uri>
+	<taglib-location>/WEB-INF/x-rt.tld</taglib-location>
+	</taglib>
+	</jsp-config>
+</web-app>

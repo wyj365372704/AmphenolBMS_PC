@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="GB2312"?>
+<!-- ====================================================================== -->
+<!--                                                                        -->
+<!--                       hgpj.war, Build                                 -->
+<!--                                                                        -->
+<!-- ====================================================================== -->
+
+<project name="hgpj" default="clean" basedir=".">
+	<description>
+		 hgpj.war, Build file 
+    </description>
+	<!-- set global properties for this build -->
+	<property environment="env" />
+	<property name="tagWarName" value="hgpj.war" />
+	<property name="tomcat" value="${env.TOMCAT_HOME}"/>
+	<property name="JDK1.6" value="${env.JDK_HOME}/bin/javac" />
+	<!-- Set props of this build -->
+	<property name="basePath" location="${env.RELEASE_HOME}" />
+	<property name="distPath" location="${basePath}/dist" />
+	<property name="tempPath" location="${distPath}/temp" />
+	<property name="tempSrcPath" location="${tempPath}/src" />
+	<property name="tempWebPath" location="${distPath}/webapp" />
+	<property name="tagClassPath" location="${tempWebPath}/WEB-INF/classes" />
+
+	<property name="distWarPath" value="${distPath}\${tagWarName}" />
+	<property name="webXmlPath" value="${tempWebPath}/WEB-INF/web.xml"/>
+	
+	<path id="libClassPath">
+		<fileset dir="${tempWebPath}/WEB-INF/lib">
+			<include name="*.jar" />
+			<include name="*.zip" />
+		</fileset>
+		<fileset dir="${tomcat}/lib">
+			<include name="jsp-api.jar" />
+			<include name="servlet-api.jar" />
+		</fileset>
+	</path>
+
+	<target name="init" depends="">
+		<mkdir dir="${tempPath}" />
+		<mkdir dir="${tempSrcPath}" />
+		<mkdir dir="${tempWebPath}" />
+		<mkdir dir="${tagClassPath}"/>
+	</target>
+
+	<target name="copyFile" depends="init" description="copy java and web file">
+		<copy todir="${tempSrcPath}">
+			<fileset dir="${basePath}/src"></fileset>
+		</copy>
+		<copy todir="${tempWebPath}">
+			<fileset dir="${basePath}/webapp" >
+				<exclude name="WEB-INF/classes/**"/>
+			</fileset>
+		</copy>
+	</target>
+	
+	<target name="compile" depends="copyFile" description="compile java code">
+		<echo>compile java files</echo>
+		<javac srcdir="${tempSrcPath}" encoding="UTF-8" debug="true" destdir="${tagClassPath}" verbose="no" fork="yes" executable="${JDK1.6}" failonerror="true">
+			<classpath refid="libClassPath" />
+			<include name="**/*.java"/>
+		</javac>
+		<echo>compile java files finish </echo>
+	</target>
+	
+	<target name="copyConfigFile" depends="compile" description="copy config file">
+		<copy todir="${tagClassPath}">
+			<fileset dir="${tempSrcPath}" >
+				<include name="*.xml"/>
+				<include name="**/*.xml"/>
+				<include name="**/*.tld"/>
+				<include name="**/*.dtd"/>
+				<include name="**/*.properties"/>
+			</fileset>
+		</copy>
+	</target>
+	
+	<target name="warFile" depends="copyConfigFile" description="Build the war file">
+		<echo>delete the ${distWarPath}</echo>
+		<delete file="${distWarPath}"></delete>
+		<echo>build the ${tagWarName} file</echo>
+		<war destfile="${distWarPath}" basedir="${tempWebPath}" webxml="${webXmlPath}"></war>
+	</target>
+	<target name="clean" depends="warFile" description="clean up all">
+		<delete dir="${tempPath}" />
+		<delete dir="${tempWebPath}"/>
+	</target>
+	
+</project>

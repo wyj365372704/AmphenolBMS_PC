@@ -1,0 +1,441 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap>
+
+  <sql id="Report.condition">
+     <dynamic prepend="">
+        <isNotEmpty prepend="and" property="customsId">
+            t.CUSTOMS_ID = #customsId#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="orgId">
+            t.ORG_ID = #orgId#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="windowId">
+            t.WINDOW_ID = #windowId#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="evalResult">
+            t.EVAL_RESULT = #evalResult#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="evalType">
+            t.EVAL_TYPE = #evalType#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="serviceId">
+            t.SERVICE_ID = #serviceId#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="touchEvalType">
+            t.TOUCH_EVAL_TYPE = #touchEvalType#
+        </isNotEmpty>
+        <isNotEmpty prepend="and" property="userName">
+            t.USER_NAME like '%'+#userName#+'%'
+        </isNotEmpty>
+        
+        
+
+        
+         <isNotEmpty prepend="AND" property="startDate">
+            <![CDATA[ t.EVAL_TIME >= #startDate:VARCHAR#+' 00:00:00']]>
+         </isNotEmpty>
+         <isNotEmpty prepend="AND" property="endDate">
+            <![CDATA[ t.EVAL_TIME <= #endDate:VARCHAR#+' 23:59:59']]>
+         </isNotEmpty>
+     </dynamic>
+  </sql>
+  <sql id="Report.conditionBiz">
+     <dynamic prepend="where">
+          t.SERVICE_ID IS NOT NULL
+     </dynamic>
+  </sql>
+  <sql id="Report.conditionWindow">
+     <dynamic prepend="where">
+          t.WINDOW_ID IS NOT NULL
+     </dynamic>
+  </sql>
+  <sql id="Report.conditionOfficer">
+     <dynamic prepend="where">
+          t.USER_NAME!='' AND  t.USER_NAME IS NOT NULL
+     </dynamic>
+  </sql>
+  
+  <sql id="Report.sql">
+  SELECT 
+  case EVAL_RESULT when 0 then 1 else 0 end as uneval,
+  case EVAL_RESULT when 1 then 1 else 0 end as notsatisfied,
+  case EVAL_RESULT when 2 then 1 else 0 end as basicsatisfied,
+  case EVAL_RESULT when 3 then 1 else 0 end as satisfied,
+  case EVAL_RESULT when 4 then 1 else 0 end as verysatisfied,
+  CUSTOMS_ID,
+  ORG_ID,
+  WINDOW_ID,
+  USER_NAME,
+  EVAL_TYPE,
+  SERVICE_ID
+  FROM EVALUATION t
+  </sql>
+ <sql id="Report.calsql">
+  case sumNum when 0 then 0 else cast(uneval*100.0/sumNum as decimal(10,1)) end unevalRate,
+  case sumNum when 0 then 0 else cast(notsatisfied*100.0/(sumNum-uneval) as decimal(10,1)) end notsatisfiedRate,
+  case sumNum when 0 then 0 else cast(basicsatisfied*100.0/(sumNum-uneval) as decimal(10,1)) end basicsatisfiedRate,
+  case sumNum when 0 then 0 else cast(satisfied*100.0/(sumNum-uneval) as decimal(10,1)) end satisfiedRate,
+  case sumNum when 0 then 0 else cast(verysatisfied*100.0/(sumNum-uneval) as decimal(10,1)) end verysatisfiedRate,
+  case sumNum when 0 then 0 else cast((sumNum-uneval)*100.0/sumNum as decimal(10,1)) end evalRate,
+  case sumNum when 0 then 0 else cast((sumNum-uneval)*100.0/sumNum as decimal(10,1)) end evalDegree,
+  case sumNum when 0 then 0 else cast((basicsatisfied+satisfied+verysatisfied)*100.0/(sumNum-uneval) as decimal(10,1)) end satisfiedDegree,
+  sumNum-uneval eval
+  </sql>
+ <sql id="Report.sumsql">
+  sum(uneval) uneval,
+  sum(notsatisfied) notsatisfied,
+  sum(basicsatisfied) basicsatisfied,
+  sum(satisfied) satisfied,
+  sum(verysatisfied) verysatisfied,
+  sum(uneval)+sum(notsatisfied)+sum(basicsatisfied)+sum(satisfied)+sum(verysatisfied) sumNum
+  </sql>
+
+  
+
+  
+  <!-- 业务评价统计-->
+  <select id="Report.queryBizList"
+        resultClass="java.util.HashMap" parameterClass="map">
+  SELECT TOP $BaseVO.pageSize$ * FROM (select ROW_NUMBER() over(order by customsName) as rownum,a.* from (
+  SELECT b.*,c.NAME serviceName,d.ORG_NAME customsName,
+  <include refid="Report.calsql"/>
+  FROM (
+  SELECT CUSTOMS_ID,SERVICE_ID,
+  <include refid="Report.sumsql"/>
+  FROM (
+  <include refid="Report.sql"/>
+  <include refid="Report.conditionBiz"/>
+  <include refid="Report.condition"/>
+  ) a
+  GROUP BY a.CUSTOMS_ID,a.SERVICE_ID
+  ) b left join SERVICE c on b.SERVICE_ID=c.ID
+  left join ORGANIZATION d on b.CUSTOMS_ID=d.ORG_ID
+  ) as a) b where b.rownum>$BaseVO.from$
+  </select>
+  
+  <select id="Report.queryBizCount"
+        resultClass="int" parameterClass="map">
+  SELECT count(*)
+  FROM (
+  SELECT CUSTOMS_ID,SERVICE_ID,
+  <include refid="Report.sumsql"/>
+  FROM (
+  <include refid="Report.sql"/>
+  <include refid="Report.conditionBiz"/>
+  <include refid="Report.condition"/>
+  ) a
+  GROUP BY a.CUSTOMS_ID,a.SERVICE_ID
+  ) b
+  </select>
+   
+<!--  窗口评价统计-->
+  <select id="Report.queryWindowList"
+        resultClass="java.util.HashMap" parameterClass="map">
+  SELECT TOP $BaseVO.pageSize$ * FROM (select ROW_NUMBER() over(order by customsName) as rownum,a.* from (
+  SELECT b.*,c.NAME windowName,d.ORG_NAME customsName,e.ORG_NAME orgName,
+  <include refid="Report.calsql"/>
+  FROM (
+  SELECT CUSTOMS_ID,ORG_ID,WINDOW_ID,
+  <include refid="Report.sumsql"/>
+  FROM (
+  <include refid="Report.sql"/>
+  <include refid="Report.conditionWindow"/>
+  <include refid="Report.condition"/>
+  ) a
+  GROUP BY a.CUSTOMS_ID,a.ORG_ID,a.WINDOW_ID
+  ) b left join WINDOW c on b.WINDOW_ID=c.ID
+  left join ORGANIZATION d on b.CUSTOMS_ID=d.ORG_ID
+  left join ORGANIZATION e on b.ORG_ID=e.ORG_ID
+  ) as a) b where b.rownum>$BaseVO.from$
+  </select>
+  
+  <select id="Report.queryWindowCount"
+        resultClass="int" parameterClass="map">
+  SELECT count(*)
+  FROM (
+  SELECT CUSTOMS_ID,ORG_ID,WINDOW_ID,
+  <include refid="Report.sumsql"/>
+  FROM (
+  <include refid="Report.sql"/>
+  <include refid="Report.conditionWindow"/>
+  <include refid="Report.condition"/>
+  ) a
+  GROUP BY a.CUSTOMS_ID,a.ORG_ID,a.WINDOW_ID
+  ) b
+  </select>
+
+<!--  窗口科级评价汇总-->
+  <select id="Report.queryWindowKeList"
+        resultClass="java.util.HashMap" parameterClass="map">
+  SELECT b.*,d.ORG_NAME customsName,e.ORG_NAME orgName,
+  <include refid="Report.calsql"/>
+  FROM (
+  SELECT CUSTOMS_ID,ORG_ID,
+  <include refid="Report.sumsql"/>
+  FROM (
+  <include refid="Report.sql"/>
+  <include refid="Report.conditionWindow"/>
+  <include refid="Report.condition"/>
+  ) a
+  GROUP BY a.CUSTOMS_ID,a.ORG_ID
+  ) b
+  left join ORGANIZATION d on b.CUSTOMS_ID=d.ORG_ID
+  left join ORGANIZATION e on b.ORG_ID=e.ORG_ID
+  </select>
+  
+  <select id="Report.queryWindowKeListSum"
+        resultClass="java.util.HashMap" parameterClass="map">
+    select s.*,
+    <include refid="Report.calsql"/>
+    from (
+  SELECT 
+  <include refid="Report.sumsql"/>
+  FROM (
+  SELECT CUSTOMS_ID,ORG_ID,
+  <include refid="Report.sumsql"/>
+  FROM (
+  <include refid="Report.sql"/>
+  <include refid="Report.conditionWindow"/>
+  <include refid="Report.condition"/>
+  ) a
+  GROUP BY a.CUSTOMS_ID,a.ORG_ID
+  ) b
+  ) s
+  </select>
+  
+  
+<!--  窗口关级评价汇总-->
+  <select id="Report.queryWindowGuanList"
+        resultClass="java.util.HashMap" parameterClass="map">
+  SELECT b.*,d.ORG_NAME customsName,
+  <include refid="Report.calsql"/>
+  FROM (
+  SELECT CUSTOMS_ID,
+  <include refid="Report.sumsql"/>
+  FROM (
+  <include refid="Report.sql"/>
+  <include refid="Report.conditionWindow"/>
+  <include refid="Report.condition"/>
+  ) a
+  GROUP BY a.CUSTOMS_ID
+  ) b
+  left join ORGANIZATION d on b.CUSTOMS_ID=d.ORG_ID
+  </select>
+
+  <select id="Report.queryWindowGuanListSum"
+        resultClass="java.util.HashMap" parameterClass="map">
+    select s.*,
+    <include refid="Report.calsql"/>
+    from (
+  SELECT 
+  <include refid="Report.sumsql"/>
+  FROM (
+  SELECT CUSTOMS_ID,
+  <include refid="Report.sumsql"/>
+  FROM (
+  <include refid="Report.sql"/>
+  <include refid="Report.conditionWindow"/>
+  <include refid="Report.condition"/>
+  ) a
+  GROUP BY a.CUSTOMS_ID
+  ) b
+  ) s
+  </select>
+    
+   
+<!--  关员评价统计-->
+  <select id="Report.queryOfficerList"
+        resultClass="java.util.HashMap" parameterClass="map">
+  SELECT TOP $BaseVO.pageSize$ * FROM (select ROW_NUMBER() over(order by customsName) as rownum,a.* from (
+  SELECT b.*,d.ORG_NAME customsName,e.ORG_NAME orgName,b.USER_NAME userName,
+  <include refid="Report.calsql"/>
+  FROM (
+  SELECT CUSTOMS_ID,ORG_ID,USER_NAME,
+  <include refid="Report.sumsql"/>
+  FROM (
+  <include refid="Report.sql"/>
+  <include refid="Report.conditionOfficer"/>
+  <include refid="Report.condition"/>
+  ) a
+  GROUP BY a.CUSTOMS_ID,a.ORG_ID,a.USER_NAME
+  ) b
+  left join ORGANIZATION d on b.CUSTOMS_ID=d.ORG_ID
+  left join ORGANIZATION e on b.ORG_ID=e.ORG_ID
+  ) as a) b where b.rownum>$BaseVO.from$
+  </select>
+  
+  <select id="Report.queryOfficerCount"
+        resultClass="int" parameterClass="map">
+  SELECT count(*)
+  FROM (
+  SELECT CUSTOMS_ID,ORG_ID,USER_NAME,
+  <include refid="Report.sumsql"/>
+  FROM (
+  <include refid="Report.sql"/>
+  <include refid="Report.conditionOfficer"/>
+  <include refid="Report.condition"/>
+  ) a
+  GROUP BY a.CUSTOMS_ID,a.ORG_ID,a.USER_NAME
+  ) b
+  </select>
+  
+
+<!--  关员科级评价汇总-->
+  <select id="Report.queryOfficerKeList"
+        resultClass="java.util.HashMap" parameterClass="map">
+  SELECT b.*,d.ORG_NAME customsName,e.ORG_NAME orgName,
+  <include refid="Report.calsql"/>
+  FROM (
+  SELECT CUSTOMS_ID,ORG_ID,
+  <include refid="Report.sumsql"/>
+  FROM (
+  <include refid="Report.sql"/>
+  <include refid="Report.conditionOfficer"/>
+  <include refid="Report.condition"/>
+  ) a
+  GROUP BY a.CUSTOMS_ID,a.ORG_ID
+  ) b
+  left join ORGANIZATION d on b.CUSTOMS_ID=d.ORG_ID
+  left join ORGANIZATION e on b.ORG_ID=e.ORG_ID
+  </select>
+  
+  <select id="Report.queryOfficerKeListSum"
+        resultClass="java.util.HashMap" parameterClass="map">
+    select s.*,
+    <include refid="Report.calsql"/>
+    from (
+  SELECT 
+  <include refid="Report.sumsql"/>
+  FROM (
+  SELECT CUSTOMS_ID,ORG_ID,
+  <include refid="Report.sumsql"/>
+  FROM (
+  <include refid="Report.sql"/>
+  <include refid="Report.conditionOfficer"/>
+  <include refid="Report.condition"/>
+  ) a
+  GROUP BY a.CUSTOMS_ID,a.ORG_ID
+  ) b
+  ) s
+  </select>
+    
+
+  
+<!--  关员关级评价汇总-->
+  <select id="Report.queryOfficerGuanList"
+        resultClass="java.util.HashMap" parameterClass="map">
+  SELECT b.*,d.ORG_NAME customsName,
+  <include refid="Report.calsql"/>
+  FROM (
+  SELECT CUSTOMS_ID,
+  <include refid="Report.sumsql"/>
+  FROM (
+  <include refid="Report.sql"/>
+  <include refid="Report.conditionOfficer"/>
+  <include refid="Report.condition"/>
+  ) a
+  GROUP BY a.CUSTOMS_ID
+  ) b
+  left join ORGANIZATION d on b.CUSTOMS_ID=d.ORG_ID
+  </select>
+
+  <select id="Report.queryOfficerGuanListSum"
+        resultClass="java.util.HashMap" parameterClass="map">
+    select s.*,
+    <include refid="Report.calsql"/>
+    from (
+  SELECT 
+  <include refid="Report.sumsql"/>
+  FROM (
+  SELECT CUSTOMS_ID,
+  <include refid="Report.sumsql"/>
+  FROM (
+  <include refid="Report.sql"/>
+  <include refid="Report.conditionOfficer"/>
+  <include refid="Report.condition"/>
+  ) a
+  GROUP BY a.CUSTOMS_ID
+  ) b
+  ) s
+  </select>
+  
+    
+   
+<!--  评价明细列表查询-->
+  <sql id="Report.evaluationaliassql">
+      b.EVAL_ID evalId,
+      b.CUSTOMS_ID customsId,
+      b.ORG_ID orgId,
+      b.WINDOW_ID windowId,
+      b.USER_NAME userName,
+      b.EVAL_NO evalNo,
+      b.EVAL_TYPE evalType,
+      b.TOUCH_EVAL_TYPE touchEvalType,
+      b.SERVICE_ID serviceId,
+      b.EVAL_RESULT evalResult,
+      b.EVAL_SUGGEST evalSuggest,
+      b.EVAL_TIME evalTime,
+      b.NAME name,
+      b.SEX sex,
+      b.ID_CARD_NO idCardNo,
+      b.TELEPHONE telephone
+  </sql>
+  <select id="Report.queryEvaluationList"
+        resultClass="java.util.HashMap" parameterClass="map">
+  SELECT TOP $BaseVO.pageSize$ * FROM (select ROW_NUMBER() over(order by evalId desc) as rownum,a.* from (
+  SELECT 
+  <include refid="Report.evaluationaliassql"/>
+  ,c.NAME windowName,d.ORG_NAME customsName,e.ORG_NAME orgName
+  FROM (
+  SELECT * FROM EVALUATION t where 1=1
+  <include refid="Report.condition"/>
+  )b left join WINDOW c on b.WINDOW_ID=c.ID
+  left join ORGANIZATION d on b.CUSTOMS_ID=d.ORG_ID
+  left join ORGANIZATION e on b.ORG_ID=e.ORG_ID
+  ) as a) b where b.rownum>$BaseVO.from$
+  </select>
+  
+  <select id="Report.queryEvaluationCount"
+        resultClass="int" parameterClass="map">
+  SELECT count(*)
+    FROM EVALUATION t where 1=1
+  <include refid="Report.condition"/>
+  </select>
+    
+  <select id="Report.queryEvaluationById"
+        resultClass="java.util.HashMap" parameterClass="int">
+  SELECT 
+  <include refid="Report.evaluationaliassql"/>
+  ,c.NAME windowName,d.ORG_NAME customsName,e.ORG_NAME orgName
+  FROM (
+  SELECT *FROM EVALUATION t where EVAL_ID=#evalId#
+  )b left join WINDOW c on b.WINDOW_ID=c.ID
+  left join ORGANIZATION d on b.CUSTOMS_ID=d.ORG_ID
+  left join ORGANIZATION e on b.ORG_ID=e.ORG_ID
+  </select>
+        
+      
+<!--其他-->
+<select id="Report.queryAllCustomsList"
+        resultClass="java.util.HashMap">
+  select ORG_ID orgId,ORG_NAME orgName from ORGANIZATION where ORG_TYPE='F' order by ORG_ID desc
+</select>  
+<select id="Report.queryOrgListByCustomsId"
+        resultClass="java.util.HashMap" parameterClass="int">
+  select ORG_ID orgId,ORG_NAME orgName from ORGANIZATION where ORG_TYPE='K' AND PARENT_ORG=#customsId# order by ORG_ID desc
+</select> 
+<select id="Report.queryWindowListByOrgId"
+        resultClass="java.util.HashMap" parameterClass="int">
+  select ID id,NAME name from WINDOW where ORG_ID=#orgId# and STATUS!='2' order by ID desc
+</select> 
+<select id="Report.queryServiceListByCustomsId"
+        resultClass="java.util.HashMap" parameterClass="int">
+  select distinct b.ID id,b.NAME name from CUSTOMS_SERVICE a left join SERVICE b on a.SERVICE_ID=b.ID 
+            <isNotEqual prepend="where" compareValue="0">
+                a.ORG_ID=#customsId#
+            </isNotEqual>
+  order by b.name
+</select> 
+  
+</sqlMap>

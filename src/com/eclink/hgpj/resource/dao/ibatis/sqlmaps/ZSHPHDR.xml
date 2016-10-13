@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="ZSHPHDR" >
+	
+	<typeAlias alias="ZSHPHDRVO" type="com.eclink.hgpj.resource.vo.ZSHPHDRVO"/>
+	<typeAlias alias="ZSHPITMVO" type="com.eclink.hgpj.resource.vo.ZSHPITMVO"/>
+	<typeAlias alias="ZSHPBCHVO" type="com.eclink.hgpj.resource.vo.ZSHPBCHVO"/>
+	
+	<resultMap id="ZSHPBCHVOMap" class="ZSHPBCHVO">
+	   <result property="shpno"
+	    column="SHPNO" />
+	    <result property="shpln"
+	    column="SHPLN" />
+	    <result property="vndnr"
+	    column="VNDNR" />
+	    <result property="house"
+	    column="HOUSE" />
+	     <result property="ordno"
+	    column="ORDNO" />
+	    <result property="poisq"
+	    column="POISQ" />
+	    <result property="blksq"
+	    column="BLKSQ" />
+	     <result property="itnbr"
+	    column="ITNBR" />
+	    <result property="bhqty"
+	    column="BHQTY" />
+	    <result property="lbhno"
+	    column="LBHNO" />
+	    <result property="purum"
+	    column="PURUM" />
+	    <result property="mfgdt"
+	    column="MFGDT" />
+	    <result property="expdt"
+	    column="EXPDT" /> 	     
+	</resultMap>
+	
+	<resultMap id="ZSHPITMVOMap" class="ZSHPITMVO">
+	   <result property="shpno"
+	    column="SHPNO" />
+	    <result property="shpln"
+	    column="SHPLN" />
+	    <result property="vndnr"
+	    column="VNDNR" />
+	    <result property="house"
+	    column="HOUSE" />
+	     <result property="ordno"
+	    column="ORDNO" />
+	    <result property="poisq"
+	    column="POISQ" />
+	    <result property="blcod"
+	    column="BLCOD" />
+	    <result property="blksq"
+	    column="BLKSQ" />
+	    <result property="lstat"
+	    column="LSTAT" />
+	     <result property="itnbr"
+	    column="ITNBR" />
+	    <result property="blcf"
+	    column="BLCF" />
+	    <result property="shqty"
+	    column="SHQTY" />
+	    <result property="purum"
+	    column="PURUM" />
+	    <result property="sctkji"
+	    column="SCTKJI" />
+	    <result property="shpic1"
+	    column="SHPIC1" />
+	    <result property="shpic2"
+	    column="SHPIC2" />
+	     <result property="shpic3"
+	    column="SHPIC3" />
+	    <result property="twht"
+	    column="TWHT" />
+	    <result property="whtum"
+	    column="WHTUM" />
+	    <result property="vpack"
+	    column="VPACK" />
+	    
+ 	     
+	</resultMap>
+	<resultMap id="ZSHPHDRVOMap" class="ZSHPHDRVO">
+	   <result property="shpno"
+	    column="SHPNO" />
+	   <result property="vndnr"
+	    column="VNDNR" />
+	   <result property="lgwno"
+	    column="LGWNO" />
+	    <result property="ostat"
+	    column="OSTAT" />
+	    <result property="crus"
+	    column="CRUS" />
+	    <result property="crdt"
+	    column="CRDT" />
+	    <result property="crtm"
+	    column="CRTM" />
+	    <result property="chus"
+	    column="CHUS" />
+	    <result property="chdt"
+	    column="CHDT" />
+	    <result property="chtm"
+	    column="CHTM" />
+	   <result property="itemsList" 
+ 	     column="SHPNO" resultMap="ZSHPHDR.ZSHPITMVOMap"/>
+ 	</resultMap>
+ 	
+ 	
+	<select id="queryReceipt" resultMap="ZSHPHDRVOMap" parameterClass="String">
+		select  dr.*,item.*  
+		from  ZSHPHDR as dr,ZSHPITM as item where dr.SHPNO=#shpno# AND dr.SHPNO=item.SHPNO 
+		
+	</select>
+	
+	<select id="queryBch" resultMap="ZSHPBCHVOMap" parameterClass="String">
+		select  bch.*  
+		from  ZSHPBCH as bch where bch.SHPNO=#shpno# 
+		
+	</select>
+	
+	  <!-- 更新资源操作 -->
+  <update id="updateZshphdr" parameterClass="String">
+  	UPDATE ZSHPHDR SET OSTAT = '50' WHERE  SHPNO=#shpno#  
+  </update>
+  
+    <update id="updateZshpitm" parameterClass="String">
+  	UPDATE ZSHPITM SET LSTAT  = '50' WHERE  SHPNO=#shpno#  
+  </update>
+
+</sqlMap>

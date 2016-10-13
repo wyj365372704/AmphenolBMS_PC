@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="ZSLLOG" >
+	<typeAlias alias="ZSLLOGVO" type="com.eclink.hgpj.resource.vo.ZSLLOGVO"/>
+ 	  <resultMap id="ZSLLOGVOMap" class="ZSLLOGVO" >
+	    <result column="SLDNO" property="sldno" />
+	    <result column="APPL" property="appl" />
+	    <result column="SLTYP" property="sltype"  />
+	    <result column="DATYP" property="datyp" />
+	    <result column="SLREQ" property="slreq"  />
+	    <result column="SLRSP" property="slrsp" />
+	    <result column="OSGRP" property="osgrp" />
+	    <result column="CRUSR" property="crusr" />
+	    <result column="CRDPT" property="crdpt" />
+	    <result column="CRDAT" property="crdat" />
+	    
+	    <result column="CRTME" property="crtme" />
+	    <result column="FPRCS" property="fprcs"  />
+	    <result column="ERESN" property="eresn" />
+	    <result column="HOUSE" property="house"  />
+	    <result column="ITNBR" property="itnbr" />
+	    <result column="TRQTY" property="trqty" />
+	    <result column="LLOCN" property="llocn" />
+	    <result column="NLLOC" property="nlloc" />
+	  </resultMap>
+	
+	<select id="getCoutsByDt" resultClass="Integer" parameterClass="java.math.BigDecimal">
+		<![CDATA[ select  count(*) as ct   
+		from  ZSLLOG where CRDAT=#crdat#  
+		]]>	 		
+	</select>
+	
+	 <insert id="insertZsllog" parameterClass="ZSLLOGVO">
+	<![CDATA[
+	INSERT  INTO ZSLLOG (
+		SLDNO,
+		APPL,
+		SLTYP,
+		DATYP,
+		SLREQ,
+		SLRSP,
+		OSGRP,
+		CRUSR,
+		CRDPT,
+		CRDAT,
+		CRTME,
+		FPRCS,
+		ERESN,
+		HOUSE,		
+		ITNBR,
+		
+		TRQTY,
+		LLOCN,
+		NLLOC)	
+       VALUES (
+       		#sldno#,
+            #appl#,
+	        #sltype#,
+	        #datyp#,		        
+	        #slreq#,		        
+	        #slrsp#,
+	        
+	        #osgrp#,
+            #crusr#,
+	        #crdpt#,
+	        #crdat#,		        
+	        #crtme#,
+	        
+	        #fprcs#,
+            #eresn#,
+	        #house#,		        
+	        #itnbr#,
+	        
+            #trqty#,
+	        #llocn#,		        
+	        #nlloc# )
+	]]>	
+  </insert>
+
+</sqlMap>

@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="Org" >
+
+	<typeAlias alias="OrgVO" type="com.eclink.hgpj.organization.vo.OrgVO"/>
+	<typeAlias alias="OrgResourceVO" type="com.eclink.hgpj.organization.vo.OrgResourceVO"/>
+ 
+	<resultMap id="orgMap" class="OrgVO" >
+		<result column="ORG_ID" property="orgId" jdbcType="INTEGER" nullValue="-1"/>
+		<result column="ORG_NAME" property="orgName" jdbcType="VARCHAR" />
+		<result column="ORG_DESC" property="orgDesc" jdbcType="VARCHAR" />
+		<result column="PARENT_ORG" property="parentOrg" jdbcType="INTEGER" nullValue="-1"/>
+		<result column="ORG_STATUS" property="orgStatus" jdbcType="VARCHAR" />
+		<result column="ORG_TYPE" property="orgType" jdbcType="VARCHAR" />
+		<result column="CREATE_USER" property="createUser" jdbcType="VARCHAR" />
+		<result column="CREATE_DATE" property="createDate" jdbcType="TIMESTAMP" />
+		<result column="LAST_UPDATE_USER" property="lastUpdateUser" jdbcType="VARCHAR" />
+		<result column="LAST_UPDATE_DATE" property="lastUpdateDate" jdbcType="TIMESTAMP" />
+	</resultMap>
+	
+	<resultMap id="orgResMap" class="OrgResourceVO" >
+		<result column="ORG_ID" property="orgId" jdbcType="INTEGER" nullValue="-1"/>
+		<result column="MENU_ID" property="menuId" jdbcType="INTEGER" nullValue="-1"/>
+		<result column="OPER_KEY" property="operKey" jdbcType="VARCHAR"/>
+	</resultMap>
+  
+  	<!-- 通过组织ID获取组织信息 -->
+	<select id="getOrgById" resultClass="OrgVO" parameterClass="int" >
+	  SELECT O.ORG_ID AS orgId, O.ORG_NAME AS orgName, O.ORG_DESC AS orgDesc, O.PARENT_ORG AS parentOrg, 
+	   O.ORG_STATUS AS orgStatus, O.ORG_TYPE AS orgType, O.CREATE_USER AS createUser, O.CREATE_DATE AS createDate,
+	   O.LAST_UPDATE_DATE AS lastUpdateDate, O.LAST_UPDATE_USER AS lastUpdateUser, ORG.ORG_NAME AS parentOrgName
+	  FROM ORGANIZATION O
+		LEFT JOIN ORGANIZATION ORG
+		ON O.PARENT_ORG = ORG.ORG_ID
+	  WHERE O.ORG_ID = #orgId#
+	</select>
+	
+	<!-- 获取总关下的科室组织列表信息 -->
+	<select id="getHeaderDept" resultClass="OrgVO">
+	  WITH ORGCTE
+	  AS
+	  (
+			SELECT ORG_ID AS orgId, ORG_NAME AS orgName, PARENT_ORG AS parentOrg, ORG_TYPE AS orgType, ORG_STATUS AS orgStatus FROM ORGANIZATION WHERE PARENT_ORG = 1 AND ORG_TYPE = 'K'
+			UNION ALL
+			SELECT P.ORG_ID AS orgId, P.ORG_NAME AS orgName, P.PARENT_ORG AS parentOrg, P.ORG_TYPE AS orgType, P.ORG_STATUS AS orgStatus
+			FROM ORGANIZATION  P INNER JOIN
+			ORGCTE A ON A.orgId = P.PARENT_ORG 
+	  )
+	  SELECT * FROM ORGCTE WHERE orgStatus = 'NORMAL' ORDER BY orgName DESC
+	</select>
+  
+  	<!-- 通过组织ID获取组织树列表 -->
+	<select id="getOrgListTreeByOrgId" resultClass="OrgVO" parameterClass="int">
+		WITH ORGCTE
+		AS
+		(
+			SELECT ORG_ID AS orgId, ORG_NAME AS orgName, PARENT_ORG AS parentOrg, ORG_TYPE AS orgType, ORG_STATUS AS orgStatus FROM ORGANIZATION WHERE ORG_ID = #orgId#
+			UNION ALL
+			SELECT P.ORG_ID AS orgId, P.ORG_NAME AS orgName, P.PARENT_ORG AS parentOrg, P.ORG_TYPE AS orgType, P.ORG_STATUS AS orgStatus
+			FROM ORGANIZATION  P INNER JOIN
+			ORGCTE A ON A.orgId = P.PARENT_ORG 
+		)
+		SELECT * FROM ORGCTE WHERE orgStatus = 'NORMAL'
+	</select>
+	
+	<!-- 通过组织ID获取所有下级组织 -->
+	<select id="getChildOrgByOrgId" resultClass="OrgVO" parameterClass="int">
+		WITH ORGCTE
+		AS
+		(
+			SELECT ORG_ID AS orgId, ORG_NAME AS orgName, PARENT_ORG AS parentOrg, ORG_TYPE AS orgType, ORG_STATUS AS orgStatus FROM ORGANIZATION WHERE ORG_ID = #orgId#
+			UNION ALL
+			SELECT P.ORG_ID AS orgId, P.ORG_NAME AS orgName, P.PARENT_ORG AS parentOrg, P.ORG_TYPE AS orgType, P.ORG_STATUS AS orgStatus
+			FROM ORGANIZATION  P INNER JOIN
+			ORGCTE A ON A.orgId = P.PARENT_ORG 
+		)
+		SELECT * FROM ORGCTE WHERE orgStatus = 'NORMAL' AND orgId != #orgId# ORDER BY orgName DESC
+	</select>
+	
+	<!-- 通过组织ID获取所属关区 -->
+	<select id="getParentOrgByOrgId" resultClass="OrgVO" parameterClass="int">
+		WITH ORGCTE 
+		 AS
+		(
+			SELECT ORG_ID AS orgId, ORG_NAME AS orgName, PARENT_ORG AS parentOrg, ORG_TYPE AS orgType, ORG_STATUS AS orgStatus FROM ORGANIZATION WHERE ORG_ID = #orgId#
+			UNION ALL
+			SELECT P.ORG_ID AS orgId, P.ORG_NAME AS orgName, P.PARENT_ORG AS parentOrg, P.ORG_TYPE AS orgType, P.ORG_STATUS AS orgStatus
+			FROM ORGANIZATION  P  INNER JOIN
+			ORGCTE A ON A.parentOrg  = P.ORG_ID
+		)
+		SELECT TOP 1 * FROM ORGCTE S WHERE S.orgType = 'F' OR S.orgType = 'Z' AND S.orgStatus = 'NORMAL' ORDER BY S.parentOrg DESC
+	</select>
+	
+	<!-- 获取所有总关与分关组织 -->
+	<select id="getCustomsOrg" resultClass="OrgVO">
+	  SELECT O.ORG_ID AS orgId, O.ORG_NAME AS orgName, O.ORG_DESC AS orgDesc, O.PARENT_ORG AS parentOrg, 
+	   O.ORG_STATUS AS orgStatus, O.ORG_TYPE AS orgType, O.CREATE_USER AS createUser, O.CREATE_DATE AS createDate,
+	   O.LAST_UPDATE_DATE AS lastUpdateDate, O.LAST_UPDATE_USER AS lastUpdateUser, ORG.ORG_NAME AS parentOrgName
+	  FROM ORGANIZATION O
+		LEFT JOIN ORGANIZATION ORG
+		ON O.PARENT_ORG = ORG.ORG_ID 
+	  WHERE (O.ORG_TYPE = 'F' OR O.ORG_TYPE = 'Z') AND O.ORG_STATUS = 'NORMAL' ORDER BY O.ORG_NAME DESC
+	</select>
+	
+	<!-- 获取所有分关组织 -->
+	<select id="getChildCustomsOrg" resultClass="OrgVO">
+	  SELECT O.ORG_ID AS orgId, O.ORG_NAME AS orgName, O.ORG_DESC AS orgDesc, O.PARENT_ORG AS parentOrg, 
+	   O.ORG_STATUS AS orgStatus, O.ORG_TYPE AS orgType, O.CREATE_USER AS createUser, O.CREATE_DATE AS createDate,
+	   O.LAST_UPDATE_DATE AS lastUpdateDate, O.LAST_UPDATE_USER AS lastUpdateUser, ORG.ORG_NAME AS parentOrgName
+	  FROM ORGANIZATION O
+		LEFT JOIN ORGANIZATION ORG
+		ON O.PARENT_ORG = ORG.ORG_ID 
+	  WHERE (O.ORG_TYPE = 'F') AND O.ORG_STATUS = 'NORMAL' ORDER BY O.ORG_NAME DESC
+	</select>
+	
+	<!-- 通过父组织ID与组织名称获取组织数量 -->
+	<select id="getOrgByOrgNameAdnParentOrg" resultClass="int" parameterClass="OrgVO" >
+	  SELECT COUNT(1) FROM ORGANIZATION WHERE PARENT_ORG = #parentOrg:INTEGER# AND ORG_NAME = #orgName:VARCHAR# AND ORG_STATUS = 'NORMAL'
+	</select>
+	
+	<!-- 插入组织 -->
+	<insert id="insertOrg" parameterClass="OrgVO" >
+		<selectKey resultClass="int" keyProperty="orgId">
+		<![CDATA[
+			INSERT INTO ORGANIZATION (ORG_NAME, ORG_DESC, ORG_TYPE, PARENT_ORG,CREATE_USER)
+	  		VALUES (#orgName:VARCHAR#,#orgDesc:VARCHAR#,#orgType:VARCHAR#,#parentOrg:INTEGERL#,#createUser:VARCHAR#)
+	  		SELECT SCOPE_IDENTITY() AS orgId 
+		]]> 
+	    </selectKey>
+	</insert>
+	
+	<!-- 更新组织 -->
+	<update id="updateOrg" parameterClass="OrgVO" >
+	  UPDATE ORGANIZATION
+	  <dynamic prepend="set" >
+	  	<isNotEmpty prepend="," property="orgName" >
+        	ORG_NAME = #orgName:VARCHAR#
+      	</isNotEmpty>
+      	<isNotEmpty prepend="," property="orgDesc" >
+        	ORG_Desc = #orgDesc:VARCHAR#
+      	</isNotEmpty>
+      	<isNotEmpty prepend="," property="orgStatus" >
+        	ORG_STATUS = #orgStatus:VARCHAR#
+      	</isNotEmpty>
+	  </dynamic>
+	    ,LAST_UPDATE_USER = #lastUpdateUser:VARCHAR#,
+	    LAST_UPDATE_DATE = getDate()
+	  WHERE ORG_ID = #orgId:DECIMAL#
+	</update>
+	
+	<!-- 插入组织资源 -->
+	<insert id="insertOrgResource" parameterClass="OrgResourceVO">
+		INSERT INTO ORG_RESOURCE (ORG_ID, MENU_ID, OPER_KEY)
+			VALUES (#orgId:NUMBER#, #menuId:NUMBER#, #operKey:VARCHAR#)
+	</insert>
+	
+	<!-- 删除组织资源 -->
+	<delete id="deleteOrgResByOrgId" parameterClass="int" >
+		DELETE FROM ORG_RESOURCE WHERE ORG_ID = #orgId#
+	</delete>
+	
+	<!-- 删除指定组织资源 -->
+	<delete id="deleteOrgRes" parameterClass="OrgResourceVO">
+		DELETE FROM ORG_RESOURCE WHERE ORG_ID IN ($ids$) AND MENU_ID = #menuId# AND OPER_KEY = #operKey#
+	</delete>
+	
+	<!-- 获取组织资源 -->
+	<select id="getOrgResList" parameterClass="int" resultMap="orgResMap">
+		SELECT ORG_ID,MENU_ID,OPER_KEY FROM ORG_RESOURCE WHERE ORG_ID =#orgId# 
+	</select>
+	
+	<!-- 获取组织资源数量 -->
+	<select id="getOrgResCount" parameterClass="OrgResourceVO" resultClass="int">
+		SELECT COUNT(1) FROM ORG_RESOURCE WHERE ORG_ID = #orgId# AND MENU_ID = #menuId# AND OPER_KEY = #operKey#
+	</select>
+	
+	<!--备份组织资源到本地临时表  -->
+	<statement id="backupOrgResByOrgIdStr" parameterClass="java.util.Map">
+		SELECT * INTO $tableName$ FROM ORG_RESOURCE WHERE ORG_ID IN ($orgIdStr$)
+	</statement>
+	
+	<!-- 备份角色资源到本地临时表 -->
+	<statement id="backupRoleResByOrgIdStr" parameterClass="java.util.Map">
+		SELECT * INTO $tableName$ FROM ROLE_RESOURCE WHERE ORG_ID IN ($orgIdStr$)
+	</statement>
+	
+	<!--级联删除组织资源与角色资源  -->
+	<statement id="deleteOrgAndRoleResByOrgIdStr" parameterClass="java.lang.String">
+		DELETE FROM ORG_RESOURCE WHERE ORG_ID IN  ($orgIdStr$)
+	</statement>
+	
+	<!-- 删除组织资源本地临时表  -->
+	<statement id="dropOrgResTmpTable" parameterClass="java.lang.String">
+		<![CDATA[ DROP TABLE $tableName$ ]]>
+	</statement>
+	
+	<!--级联删除备份表中的组织资源与角色资源  -->
+	<statement id="deleteBackupOrgAndRoleResByOrgIdStr" parameterClass="java.lang.String">
+		DELETE FROM BAK_ORG_RESOURCE WHERE ORG_ID IN  ($orgIdStr$)
+	</statement>
+	
+	<!-- 合并组织资源数据 -->
+	<statement id="conOrgResFromBackUp" parameterClass="java.util.Map">
+	<![CDATA[
+	     INSERT INTO ORG_RESOURCE        
+         SELECT BAK_ORS.*
+           FROM ORG_RESOURCE UOR, $tableName$ BAK_ORS
+          WHERE BAK_ORS.ORG_ID <> #bkOrgId#
+            AND UOR.ORG_ID = #orgId#
+            AND BAK_ORS.MENU_ID = UOR.MENU_ID
+            AND BAK_ORS.OPER_KEY = UOR.OPER_KEY
+		]]>	
+	</statement>
+	
+	<!-- 合并角色资源信息 -->
+	<statement id="conRoleResFromBackUp" parameterClass="java.lang.String">
+	     INSERT INTO ROLE_RESOURCE
+       SELECT BAK_UR.*
+        FROM $tableName$ BAK_UR, ORG_RESOURCE UR
+        WHERE UR.MENU_ID = BAK_UR.MENU_ID
+          AND UR.OPER_KEY = BAK_UR.OPER_KEY
+          AND UR.ORG_ID=BAK_UR.ORG_ID		
+	</statement>
+	
+	<!-- 新增分关管理员角色资源 -->
+	<statement id="insertRoleResrource" parameterClass="java.util.Map">
+ 		INSERT INTO ROLE_RESOURCE(ROLE_ID,ORG_ID,MENU_ID,OPER_KEY) 
+	    SELECT (SELECT ROLE_ID FROM ROLE WHERE ORG_ID=#orgId# AND ROLE_NAME='分关管理员') AS ROLE_ID,ORG_ID,MENU_ID,OPER_KEY FROM 
+	    (
+	         (SELECT UR.ORG_ID,UR.MENU_ID,UR.OPER_KEY FROM ORG_RESOURCE UR WHERE UR.ORG_ID=#orgId#)
+	          EXCEPT
+	         (SELECT BR.ORG_ID,BR.MENU_ID,BR.OPER_KEY FROM $tableName$ BR WHERE BR.ORG_ID=#orgId#)  
+	    ) T
+	</statement>
+	
+	<!-- 获取子组织数量 -->
+	<select id="getChildOrgCount" parameterClass="int" resultClass="int">
+		SELECT COUNT(*) FROM ORGANIZATION U WHERE U.PARENT_ORG = #orgId# AND U.ORG_STATUS='NORMAL'
+	</select>
+	
+	<!-- 获取组织用户数量 -->
+	<select id="getUserCountOfOrg" parameterClass="int" resultClass="int">
+		SELECT COUNT(1) FROM [USER] U WHERE U.ORG_ID = #orgId# AND U.STATUS='NORMAL'
+	</select>
+</sqlMap>

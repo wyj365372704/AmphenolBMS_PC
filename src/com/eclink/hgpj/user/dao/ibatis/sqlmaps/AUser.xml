@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="AUser" >
+	<!-- 别名 -->
+	<typeAlias alias="AUser" type="com.eclink.hgpj.user.vo.AUserVO" />
+  <typeAlias alias="ZBMSU02VO" type="com.eclink.hgpj.resource.vo.ZBMSU02VO" />
+  
+	<!-- 结果集映射 -->
+	<resultMap id="AUserResultMap" class="AUser">
+		 <result column="BMSUSR" property="bmsUser" jdbcType="CHAR" nullValue="" />
+		 <result column="USRNAM" property="userName" jdbcType="CHAR" nullValue=""/>
+		 <result column="PASSWD" property="passwd" jdbcType="CHAR" nullValue=""/>
+		 <result column="PLANT" property="plant" jdbcType="INTEGER" nullValue=""/>
+		 <result column="XAUSR" property="xaUser" jdbcType="CHAR" nullValue=""/>
+		 <result column="XABDG" property="xsBda" jdbcType="INTEGER" nullValue=""/>
+		 <result column="VALID" property="valid" jdbcType="CHAR" nullValue="" />
+	</resultMap>
+	
+ 
+ 	
+ 	<!-- 通过用户名查询用户 -->
+ 	<select id="queryUserByUserName" resultClass="AUser" parameterClass="java.lang.String">
+ 		SELECT U.BMSUSR AS bmsUser, U.USRNAM AS userName, U.PASSWD AS passwd,
+ 		 U.PLANT AS plant, 
+ 		  U.XAUSR AS plant, U.XAUSR AS xaUser, U.XABDG AS xsBda,
+ 		  U.VALID AS valid 
+	    FROM ZBMSUSR U 
+	    WHERE U.BMSUSR = #value# AND U.VALID='1' 
+ 	</select>
+ 	
+ 	<select id="queryDeptByUserName" resultClass="ZBMSU02VO" parameterClass="java.lang.String">
+ 		SELECT * FROM ZBMSU02 WHERE BMSUSR=#username# 
+ 	</select>
+ 	
+ 	
+</sqlMap>

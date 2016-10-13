@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:security="http://www.springframework.org/schema/security"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+    http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd	
+	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd
+    http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-2.0.1.xsd"
+	default-autowire="byName">
+
+	<!-- 用户管理 -->
+	<bean id="userDao" class="com.eclink.hgpj.user.dao.ibatis.UserDaoImpl"></bean>
+	<bean id="userService" class="com.eclink.hgpj.user.biz.UserServiceImpl"></bean>
+
+	<bean id="auserDao" class="com.eclink.hgpj.user.dao.ibatis.AUserDaoImpl"></bean>
+	<bean id="auserService" class="com.eclink.hgpj.user.biz.AUserServiceImpl"></bean>
+
+	<bean id="zshphdrDao" class="com.eclink.hgpj.resource.dao.ibatis.ZSHPHDRDaoImpl"></bean>
+	<bean id="zshphdrService" class="com.eclink.hgpj.resource.biz.ZSHPHDRServiceImpl"></bean>
+
+	<bean id="zgrnhdrDao" class="com.eclink.hgpj.resource.dao.ibatis.ZGRNHDRDaoImpl"></bean>
+	<bean id="zgrnhdrService" class="com.eclink.hgpj.resource.biz.ZGRNHDRServiceImpl"></bean>
+
+	<bean id="zitmextDao" class="com.eclink.hgpj.resource.dao.ibatis.ZITMEXTDaoImpl"></bean>
+	<bean id="zitmextService" class="com.eclink.hgpj.resource.biz.ZITMEXTServiceImpl"></bean>
+
+	<bean id="zitmbxDao" class="com.eclink.hgpj.resource.dao.ibatis.ZITEMBXDaoImpl"></bean>
+	<bean id="zitmbxService" class="com.eclink.hgpj.resource.biz.ZITMBXServiceImpl"></bean>
+
+	<bean id="zbmsctlDao" class="com.eclink.hgpj.resource.dao.ibatis.ZBMSCTLDaoImpl"></bean>
+	<bean id="zbmsctlService" class="com.eclink.hgpj.resource.biz.ZBMSCTLServiceImpl"></bean>
+
+	<bean id="zwhsubDao" class="com.eclink.hgpj.resource.dao.ibatis.ZWHSUBDaoImpl"></bean>
+	<bean id="zwhsubService" class="com.eclink.hgpj.resource.biz.ZWHSUBServiceImpl"></bean>
+
+	<bean id="zbmsu01Dao" class="com.eclink.hgpj.resource.dao.ibatis.ZBMSU01DaoImpl"></bean>
+	<bean id="zbmsu01Service" class="com.eclink.hgpj.resource.biz.ZBMSU01ServiceImpl"></bean>
+
+	<bean id="ztwhdrDao" class="com.eclink.hgpj.resource.dao.ibatis.ZTWHDRDaoImpl"></bean>
+	<bean id="ztwhdrService" class="com.eclink.hgpj.resource.biz.ZTWHDRServiceImpl"></bean>
+
+	<bean id="zsllogDao" class="com.eclink.hgpj.resource.dao.ibatis.ZSLLOGDaoImpl"></bean>
+	<bean id="zsllogService" class="com.eclink.hgpj.resource.biz.ZSLLOGServiceImpl"></bean>
+
+	<bean id="ziphdrDao" class="com.eclink.hgpj.resource.dao.ibatis.ZIPHDRDaoImpl"></bean>
+	<bean id="ziphdrService" class="com.eclink.hgpj.resource.biz.ZIPHDRServiceImpl"></bean>
+
+	<bean id="zmbd1repDao" class="com.eclink.hgpj.resource.dao.ibatis.ZMBD1REPDaoImpl"></bean>
+	<bean id="zmbd1repService" class="com.eclink.hgpj.resource.biz.ZMBD1REPServiceImpl"></bean>
+
+	<bean id="zrmhstDao" class="com.eclink.hgpj.resource.dao.ibatis.ZRMHSTDaoImpl"></bean>
+	<bean id="zrmhstService" class="com.eclink.hgpj.resource.biz.ZRMHSTServiceImpl"></bean>
+
+
+
+	<bean id="zplnmstDao" class="com.eclink.hgpj.resource.dao.ibatis.ZPLNMSTDaoImpl"></bean>
+	<bean id="zplnmstService" class="com.eclink.hgpj.resource.biz.ZPLNMSTServiceImpl"></bean>
+
+	<bean id="zempmstDao" class="com.eclink.hgpj.resource.dao.ibatis.ZEMPMSTDaoImpl"></bean>
+	<bean id="zempmstService" class="com.eclink.hgpj.resource.biz.ZEMPMSTServiceImpl"></bean>
+
+	<bean id="zmchmstDao" class="com.eclink.hgpj.resource.dao.ibatis.ZMCHMSTDaoImpl"></bean>
+	<bean id="zmchmstService" class="com.eclink.hgpj.resource.biz.ZMCHMSTServiceImpl"></bean>
+
+	<bean id="zdeptDao" class="com.eclink.hgpj.resource.dao.ibatis.ZDEPTDaoImpl"></bean>
+	<bean id="zdeptService" class="com.eclink.hgpj.resource.biz.ZDEPTServiceImpl"></bean>
+
+	<bean id="zjobempDao" class="com.eclink.hgpj.resource.dao.ibatis.ZJOBEMPDaoImpl"></bean>
+	<bean id="zjobempService" class="com.eclink.hgpj.resource.biz.ZJOBEMPServiceImpl"></bean>
+
+	<bean id="zjobmchDao" class="com.eclink.hgpj.resource.dao.ibatis.ZJOBMCHDaoImpl"></bean>
+	<bean id="zjobmchService" class="com.eclink.hgpj.resource.biz.ZJOBMCHServiceImpl"></bean>
+
+	<bean id="zjbtrnDao" class="com.eclink.hgpj.resource.dao.ibatis.ZJBTRNDaoImpl"></bean>
+	<bean id="zjbtrnService" class="com.eclink.hgpj.resource.biz.ZJBTRNServiceImpl"></bean>
+
+
+	<bean id="zmojobDao" class="com.eclink.hgpj.resource.dao.ibatis.ZMOJOBDaoImpl"></bean>
+	<bean id="zmojobService" class="com.eclink.hgpj.resource.biz.ZMOJOBServiceImpl"></bean>
+
+	<bean id="xadataDao" class="com.eclink.hgpj.resource.dao.ibatis.XADATADaoImpl">
+		<property name="dataSource" ref="dataSource2"></property>
+	</bean>
+	<bean id="xadataService" class="com.eclink.hgpj.resource.biz.XADATAServiceImpl"></bean>
+
+	<!-- 角色管理 -->
+	<!-- <bean id="roleDao" class="com.eclink.hgpj.role.dao.ibatis.RoleDaoImpl"></bean> 
+		<bean id="roleService" class="com.eclink.hgpj.role.biz.RoleServiceImpl"></bean> -->
+	<!-- 组织管理 -->
+	<!-- <bean id="orgDao" class="com.eclink.hgpj.organization.dao.ibatis.OrgDaoImpl"></bean> 
+		<bean id="orgService" class="com.eclink.hgpj.organization.biz.OrgServiceImpl"></bean> -->
+	<!-- 菜单管理 -->
+	<bean id="menuDao" class="com.eclink.hgpj.resource.dao.ibatis.MenuDaoImpl">
+
+	</bean>
+	<bean id="menuService" class="com.eclink.hgpj.resource.biz.MenuServiceImpl"></bean>
+	<bean id="operationDao" class="com.eclink.hgpj.resource.dao.ibatis.OperationDaoImpl"></bean>
+	<bean id="operationService" class="com.eclink.hgpj.resource.biz.OperationServiceImpl"></bean>
+	<bean id="addressDao" class="com.eclink.hgpj.resource.dao.ibatis.AddressDaoImpl"></bean>
+	<bean id="addressService" class="com.eclink.hgpj.resource.biz.AddressServiceImpl"></bean>
+
+</beans>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMapConfig PUBLIC "-//iBATIS.com//DTD SQL Map Config 2.0//EN"
+    "http://www.ibatis.com/dtd/sql-map-config-2.dtd">
+
+<sqlMapConfig>
+	<settings cacheModelsEnabled="true" classInfoCacheEnabled="true"
+		enhancementEnabled="true" useStatementNamespaces="true" />
+	<sqlMap resource="com/eclink/hgpj/setting/dao/ibatis/sqlmaps/Parameter.xml" />
+	<sqlMap resource="com/eclink/hgpj/user/dao/ibatis/sqlmaps/User.xml" />
+	<sqlMap resource="com/eclink/hgpj/user/dao/ibatis/sqlmaps/AUser.xml" />
+	<sqlMap resource="com/eclink/hgpj/resource/dao/ibatis/sqlmaps/Menu.xml" />
+	<sqlMap resource="com/eclink/hgpj/resource/dao/ibatis/sqlmaps/ZSHPHDR.xml" />
+	<sqlMap resource="com/eclink/hgpj/resource/dao/ibatis/sqlmaps/ZGRNHDR.xml" />
+	<sqlMap resource="com/eclink/hgpj/resource/dao/ibatis/sqlmaps/XADATA.xml" />
+	<sqlMap resource="com/eclink/hgpj/resource/dao/ibatis/sqlmaps/ZITEMBX.xml" />
+	<sqlMap resource="com/eclink/hgpj/resource/dao/ibatis/sqlmaps/ZITMEXT.xml" />
+	<sqlMap resource="com/eclink/hgpj/resource/dao/ibatis/sqlmaps/ZBMSCTL.xml" />
+	<sqlMap resource="com/eclink/hgpj/resource/dao/ibatis/sqlmaps/ZWHSUB.xml" />
+	<sqlMap resource="com/eclink/hgpj/resource/dao/ibatis/sqlmaps/ZBMSU01.xml" />
+	<sqlMap resource="com/eclink/hgpj/resource/dao/ibatis/sqlmaps/ZTWHDR.xml" />
+	<sqlMap resource="com/eclink/hgpj/resource/dao/ibatis/sqlmaps/ZSLLOG.xml" />
+	<sqlMap resource="com/eclink/hgpj/resource/dao/ibatis/sqlmaps/ZIPHDR.xml" />
+	<sqlMap resource="com/eclink/hgpj/resource/dao/ibatis/sqlmaps/ZMBD1REP.xml" />
+	<sqlMap resource="com/eclink/hgpj/resource/dao/ibatis/sqlmaps/ZRMHST.xml" />
+	<sqlMap resource="com/eclink/hgpj/resource/dao/ibatis/sqlmaps/ZMOJOB.xml" />
+	<sqlMap resource="com/eclink/hgpj/resource/dao/ibatis/sqlmaps/ZPLNMST.xml" />
+	<sqlMap resource="com/eclink/hgpj/resource/dao/ibatis/sqlmaps/ZEMPMST.xml" />
+	<sqlMap resource="com/eclink/hgpj/resource/dao/ibatis/sqlmaps/ZMCHMST.xml" />
+	<sqlMap resource="com/eclink/hgpj/resource/dao/ibatis/sqlmaps/ZJOBEMP.xml" />
+	<sqlMap resource="com/eclink/hgpj/resource/dao/ibatis/sqlmaps/ZJOBMCH.xml" />
+	<sqlMap resource="com/eclink/hgpj/resource/dao/ibatis/sqlmaps/ZJBTRN.xml" />
+	<sqlMap resource="com/eclink/hgpj/resource/dao/ibatis/sqlmaps/ZDEPT.xml" />
+
+	<!-- <sqlMap resource="com/eclink/hgpj/dictionary/dao/ibatis/sqlmaps/Dictionary.xml"/> 
+		<sqlMap resource="com/eclink/hgpj/user/dao/ibatis/sqlmaps/User.xml"/> <sqlMap 
+		resource="com/eclink/hgpj/role/dao/ibatis/sqlmaps/Role.xml"/> <sqlMap resource="com/eclink/hgpj/organization/dao/ibatis/sqlmaps/Organization.xml"/> 
+		<sqlMap resource="com/eclink/hgpj/resource/dao/ibatis/sqlmaps/Menu.xml"/> 
+		<sqlMap resource="com/eclink/hgpj/resource/dao/ibatis/sqlmaps/Operation.xml"/> 
+		<sqlMap resource="com/eclink/hgpj/resource/dao/ibatis/sqlmaps/Address.xml"/> 
+		<sqlMap resource="com/eclink/hgpj/setting/dao/ibatis/sqlmaps/TouchEvaluator.xml"/> 
+		<sqlMap resource="com/eclink/hgpj/setting/dao/ibatis/sqlmaps/KeyEvaluator.xml"/> 
+		<sqlMap resource="com/eclink/hgpj/setting/dao/ibatis/sqlmaps/Window.xml"/> 
+		<sqlMap resource="com/eclink/hgpj/setting/dao/ibatis/sqlmaps/Service.xml"/> 
+		<sqlMap resource="com/eclink/hgpj/setting/dao/ibatis/sqlmaps/CustomsService.xml"/> 
+		<sqlMap resource="com/eclink/hgpj/setting/dao/ibatis/sqlmaps/Evaluation.xml"/> 
+		<sqlMap resource="com/eclink/hgpj/report/dao/ibatis/sqlmaps/Report.xml"/> -->
+</sqlMapConfig>

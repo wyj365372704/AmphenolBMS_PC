@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="Operation" >
+<typeAlias alias="operationVO" type="com.eclink.hgpj.resource.vo.OperationVO"/>
+  <resultMap id="operationResultMap" class="operationVO" >
+    <result column="MENU_ID" property="menuId" jdbcType="INTEGER"/>
+    <result column="OPER_NAME" property="operName" jdbcType="VARCHAR" />
+    <result column="OPER_KEY" property="operKey" jdbcType="VARCHAR" />
+    <result column="PRE_KEY" property="preKey" jdbcType="VARCHAR" />
+    <result column="ORDER_KEY" property="orderKey" jdbcType="INTEGER" nullValue="-1"/>
+  </resultMap>
+  
+  <resultMap id="operationSelectedResultMap" class="operationVO" extends="operationResultMap">
+    <result column="SELECTED" property="selected" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <resultMap id="operationAliasResultMap" class="operationVO" extends="operationResultMap">
+    <result column="MENU_NAME" property="menuName" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <!-- 通过组织ID关联查询组织资源对应的操作 -->
+  <select id="getOperListByOrgId" parameterClass="int" resultMap="operationResultMap">
+  	SELECT OP.MENU_ID,OP.OPER_NAME,OP.OPER_KEY,OP.PRE_KEY,OP.ORDER_KEY 
+	FROM OPERATION OP,ORG_RESOURCE ORS
+	WHERE ORS.OPER_KEY = OP.OPER_KEY AND ORS.MENU_ID = OP.MENU_ID AND ORS.ORG_ID = #orgId#
+	ORDER BY OP.MENU_ID,OP.ORDER_KEY
+  </select>
+  
+  <!-- 通过组织ID关联查询组织资源对应的操作，并标识为已选择 -->
+  <select id="getSelectedOperListByOrgId" parameterClass="int" resultMap="operationSelectedResultMap">
+  	SELECT OP.MENU_ID,OP.OPER_NAME,OP.OPER_KEY,OP.PRE_KEY,OP.ORDER_KEY,'Y' AS SELECTED 
+	FROM OPERATION OP,ORG_RESOURCE ORS
+	WHERE ORS.OPER_KEY = OP.OPER_KEY AND ORS.MENU_ID = OP.MENU_ID AND ORS.ORG_ID = #orgId#
+	ORDER BY OP.MENU_ID,OP.ORDER_KEY
+  </select>
+  
+  <!-- 通过角色查询资源对应的操作：在页面上表面为已选择 -->
+  <select id="getOperListByRoleId" resultMap="operationSelectedResultMap" parameterClass="int" >
+	select OP.MENU_ID,OP.OPER_NAME,OP.OPER_KEY,OP.PRE_KEY,OP.ORDER_KEY,'Y' AS SELECTED
+ 	from role_resource ro, operation op
+ 	where ro.oper_key = op.oper_key
+   	and ro.menu_id = op.menu_id
+   	and ro.role_id = #roleId#
+ 	order by op.menu_id,op.order_key
+  </select>
+  
+  <!-- 获取系统所有资源操作 -->
+  <select id="getAllOperList" resultMap="operationResultMap">
+  	SELECT MENU_ID, OPER_NAME, OPER_KEY, PRE_KEY, ORDER_KEY
+	  FROM OPERATION
+  </select>
+  
+  <!-- 根据资源操作key获取资源操作详情信息 -->
+  <select id="getOperationByOperKey" resultMap="operationAliasResultMap" parameterClass="operationVO" >
+    SELECT OP.MENU_ID, OP.OPER_NAME, OP.OPER_KEY, OP.PRE_KEY,OP.ORDER_KEY,RES.MENU_NAME
+    FROM OPERATION OP,MENU RES
+    WHERE OP.MENU_ID = RES.MENU_ID 
+    	AND OP.OPER_KEY = #operKey# AND OP.MENU_ID = #menuId#
+  </select>
+  
+  <!-- 更新资源操作 -->
+  <update id="updateOper" parameterClass="operationVO">
+  	UPDATE OPERATION SET OPER_NAME = #operName#, PRE_KEY = #preKey#, ORDER_KEY = #orderKey# WHERE MENU_ID = #menuId# AND OPER_KEY = #operKey#
+  </update>
+  
+  <!-- 插入操作 -->
+  <insert id="insertOper" parameterClass="operationVO">
+	<![CDATA[
+	INSERT  INTO OPERATION	(
+	        OPER_KEY,
+		    MENU_ID,
+	        OPER_NAME,
+	        PRE_KEY,
+	        ORDER_KEY )
+       VALUES (
+       		#operKey#,
+            #menuId#,
+	        #operName#,
+	        #preKey#,		        
+	        #orderKey# )
+	]]>	
+  </insert>
+  
+  <!-- 资源操作删除 -->
+  <delete id="deleteOper" parameterClass="operationVO">
+  	DELETE OPERATION WHERE MENU_ID = #menuId# AND OPER_KEY = #operKey#
+  </delete>
+  
+  <!-- 通过资源ID获取操作数量 -->
+  <select id="getOperCountByResourceId" resultClass="int" parameterClass="operationVO">
+  	SELECT COUNT(1) FROM OPERATION WHERE MENU_ID = #menuId#
+  </select>
+  
+  <!-- 通过资源ID与操作key获取操作数量 -->
+  <select id="getOperCountByOperKey" resultClass="int" parameterClass="operationVO">
+  	SELECT COUNT(1) FROM OPERATION WHERE MENU_ID = #menuId# AND OPER_KEY = #operKey#
+  </select>
+  
+  <!-- 获取已经分配给组织的操作数量 -->
+  <select id="getAssignOperCount" resultClass="int" parameterClass="operationVO">
+  	SELECT COUNT(1) FROM ORG_RESOURCE WHERE MENU_ID = #menuId# AND OPER_KEY = #operKey#
+  </select>
+  
+  <!-- 根据资源ID获取资源操作详情信息 -->
+  <select id="getOperListByResourceId" resultMap="operationResultMap" parameterClass="operationVO" >
+    SELECT MENU_ID, OPER_NAME, OPER_KEY, PRE_KEY, ORDER_KEY
+    FROM OPERATION WHERE MENU_ID = #menuId# ORDER BY ORDER_KEY 
+  </select>
+</sqlMap>

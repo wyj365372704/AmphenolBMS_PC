@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="WINDOW" >
+  <typeAlias alias="WindowVO" type="com.eclink.hgpj.setting.vo.WindowVO"/>
+  <resultMap id="resultMap" class="WindowVO" >
+    <result column="ID" property="id" jdbcType="INTEGER" />
+    <result column="NAME" property="name" jdbcType="VARCHAR" />
+    <result column="STATUS" property="status" jdbcType="CHAR" />
+    <result column="ORG_ID" property="orgId" jdbcType="INTEGER" />
+    <result column="ORG_NAME" property="orgName" jdbcType="VARCHAR" />
+    <result column="P_ORG_ID" property="parentOrg" jdbcType="INTEGER" />
+    <result column="P_ORG_NAME" property="parentOrgName" jdbcType="VARCHAR" />
+    <result column="CREATE_USER" property="createUser" jdbcType="VARCHAR" />
+    <result column="CREATE_DATE" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="LAST_UPDATE_USER" property="lastUpdateUser" jdbcType="VARCHAR" />
+    <result column="LAST_UPDATE_DATE" property="lastUpdateDate" jdbcType="TIMESTAMP" />
+  </resultMap>
+  
+  <!-- 查询条件 -->
+  <sql id="condition">
+  	 <dynamic prepend="and">
+  	 	<isNotEmpty prepend="and" property="name">
+  	 		t.NAME = #name#
+  	 	</isNotEmpty>
+  	 	<isNotEmpty prepend="and" property="status">
+  	 		t.STATUS = #status#
+  	 	</isNotEmpty>
+  	 	<isNotEmpty prepend="and" property="orgId">
+  	 		t.ORG_ID = #orgId#
+  	 	</isNotEmpty>
+  	 	<isNotEmpty prepend="and" property="id">
+  	 		t.id != #id#
+  	 	</isNotEmpty>
+  	 	<isNotEmpty prepend="and" property="orgIds">
+  	 		t.ORG_ID in ($orgIds$)
+  	 	</isNotEmpty>
+     </dynamic>
+  </sql>
+  <!-- 列表查询 -->
+  <select id="queryList" resultMap="resultMap" parameterClass="WindowVO" >
+  	<isNotEqual compareValue="0" property="pageSize">
+  	<![CDATA[ SELECT TOP (#pageSize#) * FROM (select ROW_NUMBER() over(order by id) as rownum,a.* from ( ]]>
+  	</isNotEqual>
+		SELECT T.ID, T.NAME, T.STATUS, T.ORG_ID, R.ORG_NAME,F.ORG_ID P_ORG_ID, F.ORG_NAME P_ORG_NAME, T.CREATE_USER, T.CREATE_DATE, T.LAST_UPDATE_USER, T.LAST_UPDATE_DATE
+		FROM WINDOW T 
+		LEFT JOIN ORGANIZATION R ON T.ORG_ID=R.ORG_ID
+		LEFT JOIN ORGANIZATION F ON F.ORG_ID=R.PARENT_ORG
+		WHERE T.STATUS != 2
+	    <include refid="condition"/>
+    <isNotEqual compareValue="0" property="pageSize">
+    ) as a) b where b.rownum>#from#
+    </isNotEqual>
+  </select>
+  <!-- 查询总条数 -->
+  <select id="queryListCount" resultClass="int" parameterClass="WindowVO" >
+	    select count(1)
+	    FROM WINDOW T WHERE T.STATUS != 2
+    	<include refid="condition"/>
+  </select>
+  <!-- 根据ID查找 -->
+  <select id="queryById" resultMap="resultMap" parameterClass="int" >
+		SELECT T.ID, T.NAME, T.STATUS, T.ORG_ID, R.ORG_NAME,F.ORG_ID P_ORG_ID, F.ORG_NAME P_ORG_NAME, T.CREATE_USER, T.CREATE_DATE, T.LAST_UPDATE_USER, T.LAST_UPDATE_DATE
+		FROM WINDOW T 
+		LEFT JOIN ORGANIZATION R ON T.ORG_ID=R.ORG_ID
+		LEFT JOIN ORGANIZATION F ON F.ORG_ID=R.PARENT_ORG
+	    where T.ID=#id#
+  </select>
+  <!-- 删除 -->
+  <delete id="deleteWindow" parameterClass="WindowVO" >
+  	update WINDOW set status = 2 where ID=#id#
+  </delete>
+  <!-- 新增 -->
+  <insert id="insertWindow" parameterClass="WindowVO" >
+    insert into WINDOW (NAME, STATUS, ORG_ID, CREATE_USER, CREATE_DATE, LAST_UPDATE_USER,
+      LAST_UPDATE_DATE)
+    values (#name:VARCHAR#, #status:CHAR#, #orgId:INTEGER#, #createUser:VARCHAR#,
+      #createDate:TIMESTAMP#, #lastUpdateUser:VARCHAR#, #lastUpdateDate:TIMESTAMP#)
+    <selectKey resultClass="java.lang.Integer" keyProperty="id" >
+         SELECT IDENT_CURRENT('WINDOW')
+    </selectKey>
+  </insert>
+  <!-- 更新 -->
+  <update id="modifyWindow" parameterClass="WindowVO" >
+    update WINDOW
+    set NAME = #name:VARCHAR#,
+      STATUS = #status:CHAR#,
+      ORG_ID = #orgId:INTEGER#,
+      LAST_UPDATE_USER = #lastUpdateUser:VARCHAR#,
+      LAST_UPDATE_DATE = #lastUpdateDate:TIMESTAMP#
+    where ID = #id:INTEGER#
+  </update>
+</sqlMap>

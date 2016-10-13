@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="gbk"?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd"><struts>
+    <package name="hgpj-default" extends="struts-default">
+    
+		<!-- 定义全局result -->
+		<global-results>
+		    <!-- 定义名为error的全局result,用于提示错误信息 -->
+		    <result name="error">/commons/error.jsp</result>
+		    <!-- 定义名为info的全局result,用于提示操作信息 -->
+		    <result name="info">/commons/info.jsp</result>
+		    <result name="messageData">/commons/messageData.jsp</result>
+		</global-results>
+		<!-- 定义全局异常映射 -->
+		<global-exception-mappings>
+			<!-- 捕捉到Exception异常(所有异常)时跳转到error所命名的视图上 -->
+			<exception-mapping exception="java.lang.Exception" result="error"/>
+		</global-exception-mappings>	
+    </package>    
+</struts>

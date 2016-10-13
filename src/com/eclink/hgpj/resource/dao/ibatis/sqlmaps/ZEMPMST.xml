@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="ZEMPMST">
+	<typeAlias alias="ZEMPMSTVO" type="com.eclink.hgpj.resource.vo.ZEMPMSTVO" />
+	<resultMap id="ZEMPMSTVOMap" class="ZEMPMSTVO">
+		<result column="PLANT" property="plant" />
+		<result column="EMPID" property="empid" />
+		<result column="EMPNM" property="empnm" />
+		<result column="DEPT" property="dept" />
+		<result column="PLINE" property="pline" />
+		<result column="STATUS" property="status" />
+		<result column="DNAME" property="dname" />
+	</resultMap>
+
+	<select id="queryZempmstByMapWithDept" resultMap="ZEMPMSTVOMap"
+		parameterClass="Map">
+		<![CDATA[ select  A.*,B.DNAME  from  ZEMPMST A LEFT OUTER JOIN ZDEPT B ON
+		 B.PLANT = A.PLANT AND A.DEPT = B.DEPT LEFT OUTER JOIN ZBMSUSR C  on A.PLANT = C.PLANT
+		 where A.STATUS = #status# AND C.BMSUSR = #bmsusr# AND A.PLINE = #pline#
+		]]>
+		<dynamic>
+			<isNotNull prepend="AND" property="empid">
+				A.EMPID = #empid#
+			</isNotNull>
+		</dynamic>
+	</select>
+
+	<select id="queryZempmstByMap" resultMap="ZEMPMSTVOMap"
+		parameterClass="Map">
+		<![CDATA[ select * from ZEMPMST
+		]]>
+		<dynamic prepend="WHERE">
+			<isNotNull prepend="AND" property="plant">
+				PLANT = #plant#
+			</isNotNull>
+			<isNotNull prepend="AND" property="empid">
+				EMPID = #empid#
+			</isNotNull>
+			<isNotNull prepend="AND" property="pline">
+				PLINE = #pline#
+			</isNotNull>
+			<isNotNull prepend="AND" property="status">
+				STATUS = #status#
+			</isNotNull>
+		</dynamic>
+	</select>
+
+</sqlMap>

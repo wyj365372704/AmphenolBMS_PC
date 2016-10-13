@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="gbk"?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+    <package name="uc-firm" extends="uc-default" namespace="/firm">
+    	<action name="firm" class="com.eclink.uc.firm.action.FirmAction">
+    		<result>/firm/firm_list.jsp</result>
+    		<result name="view">/firm/firm_view.jsp</result>
+    		<result name="modify">/firm/firm_modify.jsp</result>
+    		<result name="new">/firm/firm_input.jsp</result>
+    		<result name="firmList">/user/choosefirm.jsp</result>
+    		<result name="copy">/firm/firm_input.jsp</result>
+    	</action>
+    </package>
+     <package name="uc-org" extends="uc-default" namespace="/org">
+    	<action name="org" class="com.eclink.uc.organization.action.OrganizationAction">
+    		<result name="orgindex">/org/org_index.jsp</result>
+    		<result name="orgleft">/org/org_left.jsp</result>
+    		<result name="orgright">/org/org_right.jsp</result>
+    		<result name="toinsert">/org/org_input.jsp</result>
+    		<result name="modify">/org/org_modify.jsp</result>
+    	</action>
+    </package>
+</struts>

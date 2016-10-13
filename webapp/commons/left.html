@@ -1,0 +1,82 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 4.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>深圳海关服务评价系统</title>
+<link href="../css/userCenter.css" rel="stylesheet" type="text/css" />
+
+<SCRIPT language=javascript>
+	        function showHide(obj){
+		        var oStyle = document.getElementById(obj).style;
+		        oStyle.display == "none" ? oStyle.display = "block" : oStyle.display = "none";
+		       
+		        if(oStyle.display == "block")
+		        {
+		            var elseTableElement = document.getElementsByTagName("ul");
+		            if(elseTableElement)
+		            {
+		                for(var i=0;i<elseTableElement.length;i++)
+		                {
+    		                if(elseTableElement.item(i).id != obj && elseTableElement.item(i).id.indexOf("M_")==0)
+    		                {
+    		                    if( elseTableElement.item(i).style.display=="block")
+    		                    {
+    		                        elseTableElement.item(i).style.display = "none";
+    		                        break;
+    		                    }
+    		                }
+		                }
+		            }
+		        }
+	        }
+    </SCRIPT>
+
+
+</head>
+
+<body class="left_body">
+
+	<div class="left_title"></div>
+	
+	<div class="menu">
+		<h2 class="out" onClick="JavaScript:showHide('M_SystemSet');"><span>系统设置</span></h2><!--  out 样式为菜单展开，所应用的样式  -->
+			<ul id=M_SystemSet style="DISPLAY: none">
+				<li><a href="../setting/keyEvaluator!list.action" target="exMainTFrame" title=""><span>按键式评价器设置</span></a></li>
+				<li class="li_opt"><a href="../setting/touchEvaluator!list.action" target="exMainTFrame" title=""><span>触摸式评价器设置</span></a></li><!--  li_opt 样式为停留在当前二级菜单页面所应用的样式  -->
+				<li><a href="../setting/service!list.action" target="exMainTFrame" title=""><span>业务管理</span></a></li>
+				<li><a href="../setting/customsService!list.action" target="exMainTFrame" title=""><span>业务设置</span></a></li>
+				<li><a href="../setting/window!list.action" target="exMainTFrame" title=""><span>窗口设置</span></a></li>
+				<li><a href="../setting/parameter!toInsert.action" target="exMainTFrame" title=""><span>参数设置</span></a></li>
+			</ul>
+			<div class="clear"></div>
+		<h2 class="out" onClick="JavaScript:showHide('M_CountQuery');"><span>统计查询</span></h2><!--  out 样式为菜单展开，所应用的样式  -->
+			<ul id=M_CountQuery style="DISPLAY: none">
+				<li><a href="../report/listBiz.action" target="exMainTFrame" title=""><span>业务评价统计</span></a></li>
+				<li class="li_opt"><a href="../report/listWindow.action" target="exMainTFrame" title=""><span>窗口评价统计</span></a></li><!--  li_opt 样式为停留在当前二级菜单页面所应用的样式  -->
+				<li><a href="../report/listWindowKe.action" target="exMainTFrame" title=""><span>窗口科级评价汇总</span></a></li>
+				<li><a href="../report/listWindowGuan.action" target="exMainTFrame" title=""><span>窗口关级评价汇总</span></a></li>
+				<li><a href="../report/listOfficer.action" target="exMainTFrame" title=""><span>关员评价统计</span></a></li>
+				<li><a href="../report/listOfficerKe.action" target="exMainTFrame" title=""><span>关员科级评价汇总</span></a></li>
+				<li><a href="../report/listOfficerGuan.action" target="exMainTFrame" title=""><span>关员关级评价汇总</span></a></li>
+				<li><a href="../report/listEvaluation.action" target="exMainTFrame" title=""><span>评价明细列表查询</span></a></li>
+			</ul>
+			<div class="clear"></div>
+		<h2 class="out" onClick="JavaScript:showHide('M_SystemPerm');"><span>权限管理</span></h2><!--  out 样式为菜单展开，所应用的样式  -->
+			<ul id=M_SystemPerm style="DISPLAY: none">
+				<li><a href="../org/org!orgindex.action" target="exMainTFrame" title=""><span>组织管理</span></a></li>
+				<li><a href="../role/role!list.action" target="exMainTFrame" title=""><span>角色管理</span></a></li><!--  li_opt 样式为停留在当前二级菜单页面所应用的样式  -->
+				<li><a href="../user!list.action" target="exMainTFrame" title=""><span>用户管理</span></a></li>
+			</ul>
+			<div class="clear"></div>
+		<h2 class="out" onClick="JavaScript:showHide('M_ModuleManager');"><span>模块管理</span></h2><!--  out 样式为菜单展开，所应用的样式  -->
+			<ul id=M_ModuleManager style="DISPLAY: none">
+				<li><a href="../resource/resource!toResIndex.action" target="exMainTFrame" title=""><span>菜单管理</span></a></li>
+				<li><a href="../grant/grant!toAdminGrant.action" target="exMainTFrame" title=""><span>系统管理员授权</span></a></li><!--  li_opt 样式为停留在当前二级菜单页面所应用的样式  -->
+				<li><a href="../grant/grant!toChildAdminGrant.action" target="exMainTFrame" title=""><span>分关管理员授权</span></a></li>
+			</ul>
+			<div class="clear"></div>
+	</div>
+
+
+</body>
+</html>

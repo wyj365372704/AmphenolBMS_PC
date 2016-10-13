@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="EVALUATION" >
+  <typeAlias alias="EvaluationVO" type="com.eclink.hgpj.setting.vo.EvaluationVO"/>
+  <resultMap id="resultMap" class="EvaluationVO" >
+    <result column="EVAL_ID" property="evalId" jdbcType="INTEGER" />
+    <result column="CUSTOMS_ID" property="customsId" jdbcType="INTEGER" />
+    <result column="ORG_ID" property="orgId" jdbcType="INTEGER" />
+    <result column="WINDOW_ID" property="windowId" jdbcType="INTEGER" />
+    <result column="USER_NAME" property="userName" jdbcType="VARCHAR" />
+    <result column="EVAL_NO" property="evalNo" jdbcType="VARCHAR" />
+    <result column="EVAL_TYPE" property="evalType" jdbcType="CHAR" />
+    <result column="SERVICE_ID" property="serviceId" jdbcType="INTEGER" />
+    <result column="EVAL_RESULT" property="evalResult" jdbcType="INTEGER" />
+    <result column="EVAL_SUGGEST" property="evalSuggest" jdbcType="VARCHAR" />
+    <result column="EVAL_TIME" property="evalTime" jdbcType="TIMESTAMP" />
+    <result column="NAME" property="name" jdbcType="VARCHAR" />
+    <result column="SEX" property="sex" jdbcType="CHAR" />
+    <result column="ID_CARD_NO" property="idCardNo" jdbcType="VARCHAR" />
+    <result column="TELEPHONE" property="telephone" jdbcType="VARCHAR" />
+    <result column="TOUCH_EVAL_TYPE" property="touchEvalType" jdbcType="CHAR" />
+  </resultMap>
+  <sql id="condition">
+  	 <dynamic prepend="and">
+  	 	<isNotEmpty prepend="and" property="customsId">
+  	 		t.CUSTOMS_ID = #customsId#
+  	 	</isNotEmpty>
+  	 	<isNotEmpty prepend="and" property="windowId">
+  	 		t.WINDOW_ID = #windowId#
+  	 	</isNotEmpty>
+  	 	<isNotEmpty prepend="and" property="userName">
+  	 		t.USER_NAME = #userName#
+  	 	</isNotEmpty>
+  	 	<isNotEmpty prepend="and" property="serviceId">
+  	 		t.SERVICE_ID = #serviceId#
+  	 	</isNotEmpty>
+  	 	<isNotEmpty prepend="and" property="idCardNo">
+  	 		t.ID_CARD_NO = #idCardNo#
+  	 	</isNotEmpty>
+     </dynamic>
+  </sql>
+  <select id="queryList" resultMap="resultMap" parameterClass="EvaluationVO" >
+    select EVAL_ID, CUSTOMS_ID, ORG_ID, WINDOW_ID, USER_NAME, EVAL_NO, EVAL_TYPE, SERVICE_ID,
+      EVAL_RESULT, EVAL_SUGGEST, EVAL_TIME, NAME, SEX, ID_CARD_NO, TELEPHONE, TOUCH_EVAL_TYPE
+    from EVALUATION t
+    WHERE T.EVAL_TIME > CONVERT(VARCHAR(10),GETDATE(),120)
+	<include refid="condition"/>
+	ORDER BY T.EVAL_ID DESC
+  </select>
+  <select id="queryListCount" resultClass="int" parameterClass="EvaluationVO" >
+    SELECT COUNT(1)
+    FROM EVALUATION T
+    WHERE T.EVAL_TIME > CONVERT(VARCHAR(10),GETDATE(),120)
+	<include refid="condition"/>
+  </select>
+  <!-- 新增触摸式评价数据 -->
+  <insert id="insertEvaluation" parameterClass="EvaluationVO" >
+    insert into EVALUATION (CUSTOMS_ID, ORG_ID, WINDOW_ID, USER_NAME, EVAL_NO, EVAL_TYPE,
+      SERVICE_ID, EVAL_RESULT, EVAL_SUGGEST, EVAL_TIME, NAME, SEX, ID_CARD_NO, TELEPHONE,
+      TOUCH_EVAL_TYPE)
+    values (#customsId:INTEGER#, #orgId:INTEGER#, #windowId:INTEGER#,
+      #userName:VARCHAR#, #evalNo:VARCHAR#, #evalType:CHAR#, #serviceId:INTEGER#,
+      #evalResult:INTEGER#, #evalSuggest:VARCHAR#, #evalTime:TIMESTAMP#, #name:VARCHAR#, #sex:CHAR#,
+      #idCardNo:VARCHAR#, #telephone:VARCHAR#, #touchEvalType:CHAR#)
+    <selectKey resultClass="java.lang.Integer" keyProperty="evalId" >
+         SELECT IDENT_CURRENT('EVALUATION')
+    </selectKey>
+  </insert>
+  
+  <!-- 新增按键式评价数据 -->
+  <insert id="insertKeyEvaluation" parameterClass="EvaluationVO" >
+  	INSERT INTO EVALUATION(CUSTOMS_ID,ORG_ID,WINDOW_ID,USER_NAME,EVAL_NO,EVAL_TYPE,EVAL_RESULT)
+  	VALUES(#customsId:INTEGER#, #orgId:INTEGER#, #windowId:INTEGER#,#userName:VARCHAR#, #evalNo:VARCHAR#, #evalType:CHAR#, #evalResult:INTEGER#)
+  </insert>
+</sqlMap>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="ZBMSCTL" >
+	<typeAlias alias="ZBMSCTLVO" type="com.eclink.hgpj.resource.vo.ZBMSCTLVO"/>
+ 	  <resultMap id="ZBMSCTLVOMap" class="ZBMSCTLVO" >
+	    <result column="SITE" property="site" />
+	    <result column="RPRSN" property="rprsn"  />
+	    <result column="RMRSN" property="rmrsn" />
+	    <result column="IPRSN" property="iprsn"  />
+	    <result column="TWRSN" property="twrsn" />
+	    <result column="ISRSN" property="isrsn" />
+	    <result column="RCRSN" property="rcrsn" />
+	    <result column="FNQTY" property="fnqty" />
+	    <result column="FASUB" property="fasun" />
+	    <result column="NMCHS" property="nmchs" />
+	    <result column="NMENG" property="nmeng" />
+	  </resultMap>
+	<select id="queryZbmsctl" resultMap="ZBMSCTLVOMap" parameterClass="ZBMSCTLVO">
+		<![CDATA[ select  *  from  ZBMSCTL where SITE=#site#  
+		]]>
+	</select>
+
+</sqlMap>

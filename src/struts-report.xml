@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="gbk"?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+    <package name="report" extends="hgpj-default" namespace="/report">
+    	<action name="*" class="com.eclink.hgpj.report.action.ReportAction" method="{1}">
+    		<result name="listBiz">/report/report_biz.jsp</result>
+    		<result name="listWindow">/report/report_window.jsp</result>
+    		<result name="listWindowKe">/report/report_window_ke.jsp</result>
+    		<result name="listWindowGuan">/report/report_window_guan.jsp</result>
+    		<result name="listOfficer">/report/report_officer.jsp</result>
+            <result name="listOfficerKe">/report/report_officer_ke.jsp</result>
+            <result name="listOfficerGuan">/report/report_officer_guan.jsp</result>
+            <result name="listEvaluation">/report/report_evaluation.jsp</result>
+            <result name="viewEvaluation">/report/report_evaluation_view.jsp</result>
+    	</action>
+    </package>
+</struts>

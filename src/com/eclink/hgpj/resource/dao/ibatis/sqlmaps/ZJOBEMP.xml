@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="ZJOBEMP">
+	<typeAlias alias="ZJOBEMPVO" type="com.eclink.hgpj.resource.vo.ZJOBEMPVO" />
+	<resultMap id="ZJOBEMPVOMap" class="ZJOBEMPVO">
+		<result column="MJDNO" property="mjdno" />
+		<result column="EMPID" property="empid" />
+		<result column="HOUSE" property="house" />
+		<result column="ORDNO" property="ordno" />
+		<result column="OPSEQ" property="opseq" />
+		<result column="PLINE" property="pline" />
+		<result column="JSTAT" property="jstat" />
+		<result column="CLHRS" property="clhrs" />
+		<result column="EMPNM" property="empName" />
+	</resultMap>
+
+	<select id="queryByMapWithEmpName" parameterClass="Map"
+		resultMap="ZJOBEMPVOMap">
+	<![CDATA[
+		SELECT A.*,B.EMPNM FROM ZJOBEMP A,ZEMPMST B WHERE A.EMPID = B.EMPID
+	]]>
+		<dynamic>
+			<isNotNull prepend="AND" property="mjdno">
+				A.MJDNO = #mjdno#
+			</isNotNull>
+			<isNotNull prepend="AND" property="empid">
+				A.EMPID = #empid#
+			</isNotNull>
+			<isNotNull prepend="AND" property="jstat">
+				A.JSTAT = #jstat#
+			</isNotNull>
+
+		</dynamic>
+	</select>
+
+
+	<!-- 更新资源操作 -->
+	<update id="updateZjobempJstat" parameterClass="ZJOBEMPVO">
+		UPDATE ZJOBEMP
+		<dynamic prepend=" SET ">
+			<isNotNull prepend=" , " property="jstat">
+				JSTAT = #jstat#
+			</isNotNull>
+			<isNotNull prepend=" , " property="clhrs">
+				CLHRS = #clhrs#
+			</isNotNull>
+		</dynamic>
+
+		<dynamic prepend=" WHERE ">
+			<isNotNull prepend=" AND " property="mjdno">
+				MJDNO = #mjdno#
+			</isNotNull>
+			<isNotNull prepend=" AND " property="empid">
+				EMPID = #empid#
+			</isNotNull>
+		</dynamic>
+	</update>
+
+	<insert id="insertZjobemp" parameterClass="ZJOBEMPVO">
+	<![CDATA[
+	INSERT  INTO ZJOBEMP (
+		MJDNO,
+		EMPID,
+		ORDNO,
+		OPSEQ,
+		PLINE,
+		HOUSE,
+		JSTAT,
+		CLHRS
+		)	
+       VALUES (
+       		#mjdno#,
+       		#empid#,
+	        #ordno#,
+	        #opseq#,
+	        #pline#,		        
+            #house#,
+            #jstat#,
+	        #clhrs#)
+	]]>
+	</insert>
+
+</sqlMap>

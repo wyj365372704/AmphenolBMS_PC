@@ -1,0 +1,46 @@
+﻿样例请参考user_add.jsp
+
+需要的css和js
+./js/jquery-1.4.2.min.js
+验证框架
+./js/validator/easy_validator.pack.js     //样式和提示错误效果（自行改动）
+./js/validator/jquery.bgiframe.min.js"
+./css/validate.css" 
+弹出窗口
+./js/alert/jquery.ui.draggable.js 
+./js/alert/jquery.alerts.js
+./js/alert/alerts.css
+
+一般验证
+<input type="text" name="name " class="input_s_1" reg="正则表达式" tip="提示信息" />
+下拉框
+<s:select .. reg="[^0]" tip="请选择用户状态">
+
+
+扩展验证
+var isExtendsValidate = true;	//必须这么写
+function extendsValidate(){	//必须这么写
+   var extendSubmit=true;
+	//扩展验证 密码验证
+	if( $('#upId').val() != $('#ppId').val() ){	
+		//改变错误密码框样式
+		change_error_style($('#ppId'),"add");
+		//增加提示信息 menu为提示序列号
+		errorMessge=errorMessge+menu+".密码不匹配"+'\n';
+		menu++;
+		extendSubmit = false;
+	}
+	else
+		change_error_style($('#ppId'),"remove");
+	if($("[name='roleIds']:checked").length < 1){
+		errorMessge=errorMessge+menu+".最少选择一个角色"+'\n';
+		extendSubmit = false;
+	}
+		
+	if($("[name='userVo.defaultOrgId']:checked").length < 1){
+		errorMessge=errorMessge+menu+".请选择默认登录组织"+'\n';
+		extendSubmit = false;
+	}
+	return extendSubmit;
+	
+}

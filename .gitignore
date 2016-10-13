@@ -1,0 +1,6 @@
+.settings/
+.svn/
+*.class
+.project
+.mymetadata
+webapp/WEB-INF/classes/

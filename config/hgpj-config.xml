@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<HGPJ>
+	<!-- 是否开启海关域用户登录鉴权：true-开启、fales-关闭,未配置时默认为true,开启后用户登录时会向海关发起鉴权验证 -->
+	<isOpenDomainAuth>false</isOpenDomainAuth>
+	
+	<!-- 海关网络域名称，多个域之间使用'|'间隔 -->
+	<customsDomain>rtnet|SZC</customsDomain>
+	
+	<!-- 海关域用户验证web service访问地址 -->
+	<domainUserAuthUrl>http://szhgweb5/UserInfoService/UserInfoService.asmx</domainUserAuthUrl>
+	
+	<!-- 是否开启资源鉴权过滤器:true-开启、fales-关闭,未配置时默认为true,开启后会对用户请求的所有URL地址进行鉴权 -->
+	<isOpenPermCheck>true</isOpenPermCheck>
+	
+	<!-- 应用部署服务器：配置当前服务器外的另外一台服务器的IP:PORT -->
+	<deployServers>10.4.5.151:5599</deployServers>
+</HGPJ>

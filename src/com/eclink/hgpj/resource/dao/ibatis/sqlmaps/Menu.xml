@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="Menu" >
+	
+	<typeAlias alias="MenuVO" type="com.eclink.hgpj.resource.vo.MenuVO"/>
+	
+	<!-- 获取组织菜单树列表 -->
+	<select id="getOrgMenuTreeList" parameterClass="int" resultClass="MenuVO">
+		WITH MENUCTE
+		AS
+		(
+			SELECT MENU_ID AS menuId, MENU_NAME AS menuName, PARENT_MENU AS parentMenu, MENU_KEY AS menuKey, IMAGE_URL AS imageUrl, MENU_URL AS menuUrl, MENU_ORDER AS menuOrder 
+			FROM MENU WHERE MENU_ID IN (SELECT DISTINCT MENU_ID FROM ORG_RESOURCE WHERE ORG_ID = #orgId#)
+			UNION ALL
+			SELECT P.MENU_ID AS menuId, P.MENU_NAME AS menuName, P.PARENT_MENU AS parentMenu, P.MENU_KEY AS menuKey, P.IMAGE_URL AS imageUrl, P.MENU_URL AS menuUrl, P.MENU_ORDER AS menuOrder
+			FROM MENU P INNER JOIN MENUCTE C ON C.parentMenu = P.MENU_ID
+		)
+		SELECT DISTINCT menuId,menuName,parentMenu,menuKey,imageUrl,menuUrl,menuOrder FROM MENUCTE ORDER BY parentMenu,menuOrder
+	</select>
+	
+	<!-- 获取系统菜单树 -->
+	<select id="getMenuTreeList" resultClass="MenuVO">
+		WITH MENUCTE
+		AS
+		(
+			SELECT MENU_ID AS menuId, MENU_NAME AS menuName, PARENT_MENU AS parentMenu, MENU_KEY AS menuKey, IMAGE_URL AS imageUrl, MENU_URL AS menuUrl, MENU_ORDER AS menuOrder 
+			FROM MENU WHERE PARENT_MENU IS NULL
+			UNION ALL
+			SELECT P.MENU_ID AS menuId, P.MENU_NAME AS menuName, P.PARENT_MENU AS parentMenu, P.MENU_KEY AS menuKey, P.IMAGE_URL AS imageUrl, P.MENU_URL AS menuUrl, P.MENU_ORDER AS menuOrder
+			FROM MENU P INNER JOIN MENUCTE C ON C.menuId = P.PARENT_MENU
+		)
+		SELECT DISTINCT menuId,menuName,parentMenu,menuKey,imageUrl,menuUrl,menuOrder FROM MENUCTE ORDER BY parentMenu,menuOrder
+	</select>
+	
+	<!-- 获取用户允许访问的系统菜单树 -->
+	<select id="getMenuTreeListForUser" resultClass="MenuVO" parameterClass="int">
+		SELECT MNUID AS menuId, MNUNM AS menuName, UPMNU AS parentMenu, MNUKEY AS menuKey,  MURL AS menuUrl, MNUODR AS menuOrder 
+			FROM ZBMSMNU 
+			
+			
+	</select>
+	
+	<!-- 根据菜单ID获取菜单信息 -->
+	<select id="getMenuById" resultClass="MenuVO" parameterClass="int">
+		SELECT M.MENU_ID AS menuId, M.MENU_NAME AS menuName, M.PARENT_MENU AS parentMenu, M.MENU_KEY AS menuKey, M.IMAGE_URL AS imageUrl, M.MENU_URL AS menuUrl, M.MENU_ORDER AS menuOrder,
+		(SELECT MENU_NAME FROM MENU WHERE MENU_ID = M.PARENT_MENU) AS parentMenuName 
+		FROM MENU M WHERE M.MENU_ID = #menuId#
+	</select>
+	
+	<!-- 根据菜单KEY获取菜单信息 -->
+	<select id="getMenuByKey" resultClass="MenuVO" parameterClass="java.lang.String">
+		SELECT MENU_ID AS menuId, MENU_NAME AS menuName, PARENT_MENU AS parentMenu, MENU_KEY AS menuKey, IMAGE_URL AS imageUrl, MENU_URL AS menuUrl, MENU_ORDER AS menuOrder 
+		FROM MENU WHERE MENU_KEY = #menuKey#
+	</select>
+	
+	<!-- 根据父菜单获取子菜单信息 -->
+	<select id="getChildMenu" resultClass="MenuVO" parameterClass="int">
+		SELECT MENU_ID AS menuId, MENU_NAME AS menuName, PARENT_MENU AS parentMenu, MENU_KEY AS menuKey, IMAGE_URL AS imageUrl, MENU_URL AS menuUrl, MENU_ORDER AS menuOrder 
+		FROM MENU WHERE PARENT_MENU = #menuId#
+	</select>
+	
+	<!-- 插入菜单资源 -->
+  <insert id="insertResource" parameterClass="MenuVO">
+	INSERT INTO MENU (
+	       MENU_NAME,
+	       MENU_KEY,
+	       IMAGE_URL,
+	       <dynamic>
+		   		<isNotEmpty property="parentMenu">
+		   			PARENT_MENU,
+		   		</isNotEmpty>
+		   </dynamic>
+	       MENU_URL,
+	       MENU_ORDER)
+	VALUES(#menuName:VARCHAR#,
+	       #menuKey:VARCHAR#,
+	       #imageUrl:VARCHAR#,
+	       <dynamic>
+	       		<isNotEmpty property="parentMenu">
+		   			#parentMenu#,
+		   		</isNotEmpty>
+		   </dynamic>
+	       #menuUrl#,
+	       #menuOrder#)
+  </insert>
+  
+  <!-- 通过菜单资源KEY获取菜单资源数量 -->
+  <select id="getResourceCountByKey" resultClass="java.lang.Integer" parameterClass="MenuVO">
+	SELECT COUNT(MENU_ID) FROM	MENU WHERE MENU_KEY = #menuKey#
+  </select>
+  
+  <!-- 根据条件获取菜单资源数量，计算菜单排序顺序 -->
+  <select id="getResourceCount" resultClass="java.lang.Integer" parameterClass="MenuVO">
+	SELECT COUNT(MENU_ID) FROM	MENU
+	<dynamic prepend="WHERE">
+   		<isNotEqual prepend="AND" property="parentMenu" compareValue="0">
+   			PARENT_MENU = #parentMenu#
+   		</isNotEqual>
+   		<isEqual prepend="AND" property="parentMenu" compareValue="0">
+   			PARENT_MENU IS NULL
+   		</isEqual>
+   	</dynamic>
+  </select>
+  
+  <!-- 删除菜单资源（通过资源ID） -->
+  <delete id="deleteResource" parameterClass="int">
+	DELETE FROM MENU WHERE MENU_ID = #menuId#
+  </delete>
+  
+  <!-- 更新菜单资源（通过资源ID） -->
+  <update id="updateResource" parameterClass="MenuVO">
+  	UPDATE MENU SET MENU_NAME = #menuName#, MENU_KEY = #menuKey#, IMAGE_URL = #imageUrl#, MENU_URL = #menuUrl#, MENU_ORDER = #menuOrder# 
+  	WHERE MENU_ID = #menuId#
+  </update> 
+  
+  <!-- 获取已经分配给组织的菜单资源总数量 -->
+  <select id="getAssignResourceCount" resultClass="int" parameterClass="MenuVO">
+  	SELECT COUNT(UOR.MENU_ID)
+	    FROM MENU UR, ORG_RESOURCE UOR
+	   WHERE UR.MENU_ID = UOR.MENU_ID
+	   <dynamic prepend="AND">
+		   	<isNotEmpty prepend="AND" property="parentMenu">
+		   		UR.MENU_ID = #menuId#
+	   		</isNotEmpty>
+	   		<isEmpty prepend="AND" property="parentMenu">
+				UR.PARENT_MENU = #menuId#	   			
+	   		</isEmpty>
+	   </dynamic>
+  </select>
+  
+  <!-- 根据条件获取菜单资源列表 -->
+  <select id="getResourceList" resultClass="MenuVO" parameterClass="MenuVO">
+  	SELECT UR.MENU_ID AS menuId, UR.MENU_NAME AS menuName, UR.PARENT_MENU AS parentMenu, 
+    	(SELECT MENU_NAME FROM MENU WHERE MENU_ID = UR.PARENT_MENU) AS parentMenuName, UR.MENU_KEY AS menuKey, UR.IMAGE_URL AS imageUrl, UR.MENU_URL AS menuUrl, UR.MENU_ORDER AS menuOrder
+    FROM MENU UR
+    <dynamic prepend="WHERE">
+    	<isNotEmpty prepend="AND" property="parentMenu">
+	   		UR.PARENT_MENU = #parentMenu#
+   		</isNotEmpty>
+   		<isEmpty prepend="AND" property="parentMenu">
+			UR.PARENT_MENU IS NULL	   			
+   		</isEmpty>
+    </dynamic>
+    ORDER BY UR.MENU_ORDER
+  </select>
+</sqlMap>

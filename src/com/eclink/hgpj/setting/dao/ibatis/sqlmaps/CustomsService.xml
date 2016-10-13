@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="CUSTOMSSERVICE" >
+  <typeAlias alias="CustomsServiceVO" type="com.eclink.hgpj.setting.vo.CustomsServiceVO"/>
+  <resultMap id="resultMap" class="CustomsServiceVO" >
+    <result column="ORG_ID" property="orgId" jdbcType="INTEGER" />
+    <result column="ORG_NAME" property="orgName" jdbcType="VARCHAR" />
+    <result column="ORG_ID" property="childs" select="CUSTOMSSERVICE.queryChildByOrgId" />
+  </resultMap>
+  <resultMap id="evaluationResultMap" class="CustomsServiceVO" >
+    <result column="ORG_ID" property="orgId" jdbcType="INTEGER" />
+    <result column="ORG_NAME" property="orgName" jdbcType="VARCHAR" />
+    <result column="SERVICE_ID" property="serviceId" jdbcType="INTEGER" />
+    <result column="SERVICE_NAME" property="serviceName" jdbcType="VARCHAR" />
+  </resultMap>
+  <resultMap id="childResultMap" class="CustomsServiceVO" >
+    <result column="ORG_ID" property="orgId" jdbcType="INTEGER" />
+    <result column="SERVICE_ID" property="serviceId" jdbcType="INTEGER" />
+    <result column="SERVICE_NAME" property="serviceName" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <!-- 查询条件 -->
+  <sql id="condition">
+  	 	<isNotEmpty prepend="and" property="orgId">
+  	 		t.ORG_ID = #orgId#
+  	 	</isNotEmpty>
+  </sql>
+  <!-- 后台业务设置列表查询 -->
+  <select id="queryList" resultMap="resultMap" parameterClass="CustomsServiceVO" >
+  	<isNotEqual compareValue="0" property="pageSize">
+  	<![CDATA[ SELECT TOP (#pageSize#) * FROM (select ROW_NUMBER() over(order by ORG_ID) as rownum,a.* from ( ]]>
+  	</isNotEqual>
+		SELECT T.ORG_ID, R.ORG_NAME FROM CUSTOMS_SERVICE T
+		JOIN ORGANIZATION R ON R.ORG_ID=T.ORG_ID
+		GROUP BY T.ORG_ID,R.ORG_NAME
+		<dynamic prepend="having">
+	    	<include refid="condition"/>
+	    </dynamic>
+    <isNotEqual compareValue="0" property="pageSize">
+    ) as a) b where b.rownum>#from#
+    </isNotEqual>
+  </select>
+  <!-- 后台业务设置查询总条数 -->
+  <select id="queryListCount" resultClass="int" parameterClass="CustomsServiceVO" >
+		select count(distinct t.org_id) from CUSTOMS_SERVICE t
+		JOIN ORGANIZATION R ON R.ORG_ID=T.ORG_ID
+		<dynamic prepend="where">
+	    	<include refid="condition"/>
+	    </dynamic>
+  </select>
+  <!-- 前台业务评价列表查询 -->
+  <select id="queryEvaluationList" resultMap="evaluationResultMap" parameterClass="int">
+		SELECT T.ORG_ID, R.ORG_NAME, T.SERVICE_ID, S.NAME SERVICE_NAME FROM DBO.CUSTOMS_SERVICE T 
+		JOIN ORGANIZATION R ON R.ORG_ID=T.ORG_ID
+		JOIN SERVICE S ON T.SERVICE_ID=S.ID AND S.STATUS=1
+		WHERE T.ORG_ID=#orgId#
+  </select>
+  <!-- 前台业务评价查询 -->
+  <select id="queryEvaluationByOrgIdAndServiceId" resultMap="evaluationResultMap" parameterClass="CustomsServiceVO">
+		SELECT T.ORG_ID, R.ORG_NAME, T.SERVICE_ID, S.NAME SERVICE_NAME FROM DBO.CUSTOMS_SERVICE T 
+		JOIN ORGANIZATION R ON R.ORG_ID=T.ORG_ID
+		JOIN SERVICE S ON T.SERVICE_ID=S.ID AND S.STATUS=1
+		WHERE T.ORG_ID=#orgId# AND T.SERVICE_ID=#serviceId#
+  </select>
+  
+  <!-- 根据ORG_ID查找 -->
+  <select id="queryByOrgId" resultMap="resultMap" parameterClass="int" >
+		SELECT T.ORG_ID, R.ORG_NAME FROM CUSTOMS_SERVICE T
+		JOIN ORGANIZATION R ON R.ORG_ID=T.ORG_ID
+		GROUP BY T.ORG_ID,R.ORG_NAME
+	    HAVING T.ORG_ID=#orgId#
+  </select>
+  <select id="queryChildByOrgId" resultMap="childResultMap" parameterClass="int" >
+		SELECT T.ORG_ID,T.SERVICE_ID,S.NAME SERVICE_NAME FROM CUSTOMS_SERVICE T
+		JOIN SERVICE S ON S.ID=T.SERVICE_ID and s.status=1
+		WHERE T.ORG_ID = #orgId#
+  </select>
+  <!-- 删除 -->
+  <delete id="deleteServiceByOrgId" parameterClass="int" >
+  	delete CUSTOMS_SERVICE where ORG_ID=#orgId#
+  </delete>
+  <!-- 新增 -->
+  <insert id="insertService" parameterClass="CustomsServiceVO" >
+    insert into CUSTOMS_SERVICE (org_id,service_id)
+    values (#orgId:INTEGER#, #serviceId:INTEGER#)
+  </insert>
+</sqlMap>

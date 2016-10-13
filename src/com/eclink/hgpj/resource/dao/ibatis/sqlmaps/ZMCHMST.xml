@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="ZMCHMST">
+	<typeAlias alias="ZMCHMSTVO" type="com.eclink.hgpj.resource.vo.ZMCHMSTVO" />
+	<resultMap id="ZMCHMSTVOMap" class="ZMCHMSTVO">
+		<result column="PLANT" property="plant" />
+		<result column="MCHID" property="mchid" />
+		<result column="MCHNM" property="mchnm" />
+		<result column="DEPT" property="dept" />
+		<result column="PLINE" property="pline" />
+		<result column="STATUS" property="status" />
+		<result column="DNAME" property="dname" />
+	</resultMap>
+	<select id="queryZmchmstByMapWithDept" resultMap="ZMCHMSTVOMap" parameterClass="Map">
+		<![CDATA[ select  A.*,B.DNAME  from  ZMCHMST A LEFT OUTER JOIN ZDEPT B ON
+		 B.PLANT = A.PLANT AND A.DEPT = B.DEPT LEFT OUTER JOIN ZBMSUSR C  on A.PLANT = C.PLANT
+		 where A.STATUS = #status# AND C.BMSUSR = #bmsusr# AND A.PLINE = #pline#
+		]]>
+		<dynamic>
+			<isNotNull prepend="AND" property="mchid">
+				A.MCHID = #mchid#
+			</isNotNull>
+		</dynamic>
+	</select>
+
+</sqlMap>

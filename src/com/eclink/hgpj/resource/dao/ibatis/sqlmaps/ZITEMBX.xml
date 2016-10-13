@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="ZITEMBX" >
+	
+	<typeAlias alias="ZITEMBXVO" type="com.eclink.hgpj.resource.vo.ZITEMBXVO"/>
+	<resultMap id="ZITEMBXVOMap" class="ZITEMBXVO">
+	   <result property="house"
+	    column="HOUSE" />
+	   <result property="itnbr"
+	    column="ITNBR" />
+	   <result property="iptol"
+	    column="IPTOL" />
+	   <result property="whsub1"
+	    column="WHSUB1" />
+	    <result property="llocn1"
+	    column="LLOCN1" />
+	    <result property="whsub2"
+	    column="WHSUB2" />   
+	    <result property="llocn2"
+	    column="LLOCN2" /> 
+	    
+	    <result property="whsub3"
+	    column="WHSUB3" />   
+	    <result property="llocn3"
+	    column="LLOCN3" /> 
+	    <result property="whsub4"
+	    column="WHSUB4" />   
+	    <result property="llocn4"
+	    column="LLOCN4" />
+	</resultMap>
+	<select id="queryItemBx" resultMap="ZITEMBXVOMap" parameterClass="ZITEMBXVO">
+		<![CDATA[ select  *   
+		from  ZITEMBX where HOUSE=#house# 
+		]]>	
+		<dynamic>
+		   	<isNotEmpty prepend="AND" property="itnbr">
+                ITNBR = #itnbr#
+            </isNotEmpty>
+		</dynamic> 	
+		<dynamic>
+		   	<isNotEmpty prepend="AND" property="llocn2">
+                llocn2 = #llocn2#
+            </isNotEmpty>
+		</dynamic> 
+	</select>
+  
+</sqlMap>

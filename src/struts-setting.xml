@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="gbk"?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+    <package name="setting" extends="hgpj-default" namespace="/setting">
+    	<!-- 触摸式评价 -->
+    	<action name="touchEvaluator" class="touchEvaluatorAction">
+    		<result>/setting/touchEvaluator_list.jsp</result>
+    		<result name="view">/setting/touchEvaluator_view.jsp</result>
+    		<result name="modify">/setting/touchEvaluator_modify.jsp</result>
+    		<result name="new">/setting/touchEvaluator_input.jsp</result>
+    	</action>
+    	<!-- 按键式评价 -->
+    	<action name="keyEvaluator" class="keyEvaluatorAction">
+    		<result>/setting/keyEvaluator_list.jsp</result>
+    		<result name="view">/setting/keyEvaluator_view.jsp</result>
+    		<result name="modify">/setting/keyEvaluator_modify.jsp</result>
+    		<result name="new">/setting/keyEvaluator_input.jsp</result>
+    	</action>
+    	<!-- 参数设置 -->
+    	<action name="parameter" class="parameterAction">
+    		<result name="new">/setting/parameter_input.jsp</result>
+    	</action>
+    	<!-- 业务管理 -->
+    	<action name="service" class="serviceAction">
+    		<result>/setting/service_list.jsp</result>
+    		<result name="view">/setting/service_view.jsp</result>
+    		<result name="modify">/setting/service_modify.jsp</result>
+    		<result name="new">/setting/service_input.jsp</result>
+    	</action>
+    	<!-- 业务设置 -->
+    	<action name="customsService" class="customsServiceAction">
+    		<result>/setting/customsService_list.jsp</result>
+    		<result name="view">/setting/customsService_view.jsp</result>
+    		<result name="modify">/setting/customsService_modify.jsp</result>
+    		<result name="new">/setting/customsService_input.jsp</result>
+    	</action>
+    	<!-- 窗口设置 -->
+    	<action name="window" class="windowAction">
+    		<result>/setting/window_list.jsp</result>
+    		<result name="view">/setting/window_view.jsp</result>
+    		<result name="modify">/setting/window_modify.jsp</result>
+    		<result name="new">/setting/window_input.jsp</result>
+    	</action>
+    </package>
+</struts>

@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="User" >
+	<!-- 别名 -->
+	<typeAlias alias="User" type="com.eclink.hgpj.user.vo.UserVO" />
+	<typeAlias alias="UserRole" type="com.eclink.hgpj.user.vo.UserRoleVO" />
+	<typeAlias alias="Role" type="com.eclink.hgpj.role.vo.RoleVO" />
+  
+	<!-- 结果集映射 -->
+	<resultMap id="UserResultMap" class="User">
+		 <result column="USER_ID" property="userId" jdbcType="INTEGER" nullValue="0" />
+		 <result column="USER_NAME" property="userName" jdbcType="VARCHAR" nullValue=""/>
+		 <result column="REAL_NAME" property="realName" jdbcType="VARCHAR" nullValue=""/>
+		 <result column="EMPLOYEE_NUMBER" property="employeeNumber" jdbcType="VARCHAR" nullValue=""/>
+		 <result column="POSITION" property="position" jdbcType="VARCHAR" nullValue=""/>
+		 <result column="STATUS" property="status" jdbcType="VARCHAR" nullValue=""/>
+		 <result column="SEX" property="sex" jdbcType="CHAR" nullValue="" />
+		 <result column="TELEPHONE" property="telephone" jdbcType="VARCHAR" nullValue=""/>
+		 <result column="MOBILE" property="mobile" jdbcType="VARCHAR" nullValue="" />
+		 <result column="EMAIL" property="email" jdbcType="VARCHAR" nullValue=""/>
+		 <result column="DATA_ACCESS_PERM" property="dataAccessPerm" jdbcType="CHAR" nullValue=""/>
+		 <result column="IS_EVALUATED" property="isEvaluated" jdbcType="CHAR" nullValue=""/>
+		 <result column="PHOTO" property="photo" jdbcType="VARCHAR" nullValue=""/>
+		 <result column="CUSTOMS_ID" property="customsId" jdbcType="INTEGER" nullValue="-1"/>
+		 <result column="ORG_ID" property="orgId" jdbcType="INTEGER" nullValue="-1"/>
+		 <result column="CREATE_USER" property="createUser" jdbcType="VARCHAR" nullValue=""/>
+		 <result column="CREATE_DATE" property="createDate" jdbcType="TIMESTAMP" />
+		 <result column="LAST_UPDATE_USER" property="createUser" jdbcType="VARCHAR" nullValue=""/>
+		 <result column="LAST_UPDATE_DATE" property="createDate" jdbcType="TIMESTAMP"/>
+	</resultMap>
+	
+	<!-- 新增 -->
+	<insert id="insert" parameterClass="User">
+		<selectKey resultClass="int" keyProperty="userId">   
+        	<![CDATA[
+        	INSERT INTO [USER](USER_NAME,REAL_NAME,EMPLOYEE_NUMBER,POSITION,SEX,TELEPHONE,MOBILE,EMAIL,DATA_ACCESS_PERM,
+        	IS_EVALUATED,PHOTO,CUSTOMS_ID,ORG_ID,CREATE_USER)
+        	VALUES(#userName:VARCHAR#,#realName:VARCHAR#,#employeeNumber:VARCHAR#,#position:VARCHAR#,#sex:CHAR#,#telephone:VARCHAR#,
+        	#mobile:VARCHAR#,#email:VARCHAR#,#dataAccessPerm:CHAR#,#isEvaluated:CHAR#,#photo:VARCHAR#,#customsId:INTEGER#,
+        	#orgId:INTEGER#,#createUser:VARCHAR#) 
+        	SELECT SCOPE_IDENTITY() AS userId
+        	]]> 
+        </selectKey>
+	</insert>
+	
+	<!-- 删除 -->
+	<delete id="delete" parameterClass="int">
+		DELETE FROM [USER] WHERE USER_ID = #value#
+	</delete>
+  
+	<!-- 修改 -->
+	<update id="update" parameterClass="User">
+		UPDATE [USER] SET REAL_NAME = #realName:VARCHAR#,
+		    EMPLOYEE_NUMBER=#employeeNumber:VARCHAR#,
+		    POSITION=#position:VARCHAR#,
+			SEX = #sex:CHAR#,
+			STATUS=#status:VARCHAR#,
+			TELEPHONE = #telephone:VARCHAR#,
+			MOBILE = #mobile:VARCHAR#,
+			EMAIL = #email:VARCHAR#,
+			DATA_ACCESS_PERM = #dataAccessPerm:CHAR#,
+			IS_EVALUATED = #isEvaluated:CHAR#,
+			PHOTO = #photo:VARCHAR#,
+			CUSTOMS_ID = #customsId:INTEGER#,
+			ORG_ID = #orgId:INTEGER#,
+			LAST_UPDATE_USER = #lastUpdateUser:VARCHAR#,
+			LAST_UPDATE_DATE = getDate()
+		WHERE USER_ID = #userId:INTEGER#
+	</update>
+	
+	<!-- 修改用户状态 -->
+	<update id="updateUserStatus" parameterClass="User">
+		UPDATE [USER] SET STATUS=#status#,
+			LAST_UPDATE_USER = #lastUpdateUser:VARCHAR#,
+			LAST_UPDATE_DATE = getDate()
+		<dynamic prepend="WHERE">
+			<isNotNull prepend="WHERE" property="userId">
+				USER_ID = #userId#
+			</isNotNull>
+			<isNotNull prepend="AND" property="orgId">
+				ORG_ID = #orgId#
+			</isNotNull>
+		</dynamic> 
+	</update>
+	
+	<!-- 用户列表查询条件 -->
+	<sql id="userlist.condition">
+		<dynamic prepend="AND">
+			<isNotEmpty prepend="AND" property="userName">
+				U.USER_NAME LIKE '%'+#userName#+'%' 
+			</isNotEmpty>
+			<isNotEmpty prepend="AND" property="customsId">
+				U.CUSTOMS_ID = #customsId#
+			</isNotEmpty>
+			<isNotEmpty prepend="AND" property="orgId">
+				U.ORG_ID = #orgId#
+			</isNotEmpty>
+			<isNotEmpty prepend="AND" property="orgIds">
+				U.ORG_ID in ($orgIds$)
+			</isNotEmpty>
+			<isNotEmpty prepend="AND" property="realName">
+				U.REAL_NAME LIKE '%'+#realName#+'%'
+			</isNotEmpty>
+			<isNotEmpty prepend="AND" property="employeeNumber">
+				U.EMPLOYEE_NUMBER LIKE '%'+#employeeNumber#+'%'
+			</isNotEmpty>
+			<isNotEmpty prepend="AND" property="isEvaluated">
+				U.IS_EVALUATED = #isEvaluated#
+			</isNotEmpty>
+		</dynamic>
+	</sql>
+	
+	<!-- 条件查询用户列表 -->
+	<select id="queryUserList" parameterClass="User" resultClass="User">
+		<isNotEqual compareValue="0" property="pageSize">
+		SELECT TOP $pageSize$ * FROM (SELECT ROW_NUMBER() OVER(ORDER BY customsName,orgName DESC) as rownum,x.* from (
+		</isNotEqual>
+			SELECT U.USER_ID AS userId, U.USER_NAME AS userName, U.REAL_NAME AS realName, U.EMPLOYEE_NUMBER AS employeeNumber, 
+			  U.POSITION AS position, U.STATUS AS status, U.SEX AS sex,U.TELEPHONE AS telephone, U.MOBILE AS mobile, U.EMAIL AS email, 
+			  U.DATA_ACCESS_PERM AS dataAccessPerm, U.IS_EVALUATED AS isEvaluated, U.PHOTO AS photo, U.CUSTOMS_ID AS customsId, 
+			  U.ORG_ID AS orgId, U.CREATE_USER AS createUser, U.CREATE_DATE AS createDate, U.LAST_UPDATE_USER AS lastUpdateUser,
+			  U.LAST_UPDATE_DATE AS lastUpdateDate, ORG.ORG_NAME AS customsName,O.ORG_NAME AS orgName
+		    FROM [USER] U,ORGANIZATION ORG,ORGANIZATION O
+		    WHERE U.STATUS != 'DELETED' AND U.CUSTOMS_ID = ORG.ORG_ID AND U.ORG_ID = O.ORG_ID
+		    <include refid="userlist.condition"/>
+		<isNotEqual compareValue="0" property="pageSize">
+	    )as x) y where y.rownum > #from#
+		</isNotEqual>
+	</select>
+	
+	<!-- 条件查询用户总记录数 -->
+	<select id="queryUserListCount" parameterClass="User" resultClass="int">
+		SELECT COUNT(1) FROM [USER] U WHERE U.STATUS != 'DELETED'
+	    <include refid="userlist.condition"/>
+	</select>
+ 
+ 	<!-- 通过ID查询用户 -->
+ 	<select id="queryUserById" resultClass="User" parameterClass="int">
+ 		SELECT U.USER_ID AS userId, U.USER_NAME AS userName, U.REAL_NAME AS realName, U.EMPLOYEE_NUMBER AS employeeNumber,
+ 		  U.POSITION AS position, U.STATUS AS status, U.SEX AS sex, 
+		  U.TELEPHONE AS telephone, U.MOBILE AS mobile, U.EMAIL AS email, U.DATA_ACCESS_PERM AS dataAccessPerm,
+	      U.IS_EVALUATED AS isEvaluated, U.PHOTO AS photo, U.CUSTOMS_ID AS customsId, U.ORG_ID AS orgId, U.CREATE_USER AS createUser, 
+	      U.CREATE_DATE AS createDate, U.LAST_UPDATE_USER AS lastUpdateUser,U.LAST_UPDATE_DATE AS lastUpdateDate,
+	      ORG.ORG_NAME AS customsName,O.ORG_NAME AS orgName
+	    FROM [USER] U,ORGANIZATION ORG,ORGANIZATION O
+	    WHERE U.USER_ID = #value# AND U.CUSTOMS_ID = ORG.ORG_ID AND U.ORG_ID = O.ORG_ID
+ 	</select>
+ 	
+ 	<!-- 通过用户名查询用户 -->
+ 	<select id="queryUserByUserName" resultClass="User" parameterClass="java.lang.String">
+ 		SELECT U.USER_ID AS userId, U.USER_NAME AS userName, U.REAL_NAME AS realName, U.EMPLOYEE_NUMBER AS employeeNumber, 
+ 		  U.POSITION AS position, U.STATUS AS status, U.SEX AS sex,
+ 		  U.TELEPHONE AS telephone, U.MOBILE AS mobile, U.EMAIL AS email, U.DATA_ACCESS_PERM AS dataAccessPerm,
+	      U.IS_EVALUATED AS isEvaluated, U.PHOTO AS photo, U.CUSTOMS_ID AS customsId, U.ORG_ID AS orgId, U.CREATE_USER AS createUser, 
+	      U.CREATE_DATE AS createDate, U.LAST_UPDATE_USER AS lastUpdateUser,U.LAST_UPDATE_DATE AS lastUpdateDate,
+	      ORG.ORG_NAME AS customsName,O.ORG_NAME AS orgName
+	    FROM USER U,ORGANIZATION ORG,ORGANIZATION O
+	    WHERE U.USER_NAME = #value# AND U.CUSTOMS_ID = ORG.ORG_ID AND U.ORG_ID = O.ORG_ID
+ 	</select>
+ 	
+ 	<!--新增用户角色-->
+	<insert id="insertUserRole" parameterClass="UserRole" >			
+		INSERT INTO USER_ROLE(USER_ID, ROLE_ID)
+		VALUES(#userId:NUMBER#,#roleId:NUMBER#)		 
+	</insert>
+	
+	 <!--删除用户角色-->
+	 <delete id="deleteUserRole" parameterClass="int" >
+    	DELETE FROM USER_ROLE WHERE USER_ID = #userId:NUMBER#
+  	 </delete>
+  	 
+  	 <!--删除某组织下的所有用户角色-->
+	 <delete id="deleteUserRoleByOrgId" parameterClass="int" >
+    	DELETE FROM USER_ROLE WHERE ROLE_ID IN (SELECT ROLE_ID FROM ROLE WHERE ORG_ID = #orgId#)
+  	 </delete>
+  	 
+  	 <!-- 获取当前登录用户可以访问的操作URL地址 -->
+	 <select id="getOperAddressOfLoginUser" resultClass="java.util.HashMap" parameterClass="int">
+		<![CDATA[
+		SELECT UOA.ADDRESS_URL AS URL
+		  FROM USER_ROLE         UR,
+		       ROLE_RESOURCE     RR,
+		       OPERATION_ADDRESS UOA,
+		       MENU          RES
+		 WHERE UOA.OPER_KEY = RR.OPER_KEY
+		   AND RR.ROLE_ID = UR.ROLE_ID		   
+		   AND RR.MENU_ID = RES.MENU_ID
+		   AND UOA.MENU_ID = RR.MENU_ID
+		   AND UR.USER_ID = #userId#
+		]]>
+	 </select>
+	 
+	 <!-- 获取当前登录用户可以访问的菜单资源操作 -->
+	 <select id="getResOperOfLoginUser" resultClass="java.util.HashMap" parameterClass="int">
+		<![CDATA[
+		SELECT RES.MENU_KEY AS MENUKEY, RR.OPER_KEY AS OPERKEY
+		  FROM USER_ROLE UR, ROLE_RESOURCE RR, MENU RES
+		 WHERE RR.MENU_ID = RES.MENU_ID
+		   AND RR.ROLE_ID = UR.ROLE_ID
+		   AND UR.USER_ID = #userId#
+		]]>
+	 </select>
+</sqlMap>

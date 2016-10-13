@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="ZPLNMST">
+	<typeAlias alias="ZPLNMSTVO" type="com.eclink.hgpj.resource.vo.ZPLNMSTVO" />
+	<resultMap id="ZPLNMSTVOMap" class="ZPLNMSTVO">
+		<result column="PLANT" property="plant" />
+		<result column="PLINE" property="pline" />
+		<result column="PLNNM" property="plnnm" />
+		<result column="DEPT" property="dept" />
+		<result column="STATUS" property="status" />
+	</resultMap>
+	<select id="queryZplnmst" resultMap="ZPLNMSTVOMap"
+		parameterClass="Map">
+		<![CDATA[ select  *  from  ZPLNMST A ,ZBMSUSR B WHERE A.PLANT = B.PLANT AND B.BMSUSR = #bmsusr#
+		]]>
+	</select>
+
+	<select id="queryZplnmstByMap" resultMap="ZPLNMSTVOMap"
+		parameterClass="Map">
+		<![CDATA[ select  *  from  ZPLNMST
+		]]>
+		<dynamic prepend="WHERE">
+			<isNotNull prepend="AND" property="plant">
+				PLANT = #plant#
+			</isNotNull>
+			<isNotNull prepend="AND" property="pline">
+				PLINE = #pline#
+			</isNotNull>
+		</dynamic>
+	</select>
+</sqlMap>

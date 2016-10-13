@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="Address" >
+	
+	<!-- 地址值对象别名 -->
+	<typeAlias alias="Address" type="com.eclink.hgpj.resource.vo.AddressVO"/>
+	
+	<!-- 地址结果集映射 -->
+	<resultMap id="AddressResultMap" class="Address" >
+	   <result column="ADDRESS_ID" property="addressId" jdbcType="NUMBER" nullValue=""/>
+	   <result column="MENU_ID" property="menuId" jdbcType="NUMBER" nullValue=""/>
+	   <result column="OPER_KEY" property="operKey" jdbcType="VARCHAR" nullValue=""/>
+	   <result column="ADDRESS_URL" property="addressUrl" jdbcType="VARCHAR" nullValue=""/>
+	   <result column="ADDRESS_NAME" property="addressName" jdbcType="VARCHAR" nullValue=""/>
+	   <result column="PARA_NAME1" property="paraName1" jdbcType="VARCHAR" nullValue=""/>
+	   <result column="PARA_VALUE1" property="paraValue1" jdbcType="VARCHAR" nullValue=""/>
+	   <result column="PARA_NAME2" property="paraName2" jdbcType="VARCHAR" nullValue=""/>
+	   <result column="PARA_VALUE2" property="paraValue2" jdbcType="VARCHAR" nullValue=""/>
+	   <result column="PARA_NAME3" property="paraName3" jdbcType="VARCHAR" nullValue=""/>
+	   <result column="PARA_VALUE3" property="paraValue3" jdbcType="VARCHAR" nullValue=""/>
+  	</resultMap>
+
+	<!-- 插入操作地址 -->
+    <insert id="insertOperationAddress" parameterClass="Address">
+        <![CDATA[
+		INSERT  INTO OPERATION_ADDRESS(
+		        MENU_ID,
+		        OPER_KEY,
+		        ADDRESS_NAME,
+		        ADDRESS_URL,
+		        PARA_NAME1,
+		        PARA_VALUE1,
+		        PARA_NAME2,
+		        PARA_VALUE2,
+		        PARA_NAME3,
+		        PARA_VALUE3 )
+		VALUES (#menuId#,
+		        #operKey#,
+		        #addressName:VARCHAR#,
+		        #addressUrl:VARCHAR#,
+		        #paraName1:VARCHAR#,
+		        #paraValue1:VARCHAR#,
+		        #paraName2:VARCHAR#,
+		        #paraValue2:VARCHAR#,
+		        #paraName3:VARCHAR#,
+		        #paraValue3:VARCHAR# )
+		]]>
+    </insert>
+
+	<!-- 获取操作地址列表 -->
+    <select id="listOperationAddress" resultMap="AddressResultMap" parameterClass="Address">
+        <![CDATA[
+		SELECT  
+			    ADDRESS_ID,
+		        MENU_ID,
+		        OPER_KEY,
+		        ADDRESS_NAME,
+		        ADDRESS_URL,
+		        PARA_NAME1,
+		        PARA_VALUE1,
+		        PARA_NAME2,
+		        PARA_VALUE2,
+		        PARA_NAME3,
+		        PARA_VALUE3        
+		FROM    OPERATION_ADDRESS   
+		]]>
+        <dynamic prepend="WHERE">
+            <isNotNull prepend="AND" property="addressId">
+                ADDRESS_ID = #addressId#
+            </isNotNull>
+            <isNotNull prepend="AND" property="menuId">
+                MENU_ID = #menuId#
+            </isNotNull>
+            <isNotNull prepend="AND" property="operKey">
+                OPER_KEY = #operKey#
+            </isNotNull>
+            <isNotNull prepend="AND" property="addressName">
+                ADDRESS_NAME like '%'||trim(#addressName#)||'%'
+            </isNotNull>
+            <isNotNull prepend="AND" property="addressUrl">
+                ADDRESS_URL like '%'||trim(#addressUrl#)||'%'
+            </isNotNull>
+        </dynamic>
+    </select>
+    
+    <!-- 根据资源ID与操作KEY删除操作地址 -->
+    <delete id="deleteAddressByResourceIdAndOperKey" parameterClass="Address">
+    	DELETE OPERATION_ADDRESS WHERE MENU_ID = #menuId# AND OPER_KEY = #operKey#
+    </delete>
+</sqlMap>

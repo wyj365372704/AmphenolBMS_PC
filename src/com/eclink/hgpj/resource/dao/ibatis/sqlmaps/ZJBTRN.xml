@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="ZJBTRN">
+	<typeAlias alias="ZJBTRNVO" type="com.eclink.hgpj.resource.vo.ZJBTRNVO" />
+	<resultMap id="ZJBTRNVOMap" class="ZJBTRNVO">
+		<result column="JTDNO" property="jtdno" />
+		<result column="MJDNO" property="mjdno" />
+		<result column="HOUSE" property="house" />
+		<result column="ORDNO" property="ordno" />
+		<result column="OPSEQ" property="opseq" />
+		<result column="PLINE" property="pline" />
+		<result column="JTTYP" property="jttyp" />
+		<result column="EMPID" property="empid" />
+		<result column="MCHID" property="mchid" />
+		<result column="JSTAT" property="jstat" />
+		<result column="JTSDT" property="jtsdt" />
+		<result column="JTSTM" property="jtstm" />
+		<result column="JTEDT" property="jtedt" />
+		<result column="JTETM" property="jtetm" />
+		<result column="LHRS1" property="lhrs1" />
+		<result column="MHRS1" property="mhrs1" />
+	</resultMap>
+	<update id="updateZjbtrn" parameterClass="ZJBTRNVO">
+		UPDATE ZJBTRN
+		<dynamic prepend=" SET ">
+			<isNotNull prepend="," property="jstat">
+				JSTAT = #jstat#
+			</isNotNull>
+			<isNotNull prepend="," property="jtedt">
+				JTEDT = #jtedt#
+			</isNotNull>
+			<isNotNull prepend="," property="jtetm">
+				JTETM = #jtetm#
+			</isNotNull>
+			<isNotNull prepend="," property="lhrs1">
+				LHRS1 = #lhrs1#
+			</isNotNull>
+			<isNotNull prepend="," property="mhrs1">
+				MHRS1 = #mhrs1#
+			</isNotNull>
+		</dynamic>
+
+		<dynamic prepend=" WHERE">
+			<isNotNull prepend="AND" property="jtdno">
+				JTDNO = #jtdno#
+			</isNotNull>
+			<isNotNull prepend="AND" property="mjdno">
+				MJDNO = #mjdno#
+			</isNotNull>
+			<isNotNull prepend="AND" property="empid">
+				EMPID = #empid#
+			</isNotNull>
+			<isNotNull prepend="AND" property="mchid">
+				MCHID = #mchid#
+			</isNotNull>
+		</dynamic>
+	</update>
+
+	<select id="queryZjbtrnByJtdnoLike" parameterClass="String"
+		resultMap="ZJBTRNVOMap">
+	<![CDATA[
+	SELECT * FROM ZJBTRN WHERE JTDNO LIKE ('%'||#jtdno#||'%') ORDER BY JTDNO DESC
+	]]>
+	</select>
+	<select id="queryZjbtrnByMap" parameterClass="Map" resultMap="ZJBTRNVOMap">
+	<![CDATA[
+	SELECT * FROM ZJBTRN 
+	]]>
+		<dynamic prepend="WHERE">
+			<isNotNull prepend="AND" property="mjdno">
+				MJDNO = #mjdno#
+			</isNotNull>
+			<isNotNull prepend="AND" property="ordno">
+				ORDNO = #ordno#
+			</isNotNull>
+
+			<isNotNull prepend="AND" property="opseq">
+				OPSEQ = #opseq#
+			</isNotNull>
+
+
+			<isNotNull prepend="AND" property="pline">
+				PLINE = #pline#
+			</isNotNull>
+
+			<isNotNull prepend="AND" property="jstat">
+				JSTAT = #jstat#
+			</isNotNull>
+
+			<isNotNull prepend="AND" property="jttyp">
+				JTTYP = #jttyp#
+			</isNotNull>
+
+			<isNotNull prepend="AND" property="mchid">
+				MCHID = #mchid#
+			</isNotNull>
+
+			<isNotNull prepend="AND" property="empid">
+				EMPID = #empid#
+			</isNotNull>
+
+		</dynamic>
+	</select>
+	<insert id="insertZjbtrn" parameterClass="ZJBTRNVO">
+		INSERT INTO ZJBTRN (
+		<dynamic prepend=" ">
+			<isNotNull prepend="," property="jtdno">JTDNO</isNotNull>
+			<isNotNull prepend="," property="mjdno">MJDNO</isNotNull>
+			<isNotNull prepend="," property="house">HOUSE</isNotNull>
+			<isNotNull prepend="," property="ordno">ORDNO</isNotNull>
+			<isNotNull prepend="," property="opseq">OPSEQ</isNotNull>
+			<isNotNull prepend="," property="pline">PLINE</isNotNull>
+			<isNotNull prepend="," property="jttyp">JTTYP</isNotNull>
+			<isNotNull prepend="," property="empid">EMPID</isNotNull>
+			<isNotNull prepend="," property="mchid">MCHID</isNotNull>
+			<isNotNull prepend="," property="jstat">JSTAT</isNotNull>
+			<isNotNull prepend="," property="jtsdt">JTSDT</isNotNull>
+			<isNotNull prepend="," property="jtstm">JTSTM</isNotNull>
+		</dynamic>
+	 <![CDATA[ 
+        ) VALUES ( 
+    ]]>
+		<dynamic prepend=" ">
+			<isNotNull prepend="," property="jtdno">#jtdno#</isNotNull>
+			<isNotNull prepend="," property="mjdno">#mjdno#</isNotNull>
+			<isNotNull prepend="," property="house">#house#</isNotNull>
+			<isNotNull prepend="," property="ordno">#ordno#</isNotNull>
+			<isNotNull prepend="," property="opseq">#opseq#</isNotNull>
+			<isNotNull prepend="," property="pline">#pline#</isNotNull>
+			<isNotNull prepend="," property="jttyp">#jttyp#</isNotNull>
+			<isNotNull prepend="," property="empid">#empid#</isNotNull>
+			<isNotNull prepend="," property="mchid">#mchid#</isNotNull>
+			<isNotNull prepend="," property="jstat">#jstat#</isNotNull>
+			<isNotNull prepend="," property="jtsdt">#jtsdt#</isNotNull>
+			<isNotNull prepend="," property="jtstm">#jtstm#</isNotNull>
+		</dynamic>
+		   <![CDATA[ 
+        ) 
+    ]]>
+	</insert>
+
+</sqlMap>

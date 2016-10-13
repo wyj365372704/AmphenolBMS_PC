@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="ZITMEXT" >
+	
+	<typeAlias alias="ZITMEXTVO" type="com.eclink.hgpj.resource.vo.ZITMEXTVO"/>
+	
+	<resultMap id="ZITMEXTVOMap" class="ZITMEXTVO">
+	   <result property="stid"
+	    column="STID" />
+	   <result property="itnbr"
+	    column="ITNBR" />
+	   <result property="itrv"
+	    column="ITRV" />
+	   <result property="ldesc"
+	    column="LDESC" />
+	    <result property="sdesc"
+	    column="SDESC" />
+	    <result property="edesc"
+	    column="EDESC" />     
+	</resultMap>
+	
+	<select id="queryItemExt" resultMap="ZITMEXTVOMap" parameterClass="ZITMEXTVO">
+		select  *   
+		from  ZITMEXT where STID=#stid# and ITNBR=#itnbr# and  ITRV=#itrv#	 	
+	</select>
+	
+ 	
+  
+</sqlMap>

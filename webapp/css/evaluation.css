@@ -1,0 +1,67 @@
+body {font-size: 12px;color:#3e3d3d;line-height:18px;font-family: "ËÎÌå";margin:0;padding:0; background:#0447a3;overflow:hidden;}
+html{overflow:auto; scrollbar-3dlight-color:#FFF; scrollbar-highlight-color:#88b1e9; scrollbar-face-color:#c6daf5; scrollbar-arrow-color:#333; scrollbar-shadow-color:#88b1e9; scrollbar-darkshadow-color:#FFF; scrollbar-track-color:#d6edfd; }
+p,ul,li,h7,h6,h5,h4,h3,h2,h1,input,textarea,select,form{margin:0;padding:0;}
+ul,li{ list-style:none;}
+img,img a{border:0;}
+.clear{clear:both;}
+
+a:link,a:visited {color:#000;text-decoration: none;}
+a:active,a:hover {color:#ff0000;text-decoration: underline;}
+
+a.abluex:link,a.abluex:visited,a.abluex:active{color:#005693;text-decoration: underline;}
+a.abluex:hover{ color:#ff0000;text-decoration:underline;}
+.mrgtop{ margin-top:10px;}
+
+a.space:link    {}
+a.space:visited {}
+a.space:active  {}
+.red{ color:#f00}
+
+#header{ background:url(../images/bg_header.gif) repeat-x; height:91px;}
+#header .con{height:91px;padding:15px 0 0 0; text-align:center;}
+#header .con02{  width:1024px; margin:0 auto; height:91px;}
+#header .con02 .logo{padding:17px 0 0 38px; float:left;}
+#header .con02 .exit{ background:url(../images/bg_exit.png) no-repeat; width:340px; height:28px; float:right; position:relative;}
+#header .con02 .exit p{ color:#fbe965; padding:5px 0 0 23px;}
+#header .con02 .exit span{ background:url(../images/icon_exit.png) no-repeat 0 7px; position:absolute; right:8px; top:0;padding:5px 0 0 18px;}
+#header .con02 .exit span a:link,#header .con02 .exit span a:visited {color:#aad0fc;text-decoration: underline;}
+#header .con02 .exit span a:active,#header .con02 .exit span a:hover {color:#ff0000;text-decoration: underline;}
+
+.warp{ background:url(../images/bg_warp.jpg) no-repeat; width:1024px; margin:0 auto; height:660px;}
+.star01{ padding:175px 10px 0 0; text-align:center;}
+.list01{}
+.menubox{ padding:40px 0 0 0; width:420px; margin:0 auto; height:80px;}
+.menubox li{ float:left; margin:0 6px;position:relative; cursor:pointer; display:inline; zoom:1;}
+.menubox li span{ background: url(../images/lion.png) no-repeat; width:14px; height:8px; overflow:hidden; position:absolute; top:36px; left:55px; line-height:1px;}
+.listbox{ width:584px; margin: 0 auto;}
+.listbox .title{ background:url(../images/list01_11.png) no-repeat; height:42px;}
+.listbox .title h1{ font:normal 18px/18px  Î¢ÈíÑÅºÚ,ºÚÌå; color:#f60; padding:10px 0 0 25px;}
+.listbox .conbox{ background:url(../images/list01_15.png) repeat-y;zoom:1; padding:0 1px 0 0; }
+.listbox .conbox .listul01{height:420px; overflow:auto; padding:0 15px 0 15px;}
+.listbox .conbox .listul01 li{ border-bottom:1px dashed #abbeca;}
+.listbox .conbox .listul01 li a{ background:url(../images/pic_list.png) no-repeat 7px 18px; padding:38px 0 43px 122px;display:block;}
+.listbox .conbox .listul01 li a:link,.listbox .conbox .listul01 li a:visited {color:#000;text-decoration: none;}
+.listbox .conbox .listul01 li a:active,.listbox .conbox .listul01 li a:hover {color:#ff0000;text-decoration: none; background:#c0ddf2 url(pic_list.png) no-repeat 7px 18px;}
+
+.listbox .conbox .listul02{height:420px; overflow:auto; padding:0 15px 0 15px;}
+.listbox .conbox .listul02 li{ overflow:auto;zoom:1;border-bottom:1px dashed #abbeca;}
+.listbox .conbox .listul02 li img{ float:left}
+.listbox .conbox .listul02 li span{ display:block; float:left; width:190px; padding:5px 0 3px 25px;}
+.listbox .conbox .listul02 li a{ display:block; padding:15px 15px 15px 15px; zoom:1; height:85px;}
+.listbox .conbox .listul02 li a:link,.listbox .conbox .listul02 li a:visited {color:#000;text-decoration: none;}
+.listbox .conbox .listul02 li a:active,.listbox .conbox .listul02 li a:hover {color:#ff0000;text-decoration: none; background:#c0ddf2;}
+
+.listbox .conbox .detabox{padding:0 15px 0 15px;height:420px; overflow:auto;}
+.listbox .conbox .deta01{ }
+.listbox .conbox .deta01 li{ background:url(../images/pic_list.png) no-repeat 7px 18px; padding:38px 0 43px 122px;}
+.detatab{}
+.detatab td{ border-bottom:1px dashed #abbeca; padding:10px 5px;}
+.buttonbox{ padding:20px 0 0 111px;}
+.buttonbox input{ background:url(../images/bg_button.png) no-repeat; width:55px; height:23px; border:0;font-size:12px; text-align:center; line-height:23px; color:#fff; cursor:pointer;}
+.listbox .conbox .deta02{ }
+.listbox .conbox .deta02 li{ padding:10px 15px 5px 15px; zoom:1; height:85px;}
+.listbox .conbox .deta02 li img{ float:left}
+.listbox .conbox .deta02 li span{ display:block; float:left; width:190px; padding:5px 0 3px 25px;}
+
+.listbox .bottom{ background:url(../images/list01_16.png) no-repeat; height:7px; overflow:hidden;}
+.end04{ background:url(../images/zi_ganxie.png) no-repeat center 250px; padding:320px 0 0 0; text-align:center; word-spacing:5px;}
