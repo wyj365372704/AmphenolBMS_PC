@@ -145,14 +145,25 @@
 
 	<select id="queryItrvtAll" resultClass="ITMSITVO"
 		parameterClass="ITMSITVO">
-		<![CDATA[ select  *  from  ITMSIT where STIDT9=#house# and ITNOT9=#itnot9#
+		<![CDATA[ select  *  from  ITMSIT  
 		]]>
+		<dynamic prepend="where">
+			<isNotEmpty prepend="and" property="house">
+				STIDT9=#house#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="itnot9">
+				ITNOT9=#itnot9#
+			</isNotEmpty>
+		</dynamic>
 	</select>
 
 	<select id="queryItmrva" resultMap="ITMRVAVOMap" parameterClass="ITMRVAVO">
-		<![CDATA[ select  * from  ITMRVA where STID=#house# and ITNBR=#itnbr# 
+		<![CDATA[ select  * from  ITMRVA where STID=#house# 
 		]]>
 		<dynamic>
+			<isNotEmpty prepend="AND" property="itnbr">
+				ITNBR=#itnbr#
+			</isNotEmpty>
 			<isNotEmpty prepend="AND" property="itrv">
 				ITRV = #itrv#
 			</isNotEmpty>

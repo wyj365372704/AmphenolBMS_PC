@@ -1,4 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8"%>
+<%@ page pageEncoding="UTF-8" %>
 <%@taglib uri="http://www.eclink.com.cn/dfcm/paginator" prefix="page"%>
 <%@taglib uri="/struts-tags" prefix="s"%>
 <%@taglib uri="http://www.eclink.com.cn/hgpj/permission" prefix="hgpj"%>
@@ -15,7 +16,29 @@
 <script src="../js/common.js" type="text/javascript"></script>
 <link href="../js/alert/alerts.css" rel="stylesheet" type="text/css" />
 </head>
-
+<script type="text/javascript">
+function changeF() {
+	  //document.getElementById('txt').value = document.getElementById('sel').options[document.getElementById('sel').selectedIndex].value;
+	  var selVal=document.getElementById('sel').value;
+	  //alert(selVal);
+	  htmlobj=$.ajax({url:"resource/material!getDetail.action?itnot9="+selVal,async:false, datatype: "json", type: "GET", contentType: "application/json"
+	  , success:function(data) {//这里的data是由请求页面返回的数据    
+                 var dataJson = JSON.parse(data); // 使用json2.js中的parse方法将data转换成json格式   
+                 //$("#show").html("data=" + data + " name="+dataJson.name+"  age=" + dataJson.age);     
+             document.getElementsByName('fds40ji')[0].value=dataJson.ldesc;
+             document.getElementsByName('sdesc')[0].value=dataJson.sdesc;
+             document.getElementsByName('umstt9')[0].value=dataJson.umstt9;
+             var blcft9 = dataJson.blcft9;
+             if(blcft9 == 0){
+             document.getElementsByName("fblcft9")[0].value="";
+				document.getElementsByName("fblcft9")[0].disabled=true;
+             }else{
+             document.getElementsByName("fblcft9")[0].disabled=false;
+             }
+                 }});
+         //  alert(htmlobj.responseText);
+	} 
+</script>
 <body class="right_body">
 	<s:form action="#" method="post" name="makeMark">
 
@@ -33,11 +56,9 @@
 					class="public_table">
 					<tr>
 						<td align="right">物料：<font color="red">*</font></td>
-						<td><select id="sel" name="fordrji" m='search'
-							class='input_w' onchange="">
-								<option value="">请选择物料</option>
-								<option value="test">测试物料物料</option>
-						</select></td>
+						<td>
+						<s:select list="itmsitList" id="sel" emptyOption="false" name="fordrji" m="search" class='input_w' listKey="itnot9" listValue="itnot9" onchange="changeF();"></s:select>
+						</td>
 						<td rowspan="11" width="55%">
 							<div id="qrtlb">
 								<div id="qrcodeTable"></div>
@@ -47,12 +68,12 @@
 					<tr>
 						<td align="right">描述：<font color="red"></font></td>
 						<td><input name=fds40ji type="text" class="input_w" value=""
-							readonly="readonly" /></td>
+							 /></td>
 					</tr>
 					<tr>
 						<td align="right">规格：<font color="red"></font></td>
-						<td><input name=fldesc type="text" class="input_w" value=""
-							readonly="readonly" /></td>
+						<td><input name=sdesc type="text" class="input_w" value=""
+					  /></td>
 					</tr>
 					<tr>
 						<td align="right">每包装数量：<font color="red">*</font></td>
@@ -61,8 +82,8 @@
 					</tr>
 					<tr>
 						<td align="right">库存单位：<font color="red"></font></td>
-						<td><input name=fumstt9 type="text" class="input_w" value=""
-							readonly="readonly" /></td>
+						<td><input name=umstt9 type="text" class="input_w" value=""
+					  /></td>
 					</tr>
 					<tr id="blanch_tr">
 						<td align="right">批号：<font color="red">*</font></td>
@@ -89,12 +110,12 @@
 					<tr>
 						<td align="right">日期：<font color="red"></font></td>
 						<td><input name=fdate type="text" class="input_w" value=""
-							readonly="readonly" /></td>
+						 /></td>
 					</tr>
 					<tr>
 						<td align="right">厂商：<font color="red"></font></td>
 						<td><input name=fproducter type="text" class="input_w"
-							value="" readonly="readonly" /></td>
+							value=""  /></td>
 					</tr>
 					<tr align="center">
 						<td></td>
@@ -120,9 +141,9 @@
 		//fordrji fblcft9 fcout
 		var fordrji = document.getElementsByName("fordrji")[0].value; //物料
 		var fds40ji = document.getElementsByName("fds40ji")[0].value; //描述
-		var fldesc = document.getElementsByName("fldesc")[0].value; //规格
+		var sdesc = document.getElementsByName("sdesc")[0].value; //规格
 		var fcout = document.getElementsByName("fcout")[0].value; //每箱数量
-		var fumstt9 = document.getElementsByName("fumstt9")[0].value; //库存单位
+		var umstt9 = document.getElementsByName("umstt9")[0].value; //库存单位
 		var fblcft9 = document.getElementsByName("fblcft9")[0].value; //批号
 		var fweight = document.getElementsByName("fweight")[0].value; //单重
 		var fTotalweight = document.getElementsByName("fTotalweight")[0].value; //毛重
@@ -130,6 +151,9 @@
 		var fproducter = document.getElementsByName("fproducter")[0].value; //厂商
 		var fweight_unit = document.getElementById("fweight_unit").value; //单重单位
 		var fTotalweight_unit = document.getElementById("fTotalweight_unit").value; //单重单位
+		
+		
+		
 		if (fordrji == null || fordrji == "") {
 			alert("物料不能为空!");
 			return;
@@ -165,9 +189,14 @@
 			return;
 		}
 
-		window.open('material!toPrintMaterialTag.action?qrcode='+ fordrji, 'newwindow', 'height=400,width=500,top=50,left=100,toolbar=no,menubar=no,scrollbars=no, resizable=no,location=no, status=no');
+		window.open('material!toPrintMaterialTag.action?fordrji='+ fordrji+'&fds40ji='+fds40ji+'&sdesc='+sdesc+'&fcout='+fcout+'&umstt9='+umstt9+'&fblcft9='+fblcft9+'&fweight='+fweight+'&fTotalweight='+fTotalweight+'&fdate='+fdate+'&fproducter='+fproducter+'&fweight_unit='+fweight_unit+'&fTotalweight_unit='+fTotalweight_unit
+		, 'newwindow', 'height=400,width=500,top=50,left=100,toolbar=no,menubar=no,scrollbars=no, resizable=no,location=no, status=no');
 
 
 	}
+	
+</script>
+<script language="javascript">
+window.onload = changeF();
 </script>
 </html>

@@ -7,6 +7,7 @@ import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.apache.struts2.ServletActionContext;
 
 import com.eclink.hgpj.base.BaseAction;
 import com.eclink.hgpj.common.HGPJConstant;
@@ -171,6 +172,7 @@ public class LoginAction extends BaseAction {
 				setErrorMsg("环境错误");
 				return ERROR;
 			}
+			ServletActionContext.getContext().getSession().put("username", user.getUserName());
 			getSession().setAttribute("stid", envStidMap.get(env));
 			AUserVO au = this.auserService.queryUserByUserName(user.getUserName());
 			if(null==au){
