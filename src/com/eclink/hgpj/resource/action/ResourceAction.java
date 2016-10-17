@@ -1116,7 +1116,7 @@ public class ResourceAction extends BaseAction {
 				}
 				DataSourceUtil.setDataSource(dbconfigurl, idx);
 				//TODO:获取菜单接口，后续需要完善成根据用户名获取相应的菜单
-				menus = menuService.queryUserMenuTreeList(0);
+				menus = menuService.queryUserMenuTreeListPDA(0);
 				List<Map> list = new ArrayList<Map>();
 				if(menus!=null && menus.size()>0){
 					for(int i=0;i<menus.size();i++){
@@ -1126,6 +1126,7 @@ public class ResourceAction extends BaseAction {
 						if(lmv!=null && lmv.size()>0){
 							for(int j=0;j<lmv.size();j++){
 								MenuVO cmvo=lmv.get(j);
+								if(cmvo.getMenuType()!=null && cmvo.getMenuType().trim().equals("2"))
 								menuM.put(cmvo.getMenuKey().trim(), cmvo.getMenuName().trim());
 							}
 							list.add(menuM);

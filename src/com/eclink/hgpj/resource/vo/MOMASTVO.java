@@ -88,6 +88,10 @@ public class MOMASTVO extends BaseVO{
 	
 	private String ssstdt;
 	
+	private BigDecimal weght;
+	
+	private String b2cqcd;
+	
 	public String getOrdno() {
 		return ordno;
 	}
@@ -106,6 +110,22 @@ public class MOMASTVO extends BaseVO{
 
 	public BigDecimal getQtdev() {
 		return qtdev;
+	}
+
+	public BigDecimal getWeght() {
+		return weght;
+	}
+
+	public void setWeght(BigDecimal weght) {
+		this.weght = weght;
+	}
+
+	public String getB2cqcd() {
+		return b2cqcd;
+	}
+
+	public void setB2cqcd(String b2cqcd) {
+		this.b2cqcd = b2cqcd;
 	}
 
 	public void setQtdev(BigDecimal qtdev) {

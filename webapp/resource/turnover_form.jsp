@@ -52,26 +52,24 @@
 					<table width="100%" cellpadding="3px">
 						<tbody>
 							<tr>
-								<td>生产订单: M000350</td>
-								<td>物料:  95-902-155</td>
-								<td rowspan="3"><p>****
-									[二维码信息]
-									****</p></td>
+								<td>生产订单: <s:property value="ordno"/></td>
+								<td>物料: <s:property value="fitem"/></td>
+								<td rowspan="3"><img width="80px" height="80px" src="${qrcodeurl}"/></td>
 							</tr>
 							<tr>
-								<td colspan="2">说明:  95-902-155 DESC</td>
+								<td colspan="2">说明: <s:property value="fdesc"/></td>
 							</tr>
 							<tr>
-								<td>数量:  155,000.00 PC</td>
-								<td>批号:  B160831</td>
+								<td>数量: <s:property value="moqty"/> <s:property value="unmsr"/></td>
+								<td>批号:  <s:property value="batch"/></td>
 							</tr>
 							<tr>
-								<td>单重:  0.05 G</td>
-								<td>净重: 7.75 KG</td>
+								<td>单重: <s:property value="weght"/> <s:property value="b2cqcd"/></td>
+								<td>净重: <s:property value="netWeight"/> KG</td>
 							</tr>
 							<tr>
-								<td>生产线: 2号流水线</td>
-								<td>日期:  2016/08/31</td>
+								<td>生产线: <s:property value="prounit"/></td>
+								<td>日期: <s:property value="mydate"/></td>
 							</tr>
 						</tbody>
 					</table>

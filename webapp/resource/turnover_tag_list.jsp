@@ -36,20 +36,28 @@
 				</span>
 				<!--  span里无内容时，此span不能删除  -->
 			</h2>
-			<ul>
-				<li><div class="w_s">仓库：</div> <select id="select1"
-					style="width: 60px;">
-						<option value="">-</option>
-						<option value="A">A</option>
-						<option value="A">B</option>
-				</select></li>
-
-				<li><div class="w_s">生产订单号：</div> <s:textfield name=""
-						cssClass="input_w" /></li>
-
-				<li><div class="w_s">部门号：</div> <s:textfield name=""
-						cssClass="input_w" /></li>
-			</ul>
+				<ul>
+			
+			<li><div class="w_s">仓库：</div>
+			
+			<s:select name="momast.fitwh" list="#session.houses" listKey="house" listValue="house"   cssClass="select_s_2" style="width:60px"></s:select>
+			</li>
+			
+			<li><div class="w_s">产品：</div>
+				<s:textfield name="momast.fitem" cssClass="input_w"/>
+			</li>
+			<li><div class="w_s">部门：</div>
+				<s:textfield name="momast.dptno" cssClass="input_w"/>
+			</li>
+			 <li><div class="w_s">开工日：</div>
+            <s:textfield  id="startDate" name="momast.startDate" cssClass="time_input" onclick="WdatePicker()" autocomplete="on"/>-
+            <s:textfield  id="endDate" name="momast.endDate" cssClass="time_input" onclick="WdatePicker()" autocomplete="on"/>
+            </li>
+            
+            <li><div class="w_s">工单：</div>
+				<s:textarea  name="momast.ordno" cssClass="input_w" style="height:30px" ></s:textarea>
+			</li>
+		</ul>
 		</div>
 		<div class="data_list">
 			<h2>
@@ -58,65 +66,78 @@
 				<!--  span里无内容时，此span不能删除  -->
 			</h2>
 			<div class="list_inner">
-				<table width="100%" border="0" cellspacing="1" cellpadding="0"
-					class="list_table_s">
-					<tr>
-						<th>单号</th>
-						<th>产品</th>
-						<th>描述</th>
-						<th>数量</th>
-						<th>单位</th>
-						<th>部门</th>
-						<th>开始日期</th>
-						<th>完工日期</th>
-						<th>状态</th>
-						<th>已完工</th>
-						<th>未完工</th>
-						<th>操作</th>
-					</tr>
-					<tr class="td_bgcolor2">
-						<td>M508440</td>
-						<td>T35-0046GU</td>
-						<td>3001-455C-WWW MEGALTSG</td>
-						<td>138.0</td>
-						<td>PC</td>
-						<td>B003</td>
-						<td>2016-07-06</td>
-						<td>2016-07-13</td>
-						<td>已下单</td>
-						<td>0.000</td>
-						<td>138.0</td>
-						<td><input type="button" Class="gray_button" value="打印"
-							onclick="print('<s:property value="grnno"/>','<s:property value="grdte"/>')"></td>
-					</tr>
-					<tr class="td_bgcolor2">
-						<td>M50788440</td>
-						<td>T35-0046GU</td>
-						<td>3001-455C-WWW MEGALTSG</td>
-						<td>138.0</td>
-						<td>PC</td>
-						<td>B003</td>
-						<td>2016-07-06</td>
-						<td>2016-07-13</td>
-						<td>已下单</td>
-						<td>0.000</td>
-						<td>138.0</td>
-						<td><input type="button" Class="gray_button" value="打印"
-							onclick="print('<s:property value="grnno"/>','<s:property value="grdte"/>')"></td>
-					</tr>
-				</table>
-				<div class="page">
-					<page:paginator formName="queryform" nameInRequest="paginator" />
-				</div>
-			</div>
+			<table width="100%" border="0" cellspacing="1" cellpadding="0" class="list_table_s">
+			  <tr>
+				<th>单号</th>
+				<th>产品</th>
+				<th>描述</th>
+				<th>数量</th>
+				<th>单位</th>
+				<th>部门</th>
+				<th>开始日期</th>
+				<th>完工日期</th>
+				<th>状态</th>
+				<th>已完工</th>
+				<th>未完工</th>
+				<th>操作</th> 
+				<!-- -->
+			  </tr>
+			<s:iterator value="results" id="results" status="st">
+  				 <s:if test="#st.Even">
+		      		<tr class="td_bgcolor">
+		      	</s:if>
+		      	<s:else>
+		      		<tr class="td_bgcolor2">
+		      	</s:else>
+	  				<td><s:property value="ordno"/></td>
+	  				<td><s:property value="fitem"/></td>
+	  				<td><s:property value="fdesc"/></td>
+	  				<td><s:property value="moqty"/></td>
+	  				<td><s:property value="unmsr"/></td>
+	  				<td><s:property value="dptno"/></td>
+	  				<td><s:property value="ssstdt"/></td>
+	  				<td><s:property value="sodudt"/></td>
+	  				<td>
+	  				<s:if test="ostat==10">
+	  					已下达
+	  				</s:if>
+	  				<s:elseif test="ostat==40">
+	  					已开始生产
+	  				</s:elseif>
+	  				<s:elseif test="ostat==45">
+	  					物料完成
+	  				</s:elseif>
+	  				<s:elseif test="ostat==50">
+	  					工序完成
+	  				</s:elseif>
+	  				<s:elseif test="ostat==55">
+	  					物料/工序完成
+	  				</s:elseif>
+	  				<s:elseif test="ostat==99">
+	  					订单取消
+	  				</s:elseif>
+	  				</td>
+	  				<td><s:property value="qtyrc"/></td>
+	  				<td><s:property value="mounqty"/></td>
+	  				<td><input type="button" Class="gray_button" value="打印"
+							onclick="print('<s:property value="ordno"/>','<s:property value="fitem"/>','<s:property value="fdesc"/>'
+							,'<s:property value="moqty"/>','<s:property value="unmsr"/>','<s:property value="weght"/>'
+							,'<s:property value="b2cqcd"/>')"></td>
+  			   </tr>
+  			</s:iterator>
+		  </table>
+		    <div class="page"><page:paginator formName="queryform" nameInRequest="paginator"/>
+		  </div>
+		</div>
 		</div>
 	</s:form>
 
 </body>
 
 <script type="text/javascript">
-	function print(grnno, grdte) {
-		window.open('turnover!toTurnoverTag.action?grnno=' + grnno + '&grdte=' + grdte, 'newwindow', 'height=600,width=800,top=60,left=200,toolbar=no,menubar=no,scrollbars=no, resizable=no,location=no, status=no');
+	function print(ordno, fitem,fdesc,moqty,unmsr,weght,b2cqcd) {
+		window.open('turnover!toTurnoverTag.action?ordno=' + ordno + '&fitem=' + fitem+ '&fdesc=' + fdesc+ '&moqty=' + moqty
+		+ '&unmsr=' + unmsr + '&weght=' + weght+ '&b2cqcd=' + b2cqcd, 'newwindow', 'height=500,width=600,top=60,left=200,toolbar=no,menubar=no,scrollbars=no, resizable=no,location=no, status=no');
 	}
 </script>
 </html>

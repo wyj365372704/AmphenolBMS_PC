@@ -236,7 +236,7 @@ public class MaterialTagAction extends BaseAction {
 			String path = request.getContextPath(); 
 			String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 
-			
+
 			ServletActionContext.getRequest().setAttribute("fordrji", fordrji);
 			ServletActionContext.getRequest().setAttribute("fds40ji", fds40ji);
 			ServletActionContext.getRequest().setAttribute("sdesc", sdesc);

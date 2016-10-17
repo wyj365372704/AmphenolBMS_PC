@@ -48,6 +48,8 @@ public class MenuVO extends BaseVO{
     /** 菜单显示顺序 */
     private int menuOrder;
     
+    private String menuType;
+    
     /** 父菜单名称 */
     private String parentMenuName;
     
@@ -71,6 +73,14 @@ public class MenuVO extends BaseVO{
 
 	public String getParentMenuName() {
 		return parentMenuName;
+	}
+
+	public String getMenuType() {
+		return menuType;
+	}
+
+	public void setMenuType(String menuType) {
+		this.menuType = menuType;
 	}
 
 	public void setParentMenuName(String parentMenuName) {

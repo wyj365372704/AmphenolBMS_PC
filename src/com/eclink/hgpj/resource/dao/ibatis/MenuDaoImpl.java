@@ -101,6 +101,11 @@ public class MenuDaoImpl extends SqlMapClientDaoSupport implements MenuDao {
 	public List<MenuVO> queryUserMenuTreeList(int userId) throws Exception {
 		return this.getSqlMapClientTemplate().queryForList("Menu.getMenuTreeListForUser", userId);
 	}
+	
+	@Override
+	public List<MenuVO> queryUserMenuTreeListPDA(int userId) throws Exception {
+		return this.getSqlMapClientTemplate().queryForList("Menu.getMenuTreeListForUserPDA", userId);
+	}
 
 	@Override
 	public List<MenuVO> queryChildMenu(int parentMenuId) throws Exception {

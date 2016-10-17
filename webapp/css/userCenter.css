@@ -127,7 +127,7 @@ img{border:none;}
 /*  µÇÂ¼Ò³Ãæ  */
 .logo_div{background:url(../images/login_bg_02.jpg) center 50% no-repeat #003474; width:100%; height:100%; text-align:center;}
 .logo_info{width:480px; height:350px; margin:auto;}
-.logo_table{width:260px; margin:152px 0px 0px 0px; float:right;}
+.logo_table{width:260px; margin:32% 0px 0px 0px; float:right;}
 .logo_table td{font-size:12px; padding:3px 0px;}
 .logo_table td.text_r{width:70px; line-height:20px; font-size:12px; font-weight:bold; color:#002e4b;}
 .logo_i_1{width:150px; font-weight:bold; border:1px solid #a8bccd;}

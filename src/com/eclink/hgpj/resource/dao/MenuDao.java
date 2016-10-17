@@ -123,4 +123,6 @@ public interface MenuDao {
 	 * @throws Exception
 	 */
 	public List<MenuVO> queryChildMenu(int parentMenuId) throws Exception;
+
+	public List<MenuVO> queryUserMenuTreeListPDA(int userId) throws Exception;
 }

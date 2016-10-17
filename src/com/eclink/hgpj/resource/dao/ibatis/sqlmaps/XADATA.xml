@@ -95,11 +95,13 @@
 		<result column="ITMSQ" property="itmsq" />
 		<result column="RLNB" property="rlnb" />
 		<result column="KTRL" property="ktrl" />
+		<result column="UUSAMY" property="uusamy" />
 
 		<result column="unmsr" property="unmsr" />
-		<result column="UUSAMY" property="uusamy" />
 		<result column="moqty" property="moqty" />
 		<result column="mounqty" property="mounqty" />
+		<result property="weght" column="weght"/>
+		<result property="b2cqcd" column="b2cqcd"/>
 	</resultMap>
 
 	<select id="queryModatas" resultMap="MODATAVOMap"
@@ -214,7 +216,7 @@
 	</select>
 
 	<select id="queryMomast" resultMap="MOMASTVOMap" parameterClass="MOMASTVO">
-		<![CDATA[ select  a.*,b.unmsr,(a.ORQTY+a.QTDEV) as moqty, (a.ORQTY+a.QTDEV-QTYRC) as mounqty from  MOMAST a left join itmrva b                                     
+		<![CDATA[ select  a.*,b.unmsr,b.weght,b.b2cqcd,(a.ORQTY+a.QTDEV) as moqty, (a.ORQTY+a.QTDEV-QTYRC) as mounqty from  MOMAST a left join itmrva b                                     
 				on a.stid = b.stid and a.fitem = b.itnbr                       
 				and a.itrv = b.itrv 
 		 		where a.FITWH=#fitwh#  and a.UUSAMY <> '1' AND OSTAT IN ('10','40','45','50','55') 
@@ -274,10 +276,11 @@
 
 	<select id="queryMomastBystate" resultMap="MOMASTVOMap"
 		parameterClass="MOMASTVO">
-		<![CDATA[ select  a.*,b.unmsr AS unmsr,(a.ORQTY+a.QTDEV) as moqty, (a.ORQTY+a.QTDEV-QTYRC) as mounqty  from  MOMAST a  left join itmrva b                                     
+		<![CDATA[ select  a.*,b.unmsr,b.weght,b.b2cqcd,(a.ORQTY+a.QTDEV) as moqty, (a.ORQTY+a.QTDEV-QTYRC) as mounqty  from  MOMAST a  left join ITMRVA b                                     
 				on a.stid = b.stid and a.fitem = b.itnbr                       
 				and a.itrv = b.itrv 
 		 		where a.ORLCD=5 AND a.OSTAT in ('10', '40', '50')  
+		 		
 		]]>
 		<dynamic>
 			<isNotEmpty prepend="AND" property="ordno">

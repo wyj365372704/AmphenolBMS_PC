@@ -44,84 +44,77 @@
 					class="public_table">
 					<tr>
 						<td align="right">工单：</td>
-						<td><input type="text" id="worder" class="input_w" value=""
-							readonly="readonly" /></td>
+						<td><input id="ordno" type="text" value='<s:property value='ordno'/>'
+							readonly="readonly" class="input_w"></td>
 					</tr>
 					<tr>
 						<td align="right">产品：</td>
-						<td><input type="text" id="product" class="input_w" value=""
-							readonly="readonly" /></td>
+						<td><input id="fitem" type="text" value='<s:property value='fitem'/>'
+							readonly="readonly" class="input_w"></td>
 					</tr>
 					<tr>
 						<td align="right">描述：</td>
-						<td><input type="text" id="desc" class="input_w" value=""
-							readonly="readonly" /></td>
+						<td><input id="fdesc" type="text" value='<s:property value='fdesc'/>'
+							readonly="readonly" class="input_w"></td>
+					</tr>
+
+					<tr>
+						<td align="right">数量：</td>
+						<td><input id="moqty" type="text" value='<s:property value='moqty'/>'
+							class="input_w"></td>
 					</tr>
 					<tr>
-						<td align="right">规格：</td>
-						<td><input type="text" id="spec" class="input_w" value=""
-							readonly="readonly" /></td>
-					</tr>
-					<tr>
-						<td align="right">每箱数量：</td>
-						<td><input type="text" id="qty" class="input_w" value=""/></td>
+						<td align="right">数量单位：</td>
+						<td><input id="unmsr" type="text" value='<s:property value='unmsr'/>'
+							readonly="readonly" class="input_w"></td>
 					</tr>
 					<tr>
 						<td align="right">单重：</td>
-						<td><input type="text" id="pweight" class="input_w" value=""/></td>
+						<td><input id="weght" type="text" value='<s:property value='weght'/>'
+							class="input_w"></td>
 					</tr>
 					<tr>
-						<td align="right">净重：</td>
-						<td><input type="text" id="suttle" class="input_w" value=""
-							readonly="readonly" /></td>
-					</tr>
-					<tr>
-						<td align="right">单位：</td>
-						<td><input type="text" id="unit" class="input_w" value=""
-							readonly="readonly" /></td>
+						<td align="right">单重单位：</td>
+						<td>
+						<input id="b2cqcd" type="text" value='<s:property value='b2cqcd'/>'
+							readonly="readonly" class="input_w"></td>
 					</tr>
 					<tr>
 						<td align="right">批号：</td>
-						<td><input type="text" id="batch" class="input_w" value="" disabled/></td>
+						<td><s:if test="blcft9 == 0">
+								<input type="text" id="batch" class="input_w" value="" disabled />
+							</s:if><s:else> <input type="text" id="batch" class="input_w" value="" /></s:else>
+						</td>
 					</tr>
 					<tr>
 						<td align="right">日期：</td>
 						<td>
 							<!-- <input type="text" id="mydate" class="input_w" value=""/> -->
-							<s:textfield  id="mydate" cssClass="time_input" onclick="WdatePicker()" autocomplete="on"/>
+							<s:textfield id="mydate" cssClass="time_input"
+								onclick="WdatePicker()" autocomplete="on" />
 						</td>
 					</tr>
-					<tr>
-						<td align="right">部门：</td>
-						<td><input type="text" id="depa" class="input_w" value=""
-							readonly="readonly" /></td>
-					</tr>
+
 					<tr>
 						<td align="right">生产线：</td>
-						<td><input type="text" id="prounit " class="input_w" value=""/></td>
+						<td><input type="text" id="prounit" class="input_w" value="" />
+						</td>
 					</tr>
-					<tr>
-						<td align="right">打印机：</td>
-						<td><select id="printer">
-							<option value="A">A</option>
-							<option value="B">B</option>
-							<option value="C">C</option>
-							</select></td>
-					</tr>
+
 					<tr align="center">
 						<td></td>
 						<td>
 							<table style="width:100%">
 								<tr>
-									<td><input type="button"
-										class="button_m" value="打印" onclick="show();" /></td>
+									<td><input type="button" class="button_m" value="打印"
+										onclick="show();" /></td>
 									<td><s:reset value="重置" Class="button_m"></s:reset></td>
 								</tr>
 							</table>
 						</td>
 					</tr>
 				</table>
-				<div class="page"  style="display: none;">
+				<div class="page" style="display: none;">
 					<page:paginator formName="queryform" nameInRequest="paginator" />
 				</div>
 			</div>
@@ -130,50 +123,52 @@
 </body>
 <script type="text/javascript">
 	function show() {
-		var worder = document.getElementById("worder").value; // 工单
-		var product = document.getElementById("product").value; // 产品
-		var desc = document.getElementById("desc").value; // 描述
-		var spec = document.getElementById("spec").value; // 规格
-		var qty = document.getElementById("qty").value; // 每箱数量
-		var pweight = document.getElementById("pweight").value; // 单重
-		var suttle = document.getElementById("suttle").value; // 净重
-		var unit = document.getElementById("unit").value; // 单位
+		var ordno = document.getElementById("ordno").value; // 工单
+		var fitem = document.getElementById("fitem").value; // 产品
+		var fdesc = document.getElementById("fdesc").value; // 描述
+		var moqty = document.getElementById("moqty").value; // 数量
+		var unmsr = document.getElementById("unmsr").value; // 数量单位
+		var weght = document.getElementById("weght").value; // 单重
+		var b2cqcd = document.getElementById("b2cqcd").value; // 单重单位
 		var batch = document.getElementById("batch").value; // 批号
 		var mydate = document.getElementById("mydate").value; // 日期
-		var depa = document.getElementById("depa").value;  // 部门
 		var prounit = document.getElementById("prounit").value; // 生产线
-		var printer = document.getElementById("printer").value; // 打印机
-		
-		if (!worder) {
+
+		if (!ordno) {
 			alert("工单不能为空!");
 			return;
-		} else if (!product) {
+		} else if (!fitem) {
 			alert("产品不能为空!");
 			return;
-		} else if (!qty) {
-			alert("每箱数量不能为空!");
+		} else if (!moqty) {
+			alert("数量不能为空!");
 			return;
-		} else if (isNaN(qty)) {
+		} else if (isNaN(moqty)) {
 			alert("每箱数量输入非法!");
 			return;
-		} else if (!pweight) {
+		} else if (!weght) {
 			alert("单重不能为空!");
-		} else if (isNaN(pweight)) {
+		} else if (isNaN(weght)) {
 			alert("单重输入非法!");
 			return;
 		} else if (!document.getElementById("batch").disabled) {
-			alert("批号不能为空!");
-			return;
+			if (!batch) {
+				alert("批号不能为空!");
+				return;
+			}
 		} else if (!mydate) {
 			alert("日期不能为空!");
+			return;
 		} else if (!prounit) {
 			alert("生产线不能为空!");
-		} else if (!printer) {
-			alert("打印机不能为空!");
-		}
-		
-		window.resizeTo(900, 750);
-		window.open('material!toPrintMaterialTag.action?qrcode='+ fordrji, 'newwindow', 'height=400,width=500,top=50,left=100,toolbar=no,menubar=no,scrollbars=no, resizable=no,location=no, status=no');
+			return;
+		} 
+
+		window
+				.open(
+						'turnover!toPrintTurnoverTag.action?ordno=' + ordno + '&fitem=' + fitem +'&fdesc=' + fdesc + '&moqty=' + moqty + '&unmsr=' + unmsr + '&weght=' + weght + '&b2cqcd=' + b2cqcd + '&batch=' + batch + '&mydate=' + mydate + '&prounit=' + prounit,
+						'newwindow',
+						'height=400,width=500,top=50,left=100,toolbar=no,menubar=no,scrollbars=no, resizable=no,location=no, status=no');
 	}
 </script>
 </html>
