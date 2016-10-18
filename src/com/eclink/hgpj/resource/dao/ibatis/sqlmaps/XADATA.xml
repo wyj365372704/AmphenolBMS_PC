@@ -268,7 +268,7 @@
 
 	<select id="queryMomastByordno" resultMap="MOMASTVOMap"
 		parameterClass="MOMASTVO">
-		<![CDATA[ select  a.*,'' AS unmsr,0 as moqty, 0 as mounqty  from  MOMAST a  
+		<![CDATA[ select  a.*,'' AS unmsr,0 AS weght,'' AS b2cqcd,0 as moqty, 0 as mounqty  from  MOMAST a  
 		 		where a.ORDNO=#ordno# 
 		]]>
 
