@@ -16,7 +16,7 @@
 <head>
 <base href="<%=basePath%>">
 
-<title>My JSP 'printPage.jsp' starting page</title>
+<title>采购订单</title>
 
 <meta http-equiv="pragma" content="no-cache">
 <meta http-equiv="cache-control" content="no-cache">
@@ -28,7 +28,9 @@
 	-->
 
 </head>
-
+<script type="text/javascript">
+window.resizeTo(1000, 800);
+</script>
 <body>
 	<table width="100%" cellpadding="5px" border="1"
 		style="border-collapse: collapse;">

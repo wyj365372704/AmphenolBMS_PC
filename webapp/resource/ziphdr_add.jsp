@@ -62,7 +62,7 @@ String house = request.getParameter("house");
 					</tr>
 					<tr>
 						<td class="td_w_s text_r">领料原因：</td>						
-						<td>
+						<td colspan="2">
 							<select name="bmsrsn" >
 							</select>
 						</td>
@@ -111,7 +111,7 @@ String house = request.getParameter("house");
 			  });
 		}
 		//window.onload=function(){
-			 document.getElementsByName("iptyp")[0].onclick=function(){	         	
+			 document.getElementsByName("iptyp")[0].onchange=function(){	         	
 	         	var val = document.getElementsByName("iptyp")[0].value;
 	         	//alert(val);    
 	         	if(val=='3' || val=='2'){//alert(val);  

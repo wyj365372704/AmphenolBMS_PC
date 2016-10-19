@@ -27,7 +27,9 @@ String ordno = request.getParameter("ordno");
 			var chk03 = document.getElementsByName("chk03")[0].checked;
 			var language = document.getElementById("language").value;
 			//alert(ordno+"-"+chk01+"-"+chk02);
-			window.open("pomast!printO.action?ordno="+ordno+"&chk01="+chk01+"&chk02="+chk02+"&chk03="+chk03+"&language="+language);
+			window.open('pomast!printO.action?ordno='+ordno+'&chk01='+chk01+'&chk02='+chk02+'&chk03='+chk03+'&language='+language,
+			'newwindow',
+						'height=400,width=500,top=50,left=100,toolbar=no,menubar=no,scrollbars=no, resizable=no,location=no, status=no');
 		}
 		
 	</script>

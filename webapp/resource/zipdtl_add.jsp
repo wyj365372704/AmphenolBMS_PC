@@ -85,7 +85,7 @@ String iptyp = request.getParameter("iptyp");
 					<tr>
 						<td class="td_w_s text_r">物料：</td>
 						<td>
-							<s:select name="mresults.citem" list="mresults" listKey="seqnm" listValue="citem"  headerKey="" headerValue=""  cssClass="select_s_2" style="width:60px" onclick="selectI();"></s:select>
+							<s:select name="mresults.citem" list="mresults" listKey="seqnm" listValue="citem"  headerKey="" headerValue=""  cssClass="select_s_2" style="width:60px" onChange="selectI();"></s:select>
 			
 						</td>
 						
