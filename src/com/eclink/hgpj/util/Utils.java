@@ -852,7 +852,7 @@ public class Utils {
 		}
 		return typeS;
 	}
-	public  boolean insertTrdata(String lib,String env,List<Map> lists) throws Exception{
+	public  boolean insertTrdata(String lib,String env,List<Map> lists,String lib1) throws Exception{
 		Connection conn = null;
 		InputStream is =null;
 		Statement stmt = null;
@@ -900,7 +900,7 @@ public class Utils {
 		 		conn.commit();
 			   conn.setAutoCommit(true);
 		 	}
-			this.CallTamjuc(dbip, properties.getProperty("DBUSER"), properties.getProperty("DBPASSWORD"), lib);
+			this.CallTamjuc(dbip, properties.getProperty("DBUSER"), properties.getProperty("DBPASSWORD"), lib1);
 		}catch(Exception e){
 			if(conn!=null){
 				try {
@@ -938,7 +938,7 @@ public class Utils {
 	AS400 as400 = null; 
 	ProgramCall pgm; 
 		
-	String progname = "/QSYS.LIB/"+env+".lib/TAMJUC.pgm";
+	String progname = "/QSYS.LIB/"+env.trim()+".lib/TAMJUC.pgm";
 		
 	as400 = new AS400(host, userName, password);
 	

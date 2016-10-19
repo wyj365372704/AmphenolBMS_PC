@@ -3427,6 +3427,8 @@ public class ResourceAction extends BaseAction {
 				DataSourceUtil.setDataSource(dbconfigurl, idx);
 				String stid =Utils.getDataSourceS(dbconfigurl, "STID"+idx);
 				String lib = Utils.getDataSourceS(dbconfigurl, "AMTLIB"+idx);
+				String lib1 = Utils.getDataSourceS(dbconfigurl, "AMPHLIB"+idx);
+				
 
 				String now1 = Utils.formateDate(null, "yyyyMMdd");
 				String now2 = Utils.formateDate(null, "HHmmss");
@@ -3537,14 +3539,14 @@ public class ResourceAction extends BaseAction {
 					}
 
 					if(lists!=null && lists.size()>0){
-						boolean issuccuess = util.insertTrdata(lib,env, lists);
+						boolean issuccuess = util.insertTrdata(lib,env, lists,lib1);
 						if(issuccuess){
 
 							Map map1 = new HashMap();
 							map1.put("ZIPHDRVO", phdrvo);
 							map1.put("ZIPDTLVO", pdtlvo);
 							this.ziphdrService.updateZiphdr(map1);
-						}
+						}else{throw new RuntimeException();}
 					}
 
 				}
@@ -3585,6 +3587,7 @@ public class ResourceAction extends BaseAction {
 				DataSourceUtil.setDataSource(dbconfigurl, idx);
 				String stid =Utils.getDataSourceS(dbconfigurl, "STID"+idx);
 				String lib = Utils.getDataSourceS(dbconfigurl, "AMTLIB"+idx);
+				String lib1 = Utils.getDataSourceS(dbconfigurl, "AMPHLIB"+idx);
 
 				//*******
 
@@ -3697,7 +3700,7 @@ public class ResourceAction extends BaseAction {
 					}
 
 					if(lists!=null && lists.size()>0){
-						boolean issuccuess = util.insertTrdata(lib,env, lists);
+						boolean issuccuess = util.insertTrdata(lib,env, lists,lib1);
 						if(issuccuess){
 
 							Map map1 = new HashMap();
