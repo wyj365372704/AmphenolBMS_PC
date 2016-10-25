@@ -32,6 +32,8 @@ public interface ZIPHDRDao {
 	public List<ZBMSRSNVO> getReason(Map rpmap) throws Exception;	
 	
 	public List<ZIPDTLVO> queryItems(ZIPDTLVO vo) throws Exception;
+	
+	public List<ZIPDTLVO> queryItemsWsubOrder(ZIPDTLVO vo) throws Exception;
 
 	public List<ZIPHDRVO> queryHdrs(ZIPHDRVO vo) throws Exception;
 	
@@ -46,6 +48,8 @@ public interface ZIPHDRDao {
 	public void insertZiphst(ZIPHSTVO vo) throws Exception;
 	
 	public void updateZiphdrStat(ZIPHDRVO VO) throws Exception;	
+
+	public void updateZiphdrLprt(ZIPHDRVO VO) throws Exception;	
 	
 	public void updateZipitmStat(ZIPDTLVO vo) throws Exception;	
 	

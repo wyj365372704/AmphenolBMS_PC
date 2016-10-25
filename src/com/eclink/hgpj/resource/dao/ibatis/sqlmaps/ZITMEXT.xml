@@ -21,7 +21,18 @@
 	
 	<select id="queryItemExt" resultMap="ZITMEXTVOMap" parameterClass="ZITMEXTVO">
 		select  *   
-		from  ZITMEXT where STID=#stid# and ITNBR=#itnbr# and  ITRV=#itrv#	 	
+		from  ZITMEXT 
+		<dynamic prepend="where">
+			<isNotEmpty prepend="and" property="stid">
+				STID=#stid#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="itnbr">
+				ITNBR=#itnbr#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="itrv">
+				ITRV=#itrv#
+			</isNotEmpty>
+		</dynamic>
 	</select>
 	
  	

@@ -563,6 +563,32 @@ public class Utils {
 		return sbuff.toString();
 	}
 	
+	public static String systemLinkOrder(Map map){
+		StringBuffer sbuff = new StringBuffer();
+		sbuff.append("<?xml version='1.0' encoding='UTF-8'?>");
+		sbuff.append("<!DOCTYPE System-Link SYSTEM 'SystemLinkRequest.dtd'>");
+		sbuff.append("<System-Link>");
+		sbuff.append("<Login userId='");
+		sbuff.append(map.get("sluserId"));
+		sbuff.append("' password='");
+		sbuff.append(map.get("slpassword"));
+		sbuff.append("' maxIdle='900000' properties='com.pjx.cas.domain.EnvironmentId=M1,com.pjx.cas.domain.SystemName=S844DD1W,com.pjx.cas.user.LanguageId=zh'/>");
+		sbuff.append("<Request sessionHandle='*current' workHandle='*new' broker='EJB' maxIdle='1000'>");
+		sbuff.append("<Update name = 'updateObject_ManufacturingOrder'  domainClass = 'com.mapics.obpm.ManufacturingOrder'>");
+		sbuff.append("<DomainEntity>            <Key>");
+		sbuff.append("<Property path='order'><Value><![CDATA[");
+		sbuff.append(map.get("order"));
+		sbuff.append("]]></Value>               </Property></Key>");
+		sbuff.append("<Property path='userFieldSwitchA'>               <Value><![CDATA[");
+		sbuff.append("1");
+		sbuff.append("]]></Value>               </Property>");		
+		sbuff.append("</DomainEntity>     </Update> </Request><Logout sessionHandle='*current'/></System-Link>");
+		
+		String retStr = postXMLRequest((String)map.get("slurl"), sbuff.toString());
+		map.put("systemLinkStr", retStr);
+		return sbuff.toString();
+	}
+	
 	public static String systemLinkRm(Map map){
 		StringBuffer sbuff = new StringBuffer();
 		sbuff.append("<?xml version='1.0' encoding='UTF-8'?>");

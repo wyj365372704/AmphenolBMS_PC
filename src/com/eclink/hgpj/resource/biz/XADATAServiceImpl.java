@@ -1,6 +1,7 @@
 package com.eclink.hgpj.resource.biz;
 
 import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -11,6 +12,7 @@ import com.eclink.hgpj.resource.vo.BUYERFVO;
 import com.eclink.hgpj.resource.vo.ITMRVAVO;
 import com.eclink.hgpj.resource.vo.ITMSITVO;
 import com.eclink.hgpj.resource.vo.MODATAVO;
+import com.eclink.hgpj.resource.vo.MODESCVO;
 import com.eclink.hgpj.resource.vo.MOMASTVO;
 import com.eclink.hgpj.resource.vo.MOPORFVO;
 import com.eclink.hgpj.resource.vo.MOROUTVO;
@@ -37,10 +39,10 @@ import com.eclink.hgpj.resource.vo.ZGRNITMVO;
  */
 public class XADATAServiceImpl implements XADATAService {
 
-	
+
 	private XADATADao xadataDao;
-	
-	
+
+
 	public XADATADao getXadataDao() {
 		return xadataDao;
 	}
@@ -53,17 +55,17 @@ public class XADATAServiceImpl implements XADATAService {
 
 	@Override
 	public List<String> queryItrvt(ITMSITVO map) throws Exception {
-		
+
 		return xadataDao.queryItrvt(map);
 	}
 
 	@Override
 	public List<String> queryUmstt9(ITMSITVO map) throws Exception {
-		
+
 		return xadataDao.queryItrvt(map);
 	}
 
-	
+
 	@Override
 	public List<ITMRVAVO> queryItmrva(ITMRVAVO vo) throws Exception {
 		return xadataDao.queryItmrva(vo);
@@ -109,6 +111,12 @@ public class XADATAServiceImpl implements XADATAService {
 	@Override
 	public List<MOPORFVO> queryMoporf(MOPORFVO vo) throws Exception {
 		return xadataDao.queryMoporf(vo);
+	}
+	
+	
+	@Override
+	public List<MOPORFVO> queryMoporfNormal(MOPORFVO vo) throws Exception {
+		return xadataDao.queryMoporfNormal(vo);
 	}
 
 
@@ -200,7 +208,34 @@ public class XADATAServiceImpl implements XADATAService {
 		}
 		return "";
 	}
+	
+	@Override
+	public String queryAxhdtx(Map map) throws Exception {
+		List<String> list= xadataDao.queryEEKANB(map);
+		String result = "";
+		for(String eekanb:list){
+			Map<String, String> parMap = new HashMap<String, String>();
+			parMap.put("eekanb", eekanb);
+			List<String> axhdtxList = xadataDao.queryAXHDTX(parMap);
+			for(String axhdtx:axhdtxList){
+				result+=axhdtx.trim()+",";
+			}
+		}
+		if(result.length()>0)
+			result = result.substring(0,result.length()-1);
+		return result;
+	}
 
+	public String queryADDSC(Map map) throws Exception{
+		List<MODESCVO> list= xadataDao.queryModesc(map);
+		String result = "";
+		for(MODESCVO modescvo:list){
+			result+=modescvo.getAddsc().trim()+",";
+		}
+		if(result.length()>0)
+			result = result.substring(0,result.length()-1);
+		return result;
+	}
 
 	@Override
 	public List<MOROUTVO> queryMorout(Map map) throws Exception {
@@ -212,5 +247,17 @@ public class XADATAServiceImpl implements XADATAService {
 	public List<VENNAMVO> queryVennam(Map map) throws Exception {
 		// TODO Auto-generated method stub
 		return xadataDao.queryVennam(map);
+	}
+
+
+	@Override
+	public List<MOMASTVO> queryMomastPrinted(MOMASTVO vo) throws Exception {
+		return xadataDao.queryMomastPrinted(vo);
+	}
+
+
+	@Override
+	public List<MOMASTVO> queryMomastNoCarePrint(MOMASTVO vo) throws Exception {
+		return xadataDao.queryMomastNoCarePrint(vo);
 	}
 }

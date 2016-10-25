@@ -1,33 +1,34 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
-<sqlMap namespace="ZIPHDR" >
-	
-	<typeAlias alias="ZIPHDRVO" type="com.eclink.hgpj.resource.vo.ZIPHDRVO"/>
-	<typeAlias alias="ZIPDTLVO" type="com.eclink.hgpj.resource.vo.ZIPDTLVO"/>
-	<typeAlias alias="ZIPHSTVO" type="com.eclink.hgpj.resource.vo.ZIPHSTVO"/>
-	<typeAlias alias="ZBMSRSNVO" type="com.eclink.hgpj.resource.vo.ZBMSRSNVO"/>
-	
-	
+<sqlMap namespace="ZIPHDR">
+
+	<typeAlias alias="ZIPHDRVO" type="com.eclink.hgpj.resource.vo.ZIPHDRVO" />
+	<typeAlias alias="ZIPDTLVO" type="com.eclink.hgpj.resource.vo.ZIPDTLVO" />
+	<typeAlias alias="ZIPHSTVO" type="com.eclink.hgpj.resource.vo.ZIPHSTVO" />
+	<typeAlias alias="ZBMSRSNVO" type="com.eclink.hgpj.resource.vo.ZBMSRSNVO" />
+
+
 	<select id="getCoutsByDt" resultClass="Integer" parameterClass="java.math.BigDecimal">
 		<![CDATA[ select  count(*) as ct   
 		from  ZIPHDR where IPDT1=#grdte#  
-		]]>	 		
+		]]>
 	</select>
-	
-	<select id="getDtlCoutsBypar" resultClass="Integer" parameterClass="Map">
+
+	<select id="getDtlCoutsBypar" resultClass="Integer"
+		parameterClass="Map">
 		<![CDATA[ select  count(*) as ct   
 		from  zipdtl where IPDNO = #ipdno#   
-		]]>	 		
+		]]>
 	</select>
 	<select id="getReason" resultClass="ZBMSRSNVO" parameterClass="Map">
 		<![CDATA[ select  *   
 		from  ZBMSRSN where BMSTYP = #bmstyp#     
-		]]>	 	
+		]]>
 		<dynamic>
-		   	<isNotEmpty prepend="AND" property="bmsrsn">
-                BMSRSN = #bmsrsn#
-            </isNotEmpty>
-		</dynamic>	
+			<isNotEmpty prepend="AND" property="bmsrsn">
+				BMSRSN = #bmsrsn#
+			</isNotEmpty>
+		</dynamic>
 	</select>
 	<select id="getAllshqty" resultClass="Double" parameterClass="ZIPDTLVO">
 		<![CDATA[ select sum(a.shqty) as shqty                                            
@@ -37,25 +38,26 @@
 					where b.iptyp in ('1', '2')                                
 					and a.LSTAT in ('05', '10')
  
-		]]>	 
+		]]>
 		<dynamic>
-		   	<isNotEmpty prepend="AND" property="ordno">
-                a.ORDNO = #ordno#
-            </isNotEmpty>
-		</dynamic>	
+			<isNotEmpty prepend="AND" property="ordno">
+				a.ORDNO = #ordno#
+			</isNotEmpty>
+		</dynamic>
 		<dynamic>
-		   	<isNotEmpty prepend="AND" property="ipdno">
-                a.IPDNO = #ipdno#
-            </isNotEmpty>
-		</dynamic>	
+			<isNotEmpty prepend="AND" property="ipdno">
+				a.IPDNO = #ipdno#
+			</isNotEmpty>
+		</dynamic>
 		<dynamic>
-		   	<isNotEmpty prepend="AND" property="citem">
-                a.CITEM = #citem#
-            </isNotEmpty>
+			<isNotEmpty prepend="AND" property="citem">
+				a.CITEM = #citem#
+			</isNotEmpty>
 		</dynamic>
 	</select>
-	
-	<select id="queryItemsBytype" resultClass="ZIPDTLVO" parameterClass="ZIPDTLVO">
+
+	<select id="queryItemsBytype" resultClass="ZIPDTLVO"
+		parameterClass="ZIPDTLVO">
 		<![CDATA[ select a.*                                           
 					from zipdtl a                                     
 					left join ziphdr b                                
@@ -63,144 +65,170 @@
 					where b.iptyp in ('1', '2')                                
 					and a.LSTAT in ('05', '10')
  
-		]]>	 
+		]]>
 		<dynamic>
-		   	<isNotEmpty prepend="AND" property="ordno">
-                a.ORDNO = #ordno#
-            </isNotEmpty>
-		</dynamic>	
+			<isNotEmpty prepend="AND" property="ordno">
+				a.ORDNO = #ordno#
+			</isNotEmpty>
+		</dynamic>
 		<dynamic>
-		   	<isNotEmpty prepend="AND" property="ipdno">
-                a.IPDNO = #ipdno#
-            </isNotEmpty>
-		</dynamic>	
+			<isNotEmpty prepend="AND" property="ipdno">
+				a.IPDNO = #ipdno#
+			</isNotEmpty>
+		</dynamic>
 		<dynamic>
-		   	<isNotEmpty prepend="AND" property="citem">
-                a.CITEM = #citem#
-            </isNotEmpty>
+			<isNotEmpty prepend="AND" property="citem">
+				a.CITEM = #citem#
+			</isNotEmpty>
 		</dynamic>
 	</select>
-	
+
 	<select id="queryItems" resultClass="ZIPDTLVO" parameterClass="ZIPDTLVO">
 		<![CDATA[ select a.*                                           
 					from zipdtl a                                     
-					where a.LSTAT in ($lstat$)
- 
-		]]>	 
-		<dynamic>
-		   	<isNotEmpty prepend="AND" property="ordno">
-                a.ORDNO = #ordno#
-            </isNotEmpty>
-		</dynamic>	
-		<dynamic>
-		   	<isNotEmpty prepend="AND" property="ipdno">
-                a.IPDNO = #ipdno#
-            </isNotEmpty>
-		</dynamic>	
-		<dynamic>
-		   	<isNotEmpty prepend="AND" property="ipdln">
-                a.IPDLN = #ipdln#
-            </isNotEmpty>
-		</dynamic>	
-		<dynamic>
-		   	<isNotEmpty prepend="AND" property="citem">
-                a.CITEM = #citem#
-            </isNotEmpty>
+		]]>
+		<dynamic prepend="where">
+			<isNotEmpty prepend="AND" property="lstat">
+				a.LSTAT in ($lstat$)
+			</isNotEmpty>
+			<isNotEmpty prepend="AND" property="ordno">
+				a.ORDNO = #ordno#
+			</isNotEmpty>
+			<isNotEmpty prepend="AND" property="ipdno">
+				a.IPDNO = #ipdno#
+			</isNotEmpty>
+			<isNotEmpty prepend="AND" property="ipdln">
+				a.IPDLN = #ipdln#
+			</isNotEmpty>
+			<isNotEmpty prepend="AND" property="citem">
+				a.CITEM = #citem#
+			</isNotEmpty>
+			<isNotEmpty prepend="AND" property="house">
+				a.HOUSE = #house#
+			</isNotEmpty>
+			<isNotEmpty prepend="AND" property="whsub">
+				a.WHSUB = #whsub#
+			</isNotEmpty>
+			<isNotEmpty prepend="AND" property="llocn">
+				a.LLOCN = #llocn#
+			</isNotEmpty>
 		</dynamic>
-		<dynamic>
-		   	<isNotEmpty prepend="AND" property="house">
-                a.HOUSE = #house#
-            </isNotEmpty>
-		</dynamic>
-		<dynamic>
-		   	<isNotEmpty prepend="AND" property="whsub">
-                a.WHSUB = #whsub#
-            </isNotEmpty>
-		</dynamic>
-		<dynamic>
-		   	<isNotEmpty prepend="AND" property="llocn">
-                a.LLOCN = #llocn#
-            </isNotEmpty>
-		</dynamic>
-		<![CDATA[ order by a.IPDNO,a.IPDLN desc 
+		<![CDATA[ order by a.IPDNO ,a.SEQNM,a.IPDLN desc 
 		]]>
 	</select>
-	
+	<!-- 分仓打印查询语句 -->
+	<select id="queryItemsWsubOrder" resultClass="ZIPDTLVO"
+		parameterClass="ZIPDTLVO">
+		<![CDATA[ select a.*                                           
+					from zipdtl a                                     
+		]]>
+		<dynamic prepend="where">
+			<isNotEmpty prepend="AND" property="lstat">
+				a.LSTAT in ($lstat$)
+			</isNotEmpty>
+			<isNotEmpty prepend="AND" property="ordno">
+				a.ORDNO = #ordno#
+			</isNotEmpty>
+			<isNotEmpty prepend="AND" property="ipdno">
+				a.IPDNO = #ipdno#
+			</isNotEmpty>
+			<isNotEmpty prepend="AND" property="ipdln">
+				a.IPDLN = #ipdln#
+			</isNotEmpty>
+			<isNotEmpty prepend="AND" property="citem">
+				a.CITEM = #citem#
+			</isNotEmpty>
+			<isNotEmpty prepend="AND" property="house">
+				a.HOUSE = #house#
+			</isNotEmpty>
+			<isNotEmpty prepend="AND" property="whsub">
+				a.WHSUB = #whsub#
+			</isNotEmpty>
+			<isNotEmpty prepend="AND" property="llocn">
+				a.LLOCN = #llocn#
+			</isNotEmpty>
+		</dynamic>
+		<![CDATA[ ORDER BY ORDNO,IPDNO,WHSUB DESC,SEQNM ASC
+		]]>
+	</select>
+
 	<select id="queryHdrs" resultClass="ZIPHDRVO" parameterClass="ZIPHDRVO">
 		<![CDATA[ select a.*                                           
 					from ziphdr a                                     
 					where a.OSTAT in ('05', '10')
  
-		]]>	 
+		]]>
 		<dynamic>
-		   	<isNotEmpty prepend="AND" property="ordno">
-                a.ORDNO = #ordno#
-            </isNotEmpty>
-		</dynamic>	
+			<isNotEmpty prepend="AND" property="ordno">
+				a.ORDNO = #ordno#
+			</isNotEmpty>
+		</dynamic>
 		<dynamic>
-		   	<isNotEmpty prepend="AND" property="ipdno">
-                a.IPDNO = #ipdno#
-            </isNotEmpty>
+			<isNotEmpty prepend="AND" property="ipdno">
+				a.IPDNO = #ipdno#
+			</isNotEmpty>
 		</dynamic>	
 		<![CDATA[ order by a.IPDNO desc 
 		]]>
 	</select>
-	
-	<select id="queryHdrsByPar" resultClass="ZIPHDRVO" parameterClass="Map">
+
+	<select id="queryHdrsByPar" resultClass="ZIPHDRVO"
+		parameterClass="Map">
 		<![CDATA[ select a.*                                           
 					from ziphdr a                                     
 					where a.OSTAT in ('05', '10')
  
-		]]>	 
+		]]>
 		<dynamic>
-		   	<isNotEmpty prepend="AND" property="ordno">
-                a.ORDNO in ($ordno$)
-            </isNotEmpty>
-		</dynamic>	
+			<isNotEmpty prepend="AND" property="ordno">
+				a.ORDNO in ($ordno$)
+			</isNotEmpty>
+		</dynamic>
 		<dynamic>
-		   	<isNotEmpty prepend="AND" property="ipdno">
-                a.IPDNO in ($ipdno$)
-            </isNotEmpty>
-		</dynamic>	
+			<isNotEmpty prepend="AND" property="ipdno">
+				a.IPDNO in ($ipdno$)
+			</isNotEmpty>
+		</dynamic>
 		<dynamic>
-		   	<isNotEmpty prepend="AND" property="startDate">
+			<isNotEmpty prepend="AND" property="startDate">
                <![CDATA[ a.IPDT1 >= #startDate#]]>
-            </isNotEmpty>
-		</dynamic>	
+			</isNotEmpty>
+		</dynamic>
 		<dynamic>
-		   	<isNotEmpty prepend="AND" property="endDate">
+			<isNotEmpty prepend="AND" property="endDate">
                 <![CDATA[a.IPDT1 <= #endDate#]]>
-            </isNotEmpty>
+			</isNotEmpty>
 		</dynamic>
 		<![CDATA[ order by a.IPDNO desc 
 		]]>
 	</select>
-	
-	<select id="queryHstItems" resultClass="ZIPHSTVO" parameterClass="ZIPHSTVO">
+
+	<select id="queryHstItems" resultClass="ZIPHSTVO"
+		parameterClass="ZIPHSTVO">
 		<![CDATA[ select a.*                                           
 					from ziphst a                                     
 					where a.IPDNO = #ipdno# 
  
-		]]>	 
+		]]>
 		<dynamic>
-		   	<isNotEmpty prepend="AND" property="ordno">
-                a.ORDNO = #ordno#
-            </isNotEmpty>
-		</dynamic>	
+			<isNotEmpty prepend="AND" property="ordno">
+				a.ORDNO = #ordno#
+			</isNotEmpty>
+		</dynamic>
 		<dynamic>
-		   	<isNotEmpty prepend="AND" property="ipdln">
-                a.IPDLN = #ipdln#
-            </isNotEmpty>
-		</dynamic>		
+			<isNotEmpty prepend="AND" property="ipdln">
+				a.IPDLN = #ipdln#
+			</isNotEmpty>
+		</dynamic>
 		<dynamic>
-		   	<isNotEmpty prepend="AND" property="ipddl">
-                a.IPDDL = #ipddl#
-            </isNotEmpty>
-		</dynamic>	
+			<isNotEmpty prepend="AND" property="ipddl">
+				a.IPDDL = #ipddl#
+			</isNotEmpty>
+		</dynamic>
 	</select>
-	
+
 	<!-- 插入操作 -->
-  <insert id="insertZiphdr" parameterClass="ZIPHDRVO">
+	<insert id="insertZiphdr" parameterClass="ZIPHDRVO">
 	<![CDATA[
 	INSERT  INTO ZIPHDR (
 		IPDNO,
@@ -251,11 +279,11 @@
             #bmstyp#,
 	        #bmsrsn#,		        
 	        #fapr#)
-	]]>	
-  </insert>
-  
-  <!-- 插入操作 -->
-  <insert id="insertZipdtl" parameterClass="ZIPDTLVO">
+	]]>
+	</insert>
+
+	<!-- 插入操作 -->
+	<insert id="insertZipdtl" parameterClass="ZIPDTLVO">
 	<![CDATA[
 	INSERT  INTO ZIPDTL (
 		IPDNO,
@@ -314,11 +342,11 @@
 	        #turnn#,
 	        #turnc#,
 	        #usrsq#)
-	]]>	
-  </insert>
-  
-  <!-- 插入操作 -->
-  <insert id="insertZiphst" parameterClass="ZIPHSTVO">
+	]]>
+	</insert>
+
+	<!-- 插入操作 -->
+	<insert id="insertZiphst" parameterClass="ZIPHSTVO">
 	<![CDATA[
 	INSERT  INTO ZIPHST (
 		IPDNO,
@@ -360,74 +388,86 @@
 	        #ipdp2#,		        
 	        #ipdt2#,
 	        #iptm2#)
-	]]>	
-  </insert>
-  
-   <!-- 更新资源操作 -->
-  <update id="updateZiphdrStat" parameterClass="ZIPHDRVO">
-  	UPDATE ZIPHDR SET OSTAT = #ostat# WHERE  IPDNO=#ipdno#  
-  </update>
-  
-   <update id="updateZipitmQty" parameterClass="ZIPDTLVO">
-  	UPDATE ZIPDTL SET SHQTY = #shqty# WHERE  IPDNO=#ipdno#  
-  	<dynamic>
-		   	<isNotEmpty prepend="AND" property="ipdln">
-                IPDLN = #ipdln#
-            </isNotEmpty>
-	</dynamic>
-  </update>
-  
-  <update id="updateZipitmStat" parameterClass="ZIPDTLVO">
-  	UPDATE ZIPDTL SET LSTAT  = #lstat#,ACQTY=#acqty# WHERE  IPDNO=#ipdno#  
-  	<dynamic>
-		   	<isNotEmpty prepend="AND" property="ipdln">
-                IPDLN = #ipdln#
-            </isNotEmpty>
-	</dynamic>
-  </update>
-  
-  <update id="updateZipitm" parameterClass="ZIPDTLVO">
-  	UPDATE ZIPDTL SET LSTAT  = #lstat#,IPUS2=#ipus2#,IPDP2=#ipdp2#,IPDT2=#ipdt2#,IPTM2=#iptm2# WHERE  IPDNO=#ipdno#  
-  	<dynamic>
-		   	<isNotEmpty prepend="AND" property="ipdln">
-                IPDLN = #ipdln#
-            </isNotEmpty>
-	</dynamic>
-  </update>
-  
-    <update id="updateZiphstS" parameterClass="ZIPHSTVO">
-	  	UPDATE ZIPHST SET IPUS2=#ipus2#,IPDP2=#ipdp2#,IPDT2=#ipdt2#,IPTM2=#iptm2# WHERE  IPDNO=#ipdno#  
-	  	<dynamic>
-			   	<isNotEmpty prepend="AND" property="ipdln">
-	                IPDLN = #ipdln#
-	            </isNotEmpty>
+	]]>
+	</insert>
+
+	<!-- 更新资源操作 -->
+	<update id="updateZiphdrStat" parameterClass="ZIPHDRVO">
+		UPDATE ZIPHDR SET
+		OSTAT = #ostat# WHERE IPDNO=#ipdno#
+	</update>
+
+	<update id="updateZiphdrLprt" parameterClass="ZIPHDRVO">
+		UPDATE ZIPHDR SET
+		LPRT = #lprt# WHERE IPDNO=#ipdno#
+	</update>
+
+	<update id="updateZipitmQty" parameterClass="ZIPDTLVO">
+		UPDATE ZIPDTL SET SHQTY = #shqty# WHERE IPDNO=#ipdno#
+		<dynamic>
+			<isNotEmpty prepend="AND" property="ipdln">
+				IPDLN = #ipdln#
+			</isNotEmpty>
+		</dynamic>
+	</update>
+
+	<update id="updateZipitmStat" parameterClass="ZIPDTLVO">
+		UPDATE ZIPDTL SET LSTAT = #lstat#,ACQTY=#acqty# WHERE IPDNO=#ipdno#
+		<dynamic>
+			<isNotEmpty prepend="AND" property="ipdln">
+				IPDLN = #ipdln#
+			</isNotEmpty>
+		</dynamic>
+	</update>
+
+	<update id="updateZipitm" parameterClass="ZIPDTLVO">
+		UPDATE ZIPDTL SET LSTAT =
+		#lstat#,IPUS2=#ipus2#,IPDP2=#ipdp2#,IPDT2=#ipdt2#,IPTM2=#iptm2# WHERE
+		IPDNO=#ipdno#
+		<dynamic>
+			<isNotEmpty prepend="AND" property="ipdln">
+				IPDLN = #ipdln#
+			</isNotEmpty>
+		</dynamic>
+	</update>
+
+	<update id="updateZiphstS" parameterClass="ZIPHSTVO">
+		UPDATE ZIPHST SET
+		IPUS2=#ipus2#,IPDP2=#ipdp2#,IPDT2=#ipdt2#,IPTM2=#iptm2# WHERE
+		IPDNO=#ipdno#
+		<dynamic>
+			<isNotEmpty prepend="AND" property="ipdln">
+				IPDLN = #ipdln#
+			</isNotEmpty>
 		</dynamic>
 		<dynamic>
-			   	<isNotEmpty prepend="AND" property="ipddl">
-	                IPDDL = #ipddl#
-	            </isNotEmpty>
+			<isNotEmpty prepend="AND" property="ipddl">
+				IPDDL = #ipddl#
+			</isNotEmpty>
 		</dynamic>
-  </update>
-  
-  <update id="updateZiphst" parameterClass="ZIPHSTVO">
-	  	UPDATE ZIPHST SET DLSUB=#dlsub#,DLLOC=#dlloc#,DLQTY=#dlqty#,DLBCH=#dlbch# WHERE  IPDNO=#ipdno#  
-	  	<dynamic>
-			   	<isNotEmpty prepend="AND" property="ipdln">
-	                IPDLN = #ipdln#
-	            </isNotEmpty>
+	</update>
+
+	<update id="updateZiphst" parameterClass="ZIPHSTVO">
+		UPDATE ZIPHST SET
+		DLSUB=#dlsub#,DLLOC=#dlloc#,DLQTY=#dlqty#,DLBCH=#dlbch# WHERE
+		IPDNO=#ipdno#
+		<dynamic>
+			<isNotEmpty prepend="AND" property="ipdln">
+				IPDLN = #ipdln#
+			</isNotEmpty>
 		</dynamic>
 		<dynamic>
-			   	<isNotEmpty prepend="AND" property="ipddl">
-	                IPDDL = #ipddl#
-	            </isNotEmpty>
+			<isNotEmpty prepend="AND" property="ipddl">
+				IPDDL = #ipddl#
+			</isNotEmpty>
 		</dynamic>
-  </update>
-  <delete id="deleteZipdtl" parameterClass="ZIPDTLVO">
-  	delete from ZIPDTL where IPDNO=#ipdno# 
+	</update>
+	<delete id="deleteZipdtl" parameterClass="ZIPDTLVO">
+		delete from ZIPDTL where IPDNO=#ipdno#
 		<dynamic>
-			   	<isNotEmpty prepend="AND" property="ipdln">
-	                IPDLN = #ipdln#
-	            </isNotEmpty>
+			<isNotEmpty prepend="AND" property="ipdln">
+				IPDLN = #ipdln#
+			</isNotEmpty>
 		</dynamic>
-  </delete>
+	</delete>
 </sqlMap>

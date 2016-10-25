@@ -59,6 +59,8 @@ public class MODATAVO extends BaseVO{
 	private String usrsq;
 	
 	private String lblot;
+	
+	private String uugam2;
 
 	private ZITEMBXVO zitembx;
 	
@@ -72,6 +74,14 @@ public class MODATAVO extends BaseVO{
 
 	public String getCitem() {
 		return citem;
+	}
+
+	public String getUugam2() {
+		return uugam2;
+	}
+
+	public void setUugam2(String uugam2) {
+		this.uugam2 = uugam2;
 	}
 
 	public void setCitem(String citem) {

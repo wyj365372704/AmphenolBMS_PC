@@ -38,6 +38,8 @@ public class MOROUTVO extends BaseVO{
 	
 	private BigDecimal srlhu;
 	
+	private BigDecimal srmhu;
+	
 	public String getOrdno() {
 		return ordno;
 	}
@@ -52,6 +54,14 @@ public class MOROUTVO extends BaseVO{
 
 	public void setOpseq(String opseq) {
 		this.opseq = opseq;
+	}
+
+	public BigDecimal getSrmhu() {
+		return srmhu;
+	}
+
+	public void setSrmhu(BigDecimal srmhu) {
+		this.srmhu = srmhu;
 	}
 
 	public String getOpdsc() {

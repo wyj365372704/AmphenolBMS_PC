@@ -14,6 +14,7 @@
 	<typeAlias alias="SHPMSTVO" type="com.eclink.hgpj.resource.vo.SHPMSTVO" />
 	<typeAlias alias="POBLKTVO" type="com.eclink.hgpj.resource.vo.POBLKTVO" />
 	<typeAlias alias="MOROUTVO" type="com.eclink.hgpj.resource.vo.MOROUTVO" />
+	<typeAlias alias="MODESCVO" type="com.eclink.hgpj.resource.vo.MODESCVO" />
 	<typeAlias alias="VENNAMVO" type="com.eclink.hgpj.resource.vo.VENNAMVO" />
 	<resultMap id="MODATAVOMap" class="MODATAVO">
 		<result property="ordno" column="ORDNO" />
@@ -32,6 +33,7 @@
 		<result property="turnc" column="TURNC" />
 		<result property="usrsq" column="USRSQ" />
 		<result property="listd" column="LISDT" />
+		<result property="uugam2" column="UUGAM2" />
 
 
 		<result property="fitem" column="fitem" />
@@ -96,12 +98,13 @@
 		<result column="RLNB" property="rlnb" />
 		<result column="KTRL" property="ktrl" />
 		<result column="UUSAMY" property="uusamy" />
+		<result column="CRDT" property="crdt" />
 
 		<result column="unmsr" property="unmsr" />
 		<result column="moqty" property="moqty" />
 		<result column="mounqty" property="mounqty" />
-		<result property="weght" column="weght"/>
-		<result property="b2cqcd" column="b2cqcd"/>
+		<result property="weght" column="weght" />
+		<result property="b2cqcd" column="b2cqcd" />
 	</resultMap>
 
 	<select id="queryModatas" resultMap="MODATAVOMap"
@@ -112,26 +115,20 @@
 					on a.ordno = b.ordno
 					left join itmrva c
 					on b.stid = c.stid and a.citem = c.itnbr and a.citr = c.itrv
-					
-					
-					where a.citwh = #citwh# 
 		]]>
-		<dynamic>
+		<dynamic prepend="where">
+			<isNotEmpty prepend="AND" property="citwh">
+				a.citwh = #citwh#
+			</isNotEmpty>
 			<isNotEmpty prepend="AND" property="ordno">
 				a.ORDNO = #ordno#
 			</isNotEmpty>
-		</dynamic>
-		<dynamic>
 			<isNotEmpty prepend="AND" property="fitem">
 				b.fitem = #fitem#
 			</isNotEmpty>
-		</dynamic>
-		<dynamic>
 			<isNotEmpty prepend="AND" property="citem">
 				a.CITEM = #citem#
 			</isNotEmpty>
-		</dynamic>
-		<dynamic>
 			<isNotEmpty prepend="AND" property="seqnm">
 				a.SEQNM = #seqnm#
 			</isNotEmpty>
@@ -214,12 +211,118 @@
 			</isNotEmpty>
 		</dynamic>
 	</select>
-
+	<!-- 未打印的 -->
 	<select id="queryMomast" resultMap="MOMASTVOMap" parameterClass="MOMASTVO">
 		<![CDATA[ select  a.*,b.unmsr,b.weght,b.b2cqcd,(a.ORQTY+a.QTDEV) as moqty, (a.ORQTY+a.QTDEV-QTYRC) as mounqty from  MOMAST a left join itmrva b                                     
 				on a.stid = b.stid and a.fitem = b.itnbr                       
 				and a.itrv = b.itrv 
 		 		where a.FITWH=#fitwh#  and a.UUSAMY <> '1' AND OSTAT IN ('10','40','45','50','55') 
+		]]>
+		<dynamic>
+			<isNotEmpty prepend="AND" property="dptno">
+				a.DPTNO like
+				('%'||#dptno#||'%')
+			</isNotEmpty>
+		</dynamic>
+		<dynamic>
+			<isNotEmpty prepend="AND" property="fitem">
+				a.FITEM like
+				('%'||#fitem#||'%' )
+			</isNotEmpty>
+		</dynamic>
+		<dynamic>
+			<isNotEmpty prepend="AND" property="ordnoF">
+				(a.ORDNO IN (#ordnoF#)
+				or a.ORDNO like ('%'||#ordnoF#||'%'))
+			</isNotEmpty>
+		</dynamic>
+		<dynamic>
+			<isNotEmpty prepend="AND" property="ordnodown">
+				(a.ORDNO >=
+				#ordnodown#)
+			</isNotEmpty>
+		</dynamic>
+		<dynamic>
+			<isNotEmpty prepend="AND" property="ordnoup">
+               <![CDATA[ (a.ORDNO <= #ordnoup#)  ]]>
+			</isNotEmpty>
+		</dynamic>
+
+		<dynamic>
+			<isNotEmpty prepend="AND" property="startDateB">
+				(a.ASTDT >=
+				#startDateB#)
+			</isNotEmpty>
+		</dynamic>
+		<dynamic>
+			<isNotEmpty prepend="AND" property="endDateB">
+               <![CDATA[ (a.ASTDT <= #endDateB#)  ]]>
+			</isNotEmpty>
+		</dynamic>
+		<![CDATA[ order by a.ASTDT desc 
+		]]>
+	</select>
+
+	<!-- 已打印的 -->
+	<select id="queryMomastPrinted" resultMap="MOMASTVOMap"
+		parameterClass="MOMASTVO">
+		<![CDATA[ select  a.*,b.unmsr,b.weght,b.b2cqcd,(a.ORQTY+a.QTDEV) as moqty, (a.ORQTY+a.QTDEV-QTYRC) as mounqty from  MOMAST a left join itmrva b                                     
+				on a.stid = b.stid and a.fitem = b.itnbr                       
+				and a.itrv = b.itrv 
+		 		where a.FITWH=#fitwh#  and a.UUSAMY = '1' AND OSTAT IN ('10','40','45','50','55') 
+		]]>
+		<dynamic>
+			<isNotEmpty prepend="AND" property="dptno">
+				a.DPTNO like
+				('%'||#dptno#||'%')
+			</isNotEmpty>
+		</dynamic>
+		<dynamic>
+			<isNotEmpty prepend="AND" property="fitem">
+				a.FITEM like
+				('%'||#fitem#||'%' )
+			</isNotEmpty>
+		</dynamic>
+		<dynamic>
+			<isNotEmpty prepend="AND" property="ordnoF">
+				(a.ORDNO IN (#ordnoF#)
+				or a.ORDNO like ('%'||#ordnoF#||'%'))
+			</isNotEmpty>
+		</dynamic>
+		<dynamic>
+			<isNotEmpty prepend="AND" property="ordnodown">
+				(a.ORDNO >=
+				#ordnodown#)
+			</isNotEmpty>
+		</dynamic>
+		<dynamic>
+			<isNotEmpty prepend="AND" property="ordnoup">
+               <![CDATA[ (a.ORDNO <= #ordnoup#)  ]]>
+			</isNotEmpty>
+		</dynamic>
+
+		<dynamic>
+			<isNotEmpty prepend="AND" property="startDateB">
+				(a.ASTDT >=
+				#startDateB#)
+			</isNotEmpty>
+		</dynamic>
+		<dynamic>
+			<isNotEmpty prepend="AND" property="endDateB">
+               <![CDATA[ (a.ASTDT <= #endDateB#)  ]]>
+			</isNotEmpty>
+		</dynamic>
+		<![CDATA[ order by a.ASTDT desc 
+		]]>
+	</select>
+
+	<!-- 不区分打印状态的 -->
+	<select id="queryMomastNoCarePrint" resultMap="MOMASTVOMap"
+		parameterClass="MOMASTVO">
+		<![CDATA[ select  a.*,b.unmsr,b.weght,b.b2cqcd,(a.ORQTY+a.QTDEV) as moqty, (a.ORQTY+a.QTDEV-QTYRC) as mounqty from  MOMAST a left join itmrva b                                     
+				on a.stid = b.stid and a.fitem = b.itnbr                       
+				and a.itrv = b.itrv 
+		 		where a.FITWH=#fitwh#  AND OSTAT IN ('10','40','45','50','55') 
 		]]>
 		<dynamic>
 			<isNotEmpty prepend="AND" property="dptno">
@@ -299,10 +402,35 @@
 		<![CDATA[ select  a.*,c.SCTKJI from  MOPORF  a  left outer join SCHRCP c on 
 		       c.ORDRJI = a.PONR and c.PISQJI = a.PISQ
 			   and c.BKSQJI = a.BKSQ 		        
-		 		where a.MONR=#monr# AND a.PONR like 'P%' 
+		 		where a.PONR like 'P%' 
 		]]>
+		<dynamic>
+			<isNotEmpty prepend="and" property="monr">
+				a.MONR=#monr#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="opsq">
+				a.OPSQ=#opsq#
+			</isNotEmpty>
+		</dynamic>
 
 	</select>
+	
+	<select id="queryMoporfNormal" resultClass="MOPORFVO" parameterClass="MOPORFVO">
+		<![CDATA[ select  a.*,c.SCTKJI from  MOPORF  a  left outer join SCHRCP c on 
+		       c.ORDRJI = a.PONR and c.PISQJI = a.PISQ
+			   and c.BKSQJI = a.BKSQ 		        
+		]]>
+		<dynamic prepend="where">
+			<isNotEmpty prepend="and" property="monr">
+				a.MONR=#monr#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="opsq">
+				a.OPSQ=#opsq#
+			</isNotEmpty>
+		</dynamic>
+
+	</select>
+
 	<select id="queryPomast" resultClass="POMASTVO" parameterClass="Map">
 		<![CDATA[ select  a.*,c.vn35,c.vcont,c.txsuf from  pomast   a  left outer join vennam  c on 
 		       c.vndnr  = a.vndnr 	        
@@ -423,6 +551,21 @@
 		]]>
 	</select>
 
+	<select id="queryEekanb" resultClass="String" parameterClass="Map">
+		<![CDATA[ Select a.EEKANB from MBEECPP a
+       where a.EEAENB = #cono# and a.EEDCCD = #ortp#
+       and a.EECVNB = #ordnc# and a.EEFCNB = #itmsq#
+		]]>
+	</select>
+
+	<select id="queryAxhdtx" resultClass="String" parameterClass="Map">
+		<![CDATA[ 	 Select a.AXHDTX from MBAXREP a
+       where a.AXKANB = #eekanb#
+		]]>
+
+
+	</select>
+
 	<select id="queryBMCBTX" resultClass="String" parameterClass="Map">
 		<![CDATA[ Select a.BMCBTX from MBBMCPP a
        where a.BMAENB = #cono# and a.BMDCCD = #ortp# 
@@ -447,6 +590,19 @@
 
 	<select id="queryMorout" resultClass="MOROUTVO" parameterClass="Map">
 		<![CDATA[ Select * from MOROUT 
+		]]>
+		<dynamic prepend="WHERE">
+			<isNotNull prepend="AND" property="ordno">
+				ORDNO = #ordno#
+			</isNotNull>
+			<isNotNull prepend="AND" property="opseq">
+				OPSEQ = #opseq#
+			</isNotNull>
+		</dynamic>
+	</select>
+
+	<select id="queryModesc" resultClass="MODESCVO" parameterClass="Map">
+		<![CDATA[ Select * from MODESC 
 		]]>
 		<dynamic prepend="WHERE">
 			<isNotNull prepend="AND" property="ordno">

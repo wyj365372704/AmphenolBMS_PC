@@ -41,6 +41,10 @@ public interface XADATAService {
 	
 	public List<MOMASTVO> queryMomast(MOMASTVO vo) throws Exception;
 	
+	public List<MOMASTVO> queryMomastPrinted(MOMASTVO vo) throws Exception;
+
+	public List<MOMASTVO> queryMomastNoCarePrint(MOMASTVO vo) throws Exception;
+	
 	public List<MOMASTVO> queryMomastBystate(MOMASTVO vo) throws Exception;
 	
 	public List<MODATAVO> queryModatas(MODATAVO vo) throws Exception ;
@@ -50,6 +54,8 @@ public interface XADATAService {
 	public List<SLDATAVO> querySldata(Map map) throws Exception;
 	
 	public List<MOPORFVO> queryMoporf(MOPORFVO vo) throws Exception;
+	
+	public List<MOPORFVO> queryMoporfNormal(MOPORFVO vo) throws Exception;
 	
 	public List<SHPMSTVO> queryShpmst(Map map) throws Exception;
 	
@@ -61,6 +67,8 @@ public interface XADATAService {
 	
 	public List<POBLKTVO> queryPoblkt(Map map) throws Exception;
 	
+	public String queryAxhdtx(Map map) throws Exception;
+	public String queryADDSC(Map map) throws Exception;
 	public String queryMBC6REP(Map map) throws Exception;
 	public String queryCusnm(Map map) throws Exception;
 	public String queryBMCBTX(Map map) throws Exception;

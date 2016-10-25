@@ -15,38 +15,33 @@
 <link href="../js/alert/alerts.css" rel="stylesheet" type="text/css" />
 </head>
 <script type="text/javascript">
-function radioChanged(){
-	if(document.getElementById("printA").checked){
-		document.getElementById("printA_type").disabled =  false;
-	}else{
-	document.getElementById("printA_type").disabled = true;
-	}
-}
+
 </script>
 <body>
-	<s:form action="picklist!toPrintPick.action" method="post">
+	<s:form action="momast!toPrintMomast.action" method="post">
 		<div class="public_div">
-<input type="hidden" name="grnno" value="<s:property value="grnno"/>">
+			<input type="hidden" name="grnno" value="<s:property value='grnno'/>" />
 			<div class="public_inner">
 				<table width="100%" border="0" cellspacing="1" cellpadding="0"
 					class="public_table">
 					<tbody>
 						<tr>
-							<td class="td_w_s text_r">打印类型：</td>
-							<td><input id="printA" type="radio" name="input1" value="0"
-								onclick="radioChanged();" checked="checked" />打印领料单 <input
-								id="printB" type="radio" name="input1" value="1"
-								onclick="radioChanged();" />打印分装标签</td>
+							<td class="td_w_s text_r">打印 MO组件明细：</td>
+							<td><input type="checkbox" name="input1" checked="checked"
+								value="1" />
+							</td>
 						</tr>
 						<tr>
-							<td class="td_w_s text_r">分仓打印：</td>
-							<td><input id="printA_type" type="checkbox" name="input2" value="1"/></td>
+							<td class="td_w_s text_r">打印 MO工艺路线：</td>
+							<td><input type="checkbox" name="input2" checked="checked"
+								value="1" />
+							</td>
 						</tr>
-
 						<tr>
 
 							<td align="center" colspan="2"><s:submit id="queryId"
-									value="打印" onclick="return dosubmit()"></s:submit></td>
+									value="打印" onclick="return dosubmit()"></s:submit>
+							</td>
 						</tr>
 					</tbody>
 				</table>

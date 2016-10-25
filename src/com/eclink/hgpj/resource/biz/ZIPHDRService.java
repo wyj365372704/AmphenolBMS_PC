@@ -33,6 +33,8 @@ public interface ZIPHDRService {
 	public List<ZIPDTLVO> queryItemsBytype(ZIPDTLVO vo) throws Exception;
 	
 	public List<ZIPDTLVO> queryItems(ZIPDTLVO vo) throws Exception;
+
+	public List<ZIPDTLVO> queryItemsWsubOrder(ZIPDTLVO vo) throws Exception;
 	
 	public List<ZBMSRSNVO> getReason(Map rpmap) throws Exception;	
 	
@@ -55,6 +57,7 @@ public interface ZIPHDRService {
 	public void updateZiphdr(Map map) throws Exception;
 	public void updateZiphdrS(Map map) throws Exception;
 	public void updateZiphdrStat(ZIPHDRVO vo) throws Exception;
+	public void updateZiphdrLprt(ZIPHDRVO vo) throws Exception;
 	public void updateZipdtlStat(ZIPDTLVO vo) throws Exception;
 
 	

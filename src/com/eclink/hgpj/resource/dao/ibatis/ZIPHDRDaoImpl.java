@@ -62,6 +62,11 @@ public class ZIPHDRDaoImpl extends SqlMapClientDaoSupport implements ZIPHDRDao {
 	public List<ZIPDTLVO> queryItems(ZIPDTLVO vo) throws Exception {
 		return this.getSqlMapClientTemplate().queryForList("ZIPHDR.queryItems", vo);
 	}
+	
+	@Override
+	public List<ZIPDTLVO> queryItemsWsubOrder(ZIPDTLVO vo) throws Exception {
+		return this.getSqlMapClientTemplate().queryForList("ZIPHDR.queryItemsWsubOrder", vo);
+	}
 
 	@Override
 	public List<ZIPDTLVO> queryItemsBytype(ZIPDTLVO vo) throws Exception {
@@ -102,6 +107,11 @@ public class ZIPHDRDaoImpl extends SqlMapClientDaoSupport implements ZIPHDRDao {
 	@Override
 	public void updateZiphdrStat(ZIPHDRVO vo) throws Exception {
 		this.getSqlMapClientTemplate().update("ZIPHDR.updateZiphdrStat", vo);
+	}
+
+	@Override
+	public void updateZiphdrLprt(ZIPHDRVO vo) throws Exception {
+		this.getSqlMapClientTemplate().update("ZIPHDR.updateZiphdrLprt", vo);
 	}
 
 	@Override

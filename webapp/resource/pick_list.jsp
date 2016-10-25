@@ -34,7 +34,7 @@
 </style>
 
 <body class="right_body">
-	<s:form action="#" method="post"
+	<s:form action="picklist!toPickList.action" method="post"
 		name="queryform">
 
 		<div class="path">您现在的位置： 首页 &gt; 生产 &gt; 打印领料单</div>
@@ -46,17 +46,18 @@
 						onclick="return dosubmit()"></s:submit> <s:reset value=""
 						cssClass="purge_button"></s:reset>
 						<input type="button"
-					cssClass="search_button" onclick="myPrint()" value="批量打印领料单">
+					cssClass="search_button" onclick="myPrint()" value="打印">
+				
 				</span>
 				<!--  span里无内容时，此span不能删除  -->
 			</h2>
 
 			<ul>
-				<li><div class="w_s">领料单号：</div> <s:textarea name=""
+				<li><div class="w_s">领料单号：</div> <s:textarea name="ipdno"
 						cssClass="input_w" style="height:30px"></s:textarea></li>
 
 				<li><div class="w_s">工单号：</div> <s:textarea
-						name="" cssClass="input_w" style="height:30px"></s:textarea></li>
+						name="ordno" cssClass="input_w" style="height:30px"></s:textarea></li>
 
 				<li><div class="w_s">创建日期：</div> <s:textfield  id="startDate" name="startDate" cssClass="time_input" onclick="WdatePicker()" autocomplete="on"/>-
             <s:textfield  id="endDate" name="endDate" cssClass="time_input" onclick="WdatePicker()" autocomplete="on"/></li>
@@ -90,40 +91,68 @@
 							<th>审批日期</th>
 							<th>审批时间</th>
 						</tr>
-						<tr class="td_bgcolor2">
-							<th><input type="checkbox" name="cb"
-								value="IP2016072200293" onclick="subselectall()" /></th>
-							<th>IP2016072200293</th>
-							<th>M002740</th>
-							<th>正常</th>
-							<th>S2122836</th>
-							<th>A001</th>
-							<th>2016-04-14</th>
-							<th></th>
-							<th>否</th>
-							<th>否</th>
-							<th>创建中</th>
-							<th></th>
-							<th>0</th>
-							<th>0</th>
-						</tr>
-						<tr class="td_bgcolor">
-							<th><input type="checkbox" name="cb"
-								value="IP2016096500293" onclick="subselectall()" /></th>
-							<th>IP2016096500293</th>
-							<th>M002740</th>
-							<th>正常</th>
-							<th>S2122836</th>
-							<th>A001</th>
-							<th>2016-04-14</th>
-							<th></th>
-							<th>否</th>
-							<th>否</th>
-							<th>创建中</th>
-							<th>S1010176</th>
-							<th>2016-07-22</th>
-							<th>18:51:26</th>
-						</tr>
+				<s:iterator value="results" id="results" status="st">
+  				 <s:if test="#st.Even">
+		      		<tr class="td_bgcolor">
+		      	</s:if>
+		      	<s:else>
+		      		<tr class="td_bgcolor2">
+		      	</s:else>
+	  				<td>	<input type="checkbox" name="cb" value="<s:property value="ipdno"/>" onclick="subselectall()" /></td>
+	  				<td><s:property value="ipdno"/></td>
+	  				<td><s:property value="ordno"/></td>
+	  				<td>
+						<s:if test="iptyp==1">
+		  					正常
+		  				</s:if>
+		  				<s:if test="iptyp==2">
+		  					超领
+		  				</s:if>
+		  				<s:if test="iptyp==3">
+		  					退领
+		  				</s:if>
+					</td>
+	  				<td><s:property value="ipus1"/></td>
+	  				<td><s:property value="ipdp1"/></td>
+	  				<td><s:property value="sipdt1"/></td>
+	  				<td><s:property value="cmmt"/></td>
+	  				<td>
+						<s:if test="lprt==1">
+		  					是
+		  				</s:if>
+		  				<s:else>
+		  					否
+		  				</s:else>
+					</td>
+	  				<td>
+						<s:if test="arpst==1">
+		  					是
+		  				</s:if>
+		  				<s:else>
+		  					否
+		  				</s:else>
+					</td>
+	  				<td>
+	  				<s:if test="ostat==05">
+	  					创建中
+	  				</s:if>
+	  				<s:if test="ostat==10">
+	  					已创建
+	  				</s:if>
+	  				<s:if test="ostat==50">
+	  					已完成
+	  				</s:if>
+	  				<s:if test="ostat==60">
+	  					已关闭
+	  				</s:if>
+	  				</td>
+	  				<td><s:property value="aprus"/></td>
+	  				<td><s:property value="saprdt"/></td>
+					
+	  				<td><s:property value="saprtm"/></td>
+  			   </tr>
+  			</s:iterator>
+					
 					</tbody>
 				</table>
 				<div class="page">
@@ -184,7 +213,7 @@
 				bool = false;
 			} else {
 				count++;
-				gno.push(p.value);
+				gno.push($.trim(p.value));
 			}
 		})
 

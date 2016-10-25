@@ -92,12 +92,32 @@ public class MOMASTVO extends BaseVO{
 	
 	private String b2cqcd;
 	
+	private BigDecimal crdt;
+	
+	private String scrdt;
+	
 	public String getOrdno() {
 		return ordno;
 	}
 
 	public void setOrdno(String ordno) {
 		this.ordno = ordno;
+	}
+
+	public String getScrdt() {
+		return scrdt;
+	}
+
+	public void setScrdt(String scrdt) {
+		this.scrdt = scrdt;
+	}
+
+	public BigDecimal getCrdt() {
+		return crdt;
+	}
+
+	public void setCrdt(BigDecimal crdt) {
+		this.crdt = crdt;
 	}
 
 	public BigDecimal getOrqty() {

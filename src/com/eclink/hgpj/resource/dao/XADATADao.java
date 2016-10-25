@@ -6,6 +6,7 @@ import java.util.Map;
 import com.eclink.hgpj.resource.vo.ITMRVAVO;
 import com.eclink.hgpj.resource.vo.ITMSITVO;
 import com.eclink.hgpj.resource.vo.MODATAVO;
+import com.eclink.hgpj.resource.vo.MODESCVO;
 import com.eclink.hgpj.resource.vo.MOMASTVO;
 import com.eclink.hgpj.resource.vo.MOPORFVO;
 import com.eclink.hgpj.resource.vo.MOROUTVO;
@@ -37,6 +38,10 @@ public interface XADATADao {
 	public List<SLQNTYVO> querySlqnty(Map map) throws Exception;
 	
 	public List<MOMASTVO> queryMomast(MOMASTVO vo) throws Exception;
+
+	public List<MOMASTVO> queryMomastPrinted(MOMASTVO vo) throws Exception;
+
+	public List<MOMASTVO> queryMomastNoCarePrint(MOMASTVO vo) throws Exception;
 	
 	public List<MOMASTVO> queryMomastBystate(MOMASTVO vo) throws Exception;
 	
@@ -47,10 +52,13 @@ public interface XADATADao {
 	public List<SLDATAVO> querySldata(Map map) throws Exception;
 	
 	public List<MOPORFVO> queryMoporf(MOPORFVO vo) throws Exception;
+
+	public List<MOPORFVO> queryMoporfNormal(MOPORFVO vo) throws Exception;
 	
 	public List<SHPMSTVO> queryShpmst(Map map) throws Exception;
 	
 	public List<String> queryBuyer(Map map) throws Exception;
+
 	
 	public List<POITEMVO> queryPoitem(Map map) throws Exception;
 	
@@ -58,12 +66,15 @@ public interface XADATADao {
 	
 	public List<POBLKTVO> queryPoblkt(Map map) throws Exception;
 
+	public List<String> queryEEKANB(Map map) throws Exception;
+	public List<String> queryAXHDTX(Map map) throws Exception;
 	public List<String> queryMBC6REP(Map map) throws Exception;
 	public List<String> queryCusnm(Map map) throws Exception;
 	public List<String> queryBMCBTX(Map map) throws Exception;
 	public List<String> queryMBCDREP(Map map) throws Exception;
 	public List<String> queryMBADREP(Map map) throws Exception;
 	public List<MOROUTVO> queryMorout(Map map) throws Exception;
+	public List<MODESCVO> queryModesc(Map map) throws Exception;
 
 	public List<VENNAMVO> queryVennam(Map map);
 	

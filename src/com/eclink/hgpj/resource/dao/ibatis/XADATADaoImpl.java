@@ -15,6 +15,7 @@ import com.eclink.hgpj.resource.dao.ZSHPHDRDao;
 import com.eclink.hgpj.resource.vo.ITMRVAVO;
 import com.eclink.hgpj.resource.vo.ITMSITVO;
 import com.eclink.hgpj.resource.vo.MODATAVO;
+import com.eclink.hgpj.resource.vo.MODESCVO;
 import com.eclink.hgpj.resource.vo.MOMASTVO;
 import com.eclink.hgpj.resource.vo.MOPORFVO;
 import com.eclink.hgpj.resource.vo.MOROUTVO;
@@ -87,6 +88,11 @@ public class XADATADaoImpl extends SqlMapClientDaoSupport implements XADATADao {
 	public List<MOPORFVO> queryMoporf(MOPORFVO vo) throws Exception {
 		return this.getSqlMapClientTemplate().queryForList("XADATA.queryMoporf",vo);
 	}
+	
+	@Override
+	public List<MOPORFVO> queryMoporfNormal(MOPORFVO vo) throws Exception {
+		return this.getSqlMapClientTemplate().queryForList("XADATA.queryMoporfNormal",vo);
+	}
 
 	@Override
 	public List<String> queryBuyer(Map map) throws Exception {
@@ -137,6 +143,16 @@ public class XADATADaoImpl extends SqlMapClientDaoSupport implements XADATADao {
 	public List<String> queryMBC6REP(Map map) throws Exception {
 		return this.getSqlMapClientTemplate().queryForList("XADATA.queryMBC6REP",map);
 	}
+	
+	@Override
+	public List<String> queryEEKANB(Map map) throws Exception {
+		return this.getSqlMapClientTemplate().queryForList("XADATA.queryEekanb",map);
+	}
+	
+	@Override
+	public List<String> queryAXHDTX(Map map) throws Exception {
+		return this.getSqlMapClientTemplate().queryForList("XADATA.queryAxhdtx",map);
+	}
 
 	@Override
 	public List<String> queryMBCDREP(Map map) throws Exception {
@@ -151,6 +167,21 @@ public class XADATADaoImpl extends SqlMapClientDaoSupport implements XADATADao {
 	@Override
 	public List<VENNAMVO> queryVennam(Map map) {
 		return  this.getSqlMapClientTemplate().queryForList("XADATA.queryVennam",map);
+	}
+
+	@Override
+	public List<MOMASTVO> queryMomastPrinted(MOMASTVO vo) throws Exception {
+		return this.getSqlMapClientTemplate().queryForList("XADATA.queryMomastPrinted",vo);
+	}
+
+	@Override
+	public List<MOMASTVO> queryMomastNoCarePrint(MOMASTVO vo) throws Exception {
+		return this.getSqlMapClientTemplate().queryForList("XADATA.queryMomastNoCarePrint",vo);
+	}
+
+	@Override
+	public List<MODESCVO> queryModesc(Map map) throws Exception {
+		return this.getSqlMapClientTemplate().queryForList("XADATA.queryModesc",map);
 	}
 
 

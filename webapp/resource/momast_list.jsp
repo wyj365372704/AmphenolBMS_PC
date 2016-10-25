@@ -1,4 +1,4 @@
-<%@ page contentType="text/html;charset=UTF-8" %>
+<%@ page contentType="text/html;charset=UTF-8"%>
 <%@taglib uri="http://www.eclink.com.cn/dfcm/paginator" prefix="page"%>
 <%@taglib uri="/struts-tags" prefix="s"%>
 <%@taglib uri="http://www.eclink.com.cn/hgpj/permission" prefix="hgpj"%>
@@ -11,7 +11,7 @@
 <link href="../css/global.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="../js/My97DatePicker/WdatePicker.js"></script>
 <script type="text/javascript" src="../js/jquery-1.4.2.min.js"></script>
-<script src="../js/alert/jquery.ui.draggable.js" type="text/javascript"></script>    
+<script src="../js/alert/jquery.ui.draggable.js" type="text/javascript"></script>
 <script src="../js/alert/jquery.alerts.js" type="text/javascript"></script>
 <script src="../js/common.js" type="text/javascript"></script>
 <link href="../js/alert/alerts.css" rel="stylesheet" type="text/css" />
@@ -75,119 +75,166 @@
 		       }  
 		  });
 	}
+	// 打印
+	function myPrint() {
+		// 检查是否选中记录
+		var cbs = document.getElementsByName("chk");
+		if (!cbs) {
+			alert("未选中记录！");
+			return;
+		}
+
+		var gno = new Array();
+		var count = 0;
+		cbs.forEach(function(p) {
+			if (!p.checked) {
+				bool = false;
+			} else {
+				count++;
+				gno.push($.trim(p.value));
+			}
+		})
+
+		if (count <= 0) {
+			alert("未选中记录！");
+			return;
+		}
+
+		var grnnos = JSON.stringify({
+			grnnos : gno
+		});
+
+		window.open('momast!momastPrint.action?grnno=' + grnnos, 'newwindow', 'height=200,width=400,top=60,left=200,toolbar=no,menubar=no,scrollbars=no, resizable=no,location=no, status=no');
+	}
 </script>
 
 
 <body class="right_body">
 
-<s:form action="momast!toMomast.action" method="post" name="queryform">
+	<s:form action="momast!toMomast.action" method="post" name="queryform">
 
-	<div class="path">您现在的位置： 首页 &gt; 生产 &gt; 生产订单</div>
-	
+		<div class="path">您现在的位置： 首页 &gt; 生产 &gt; 生产订单</div>
+
 		<div class="search">
-		<h2>
-			<span class="fl">生产订单查询</span>
-			<span class="fr">
-				<s:submit id="queryId" value="" cssClass="search_button" onclick="return dosubmit()"></s:submit>
-				<s:reset value="" cssClass="purge_button"></s:reset>
-				<input type="button" id="addOperM" value="批量生成领料单" onclick="addZiphdrM();" />
-				</span><!--  span里无内容时，此span不能删除  -->
-		</h2>
-		
-		<ul>
-			
-			<li><div class="w_s">仓库：</div>
-			
-			<s:select name="momast.fitwh" list="#session.houses" listKey="house" listValue="house"   cssClass="select_s_2" style="width:60px"></s:select>
-			</li>
-			
-			<li><div class="w_s">产品：</div>
-				<s:textfield name="momast.fitem" cssClass="input_w"/>
-			</li>
-			<li><div class="w_s">部门：</div>
-				<s:textfield name="momast.dptno" cssClass="input_w"/>
-			</li>
-			 <li><div class="w_s">开工日：</div>
-            <s:textfield  id="startDate" name="momast.startDate" cssClass="time_input" onclick="WdatePicker()" autocomplete="on"/>-
-            <s:textfield  id="endDate" name="momast.endDate" cssClass="time_input" onclick="WdatePicker()" autocomplete="on"/>
-            </li>
-            
-            <li><div class="w_s">工单：</div>
-				<s:textarea  name="momast.ordno" cssClass="input_w" style="height:30px" ></s:textarea>
-			</li>
-			<li>
-				
-			</li>
-		</ul>
-	</div>
-	
-	<div class="data_list">
-		<h2>
-			<span class="fl">生产订单列表</span>
-			<span class="fr"></span><!--  span里无内容时，此span不能删除  -->
-		</h2>
-		
-		<div class="list_inner">
-			<table width="100%" border="0" cellspacing="1" cellpadding="0" class="list_table_s">
-			  <tr>
-				<th><input name="chkall" type="checkbox" onclick="selectall();"/> 单号</th>
-				<th>产品</th>
-				<th>描述</th>
-				<th>数量</th>
-				<th>单位</th>
-				<th>部门</th>
-				<th>开始日期</th>
-				<th>完工日期</th>
-				<th>状态</th>
-				<th>已完工</th>
-				<th>未完工</th>
-				<th>操作</th> 
-				<!-- -->
-			  </tr>
-			<s:iterator value="results" id="results" status="st">
-  				 <s:if test="#st.Even">
-		      		<tr class="td_bgcolor">
-		      	</s:if>
-		      	<s:else>
-		      		<tr class="td_bgcolor2">
-		      	</s:else>
-	  				<td><input name="chk" type="checkbox" value="<s:property value="ordno"/>"/><s:property value="ordno"/></td>
-	  				<td><s:property value="fitem"/></td>
-	  				<td><s:property value="fdesc"/></td>
-	  				<td><s:property value="moqty"/></td>
-	  				<td><s:property value="unmsr"/></td>
-	  				<td><s:property value="dptno"/></td>
-	  				<td><s:property value="ssstdt"/></td>
-	  				<td><s:property value="sodudt"/></td>
-	  				<td>
-	  				<s:if test="ostat==10">
+			<h2>
+				<span class="fl">生产订单查询</span> <span class="fr"> <s:submit
+						id="queryId" value="" cssClass="search_button"
+						onclick="return dosubmit()"></s:submit> <s:reset value=""
+						cssClass="purge_button"></s:reset> <input type="button"
+					id="addOperM" value="批量生成领料单" onclick="addZiphdrM();" /> <input type="button"
+					cssClass="search_button" onclick="myPrint()" value="打印"></span>
+				<!--  span里无内容时，此span不能删除  -->
+			</h2>
+
+			<ul>
+
+				<li><div class="w_s">仓库：</div> <s:select name="momast.fitwh"
+						list="#session.houses" listKey="house" listValue="house"
+						cssClass="select_s_2" style="width:60px"></s:select></li>
+
+				<li><div class="w_s">产品：</div> <s:textfield name="momast.fitem"
+						cssClass="input_w" /></li>
+				<li><div class="w_s">部门：</div> <s:textfield name="momast.dptno"
+						cssClass="input_w" /></li>
+				<li><div class="w_s">开工日：</div> <s:textfield id="startDate"
+						name="momast.startDate" cssClass="time_input"
+						onclick="WdatePicker()" autocomplete="on" />- <s:textfield
+						id="endDate" name="momast.endDate" cssClass="time_input"
+						onclick="WdatePicker()" autocomplete="on" /></li>
+
+				<li><div class="w_s">工单：</div> <s:textarea name="momast.ordno"
+						cssClass="input_w" style="height:30px"></s:textarea></li>
+				<li><div class="w_s">打印状态：</div> 
+				<select name="momast.uusamy" class="select_s_2" style="width:80px">
+					<option value="">全部</option>
+					<option value="1">已打印</option>
+					<option value="0">未打印</option>
+				</select>
+				</li>
+			</ul>
+		</div>
+
+		<div class="data_list">
+			<h2>
+				<span class="fl">生产订单列表</span> <span class="fr"></span>
+				<!--  span里无内容时，此span不能删除  -->
+			</h2>
+
+			<div class="list_inner">
+				<table width="100%" border="0" cellspacing="1" cellpadding="0"
+					class="list_table_s">
+					<tr>
+						<th><input name="chkall" type="checkbox"
+							onclick="selectall();" /> 单号</th>
+						<th>产品</th>
+						<th>描述</th>
+						<th>数量</th>
+						<th>单位</th>
+						<th>部门</th>
+						<th>开始日期</th>
+						<th>完工日期</th>
+						<th>状态</th>
+						<th>已打印</th>
+						<th>已完工</th>
+						<th>未完工</th>
+						<th>操作</th>
+						<!-- -->
+					</tr>
+					<s:iterator value="results" id="results" status="st">
+						<s:if test="#st.Even">
+							<tr class="td_bgcolor">
+						</s:if>
+						<s:else>
+							<tr class="td_bgcolor2">
+						</s:else>
+						<td><input name="chk" type="checkbox"
+							value="<s:property value="ordno"/>" />
+						<s:property value="ordno" />
+						</td>
+						<td><s:property value="fitem" />
+						</td>
+						<td><s:property value="fdesc" />
+						</td>
+						<td><s:property value="moqty" />
+						</td>
+						<td><s:property value="unmsr" />
+						</td>
+						<td><s:property value="dptno" />
+						</td>
+						<td><s:property value="ssstdt" />
+						</td>
+						<td><s:property value="sodudt" />
+						</td>
+						<td><s:if test="ostat==10">
 	  					已下达
-	  				</s:if>
-	  				<s:elseif test="ostat==40">
+	  				</s:if> <s:elseif test="ostat==40">
 	  					已开始生产
-	  				</s:elseif>
-	  				<s:elseif test="ostat==45">
+	  				</s:elseif> <s:elseif test="ostat==45">
 	  					物料完成
-	  				</s:elseif>
-	  				<s:elseif test="ostat==50">
+	  				</s:elseif> <s:elseif test="ostat==50">
 	  					工序完成
-	  				</s:elseif>
-	  				<s:elseif test="ostat==55">
+	  				</s:elseif> <s:elseif test="ostat==55">
 	  					物料/工序完成
-	  				</s:elseif>
-	  				<s:elseif test="ostat==99">
+	  				</s:elseif> <s:elseif test="ostat==99">
 	  					订单取消
-	  				</s:elseif>
-	  				</td>
-	  				<td><s:property value="qtyrc"/></td>
-	  				<td><s:property value="mounqty"/></td>
-	  				<td>
-	  				<s:if test='ostat=="10"||ostat=="40"||ostat=="50"'>
-	  					<input type="button" id="addOper" value="新增领料单" class="gray_button" onclick="addZiphdr('<s:property value="ordno"/>','<s:property value="fitwh"/>');"/>
-	  				</s:if>
-	  				<input type="button" id="goZiphdr" value="领料单" class="gray_button" onclick="gtZiphdr('<s:property value="ordno"/>');"/>
-	  				</td>
-	  				<!--<td>
+	  				</s:elseif></td>
+	  					<td><s:if test="uusamy==1">
+	  					已打印
+	  				</s:if> <s:else>
+	  					未打印
+	  				</s:else> </td>
+						<td><s:property value="qtyrc" />
+						</td>
+						<td><s:property value="mounqty" />
+						</td>
+						<td><s:if test='ostat=="10"||ostat=="40"||ostat=="50"'>
+								<input type="button" id="addOper" value="新增领料单"
+									class="gray_button"
+									onclick="addZiphdr('<s:property value="ordno"/>','<s:property value="fitwh"/>');" />
+							</s:if> <input type="button" id="goZiphdr" value="领料单"
+							class="gray_button"
+							onclick="gtZiphdr('<s:property value="ordno"/>');" /></td>
+						<!--<td>
 	  					<s:if test="customsName==orgName">-</s:if>
 						<s:else>
 							<s:property value="orgName"/>
@@ -205,15 +252,16 @@
 					    <hgpj:operation resourceKey="ROLE_MANAGER" operKey="DELETE" styleCss="button_userdelete2"><input name="" type="button" class="button_userdelete" title="删除" onclick="del(<s:property value='roleId'/>,'<s:property value='roleName'/>')" /></hgpj:operation>
 	  				</s:else>
 				</td> -->
-  			   </tr>
-  			</s:iterator>
-		  </table>
-		  <div class="page"><page:paginator formName="queryform" nameInRequest="paginator"/>
-		  </div>
+						</tr>
+					</s:iterator>
+				</table>
+				<div class="page">
+					<page:paginator formName="queryform" nameInRequest="paginator" />
+				</div>
+			</div>
 		</div>
-	</div>
-	
-</s:form>
+
+	</s:form>
 
 </body>
 </html>

@@ -60,6 +60,11 @@ public class ZIPHDRServiceImpl implements ZIPHDRService {
 	public List<ZIPDTLVO> queryItems(ZIPDTLVO vo) throws Exception {
 		return this.ziphdrDao.queryItems(vo);
 	}
+	
+	@Override
+	public List<ZIPDTLVO> queryItemsWsubOrder(ZIPDTLVO vo) throws Exception {
+		return this.ziphdrDao.queryItemsWsubOrder(vo);
+	}
 
 	@Override
 	public List<ZIPDTLVO> queryItemsBytype(ZIPDTLVO vo) throws Exception {
@@ -145,10 +150,15 @@ public class ZIPHDRServiceImpl implements ZIPHDRService {
 	public void updateZipdtlStat(ZIPDTLVO vo) throws Exception {
 		this.ziphdrDao.updateZipitmStat(vo);
 	}
-
+	
 	@Override
 	public void updateZiphdrStat(ZIPHDRVO vo) throws Exception {
 		this.ziphdrDao.updateZiphdrStat(vo);
+	}
+	
+	@Override
+	public void updateZiphdrLprt(ZIPHDRVO vo) throws Exception {
+		this.ziphdrDao.updateZiphdrLprt(vo);
 	}
 
 	@Override

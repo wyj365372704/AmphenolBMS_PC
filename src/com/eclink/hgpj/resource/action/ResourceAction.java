@@ -2947,7 +2947,8 @@ public class ResourceAction extends BaseAction {
 					xamap0.put("item", item.getItnbr());
 					xamap0.put("whsub2", target_shard );
 					xamap0.put("llocn2", target_location );
-					String retStr = Utils.systemLinkHouse(xamap0);
+					Utils.systemLinkHouse(xamap0);
+					String retStr = (String)xamap0.get("systemLinkStr");
 					System.out.println("Tw:"+retStr);
 					String errorStr1 = retStr.substring(retStr.indexOf("hasErrors"), retStr.indexOf("hasErrors")+17);
 					String warnStr2 = retStr.substring(retStr.indexOf("hasWarnings"), retStr.indexOf("hasWarnings")+19);

@@ -72,6 +72,8 @@
 			<result name="toMomast">/resource/momast_list.jsp</result>
 			<result name="toReuslt">/resource/ziphdr_add.jsp</result>
 			<result name="todata">/commons/data.jsp</result>
+			<result name="momastPrint">/resource/momast_print.jsp</result>
+			<result name="toPrintMomast">/resource/momast_form.jsp</result>
 			
 		</action>
 		
@@ -109,6 +111,7 @@
 			<result name="toPickList">/resource/pick_list.jsp</result>
 			<result name="pickPrint">/resource/pick_print.jsp</result>
 			<result name="toPrintPick">/resource/pick_form.jsp</result>
+			<result name="toPrintLable">/resource/pick_form_lable.jsp</result>
 		</action>
 		
 		<action name="turnover" class="com.eclink.hgpj.resource.action.TurnoverTagAction">
