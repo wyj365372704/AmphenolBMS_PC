@@ -125,6 +125,11 @@ public class ZTWHDRServiceImpl implements ZTWHDRService {
 	public void updateItemStat(ZTWDTLVO vo) throws Exception {
 		this.ztwhdrDao.updateItemStat(vo);
 	}
+	
+	@Override
+	public void updateItemPrt(ZTWDTLVO vo) throws Exception {
+		this.ztwhdrDao.updateItemPrt(vo);
+	}
 
 	/**
 	 * 调拨单列表

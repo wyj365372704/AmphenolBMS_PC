@@ -1,5 +1,6 @@
 package com.eclink.hgpj.resource.action;
 
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -202,6 +203,8 @@ public class AllottedAction extends BaseAction {
 						ztwdtlvo.setItdsc(itmrLists.get(0).getItdsc());
 					}
 				}
+				String d= (ztwhdrvo.getTwdt1()==null || ztwhdrvo.getTwdt1().doubleValue()==0.0)?"":ztwhdrvo.getTwdt1().add(BigDecimal.valueOf(19000000)).toString().trim();
+				ztwhdrvo.setCreatedTime(d.length()<8?d: (d.substring(0, 4)+"-"+d.substring(4, 6)+"-"+d.substring(6, 8)));
 			}
 
 			// 获取分页信息
@@ -243,6 +246,8 @@ public class AllottedAction extends BaseAction {
 					if(itmrLists!=null && itmrLists.size()>0){
 						ztwdtlvo.setItdsc(itmrLists.get(0).getItdsc());
 					}
+					ztwdtlvo.setLprt("1");
+					ztwhdrService.updateItemPrt(ztwdtlvo);
 				}
 				ZBMSCTLVO zbmsctlvo = new ZBMSCTLVO();
 				zbmsctlvo.setSite((String) getSession().getAttribute("stid"));
@@ -259,7 +264,7 @@ public class AllottedAction extends BaseAction {
 				Date date = sf.parse(day+time);
 				applyDate = Utils.formateDate(date, "yyyy/MM/dd HH:mm:ss");
 			}else{
-
+				return ERROR;
 			}
 		} catch (Exception e) {e.printStackTrace();
 		log.error("调拨单查询失败", e);

@@ -248,7 +248,10 @@
 		UPDATE ZTWDTL SET
 		LSTAT=#lstat# where TWDNO=#twdno# and TWDLN=#twdln#
 	</update>
-
+	<update id="updateItemPrt" parameterClass="ZTWDTLVO">
+		UPDATE ZTWDTL SET
+		LPRT=#lprt# where TWDNO=#twdno# and TWDLN=#twdln#
+	</update>
 	<update id="updateHdrStat" parameterClass="ZTWHDRVO">
 		UPDATE ZTWHDR SET
 		OSTAT=#ostat# where TWDNO=#twdno#

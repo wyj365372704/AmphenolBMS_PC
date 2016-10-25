@@ -119,7 +119,7 @@
 									test="#it.lstat == '50'">已完成</s:elseif> <s:elseif
 									test="#it.lstat == '60'">已关闭</s:elseif>
 							</td>
-							<td><s:if test="#it.lprt == '1'">
+							<td><s:if test="#it.lprt == 1">
 			  						是
 			  					</s:if> <s:else>
 			  						否
@@ -137,7 +137,7 @@
 							</td>
 							<td><s:property value="twus1" />
 							</td>
-							<td><s:property value="twdt1" />
+							<td><s:property value="createdTime" />
 							</td>
 							<td><s:property value="twdp1" />
 							</td>

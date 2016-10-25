@@ -185,6 +185,11 @@ public class GrnAction extends BaseAction {
 		try {
 			results = this.zgrnhdrService.queryReceiptList(grnvo);
 			
+			for(ZGRNHDRVO zgrnhdrvo:results){
+				String d= (zgrnhdrvo.getCrdt()==null || zgrnhdrvo.getCrdt().doubleValue()==0.0)?"":zgrnhdrvo.getCrdt().add(BigDecimal.valueOf(19000000)).toString().trim();
+				zgrnhdrvo.setScrdt(d.length()<8?d: (d.substring(0, 4)+"-"+d.substring(4, 6)+"-"+d.substring(6, 8)));
+			}
+			
 			// 获取分页信息
 			PageVO page = PaginatorUtil.getPaginator(getRequest());
 //			setPagination(role,page);

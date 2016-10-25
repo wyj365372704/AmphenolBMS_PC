@@ -36,6 +36,8 @@ public class ZGRNHDRVO extends BaseVO{
 	
 	private BigDecimal crdt;
 	
+	private String scrdt;
+	
 	private BigDecimal crtm;
 	
 	private String chus;
@@ -56,6 +58,14 @@ public class ZGRNHDRVO extends BaseVO{
 
 	public String getVndnr() {
 		return vndnr;
+	}
+
+	public String getScrdt() {
+		return scrdt;
+	}
+
+	public void setScrdt(String scrdt) {
+		this.scrdt = scrdt;
 	}
 
 	public void setVndnr(String vndnr) {

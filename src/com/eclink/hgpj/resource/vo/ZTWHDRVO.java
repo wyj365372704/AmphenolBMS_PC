@@ -32,6 +32,8 @@ public class ZTWHDRVO extends BaseVO{
 	
 	private BigDecimal twtm1;
 	
+	private String createdTime;
+	
 	private String ostat;
 	
 	private String cmmt;
@@ -46,6 +48,14 @@ public class ZTWHDRVO extends BaseVO{
 
 	public void setTwdno(String twdno) {
 		this.twdno = twdno;
+	}
+
+	public String getCreatedTime() {
+		return createdTime;
+	}
+
+	public void setCreatedTime(String createdTime) {
+		this.createdTime = createdTime;
 	}
 
 	public String getTwtyp() {

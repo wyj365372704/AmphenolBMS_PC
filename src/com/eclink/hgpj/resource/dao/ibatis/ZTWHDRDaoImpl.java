@@ -88,6 +88,11 @@ public class ZTWHDRDaoImpl extends SqlMapClientDaoSupport implements ZTWHDRDao {
 	public void updateItemStat(ZTWDTLVO vo) throws Exception {
 		this.getSqlMapClientTemplate().update("ZTWHDR.updateItemStat", vo);
 	}
+	
+	@Override
+	public void updateItemPrt(ZTWDTLVO vo) throws Exception {
+		this.getSqlMapClientTemplate().update("ZTWHDR.updateItemPrt", vo);
+	}
 
 	@Override
 	public void updateItemDtl(ZTWDTLVO vo) throws Exception {

@@ -90,7 +90,7 @@
 					      		部分收货
 					      	</s:elseif>
 		  				</td>
-		  				<td><s:property value="crdt"/></td>
+		  				<td><s:property value="scrdt"/></td>
 		  				<td><input type="button" Class="gray_button" value="打印" onclick="print('<s:property value="grnno"/>','<s:property value="grdte"/>')"></td>
 	  			   	</tr>
 	  			</s:iterator>

@@ -43,6 +43,8 @@ public interface ZTWHDRDao {
 	
 	public void updateItemStat(ZTWDTLVO vo) throws Exception;
 	
+	public void updateItemPrt(ZTWDTLVO vo) throws Exception;
+	
 	public void updateHdrStat(ZTWHDRVO vo) throws Exception;
 	
 	public void updateItemDtl(ZTWDTLVO vo) throws Exception;
