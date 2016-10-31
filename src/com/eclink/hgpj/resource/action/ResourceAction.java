@@ -1116,7 +1116,7 @@ public class ResourceAction extends BaseAction {
 				}
 				DataSourceUtil.setDataSource(dbconfigurl, idx);
 				//TODO:获取菜单接口，后续需要完善成根据用户名获取相应的菜单
-				menus = menuService.queryUserMenuTreeListPDA(0);
+				menus = menuService.queryUserMenuTreeList(0);
 				List<Map> list = new ArrayList<Map>();
 				if(menus!=null && menus.size()>0){
 					for(int i=0;i<menus.size();i++){
@@ -2286,6 +2286,7 @@ public class ResourceAction extends BaseAction {
 				}
 				jo.put("code", "1");
 				jo.put("desc", "ok");
+				jo.put("number", number);
 			}
 		}catch (Exception e) {e.printStackTrace();
 		jo.put("code", 4);
@@ -5898,7 +5899,30 @@ public class ResourceAction extends BaseAction {
 		data=jo.toString();
 		return "todata";
 	}
-
+	/**
+	 * 菜单资源排序页面
+	 * @return
+	 * @throws Exception
+	 */
+	public String mlService() throws Exception {
+		try {
+//			Map mp = this.getRequest().getParameterMap();
+//			String[] pars = (String[] )mp.keySet().toArray();
+//			for(int i=0;i<pars.length;i++ ){
+//				System.out.println("pars "+ i+"="+pars[i]);
+//			}
+			Enumeration paramNames = this.getRequest().getParameterNames();  
+	        while (paramNames.hasMoreElements()) {  
+	            String paramName = (String) paramNames.nextElement();  
+	            System.out.println(paramName);
+	            System.out.println(this.getRequest().getParameter(paramName));
+	        }  
+		} catch (Exception e) {e.printStackTrace();
+			log.error("Sort menu occured error.", e);
+			return ERROR;
+		}
+		return "info";
+	}
 
 	/**
 	 * 进入菜单资源修改页面

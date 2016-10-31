@@ -125,6 +125,4 @@ public interface MenuService {
 	 * @throws Exception
 	 */
 	public List<MenuVO> queryUserMenuTreeList(int userId) throws Exception;
-
-	public List<MenuVO> queryUserMenuTreeListPDA(int userId) throws Exception;
 }

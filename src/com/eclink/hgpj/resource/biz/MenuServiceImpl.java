@@ -361,14 +361,7 @@ public class MenuServiceImpl implements MenuService {
 		converAndSortMenuTree(list);
 		return list;
 	}
-	
-	@Override
-	public List<MenuVO> queryUserMenuTreeListPDA(int userId) throws Exception {
-		List<MenuVO> list = menuDao.queryUserMenuTreeListPDA(userId);
-		//转换resources成节点与子节点关联的形式并排
-		converAndSortMenuTree(list);
-		return list;
-	}
+
 
 	@Override
 	public void grantForChildAdmin(int operate, int orgId, String[] resOpers)

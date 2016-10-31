@@ -34,16 +34,8 @@
 	
 	<!-- 获取用户允许访问的系统菜单树 -->
 	<select id="getMenuTreeListForUser" resultClass="MenuVO" parameterClass="int">
-		SELECT MNUID AS menuId, MNUNM AS menuName, UPMNU AS parentMenu, MNUKEY AS menuKey,  MURL AS menuUrl, MNUODR AS menuOrder 
-			FROM ZBMSMNU 
-	</select>
-
-	<!-- 获取用户允许访问的系统菜单树 -->
-	<select id="getMenuTreeListForUserPDA" resultClass="MenuVO" parameterClass="int">
 		SELECT MNUID AS menuId, MNUNM AS menuName, UPMNU AS parentMenu, MNUKEY AS menuKey,  MURL AS menuUrl, MNUODR AS menuOrder ,MTYPE AS menuType
 			FROM ZBMSMNU 
-			
-			
 	</select>
 	
 	<!-- 根据菜单ID获取菜单信息 -->
