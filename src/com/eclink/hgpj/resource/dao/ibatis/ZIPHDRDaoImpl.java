@@ -108,6 +108,11 @@ public class ZIPHDRDaoImpl extends SqlMapClientDaoSupport implements ZIPHDRDao {
 	public void updateZiphdrStat(ZIPHDRVO vo) throws Exception {
 		this.getSqlMapClientTemplate().update("ZIPHDR.updateZiphdrStat", vo);
 	}
+	
+	@Override
+	public void updateZiphdrForApproval(ZIPHDRVO vo) throws Exception{
+		this.getSqlMapClientTemplate().update("ZIPHDR.updateZiphdrForApproval", vo);
+	}
 
 	@Override
 	public void updateZiphdrLprt(ZIPHDRVO vo) throws Exception {
@@ -153,6 +158,10 @@ public class ZIPHDRDaoImpl extends SqlMapClientDaoSupport implements ZIPHDRDao {
 	@Override
 	public List<ZIPHDRVO> queryHdrsByPar(Map vo) throws Exception {
 		return this.getSqlMapClientTemplate().queryForList("ZIPHDR.queryHdrsByPar", vo);
+	}
+	@Override
+	public List<ZIPHDRVO> queryHdrsByParForApproval(Map vo) throws Exception {
+		return this.getSqlMapClientTemplate().queryForList("ZIPHDR.queryHdrsByParForApproval", vo);
 	}
 
 }

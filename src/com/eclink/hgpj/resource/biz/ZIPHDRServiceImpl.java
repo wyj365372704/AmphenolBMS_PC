@@ -157,6 +157,11 @@ public class ZIPHDRServiceImpl implements ZIPHDRService {
 	}
 	
 	@Override
+	public void updateZiphdrForApproval(ZIPHDRVO vo) throws Exception {
+		this.ziphdrDao.updateZiphdrForApproval(vo);
+	}
+	
+	@Override
 	public void updateZiphdrLprt(ZIPHDRVO vo) throws Exception {
 		this.ziphdrDao.updateZiphdrLprt(vo);
 	}
@@ -196,6 +201,10 @@ public class ZIPHDRServiceImpl implements ZIPHDRService {
 	@Override
 	public List<ZIPHDRVO> queryHdrsByPar(Map vo) throws Exception {
 		return this.ziphdrDao.queryHdrsByPar(vo);
+	}
+	@Override
+	public List<ZIPHDRVO> queryHdrsByParForApproval(Map vo) throws Exception {
+		return this.ziphdrDao.queryHdrsByParForApproval(vo);
 	}
 
 }

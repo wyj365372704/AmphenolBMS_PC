@@ -514,6 +514,87 @@ public class ZiphdrAction extends BaseAction {
 		return "toZiphdrList";
 	}
 	
+	
+	public String toZiphdrApprovalList() throws Exception {
+		try {
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			if("1".equals(flag)){
+				this.startDate=Utils.formateDate(null, "yyyy-MM-dd");
+				this.endDate=Utils.formateDate(null, "yyyy-MM-dd");
+
+			}else{
+				
+				Map map = new HashMap();
+				map.put("house", (String) getSession().getAttribute("stid"));
+				
+				if(ordno!=null && ordno.length()>0){
+					String[] ordnos = ordno.split(";");
+					String temp0="";
+					if(ordnos!=null && ordnos.length>0){
+						for(int j=0;j<ordnos.length;j++){
+							temp0=temp0+"'"+ordnos[j]+"',";
+						}
+						temp0=temp0+"''";
+						map.put("ordno", temp0);
+					}
+				}
+				
+				if(ipdno!=null && ipdno.length()>0){
+					String[] ipdnos = ipdno.split(";");
+					String temp0="";
+					if(ipdnos!=null && ipdnos.length>0){
+						for(int j=0;j<ipdnos.length;j++){
+							temp0=temp0+"'"+ipdnos[j]+"',";
+						}
+						temp0=temp0+"''";
+						map.put("ipdno", temp0);
+					}
+				}
+				if(startDate!=null && startDate.length()>0){
+					map.put("startDate", BigDecimal.valueOf(Long.valueOf("1"+Utils.formateDate(sdf.parse(startDate), "yyMMdd"))));
+				}
+				
+				if(endDate!=null && endDate.length()>0){
+					map.put("endDate", BigDecimal.valueOf(Long.valueOf("1"+Utils.formateDate(sdf.parse(endDate), "yyMMdd"))));
+				}
+				
+	//			vo.setOrdno(ordno==null?"":ordno);
+				results= this.ziphdrService.queryHdrsByParForApproval(map);
+				if(results!=null && results.size()>0){
+					for(int i=0;i<results.size();i++){
+						String d= (results.get(i).getIpdt1()==null || results.get(i).getIpdt1().doubleValue()==0.0)?"":results.get(i).getIpdt1().add(BigDecimal.valueOf(19000000)).toString().trim();
+						String d2 = (results.get(i).getAprdt()==null || results.get(i).getAprdt().doubleValue()==0.0)?"":results.get(i).getAprdt().add(BigDecimal.valueOf(19000000)).toString().trim();
+						results.get(i).setSipdt1(d.length()<8?d: (d.substring(0, 4)+"-"+d.substring(4, 6)+"-"+d.substring(6, 8)+" "));
+						results.get(i).setSaprdt(d2.length()<8?d2: (d2.substring(0, 4)+"-"+d2.substring(4, 6)+"-"+d2.substring(6, 8)+" "));
+						String t = results.get(i).getAprtm()==null?"":results.get(i).getAprtm().toString().trim();
+						if(t.length()<6){
+							t="0"+t;
+						}
+						results.get(i).setSaprtm(t.length()<6?t:(t.substring(0, 2)+":"+t.substring(2, 4)+":"+t.substring(4, t.length())));
+					}
+				}
+			}
+			PageVO page = PaginatorUtil.getPaginator(getRequest());
+//			setPagination(role,page);
+			
+			// 查询总记录数
+			if (page.isQueryTotal()) {
+				page.setTotalRecord(0);
+			}
+			
+			// 调用业务方法查询列表
+//			roleList = roleService.queryRoleList(role);
+			
+			// 分页对象保存至request
+			getRequest().setAttribute(HGPJConstant.PAGE_KEY, page);
+			
+		} catch (Exception e) {e.printStackTrace();
+			log.error("Go to admin resource operation grant page occured error.", e);
+			return ERROR;
+		}
+		return "toZiphdrApprovalList";
+	}
+	
 	/**
 	 * 领料单明细列表
 	 * @return
@@ -612,6 +693,39 @@ public class ZiphdrAction extends BaseAction {
 			return ERROR;
 		}
 		return "toAddZipdtl";
+	}
+	
+	public String toApproval() throws Exception{
+		try {
+			String userDept = "";
+			String username = (String)this.getSession().getAttribute("username");
+			List<ZBMSU02VO> dps = this.auserService.queryDeptByUserName(username);
+			if(dps!=null && dps.size()>0){
+				for(int i=0;i<dps.size();i++){
+					ZBMSU02VO dp = dps.get(i);
+					if(dp.getDflt()!=null && "1".equals(dp.getDflt().trim())){
+//						vo.setPlant(dp.getPlant());
+//						vo.setTwdp1(dp.getDept());
+						userDept = dp.getDept();
+					}
+				}
+			}
+			
+			String now1 = Utils.formateDate(null, "yyMMdd");
+			String now2 = Utils.formateDate(null, "HHmmss");
+			
+			ZIPHDRVO ziphdrvo = new ZIPHDRVO();
+			ziphdrvo.setIpdno(ipdno);
+			ziphdrvo.setAprus(username);
+			ziphdrvo.setAprdp(userDept);
+			ziphdrvo.setAprdt(BigDecimal.valueOf(Long.valueOf("1"+now1)));
+			ziphdrvo.setAprtm(BigDecimal.valueOf(Long.valueOf(now2)));
+			ziphdrService.updateZiphdrForApproval(ziphdrvo);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return ERROR;
+		}
+		return "toApproval";
 	}
 	
 	public String toConfirm() throws Exception {

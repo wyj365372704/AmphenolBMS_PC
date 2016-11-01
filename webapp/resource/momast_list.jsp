@@ -145,11 +145,9 @@
 				<li><div class="w_s">工单：</div> <s:textarea name="momast.ordno"
 						cssClass="input_w" style="height:30px"></s:textarea></li>
 				<li><div class="w_s">打印状态：</div> 
-				<select name="momast.uusamy" class="select_s_2" style="width:80px">
-					<option value="">全部</option>
-					<option value="1">已打印</option>
-					<option value="0">未打印</option>
-				</select>
+			
+				<s:select list="#{' ':'全部','1':'已打印','0':'未打印'}" name="momast.uusamy"
+				headerValue="momast.uusamy" style="width:80px" cssClass="select_s_2" ></s:select>
 				</li>
 			</ul>
 		</div>

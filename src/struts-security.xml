@@ -3,9 +3,9 @@
         "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
         "http://struts.apache.org/dtds/struts-2.0.dtd">
 <struts>
-	
-    <package name="user" extends="hgpj-default">
-    	<!-- 用户管理Action -->
+
+	<package name="user" extends="hgpj-default">
+		<!-- 用户管理Action -->
 		<action name="user" class="com.eclink.hgpj.user.action.UserAction">
 			<result name="success">/user/user_list.jsp</result>
 			<result name="toInsert">/user/user_add.jsp</result>
@@ -17,47 +17,47 @@
 				<param name="contentType">image/jpeg</param>
 			</result>
 		</action>
-		
+
 		<!-- 用户登录Action -->
 		<action name="login" class="com.eclink.hgpj.user.action.LoginAction">
 			<result name="success" type="redirect">/index.jsp</result>
 			<result name="listResources">/commons/left.jsp</result>
 			<result name="toLoginPage">/login.jsp</result>
 		</action>
-		
+
 		<!-- 用户注销Action -->
 		<action name="logout" class="com.eclink.hgpj.user.action.LogoutAction">
 			<result type="redirect">/login.jsp</result>
 		</action>
-		
+
 		<!-- 域用户验证Action -->
 		<action name="domainAuth" class="com.eclink.hgpj.user.action.DomainAuthAction"></action>
-    </package>
-    
-    <!-- 组织管理Action -->
-    <package name="org" extends="hgpj-default" namespace="/org">
+	</package>
+
+	<!-- 组织管理Action -->
+	<package name="org" extends="hgpj-default" namespace="/org">
 		<action name="org" class="com.eclink.hgpj.organization.action.OrgAction">
 			<result name="orgindex">/org/org_index.jsp</result>
-    		<result name="orgleft">/org/org_left.jsp</result>
-    		<result name="view">/org/org_view.jsp</result>
-    		<result name="toInsert">/org/org_add.jsp</result>
-    		<result name="toModify">/org/org_modify.jsp</result>
+			<result name="orgleft">/org/org_left.jsp</result>
+			<result name="view">/org/org_view.jsp</result>
+			<result name="toInsert">/org/org_add.jsp</result>
+			<result name="toModify">/org/org_modify.jsp</result>
 		</action>
-    </package>
-    
-    <!-- 角色管理Action -->
-    <package name="role" extends="hgpj-default" namespace="/role">
+	</package>
+
+	<!-- 角色管理Action -->
+	<package name="role" extends="hgpj-default" namespace="/role">
 		<action name="role" class="com.eclink.hgpj.role.action.RoleAction">
 			<result name="success">/role/role_list.jsp</result>
-    		<result name="view">/role/role_view.jsp</result>
-    		<result name="toInsert">/role/role_add.jsp</result>
-    		<result name="toModify">/role/role_modify.jsp</result>
-    		<result name="menuTree">/commons/permission.jsp</result>
+			<result name="view">/role/role_view.jsp</result>
+			<result name="toInsert">/role/role_add.jsp</result>
+			<result name="toModify">/role/role_modify.jsp</result>
+			<result name="menuTree">/commons/permission.jsp</result>
 		</action>
-    </package>
-    
-    <!-- 菜单管理Action -->
-    <package name="resource" extends="hgpj-default" namespace="/resource">
+	</package>
+
+	<!-- 菜单管理Action -->
+	<package name="resource" extends="hgpj-default" namespace="/resource">
 		<action name="resource" class="com.eclink.hgpj.resource.action.ResourceAction">
 			<result name="toIndex">/resource/res_index.jsp</result>
 			<result name="resTree">/resource/res_left.jsp</result>
@@ -67,21 +67,21 @@
 			<result name="toSort">/resource/menu_sort.jsp</result>
 			<result name="todata">/commons/data.jsp</result>
 		</action>
-		
+
 		<action name="momast" class="com.eclink.hgpj.resource.action.MomastAction">
 			<result name="toMomast">/resource/momast_list.jsp</result>
 			<result name="toReuslt">/resource/ziphdr_add.jsp</result>
 			<result name="todata">/commons/data.jsp</result>
 			<result name="momastPrint">/resource/momast_print.jsp</result>
 			<result name="toPrintMomast">/resource/momast_form.jsp</result>
-			
+
 		</action>
-		
+
 		<action name="pomast" class="com.eclink.hgpj.resource.action.PomastAction">
 			<result name="toPomast">/resource/pomast_list.jsp</result>
 			<result name="todata">/commons/data.jsp</result>
 			<result name="printO">/resource/printPage.jsp</result>
-			
+
 		</action>
 		<action name="ziphdr" class="com.eclink.hgpj.resource.action.ZiphdrAction">
 			<result name="toZiphdr">/resource/ziphdr_list.jsp</result>
@@ -90,57 +90,64 @@
 			<result name="toEditZipdtl">/resource/zipdtl_edit.jsp</result>
 			<result name="todata">/commons/data.jsp</result>
 			<result name="toZiphdrList">/resource/ziphdr_search.jsp</result>
+			<result name="toZiphdrApprovalList">/resource/ziphdr_approval_list.jsp</result>
+			<result name="toApproval" type="redirectAction">
+				<param name="actionName">ziphdr</param>
+				<param name="method">toZiphdrApprovalList</param>
+			</result>
 		</action>
-		
+
 		<action name="allotted" class="com.eclink.hgpj.resource.action.AllottedAction">
 			<result name="toAllotted">/resource/allotted_list.jsp</result>
 			<result name="toPrintAllotted">/resource/allotted_form.jsp</result>
 		</action>
-		
-		<action name="material" class="com.eclink.hgpj.resource.action.MaterialTagAction">
+
+		<action name="material"
+			class="com.eclink.hgpj.resource.action.MaterialTagAction">
 			<result name="toMaterialTag">/resource/material_tag.jsp</result>
 			<result name="toPrintMaterialTag">/resource/material_form.jsp</result>
 		</action>
-		
+
 		<action name="myGrn" class="com.eclink.hgpj.resource.action.GrnAction">
 			<result name="toGrn">/resource/my_grn.jsp</result>
 			<result name="toPrintGrn">/resource/my_grn_form.jsp</result>
 		</action>
-		
+
 		<action name="picklist" class="com.eclink.hgpj.resource.action.PickListAction">
 			<result name="toPickList">/resource/pick_list.jsp</result>
 			<result name="pickPrint">/resource/pick_print.jsp</result>
 			<result name="toPrintPick">/resource/pick_form.jsp</result>
 			<result name="toPrintLable">/resource/pick_form_lable.jsp</result>
 		</action>
-		
-		<action name="turnover" class="com.eclink.hgpj.resource.action.TurnoverTagAction">
+
+		<action name="turnover"
+			class="com.eclink.hgpj.resource.action.TurnoverTagAction">
 			<result name="toTurnoverList">/resource/turnover_tag_list.jsp</result>
 			<result name="toTurnoverTag">/resource/turnover_tag.jsp</result>
 			<result name="toPrintTurnoverTag">/resource/turnover_form.jsp</result>
 		</action>
-		
+
 		<action name="sales" class="com.eclink.hgpj.resource.action.SalesOrderAction">
 			<result name="toSalesList">/resource/sales_order.jsp</result>
 		</action>
-		
-    </package>
-    
-    <!-- 操作管理Action -->
-    <package name="operation" extends="hgpj-default" namespace="/operation">
+
+	</package>
+
+	<!-- 操作管理Action -->
+	<package name="operation" extends="hgpj-default" namespace="/operation">
 		<action name="operation" class="com.eclink.hgpj.resource.action.OperationAction">
 			<result name="view">/resource/operation_view.jsp</result>
 			<result name="toModify">/resource/operation_update.jsp</result>
 			<result name="toInsert">/resource/operation_add.jsp</result>
 			<result name="toSort">/resource/operation_sort.jsp</result>
 		</action>
-    </package>
-    
-    <!-- 授权Action -->
-    <package name="grant" extends="hgpj-default" namespace="/grant">
+	</package>
+
+	<!-- 授权Action -->
+	<package name="grant" extends="hgpj-default" namespace="/grant">
 		<action name="grant" class="com.eclink.hgpj.resource.action.GrantAction">
 			<result name="toAdminGrant">/resource/admin_grant.jsp</result>
 			<result name="toChildAdminGrant">/resource/child_admin_grant.jsp</result>
 		</action>
-    </package>
+	</package>
 </struts>

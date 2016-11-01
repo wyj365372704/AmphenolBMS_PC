@@ -41,6 +41,8 @@ public interface ZIPHDRService {
 	public List<ZIPHDRVO> queryHdrs(ZIPHDRVO vo) throws Exception;
 	
 	public List<ZIPHDRVO> queryHdrsByPar(Map vo) throws Exception;
+	
+	public List<ZIPHDRVO> queryHdrsByParForApproval(Map vo) throws Exception ;
 
 	public List<ZIPHSTVO> queryHstItems(ZIPHSTVO vo) throws Exception;
 	
@@ -57,6 +59,7 @@ public interface ZIPHDRService {
 	public void updateZiphdr(Map map) throws Exception;
 	public void updateZiphdrS(Map map) throws Exception;
 	public void updateZiphdrStat(ZIPHDRVO vo) throws Exception;
+	public void updateZiphdrForApproval(ZIPHDRVO vo) throws Exception;
 	public void updateZiphdrLprt(ZIPHDRVO vo) throws Exception;
 	public void updateZipdtlStat(ZIPDTLVO vo) throws Exception;
 

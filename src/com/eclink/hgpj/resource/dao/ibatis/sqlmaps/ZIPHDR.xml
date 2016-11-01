@@ -203,6 +203,41 @@
 		]]>
 	</select>
 
+
+	<select id="queryHdrsByParForApproval" resultClass="ZIPHDRVO"
+		parameterClass="Map">
+		<![CDATA[ select a.*                                           
+					from ziphdr a                                     
+					where a.OSTAT = '10' and a.APRST <> '1' AND a.FAPR = '1' 
+ 
+		]]>
+		<dynamic>
+			<isNotEmpty prepend="AND" property="house">
+				a.HOUSE = #house#
+			</isNotEmpty>
+			<isNotEmpty prepend="AND" property="ordno">
+				a.ORDNO in ($ordno$)
+			</isNotEmpty>
+		</dynamic>
+		<dynamic>
+			<isNotEmpty prepend="AND" property="ipdno">
+				a.IPDNO in ($ipdno$)
+			</isNotEmpty>
+		</dynamic>
+		<dynamic>
+			<isNotEmpty prepend="AND" property="startDate">
+               <![CDATA[ a.IPDT1 >= #startDate#]]>
+			</isNotEmpty>
+		</dynamic>
+		<dynamic>
+			<isNotEmpty prepend="AND" property="endDate">
+                <![CDATA[a.IPDT1 <= #endDate#]]>
+			</isNotEmpty>
+		</dynamic>
+		<![CDATA[ order by a.IPDNO desc 
+		]]>
+	</select>
+
 	<select id="queryHstItems" resultClass="ZIPHSTVO"
 		parameterClass="ZIPHSTVO">
 		<![CDATA[ select a.*                                           
@@ -264,7 +299,7 @@
 	        #fitem#,
             #ostat#,
 	        #lprt#,
-	        #arpst#,		        
+	        #aprst#,		        
 	        #aprus#,
 	        
 	        #aprdp#,
@@ -392,6 +427,11 @@
 	</insert>
 
 	<!-- 更新资源操作 -->
+	<update id="updateZiphdrForApproval" parameterClass="ZIPHDRVO">
+		UPDATE ZIPHDR SET
+		APRST = '1',APRUS = #aprus#,APRDP = #aprdp#,APRDT = #aprdt#,APRTM = #aprtm# WHERE IPDNO=#ipdno#
+	</update>
+
 	<update id="updateZiphdrStat" parameterClass="ZIPHDRVO">
 		UPDATE ZIPHDR SET
 		OSTAT = #ostat# WHERE IPDNO=#ipdno#

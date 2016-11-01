@@ -32,7 +32,7 @@ public class ZIPHDRVO extends BaseVO{
 	
 	private String lprt;
 	
-	private String arpst;
+	private String aprst;
 	
 	private String aprus;
 	
@@ -132,12 +132,14 @@ public class ZIPHDRVO extends BaseVO{
 		this.lprt = lprt;
 	}
 
-	public String getArpst() {
-		return arpst;
+
+
+	public String getAprst() {
+		return aprst;
 	}
 
-	public void setArpst(String arpst) {
-		this.arpst = arpst;
+	public void setAprst(String aprst) {
+		this.aprst = aprst;
 	}
 
 	public String getAprus() {

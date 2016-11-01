@@ -325,7 +325,7 @@ public class MomastAction extends BaseAction {
 						hdrvo.setDept(rettemp.getDptno());
 						hdrvo.setOstat("05");
 						hdrvo.setLprt("0");
-						hdrvo.setArpst("");
+						hdrvo.setAprst("");
 						hdrvo.setAprus("");
 						hdrvo.setAprdp("");
 						hdrvo.setAprdt(BigDecimal.valueOf(0));
@@ -510,7 +510,7 @@ public class MomastAction extends BaseAction {
 				hdrvo.setDept(rettemp.getDptno());
 				hdrvo.setOstat("05");
 				hdrvo.setLprt("0");
-				hdrvo.setArpst("");
+				hdrvo.setAprst("");
 				hdrvo.setAprus("");
 				hdrvo.setAprdp("");
 				hdrvo.setAprdt(BigDecimal.valueOf(0));

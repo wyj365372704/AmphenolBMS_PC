@@ -1131,8 +1131,6 @@ public class ResourceAction extends BaseAction {
 							}
 							list.add(menuM);
 						}
-
-
 					}
 					jo.put("menu_list", list);
 				}

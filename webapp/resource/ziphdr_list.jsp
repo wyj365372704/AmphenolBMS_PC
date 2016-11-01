@@ -176,7 +176,7 @@
 	  					否
 	  				</s:else>
 	  				</td>
-	  				<td><s:property value="arpst"/></td>
+	  				<td><s:property value="aprst"/></td>
 	  				<td>
 	  				<s:if test="ostat==05">
 	  					创建中
