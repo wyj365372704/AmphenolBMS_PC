@@ -26,9 +26,11 @@ import com.alibaba.fastjson.JSON;
 import com.eclink.hgpj.base.BaseAction;
 import com.eclink.hgpj.common.HGPJBizException;
 import com.eclink.hgpj.resource.biz.MenuService;
+import com.eclink.hgpj.resource.biz.SHPDSKService;
 import com.eclink.hgpj.resource.biz.XADATAService;
 import com.eclink.hgpj.resource.biz.ZBMSCTLService;
 import com.eclink.hgpj.resource.biz.ZBMSU01Service;
+import com.eclink.hgpj.resource.biz.ZBMSU01ServiceImpl;
 import com.eclink.hgpj.resource.biz.ZDEPTService;
 import com.eclink.hgpj.resource.biz.ZEMPMSTService;
 import com.eclink.hgpj.resource.biz.ZGRNHDRService;
@@ -54,6 +56,7 @@ import com.eclink.hgpj.resource.vo.MOPORFVO;
 import com.eclink.hgpj.resource.vo.MOROUTVO;
 import com.eclink.hgpj.resource.vo.MenuVO;
 import com.eclink.hgpj.resource.vo.POITEMVO;
+import com.eclink.hgpj.resource.vo.SHPDSKVO;
 import com.eclink.hgpj.resource.vo.SLDATAVO;
 import com.eclink.hgpj.resource.vo.SLQNTYVO;
 import com.eclink.hgpj.resource.vo.VENNAMVO;
@@ -90,6 +93,7 @@ import com.eclink.hgpj.user.vo.AUserVO;
 import com.eclink.hgpj.util.DataSourceUtil;
 import com.eclink.hgpj.util.Utils;
 import com.sun.org.apache.bcel.internal.generic.NEW;
+import com.sun.xml.internal.bind.v2.TODO;
 
 /**
  * ResourceAction.java
@@ -123,6 +127,8 @@ public class ResourceAction extends BaseAction {
 	private ZGRNHDRService zgrnhdrService;
 
 	private ZPLNMSTService zplnmstService;
+	
+	private SHPDSKService shpdskService;
 
 	private XADATAService xadataService;
 
@@ -288,6 +294,14 @@ public class ResourceAction extends BaseAction {
 
 	public void setStep_quantity(String step_quantity) {
 		this.step_quantity = step_quantity;
+	}
+
+	public SHPDSKService getShpdskService() {
+		return shpdskService;
+	}
+
+	public void setShpdskService(SHPDSKService shpdskService) {
+		this.shpdskService = shpdskService;
 	}
 
 	public AUserService getAuserService() {
@@ -5876,6 +5890,34 @@ public class ResourceAction extends BaseAction {
 					ZMOJOBVO zmojobvo = zmojobLsit.get(0);
 					if(zmojobvo.getOstat().equals("20")){
 						zmojobService.finishZmojob(zmojobvo,step_quantity,artificial_hours_after,machine_hours_after,abnormal_hours,abnormal_reason);
+						try {
+							shpdskService.createTable();
+						} catch (Exception e) {
+						}
+						SHPDSKVO shpdskvo = new SHPDSKVO();
+						shpdskvo.setRcdcd("PA");
+						shpdskvo.setOrdno(zmojobvo.getOrdno());
+						shpdskvo.setOpseq(zmojobvo.getOpseq());
+						shpdskvo.setRuncd("R");
+						shpdskvo.setLbtim(zmojobvo.getRlhrs2());
+						shpdskvo.setMatim(zmojobvo.getRmhrs2());
+						shpdskvo.setQcomp(zmojobvo.getJbqty());
+						shpdskvo.setQscrp(new BigDecimal(0));
+						shpdskvo.setRfno(zmojobvo.getMjdno().substring(2, 12));
+						shpdskvo.setOcmpc("0");
+						
+						AUserVO userVO = auserService.queryUserByUserName(username);
+						
+						
+						shpdskvo.setEmpno(new BigDecimal(userVO.getXsBda()));
+						
+						shpdskvo.setShift("1");
+						
+						String now1 = Utils.formateDate(null, "MMddyy");
+						shpdskvo.setTdate(BigDecimal.valueOf(Long.valueOf(now1)) );
+						
+						shpdskService.insertShpdsk(shpdskvo);
+						
 						jo.put("code", 1);
 						jo.put("desc", "OK");
 					}else{

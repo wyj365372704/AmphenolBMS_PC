@@ -75,9 +75,11 @@
 	<bean id="zjbtrnDao" class="com.eclink.hgpj.resource.dao.ibatis.ZJBTRNDaoImpl"></bean>
 	<bean id="zjbtrnService" class="com.eclink.hgpj.resource.biz.ZJBTRNServiceImpl"></bean>
 
-
 	<bean id="zmojobDao" class="com.eclink.hgpj.resource.dao.ibatis.ZMOJOBDaoImpl"></bean>
 	<bean id="zmojobService" class="com.eclink.hgpj.resource.biz.ZMOJOBServiceImpl"></bean>
+	
+	<bean id="shpdskDao" class="com.eclink.hgpj.resource.dao.ibatis.SHPDSKDaoImpl"></bean>
+	<bean id="shpdskService" class="com.eclink.hgpj.resource.biz.SHPDSKServiceImpl"></bean>
 
 	<bean id="xadataDao" class="com.eclink.hgpj.resource.dao.ibatis.XADATADaoImpl">
 		<property name="dataSource" ref="dataSource2"></property>

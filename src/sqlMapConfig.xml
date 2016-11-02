@@ -30,6 +30,7 @@
 	<sqlMap resource="com/eclink/hgpj/resource/dao/ibatis/sqlmaps/ZJOBMCH.xml" />
 	<sqlMap resource="com/eclink/hgpj/resource/dao/ibatis/sqlmaps/ZJBTRN.xml" />
 	<sqlMap resource="com/eclink/hgpj/resource/dao/ibatis/sqlmaps/ZDEPT.xml" />
+	<sqlMap resource="com/eclink/hgpj/resource/dao/ibatis/sqlmaps/SHPDSK.xml" />
 
 	<!-- <sqlMap resource="com/eclink/hgpj/dictionary/dao/ibatis/sqlmaps/Dictionary.xml"/> 
 		<sqlMap resource="com/eclink/hgpj/user/dao/ibatis/sqlmaps/User.xml"/> <sqlMap 

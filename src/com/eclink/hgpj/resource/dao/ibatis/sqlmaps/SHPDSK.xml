@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="SHPDSK">
+	<typeAlias alias="SHPDSKVO" type="com.eclink.hgpj.resource.vo.SHPDSKVO" />
+
+	<sql id="createTable">
+		<![CDATA[ 
+CREATE TABLE  SHPDSK (RCDCD CHAR(2),ORDNO CHAR(7),OPSEQ CHAR(4),RUNCD CHAR(1),
+LBTIM NUMERIC(7,2),MATIM NUMERIC(7,2),QCOMP NUMERIC(10,3),QSCRP NUMERIC(10,3),
+RESN NUMERIC(6),RFNO CHAR(10),OCMPC CHAR(1),AWKCT CHAR(5),EMPNO NUMERIC(5,0),
+ERATE NUMERIC(5,3),SHIFT CHAR(1),TCOST NUMERIC(13,2),TDATE NUMERIC(6,0)) ]]>
+	</sql>
+	
+
+	<insert id="insertShpdsk" parameterClass="SHPDSKVO">
+		INSERT INTO SHPDSK (
+		<dynamic prepend=" ">
+			<isNotEmpty property="rcdcd" prepend=",">RCDCD</isNotEmpty>
+			<isNotEmpty property="ordno" prepend=",">ORDNO</isNotEmpty>
+			<isNotEmpty property="opseq" prepend=",">OPSEQ</isNotEmpty>
+			<isNotEmpty property="runcd" prepend=",">RUNCD</isNotEmpty>
+			<isNotEmpty property="lbtim" prepend=",">LBTIM</isNotEmpty>
+			<isNotEmpty property="matim" prepend=",">MATIM</isNotEmpty>
+			<isNotEmpty property="qcomp" prepend=",">QCOMP</isNotEmpty>
+			<isNotEmpty property="qscrp" prepend=",">QSCRP</isNotEmpty>
+			<isNotEmpty property="resn" prepend=",">RESN</isNotEmpty>
+			<isNotEmpty property="rfno" prepend=",">RFNO</isNotEmpty>
+			<isNotEmpty property="ocmpc" prepend=",">OCMPC</isNotEmpty>
+			<isNotEmpty property="awkct" prepend=",">AWKCT</isNotEmpty>
+			<isNotEmpty property="empno" prepend=",">EMPNO</isNotEmpty>
+			<isNotEmpty property="erate" prepend=",">ERATE</isNotEmpty>
+			<isNotEmpty property="shift" prepend=",">SHIFT</isNotEmpty>
+			<isNotEmpty property="tcost" prepend=",">TCOST</isNotEmpty>
+			<isNotEmpty property="tdate" prepend=",">TDATE</isNotEmpty>
+
+		</dynamic>  
+    <![CDATA[ 
+        ) VALUES ( 
+    ]]>
+		<dynamic prepend=" ">
+			<isNotEmpty property="rcdcd" prepend=",">#rcdcd#</isNotEmpty>
+			<isNotEmpty property="ordno" prepend=",">#ordno#</isNotEmpty>
+			<isNotEmpty property="opseq" prepend=",">#opseq#</isNotEmpty>
+			<isNotEmpty property="runcd" prepend=",">#runcd#</isNotEmpty>
+			<isNotEmpty property="lbtim" prepend=",">#lbtim#</isNotEmpty>
+			<isNotEmpty property="matim" prepend=",">#matim#</isNotEmpty>
+			<isNotEmpty property="qcomp" prepend=",">#qcomp#</isNotEmpty>
+			<isNotEmpty property="qscrp" prepend=",">#qscrp#</isNotEmpty>
+			<isNotEmpty property="resn" prepend=",">#resn#</isNotEmpty>
+			<isNotEmpty property="rfno" prepend=",">#rfno#</isNotEmpty>
+			<isNotEmpty property="ocmpc" prepend=",">#ocmpc#</isNotEmpty>
+			<isNotEmpty property="awkct" prepend=",">#awkct#</isNotEmpty>
+			<isNotEmpty property="empno" prepend=",">#empno#</isNotEmpty>
+			<isNotEmpty property="erate" prepend=",">#erate#</isNotEmpty>
+			<isNotEmpty property="shift" prepend=",">#shift#</isNotEmpty>
+			<isNotEmpty property="tcost" prepend=",">#tcost#</isNotEmpty>
+			<isNotEmpty property="tdate" prepend=",">#tdate#</isNotEmpty>
+		</dynamic>  
+    <![CDATA[ 
+        ) 
+    ]]>
+	</insert>
+
+</sqlMap>
