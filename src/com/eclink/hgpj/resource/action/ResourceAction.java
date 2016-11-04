@@ -5889,35 +5889,7 @@ public class ResourceAction extends BaseAction {
 				}else{
 					ZMOJOBVO zmojobvo = zmojobLsit.get(0);
 					if(zmojobvo.getOstat().equals("20")){
-						zmojobService.finishZmojob(zmojobvo,step_quantity,artificial_hours_after,machine_hours_after,abnormal_hours,abnormal_reason);
-						try {
-							shpdskService.createTable();
-						} catch (Exception e) {
-						}
-						SHPDSKVO shpdskvo = new SHPDSKVO();
-						shpdskvo.setRcdcd("PA");
-						shpdskvo.setOrdno(zmojobvo.getOrdno());
-						shpdskvo.setOpseq(zmojobvo.getOpseq());
-						shpdskvo.setRuncd("R");
-						shpdskvo.setLbtim(zmojobvo.getRlhrs2());
-						shpdskvo.setMatim(zmojobvo.getRmhrs2());
-						shpdskvo.setQcomp(zmojobvo.getJbqty());
-						shpdskvo.setQscrp(new BigDecimal(0));
-						shpdskvo.setRfno(zmojobvo.getMjdno().substring(2, 12));
-						shpdskvo.setOcmpc("0");
-						
-						AUserVO userVO = auserService.queryUserByUserName(username);
-						
-						
-						shpdskvo.setEmpno(new BigDecimal(userVO.getXsBda()));
-						
-						shpdskvo.setShift("1");
-						
-						String now1 = Utils.formateDate(null, "MMddyy");
-						shpdskvo.setTdate(BigDecimal.valueOf(Long.valueOf(now1)) );
-						
-						shpdskService.insertShpdsk(shpdskvo);
-						
+						zmojobService.finishZmojob(zmojobvo,username,step_quantity,artificial_hours_after,machine_hours_after,abnormal_hours,abnormal_reason);
 						jo.put("code", 1);
 						jo.put("desc", "OK");
 					}else{

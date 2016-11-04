@@ -3,16 +3,36 @@
 <sqlMap namespace="SHPDSK">
 	<typeAlias alias="SHPDSKVO" type="com.eclink.hgpj.resource.vo.SHPDSKVO" />
 
-	<sql id="createTable">
+	<statement id="createTable">
 		<![CDATA[ 
 CREATE TABLE  SHPDSK (RCDCD CHAR(2),ORDNO CHAR(7),OPSEQ CHAR(4),RUNCD CHAR(1),
 LBTIM NUMERIC(7,2),MATIM NUMERIC(7,2),QCOMP NUMERIC(10,3),QSCRP NUMERIC(10,3),
 RESN NUMERIC(6),RFNO CHAR(10),OCMPC CHAR(1),AWKCT CHAR(5),EMPNO NUMERIC(5,0),
-ERATE NUMERIC(5,3),SHIFT CHAR(1),TCOST NUMERIC(13,2),TDATE NUMERIC(6,0)) ]]>
-	</sql>
+ERATE NUMERIC(5,3),SHIFT CHAR(1),TCOST NUMERIC(13,2),TDATE NUMERIC(6,0))  NOT   LOGGED   INITIALLY ]]>
+	</statement>
+
+	<statement id="alterlog">
+<![CDATA[ 
+	ALTER TABLE SHPDSK ACTIVATE NOT LOGGED INITIALLY
+	]]>
+	</statement>
 	
+	<statement id="upcommandcoff">
+<![CDATA[ 
+	
+UPDATE COMMAND OPTIONS USING C OFF --
+	]]>
+	</statement>
+	
+		<statement id="upcommandcon">
+<![CDATA[ 
+	
+UPDATE COMMAND OPTIONS USING C ON
+	]]>
+	</statement>
 
 	<insert id="insertShpdsk" parameterClass="SHPDSKVO">
+
 		INSERT INTO SHPDSK (
 		<dynamic prepend=" ">
 			<isNotEmpty property="rcdcd" prepend=",">RCDCD</isNotEmpty>
@@ -57,8 +77,9 @@ ERATE NUMERIC(5,3),SHIFT CHAR(1),TCOST NUMERIC(13,2),TDATE NUMERIC(6,0)) ]]>
 			<isNotEmpty property="tdate" prepend=",">#tdate#</isNotEmpty>
 		</dynamic>  
     <![CDATA[ 
-        ) 
+        )
     ]]>
+
 	</insert>
 
 </sqlMap>

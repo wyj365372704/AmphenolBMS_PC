@@ -26,5 +26,5 @@ public interface ZMOJOBService {
 
 	public String queryMaxIndex(String string) throws Exception;
 
-	public void finishZmojob(ZMOJOBVO zmojobvo,String step_quantity,String artificial_hours_after,String machine_hours_after,String abnormal_hours,String abnormal_reason)throws Exception;
+	public void finishZmojob(ZMOJOBVO zmojobvo,String username,String step_quantity,String artificial_hours_after,String machine_hours_after,String abnormal_hours,String abnormal_reason)throws Exception;
 }

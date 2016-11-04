@@ -45,7 +45,9 @@ public class SHPDSKDaoImpl extends SqlMapClientDaoSupport implements SHPDSKDao {
 
 	@Override
 	public void insertShpdsk(SHPDSKVO vo) {
+		this.getSqlMapClientTemplate().update("SHPDSK.upcommandcoff");
+		this.getSqlMapClientTemplate().update("SHPDSK.alterlog");
 		this.getSqlMapClientTemplate().insert("SHPDSK.insertShpdsk", vo);
-		
+		this.getSqlMapClientTemplate().update("SHPDSK.upcommandcon");
 	}
 }

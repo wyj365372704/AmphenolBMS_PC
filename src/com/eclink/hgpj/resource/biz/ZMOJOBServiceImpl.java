@@ -12,6 +12,7 @@ import com.eclink.hgpj.resource.dao.ZJOBEMPDao;
 import com.eclink.hgpj.resource.dao.ZJOBMCHDao;
 import com.eclink.hgpj.resource.dao.ZMOJOBDao;
 import com.eclink.hgpj.resource.dao.ZWHSUBDao;
+import com.eclink.hgpj.resource.vo.SHPDSKVO;
 import com.eclink.hgpj.resource.vo.ZEMPMSTVO;
 import com.eclink.hgpj.resource.vo.ZJBTRNVO;
 import com.eclink.hgpj.resource.vo.ZJOBEMPVO;
@@ -19,6 +20,8 @@ import com.eclink.hgpj.resource.vo.ZJOBMCHVO;
 import com.eclink.hgpj.resource.vo.ZMCHMSTVO;
 import com.eclink.hgpj.resource.vo.ZMOJOBVO;
 import com.eclink.hgpj.resource.vo.ZWHSUBVO;
+import com.eclink.hgpj.user.biz.AUserService;
+import com.eclink.hgpj.user.vo.AUserVO;
 import com.eclink.hgpj.util.Utils;
 
 /**
@@ -37,7 +40,9 @@ public class ZMOJOBServiceImpl implements ZMOJOBService {
 
 	private ZJOBEMPService  zjobempService;
 	private ZJOBMCHService zjobmchService;
+	private SHPDSKService shpdskService;
 	private ZJBTRNService zjbtrnService;
+	private AUserService auserService;
 	public ZMOJOBDao getZmojobDao() {
 		return zmojobDao;
 	}
@@ -52,6 +57,22 @@ public class ZMOJOBServiceImpl implements ZMOJOBService {
 
 	public void setZjobempService(ZJOBEMPService zjobempService) {
 		this.zjobempService = zjobempService;
+	}
+
+	public SHPDSKService getShpdskService() {
+		return shpdskService;
+	}
+
+	public AUserService getAuserService() {
+		return auserService;
+	}
+
+	public void setAuserService(AUserService auserService) {
+		this.auserService = auserService;
+	}
+
+	public void setShpdskService(SHPDSKService shpdskService) {
+		this.shpdskService = shpdskService;
 	}
 
 	public ZJOBMCHService getZjobmchService() {
@@ -94,7 +115,7 @@ public class ZMOJOBServiceImpl implements ZMOJOBService {
 	}
 
 	@Override
-	public void finishZmojob(ZMOJOBVO zmojobvo,String step_quantity,String artificial_hours_after,String machine_hours_after,String abnormal_hours,String abnormal_reason)throws Exception{
+	public void finishZmojob(ZMOJOBVO zmojobvo,String username,String step_quantity,String artificial_hours_after,String machine_hours_after,String abnormal_hours,String abnormal_reason)throws Exception{
 		Map<String,String> zjobempParMap = new HashMap<String, String>();
 		zjobempParMap.put("mjdno", zmojobvo.getMjdno());
 		zjobempParMap.put("jstat", "1");
@@ -161,5 +182,36 @@ public class ZMOJOBServiceImpl implements ZMOJOBService {
 			zmojobvo.setJendtm(endtm);
 		}
 		zmojobDao.updateZmojob(zmojobvo);
+		
+		/*
+		 * SHKDSP数据库操作,日志问题未能解决,暂时注释。goodluck~！
+		 * 
+		 * try {
+			shpdskService.createTable();
+		} catch (Exception e) {
+		}
+		SHPDSKVO shpdskvo = new SHPDSKVO();
+		shpdskvo.setRcdcd("PA");
+		shpdskvo.setOrdno(zmojobvo.getOrdno());
+		shpdskvo.setOpseq(zmojobvo.getOpseq());
+		shpdskvo.setRuncd("R");
+		shpdskvo.setLbtim(zmojobvo.getRlhrs2());
+		shpdskvo.setMatim(zmojobvo.getRmhrs2());
+		shpdskvo.setQcomp(zmojobvo.getJbqty());
+		shpdskvo.setQscrp(new BigDecimal(0));
+		shpdskvo.setRfno(zmojobvo.getMjdno().substring(2, 12));
+		shpdskvo.setOcmpc("0");
+		
+		AUserVO userVO = auserService.queryUserByUserName(username);
+		
+		
+		shpdskvo.setEmpno(new BigDecimal(userVO.getXsBda()));
+		
+		shpdskvo.setShift("1");
+		
+		String now1 = Utils.formateDate(null, "MMddyy");
+		shpdskvo.setTdate(BigDecimal.valueOf(Long.valueOf(now1)) );
+		
+		shpdskService.insertShpdsk(shpdskvo);*/
 	}
 }
