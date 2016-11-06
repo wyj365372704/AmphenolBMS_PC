@@ -7,7 +7,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.log4j.Logger;
+import org.apache.struts2.ServletActionContext;
 
 import com.eclink.dfcm.paginator.common.PaginatorUtil;
 import com.eclink.dfcm.paginator.tag.PageVO;
@@ -21,7 +24,9 @@ import com.eclink.hgpj.resource.vo.ITMSITVO;
 import com.eclink.hgpj.resource.vo.ZBMSCTLVO;
 import com.eclink.hgpj.resource.vo.ZTWDTLVO;
 import com.eclink.hgpj.resource.vo.ZTWHDRVO;
+import com.eclink.hgpj.util.QRcoderUtil;
 import com.eclink.hgpj.util.Utils;
+import com.opensymphony.xwork2.ActionContext;
 
 /**
  * @Title: 打印调拨单控制类
@@ -56,6 +61,12 @@ public class AllottedAction extends BaseAction {
 	private String printDate;
 
 	private String applyDate ;
+	
+	private String startDate;
+	
+	private String endDate;
+
+	private String flag;
 
 	public ZTWHDRService getZtwhdrService() {
 		return ztwhdrService;
@@ -77,12 +88,36 @@ public class AllottedAction extends BaseAction {
 		this.xadataService = xadataService;
 	}
 
+	public String getStartDate() {
+		return startDate;
+	}
+
+	public void setStartDate(String startDate) {
+		this.startDate = startDate;
+	}
+
+	public String getEndDate() {
+		return endDate;
+	}
+
+	public void setEndDate(String endDate) {
+		this.endDate = endDate;
+	}
+
 	public void setZtw(ZTWHDRVO ztw) {
 		this.ztw = ztw;
 	}
 
 	public List<ZTWHDRVO> getResults() {
 		return results;
+	}
+
+	public String getFlag() {
+		return flag;
+	}
+
+	public void setFlag(String flag) {
+		this.flag = flag;
 	}
 
 	public void setResults(List<ZTWHDRVO> results) {
@@ -144,67 +179,59 @@ public class AllottedAction extends BaseAction {
 	public void setZtwdtl(ZTWDTLVO ztwdtl) {
 		this.ztwdtl = ztwdtl;
 	}
-
-	/**
-	 * 调拨单
-	 * @return
-	 * @throws Exception
-	 */
-	public String toAllotted() throws Exception {
-		// 获取分页信息
-		PageVO page = PaginatorUtil.getPaginator(getRequest());
-		// setPagination(role,page);
-
-		// 查询总记录数
-		if (page.isQueryTotal()) {
-			page.setTotalRecord(0);
-		}
-
-		// 调用业务方法查询列表
-		// roleList = roleService.queryRoleList(role);
-
-		// 分页对象保存至request
-		getRequest().setAttribute(HGPJConstant.PAGE_KEY, page);
-		return "toAllotted";
-	}
-
 	/**
 	 * 查询调拨单
 	 * @return
 	 * @throws Exception
 	 */
-	public String tofindAllotted() throws Exception {
+	public String toAllotted() throws Exception {
 		try {
-			Map<String, String> parMap = new HashMap<String, String>();
-			if(ztw!=null){
-				parMap.put("twdno", ztw.getTwdno());
-			}
-			if(ztwdtl!=null){
-				parMap.put("frwhs", ztwdtl.getFrwhs());
-				parMap.put("frsub", ztwdtl.getFrsub());
-				parMap.put("towhs", ztwdtl.getTowhs());
-				parMap.put("tosub", ztwdtl.getTosub());
-			}
-			if(showFinished){
-				parMap.put("showFinished", "yes");
-			}
-			if(showPrinted){
-				parMap.put("showPrinted", "yes");
-			}
-			results = this.ztwhdrService.queryZtwhdrList(parMap);
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			if("1".equals(flag)){
+				this.startDate=Utils.formateDate(null, "yyyy-MM-dd");
+				this.endDate=Utils.formateDate(null, "yyyy-MM-dd");
 
-			for(ZTWHDRVO ztwhdrvo:results){
-				for(ZTWDTLVO ztwdtlvo:ztwhdrvo.getItemList()){
-					ITMRVAVO itmrVo = new ITMRVAVO();
-					itmrVo.setItnbr(ztwdtlvo.getItnbr());
-					itmrVo.setHouse((String) getSession().getAttribute("stid"));
-					List<ITMRVAVO> itmrLists = this.xadataService.queryItmrva(itmrVo);
-					if(itmrLists!=null && itmrLists.size()>0){
-						ztwdtlvo.setItdsc(itmrLists.get(0).getItdsc());
-					}
+			}else{
+				Map parMap = new HashMap();
+				if(ztw!=null){
+					parMap.put("twdno", ztw.getTwdno());
 				}
-				String d= (ztwhdrvo.getTwdt1()==null || ztwhdrvo.getTwdt1().doubleValue()==0.0)?"":ztwhdrvo.getTwdt1().add(BigDecimal.valueOf(19000000)).toString().trim();
-				ztwhdrvo.setCreatedTime(d.length()<8?d: (d.substring(0, 4)+"-"+d.substring(4, 6)+"-"+d.substring(6, 8)));
+				if(ztwdtl!=null){
+					parMap.put("frwhs", ztwdtl.getFrwhs());
+					parMap.put("frsub", ztwdtl.getFrsub());
+					parMap.put("towhs", ztwdtl.getTowhs());
+					parMap.put("tosub", ztwdtl.getTosub());
+				}
+				if(showFinished){
+					parMap.put("showFinished", "yes");
+				}
+				if(showPrinted){
+					parMap.put("showPrinted", "yes");
+				}
+				
+				if(startDate!=null && startDate.length()>0){
+					parMap.put("startDate", BigDecimal.valueOf(Long.valueOf("1"+Utils.formateDate(sdf.parse(startDate), "yyMMdd"))));
+				}
+				
+				if(endDate!=null && endDate.length()>0){
+					parMap.put("endDate", BigDecimal.valueOf(Long.valueOf("1"+Utils.formateDate(sdf.parse(endDate), "yyMMdd"))));
+				}
+				
+				results = this.ztwhdrService.queryZtwhdrList(parMap);
+
+				for(ZTWHDRVO ztwhdrvo:results){
+					for(ZTWDTLVO ztwdtlvo:ztwhdrvo.getItemList()){
+						ITMRVAVO itmrVo = new ITMRVAVO();
+						itmrVo.setItnbr(ztwdtlvo.getItnbr());
+						itmrVo.setHouse((String) getSession().getAttribute("stid"));
+						List<ITMRVAVO> itmrLists = this.xadataService.queryItmrva(itmrVo);
+						if(itmrLists!=null && itmrLists.size()>0){
+							ztwdtlvo.setItdsc(itmrLists.get(0).getItdsc());
+						}
+					}
+					String d= (ztwhdrvo.getTwdt1()==null || ztwhdrvo.getTwdt1().doubleValue()==0.0)?"":ztwhdrvo.getTwdt1().add(BigDecimal.valueOf(19000000)).toString().trim();
+					ztwhdrvo.setCreatedTime(d.length()<8?d: (d.substring(0, 4)+"-"+d.substring(4, 6)+"-"+d.substring(6, 8)));
+				}
 			}
 
 			// 获取分页信息
@@ -263,6 +290,15 @@ public class AllottedAction extends BaseAction {
 				sf = new SimpleDateFormat("yyMMddHHmmss");
 				Date date = sf.parse(day+time);
 				applyDate = Utils.formateDate(date, "yyyy/MM/dd HH:mm:ss");
+				
+				String qrMessage = "*F"+ztw.getTwdno().trim();
+				String encoderQRCoder = QRcoderUtil.encoderQRCoder(qrMessage, ServletActionContext.getContext().getSession().get("username").toString(),getSession().getServletContext().getRealPath("/"));
+				HttpServletRequest request = ServletActionContext.getRequest();
+				String path = request.getContextPath(); 
+				String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+				String qrcodeurl = basePath+"/"+encoderQRCoder;
+				ActionContext.getContext().getValueStack().set("qrcodeurl", qrcodeurl);
+				
 			}else{
 				return ERROR;
 			}

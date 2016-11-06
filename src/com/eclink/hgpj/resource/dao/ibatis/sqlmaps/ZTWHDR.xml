@@ -64,7 +64,7 @@
 				item.LPRT = '1')
 			</isNotEmpty>
 			<isEmpty prepend="and" property="showPrinted">
-				(item.LPRT = '0'  )
+				(item.LPRT = '0' )
 			</isEmpty>
 			<isNotEmpty prepend="and" property="frwhs">
 				item.FRWHS = #frwhs#
@@ -81,10 +81,16 @@
 			<isNotEmpty prepend="and" property="twdno">
 				item.TWDNO = #twdno#
 			</isNotEmpty>
+			<isNotEmpty prepend="AND" property="startDate">
+               <![CDATA[ z.TWDT1 >= #startDate#]]>
+			</isNotEmpty>
 
+			<isNotEmpty prepend="AND" property="endDate">
+                <![CDATA[z.TWDT1 <= #endDate#]]>
+			</isNotEmpty>
 		</dynamic>
 		<![CDATA[ 
-		order by z.TWDNO ASC 
+		order by z.TWDNO DESC 
 	]]>
 	</select>
 

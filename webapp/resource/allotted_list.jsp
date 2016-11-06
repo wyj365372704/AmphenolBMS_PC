@@ -34,7 +34,7 @@
 }
 </style>
 <body class="right_body">
-	<s:form action="allotted!tofindAllotted.action" method="post"
+	<s:form action="allotted!toAllotted.action" method="post"
 		name="queryform">
 
 		<div class="path">您现在的位置： 首页 &gt; 仓库 &gt; 打印调拨单</div>
@@ -51,20 +51,29 @@
 			<ul>
 
 				<li><div class="w_s">从仓库：</div> <s:textfield
-						name="ztwdtl.frwhs" cssClass="input_w" /></li>
+						name="ztwdtl.frwhs" cssClass="input_w" />
+				</li>
 
 				<li><div class="w_s">到仓库：</div> <s:textfield
-						name="ztwdtl.towhs" cssClass="input_w" /></li>
+						name="ztwdtl.towhs" cssClass="input_w" />
+				</li>
 
 				<li><div class="w_s">调拨单号：</div> <s:textfield name="ztw.twdno"
-						cssClass="input_w" /></li>
+						cssClass="input_w" />
+				</li>
 
 				<li><div class="w_s">从子库：</div> <s:textfield
-						name="ztwdtl.frsub" cssClass="input_w" /></li>
+						name="ztwdtl.frsub" cssClass="input_w" />
+				</li>
 
 				<li><div class="w_s">到子库：</div> <s:textfield
-						name="ztwdtl.tosub" cssClass="input_w" /></li>
-
+						name="ztwdtl.tosub" cssClass="input_w" />
+				</li>
+				<li><div class="w_s">创建日期：</div> <s:textfield id="startDate"
+						name="startDate" cssClass="time_input" onclick="WdatePicker()"
+						autocomplete="on" />- <s:textfield id="endDate" name="endDate"
+						cssClass="time_input" onclick="WdatePicker()" autocomplete="on" />
+				</li>
 				<li class="mylick"><s:checkbox name="showFinished">显示已完成</s:checkbox>
 				</li>
 
@@ -107,44 +116,31 @@
 							<tr class="td_bgcolor2">
 						</s:else>
 						<s:iterator value="#rs.itemList" id="it" status="st">
-							<td><s:property value="#it.twdno" />
-							</td>
-							<td><s:property value="#it.itnbr" />
-							</td>
-							<td><s:property value="#it.itdsc" />
-							</td>
-							<td><s:property value="#it.actqt" />
-							</td>
+							<td><s:property value="#it.twdno" /></td>
+							<td><s:property value="#it.itnbr" /></td>
+							<td><s:property value="#it.itdsc" /></td>
+							<td><s:property value="#it.actqt" /></td>
 							<td><s:if test="#it.lstat == '10'">已创建</s:if> <s:elseif
 									test="#it.lstat == '50'">已完成</s:elseif> <s:elseif
-									test="#it.lstat == '60'">已关闭</s:elseif>
-							</td>
+									test="#it.lstat == '60'">已关闭</s:elseif></td>
 							<td><s:if test="#it.lprt == 1">
 			  						是
 			  					</s:if> <s:else>
 			  						否
-			  					</s:else></td>
-							<td><s:property value="#it.unmsr" />
+			  					</s:else>
 							</td>
-							<td><s:property value="#it.frwhs" />
-							</td>
-							<td><s:property value="#it.frsub" />
-							</td>
+							<td><s:property value="#it.unmsr" /></td>
+							<td><s:property value="#it.frwhs" /></td>
+							<td><s:property value="#it.frsub" /></td>
 
-							<td><s:property value="#it.towhs" />
-							</td>
-							<td><s:property value="#it.tosub" />
-							</td>
-							<td><s:property value="twus1" />
-							</td>
-							<td><s:property value="createdTime" />
-							</td>
-							<td><s:property value="twdp1" />
-							</td>
+							<td><s:property value="#it.towhs" /></td>
+							<td><s:property value="#it.tosub" /></td>
+							<td><s:property value="twus1" /></td>
+							<td><s:property value="createdTime" /></td>
+							<td><s:property value="twdp1" /></td>
 							<td><input type="button" id="print" value="打印"
 								class="gray_button"
-								onclick="printForm('<s:property value="#rs.twdno"/>');" />
-							</td>
+								onclick="printForm('<s:property value="#rs.twdno"/>');" /></td>
 						</s:iterator>
 						</tr>
 					</s:iterator>

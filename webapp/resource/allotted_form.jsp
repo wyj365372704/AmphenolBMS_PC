@@ -56,6 +56,7 @@
 							<tr>
 								<td>调拨单号: <s:property value="ztw.twdno"/></td>
 								<td>调拨申请日期: <s:property value="applyDate"/></td>
+								<td rowspan="3"><img src="${qrcodeurl }" width="80px" height="80px"/></td>
 							</tr>
 							<tr>
 								<td>调拨申请人: <s:property value="ztw.twus1"/> </td>
