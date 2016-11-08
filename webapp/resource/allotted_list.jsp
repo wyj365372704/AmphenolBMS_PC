@@ -49,17 +49,12 @@
 			</h2>
 
 			<ul>
-
 				<li><div class="w_s">从仓库：</div> <s:textfield
 						name="ztwdtl.frwhs" cssClass="input_w" />
 				</li>
 
 				<li><div class="w_s">到仓库：</div> <s:textfield
 						name="ztwdtl.towhs" cssClass="input_w" />
-				</li>
-
-				<li><div class="w_s">调拨单号：</div> <s:textfield name="ztw.twdno"
-						cssClass="input_w" />
 				</li>
 
 				<li><div class="w_s">从子库：</div> <s:textfield
@@ -74,6 +69,11 @@
 						autocomplete="on" />- <s:textfield id="endDate" name="endDate"
 						cssClass="time_input" onclick="WdatePicker()" autocomplete="on" />
 				</li>
+
+				<li><div class="w_s">调拨单号：</div> <s:textarea name="twdno"
+						cssClass="input_w" style="height:30px" />
+				</li>
+
 				<li class="mylick"><s:checkbox name="showFinished">显示已完成</s:checkbox>
 				</li>
 

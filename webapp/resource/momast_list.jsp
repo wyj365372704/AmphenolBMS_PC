@@ -5,16 +5,18 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 4.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
+<meta http-equiv=“X-UA-Compatible” content=“IE=7″>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
 <title>深圳安费诺BMS系统</title>
 
 <link href="../css/global.css" rel="stylesheet" type="text/css" />
-<script type="text/javascript" src="../js/My97DatePicker/WdatePicker.js"></script>
-<script type="text/javascript" src="../js/jquery-1.4.2.min.js"></script>
-<script src="../js/alert/jquery.ui.draggable.js" type="text/javascript"></script>
-<script src="../js/alert/jquery.alerts.js" type="text/javascript"></script>
-<script src="../js/common.js" type="text/javascript"></script>
-<link href="../js/alert/alerts.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="<%=request.getContextPath() %>/js/My97DatePicker/WdatePicker.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath() %>/js/jquery-1.4.2.min.js"></script>
+<script src="<%=request.getContextPath() %>/js/alert/jquery.ui.draggable.js" type="text/javascript"></script>
+<script src="<%=request.getContextPath() %>/js/alert/jquery.alerts.js" type="text/javascript"></script>
+<script src="<%=request.getContextPath() %>/js/common.js" type="text/javascript"></script>
+<link href="<%=request.getContextPath() %>/js/alert/alerts.css" rel="stylesheet" type="text/css" />
 </head>
 <script type="text/javascript">
 	function addZiphdr(ordno,house){

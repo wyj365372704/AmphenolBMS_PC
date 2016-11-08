@@ -8,18 +8,16 @@ String house = request.getParameter("house");
 
  %>
 	<head>
-	
+	<meta http-equiv=“X-UA-Compatible” content=“IE=7″>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		<title>添加领料单</title>
-		<script type="text/javascript" src="../js/jquery-1.4.2.min.js"></script>
-		<link href="../css/global.css" rel="stylesheet" type="text/css" />
-		<script type="text/javascript" src="../js/validator/easy_validator.pack.js"></script>
-		<script type="text/javascript" src="../js/validator/jquery.bgiframe.min.js"></script>
-		<link  href="../css/validate.css" rel="stylesheet" type="text/css" />
-		<script src="../js/alert/jquery.ui.draggable.js" type="text/javascript"></script>    
-		<script src="../js/alert/jquery.alerts.js" type="text/javascript"></script>
-		<link href="../js/alert/alerts.css" rel="stylesheet" type="text/css" />
-		
+		<link href="<%=request.getContextPath() %>/css/global.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="<%=request.getContextPath() %>/js/My97DatePicker/WdatePicker.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath() %>/js/jquery-1.4.2.min.js"></script>
+<script src="<%=request.getContextPath() %>/js/alert/jquery.ui.draggable.js" type="text/javascript"></script>
+<script src="<%=request.getContextPath() %>/js/alert/jquery.alerts.js" type="text/javascript"></script>
+<script src="<%=request.getContextPath() %>/js/common.js" type="text/javascript"></script>
+<link href="<%=request.getContextPath() %>/js/alert/alerts.css" rel="stylesheet" type="text/css" />
 		<script type="text/javascript">
 		var data = "${data}";
 		if(data=="success"){
@@ -52,7 +50,8 @@ String house = request.getParameter("house");
 								value="<%=ordno %>" readonly="true" />
 								<input type="hidden" name="house" value="<%=house %>">
 						</td>
-						<td>
+						<td >
+							
 							<select name="iptyp" >
 								<option value="1" selected >正常</option>
 								<option value="2">超领</option>
@@ -63,8 +62,10 @@ String house = request.getParameter("house");
 					<tr>
 						<td class="td_w_s text_r">领料原因：</td>						
 						<td colspan="2">
-							<select name="bmsrsn" >
-							</select>
+							<div id="bmsrsndiv">
+								<select name="bmsrsn" id="bmsrsnid">
+								</select>
+							</div>
 						</td>
 					</tr>
 					<tr id="notetr" style="display:none">
@@ -93,7 +94,8 @@ String house = request.getParameter("house");
 	</s:form>
 	</body>
 	<script type="text/javascript">
-		window.onload=function(){
+		$(document).ready(function(){
+		
 			$.ajax( {  
 			       url:'resource/ziphdr!getBmsReason.action',// 跳转到 action  
 			       data:{  
@@ -102,14 +104,15 @@ String house = request.getParameter("house");
 			      type:'post',  
 			      cache:false,  
 			      success:function(data) {
-			      		 document.getElementsByName("bmsrsn")[0].innerHTML=data;
-			      	
+			      //bmsrsndiv
+			      document.getElementById("bmsrsndiv").innerHTML="<select name='bmsrsn' id='bmsrsnid'>"+data+"</select>";
+			
 			       },  
 			       error : function() {  
 			              
 			       }  
 			  });
-		}
+		});
 		//window.onload=function(){
 			 document.getElementsByName("iptyp")[0].onchange=function(){	         	
 	         	var val = document.getElementsByName("iptyp")[0].value;
@@ -130,8 +133,8 @@ String house = request.getParameter("house");
 			      type:'post',  
 			      cache:false,  
 			      success:function(data) {
-			      		 document.getElementsByName("bmsrsn")[0].innerHTML=data;
-			      	
+			      		// document.getElementsByName("bmsrsn")[0].innerHTML=data;
+			      	document.getElementById("bmsrsndiv").innerHTML="<select name='bmsrsn' id='bmsrsnid'>"+data+"</select>";
 			        
 			       },  
 			       error : function() {  

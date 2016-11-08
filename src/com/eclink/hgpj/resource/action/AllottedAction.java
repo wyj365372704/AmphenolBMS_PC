@@ -67,6 +67,8 @@ public class AllottedAction extends BaseAction {
 	private String endDate;
 
 	private String flag;
+	
+	private String twdno;
 
 	public ZTWHDRService getZtwhdrService() {
 		return ztwhdrService;
@@ -86,6 +88,14 @@ public class AllottedAction extends BaseAction {
 
 	public void setXadataService(XADATAService xadataService) {
 		this.xadataService = xadataService;
+	}
+
+	public String getTwdno() {
+		return twdno;
+	}
+
+	public void setTwdno(String twdno) {
+		this.twdno = twdno;
 	}
 
 	public String getStartDate() {
@@ -193,9 +203,19 @@ public class AllottedAction extends BaseAction {
 
 			}else{
 				Map parMap = new HashMap();
-				if(ztw!=null){
-					parMap.put("twdno", ztw.getTwdno());
+				
+				if(twdno!=null && twdno.length()>0){
+					String[] ipdnos = twdno.split(";");
+					String temp0="";
+					if(ipdnos!=null && ipdnos.length>0){
+						for(int j=0;j<ipdnos.length;j++){
+							temp0=temp0+"'"+ipdnos[j]+"',";
+						}
+						temp0=temp0+"''";
+						parMap.put("twdno", temp0);
+					}
 				}
+		
 				if(ztwdtl!=null){
 					parMap.put("frwhs", ztwdtl.getFrwhs());
 					parMap.put("frsub", ztwdtl.getFrsub());
