@@ -7,6 +7,7 @@
 	    <result column="RPRSN" property="rprsn"  />
 	    <result column="RMRSN" property="rmrsn" />
 	    <result column="IPRSN" property="iprsn"  />
+	    <result column="IARSN" property="iarsn"  />
 	    <result column="TWRSN" property="twrsn" />
 	    <result column="ISRSN" property="isrsn" />
 	    <result column="RCRSN" property="rcrsn" />

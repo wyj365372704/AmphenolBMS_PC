@@ -33,6 +33,8 @@ public class ZBMSCTLVO extends BaseVO{
 	
 	private String iprsn;
 	
+	private String iarsn;
+
 	private String twrsn;	
 	
 	private String isrsn;
@@ -73,6 +75,14 @@ public class ZBMSCTLVO extends BaseVO{
 
 	public String getIprsn() {
 		return iprsn;
+	}
+
+	public String getIarsn() {
+		return iarsn;
+	}
+
+	public void setIarsn(String iarsn) {
+		this.iarsn = iarsn;
 	}
 
 	public void setIprsn(String iprsn) {

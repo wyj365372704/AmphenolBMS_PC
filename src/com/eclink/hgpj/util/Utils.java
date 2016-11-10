@@ -589,6 +589,60 @@ public class Utils {
 		return sbuff.toString();
 	}
 	
+	public static String systemLinkIA(Map map){
+		StringBuffer sbuff = new StringBuffer();
+		sbuff.append("<?xml version='1.0' encoding='UTF-8'?>");
+		sbuff.append("<!DOCTYPE System-Link SYSTEM 'SystemLinkRequest.dtd'>");
+		sbuff.append("<System-Link>");
+		sbuff.append("<Login userId='");
+		sbuff.append(map.get("sluserId"));
+		sbuff.append("' password='");
+		sbuff.append(map.get("slpassword"));
+		sbuff.append("' maxIdle='900000' properties='com.pjx.cas.domain.EnvironmentId=M1,com.pjx.cas.domain.SystemName=S844DD1W,com.pjx.cas.user.LanguageId=zh'/>");
+		sbuff.append("<Request sessionHandle='*current' workHandle='*new' broker='EJB' maxIdle='1000'>");
+		sbuff.append("<Create name= 'adjustItemTxn' domainClass = ' com.mapics.mm.AdjustItemTxn '>");
+		sbuff.append("<DomainEntity>");
+		sbuff.append("<Key>");
+		sbuff.append("<Property path='warehouse'><Value><![CDATA[");
+		sbuff.append(map.get("warehouse"));
+		sbuff.append("]]></Value></Property>");
+		sbuff.append("<Property path='order'><Value><![CDATA[]]></Value></Property>");		
+		sbuff.append("<Property path='token'><Value><![CDATA[]]></Value></Property>");		
+		sbuff.append("<Property path='item'><Value><![CDATA[");
+		sbuff.append(map.get("item"));
+		sbuff.append("]]></Value></Property>");
+		sbuff.append("<Property path='postedDate'><Value><![CDATA[");
+		sbuff.append(map.get("postedDate"));
+		sbuff.append("]]></Value></Property>");
+		sbuff.append("<Property path='postedTime'><Value><![CDATA[");
+		sbuff.append(map.get("postedTime"));
+		sbuff.append("]]></Value></Property>");
+		sbuff.append("</Key>");
+		sbuff.append("<Property path='location'><Value><![CDATA[");
+		sbuff.append(map.get("location"));
+		sbuff.append("]]></Value></Property>");
+		sbuff.append("<Property path='batchlot'><Value><![CDATA[");
+		sbuff.append(map.get("batchlot"));
+		sbuff.append("]]></Value></Property>");
+		sbuff.append("<Property path='transactionQuantity'><Value><![CDATA[");
+		sbuff.append(map.get("transactionQuantity"));
+		sbuff.append("]]></Value></Property>");
+		sbuff.append("<Property path='referenceNumber'><Value><![CDATA[");
+		sbuff.append(map.get("referenceNumber"));
+		sbuff.append("]]></Value></Property>");
+		sbuff.append("<Property path='reason'><Value><![CDATA[");
+		sbuff.append(map.get("reason"));
+		sbuff.append("]]></Value></Property>");
+		sbuff.append("<Property path='transactionDate'><Value><![CDATA[");
+		sbuff.append(map.get("transactionDate"));
+		sbuff.append("]]></Value></Property>");
+		sbuff.append("</DomainEntity>     </Create> </Request><Logout sessionHandle='*current'/></System-Link>");
+		
+		String retStr = postXMLRequest((String)map.get("slurl"), sbuff.toString());
+		map.put("systemLinkStr", retStr);
+		return sbuff.toString();
+	}
+	
 	public static String systemLinkRm(Map map){
 		StringBuffer sbuff = new StringBuffer();
 		sbuff.append("<?xml version='1.0' encoding='UTF-8'?>");

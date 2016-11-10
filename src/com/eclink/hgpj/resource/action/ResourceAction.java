@@ -245,6 +245,8 @@ public class ResourceAction extends BaseAction {
 	private String machine_list;
 
 	private String job_number;
+
+	private String ia_quantity;
 	/**
 	 * 菜单资源树
 	 */
@@ -286,7 +288,13 @@ public class ResourceAction extends BaseAction {
 		this.menuService = menuService;
 	}
 
+	public String getIa_quantity() {
+		return ia_quantity;
+	}
 
+	public void setIa_quantity(String ia_quantity) {
+		this.ia_quantity = ia_quantity;
+	}
 
 	public String getStep_quantity() {
 		return step_quantity;
@@ -1141,7 +1149,7 @@ public class ResourceAction extends BaseAction {
 							for(int j=0;j<lmv.size();j++){
 								MenuVO cmvo=lmv.get(j);
 								if(cmvo.getMenuType()!=null && cmvo.getMenuType().trim().equals("2"))
-								menuM.put(cmvo.getMenuKey().trim(), cmvo.getMenuName().trim());
+									menuM.put(cmvo.getMenuKey().trim(), cmvo.getMenuName().trim());
 							}
 							list.add(menuM);
 						}
@@ -1888,6 +1896,155 @@ public class ResourceAction extends BaseAction {
 		data = jo.toString();
 		log.error("get env error.",e);
 		return "todata";
+		}finally{
+		}
+		data=jo.toString();
+		return "todata";
+	}
+
+
+	public String inventory_update_submit()  throws Exception {
+		JSONObject jo = new JSONObject();
+		try {
+			if(username==null || username.trim().equals("")){
+				jo.put("code", 2);
+				jo.put("desc", "not have username");
+			}else if(env==null || env.trim().equals("")){
+
+				jo.put("code", 3);
+				jo.put("desc", "env is needed");
+			}else{
+				int idx = (Integer)this.getSession().getServletContext().getAttribute(env);
+				String dbconfigurl=(String)this.getSession().getServletContext().getAttribute("dbconfigurl");
+				if(dbconfigurl==null || dbconfigurl.trim().equals("")){
+					dbconfigurl=this.getSession().getServletContext().getRealPath("/WEB-INF")+ "/classes/com/eclink/hgpj/util/dbconfig.properties";
+					this.getSession().getServletContext().setAttribute("dbconfigurl",dbconfigurl);
+				}
+				DataSourceUtil.setDataSource(dbconfigurl, idx);
+				String stid =Utils.getDataSourceS(dbconfigurl, "STID"+idx);
+
+				Map xamap0 = new HashMap();
+
+				xamap0.put("sluserId", this.getSession().getServletContext().getAttribute("sluserId"));
+				xamap0.put("slpassword", this.getSession().getServletContext().getAttribute("slpassword"));
+				xamap0.put("slurl", this.getSession().getServletContext().getAttribute("slurl"));
+				xamap0.put("warehouse", warehouse);
+				xamap0.put("item", mater.trim());
+				xamap0.put("postedDate", "0000000");
+				xamap0.put("postedTime", "999999");
+				xamap0.put("location", location.trim());
+				xamap0.put("batchlot", branch.trim());
+				xamap0.put("transactionQuantity", ia_quantity.trim());
+				xamap0.put("referenceNumber", "PDA");
+
+				ZBMSCTLVO zbmsctlvo = new ZBMSCTLVO();
+				List<ZBMSCTLVO> zbmsctlList = zbmsctlService.queryZbmsctl(zbmsctlvo);
+				if(zbmsctlList.size()>0){
+					xamap0.put("reason", zbmsctlList.get(0).getIarsn().trim());
+				}else{
+					xamap0.put("reason", "");
+				}
+
+				xamap0.put("transactionDate", Utils.formateDate(null, "yyyyMMdd"));
+
+				Utils.systemLinkIA(xamap0);
+				String retStr = (String)xamap0.get("systemLinkStr");
+				System.out.println("Tw:"+retStr);
+				String errorStr1 = retStr.substring(retStr.indexOf("hasErrors"), retStr.indexOf("hasErrors")+17);
+				String warnStr2 = retStr.substring(retStr.indexOf("hasWarnings"), retStr.indexOf("hasWarnings")+19);
+				if(errorStr1.indexOf("true")>=0){
+					if(retStr.contains("warehouse location does not exist")){
+						jo.put("code", 5);
+						jo.put("desc", "待入库位不存在");
+					}else{
+						jo.put("code", 6);
+						jo.put("desc", "systemlink error:XA更新项目仓库默认子库和库位错误！");
+					}
+				}else{
+					jo.put("code", 1);
+					jo.put("desc", "OK");
+				}
+			}
+		}catch (Throwable e) {e.printStackTrace();
+		jo.put("code", 4);
+		jo.put("desc", "other exception");
+		log.error("get env error.",e);
+		}finally{
+		}
+		data=jo.toString();
+		return "todata";
+	}
+
+	public String inventory_add_query()  throws Exception {
+		JSONObject jo = new JSONObject();
+		try {
+
+			if(username==null || username.trim().equals("")){
+				jo.put("code", 2);
+				jo.put("desc", "not have username");
+			}else if(env==null || env.trim().equals("")){
+
+				jo.put("code", 3);
+				jo.put("desc", "env is needed");
+			}else{
+				int idx = (Integer)this.getSession().getServletContext().getAttribute(env);
+				String dbconfigurl=(String)this.getSession().getServletContext().getAttribute("dbconfigurl");
+				if(dbconfigurl==null || dbconfigurl.trim().equals("")){
+					dbconfigurl=this.getSession().getServletContext().getRealPath("/WEB-INF")+ "/classes/com/eclink/hgpj/util/dbconfig.properties";
+					this.getSession().getServletContext().setAttribute("dbconfigurl",dbconfigurl);
+				}
+				DataSourceUtil.setDataSource(dbconfigurl, idx);
+				String stid =Utils.getDataSourceS(dbconfigurl, "STID"+idx);
+				ZITMEXTVO zitmextvo = new ZITMEXTVO();
+				zitmextvo.setItnbr(mater);
+				List<ZITMEXTVO> list = zitmextService.queryItemExt(zitmextvo);
+				if(list.size()>0){
+					ZITMEXTVO vo = list.get(0);
+					if(vo.getLdesc().trim().isEmpty()){
+						ITMRVAVO itmrvavo = new ITMRVAVO();
+						itmrvavo.setHouse(warehouse);
+						itmrvavo.setItnbr(mater);
+						itmrvavo.setItrv(vo.getItrv());
+						List<ITMRVAVO> itmrvaList = xadataService.queryItmrva(itmrvavo);
+						if(itmrvaList.size()>0){
+							jo.put("mater_desc", itmrvaList.get(0).getItdsc());
+						}else{
+							jo.put("mater_desc", "");
+						}
+					}else{
+						jo.put("mater_desc", vo.getLdesc());
+					}
+
+					jo.put("mater_format", vo.getSdesc());
+
+					ITMSITVO itmsitvo = new ITMSITVO();
+					itmsitvo.setHouse(warehouse);
+					itmsitvo.setItnot9(mater);
+					List<ITMSITVO> itrvtAll = xadataService.queryItrvtAll(itmsitvo);
+					if(itrvtAll.size()>0){
+						if(itrvtAll.get(0).getBlcft9().equals("1")){
+							jo.put("branched", "1");
+						}else{
+							jo.put("branched", "0");
+						}
+						jo.put("unit", itrvtAll.get(0).getUmstt9());
+					}else{
+						jo.put("branched", "0");
+						jo.put("unit", "");
+					}
+
+					jo.put("code", "1");
+					jo.put("desc", "OK");
+				}else{
+					jo.put("code", "6");
+					jo.put("desc", "未找到该物料");
+				}
+
+			}
+		}catch (Throwable e) {e.printStackTrace();
+		jo.put("code", 4);
+		jo.put("desc", "other exception");
+		log.error("get env error.",e);
 		}finally{
 		}
 		data=jo.toString();
@@ -3442,7 +3599,7 @@ public class ResourceAction extends BaseAction {
 				String stid =Utils.getDataSourceS(dbconfigurl, "STID"+idx);
 				String lib = Utils.getDataSourceS(dbconfigurl, "AMTLIB"+idx);
 				String lib1 = Utils.getDataSourceS(dbconfigurl, "AMPHLIB"+idx);
-				
+
 
 				String now1 = Utils.formateDate(null, "yyyyMMdd");
 				String now2 = Utils.formateDate(null, "HHmmss");
@@ -5918,20 +6075,20 @@ public class ResourceAction extends BaseAction {
 	 */
 	public String mlService() throws Exception {
 		try {
-//			Map mp = this.getRequest().getParameterMap();
-//			String[] pars = (String[] )mp.keySet().toArray();
-//			for(int i=0;i<pars.length;i++ ){
-//				System.out.println("pars "+ i+"="+pars[i]);
-//			}
+			//			Map mp = this.getRequest().getParameterMap();
+			//			String[] pars = (String[] )mp.keySet().toArray();
+			//			for(int i=0;i<pars.length;i++ ){
+			//				System.out.println("pars "+ i+"="+pars[i]);
+			//			}
 			Enumeration paramNames = this.getRequest().getParameterNames();  
-	        while (paramNames.hasMoreElements()) {  
-	            String paramName = (String) paramNames.nextElement();  
-	            System.out.println(paramName);
-	            System.out.println(this.getRequest().getParameter(paramName));
-	        }  
+			while (paramNames.hasMoreElements()) {  
+				String paramName = (String) paramNames.nextElement();  
+				System.out.println(paramName);
+				System.out.println(this.getRequest().getParameter(paramName));
+			}  
 		} catch (Exception e) {e.printStackTrace();
-			log.error("Sort menu occured error.", e);
-			return ERROR;
+		log.error("Sort menu occured error.", e);
+		return ERROR;
 		}
 		return "info";
 	}

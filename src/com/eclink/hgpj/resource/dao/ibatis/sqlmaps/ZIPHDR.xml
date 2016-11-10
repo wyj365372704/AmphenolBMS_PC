@@ -208,7 +208,7 @@
 		parameterClass="Map">
 		<![CDATA[ select a.*                                           
 					from ziphdr a                                     
-					where a.OSTAT = '10' and a.APRST <> '1' AND a.FAPR = '1' 
+					where a.OSTAT = '10' and a.APRST <> '1' AND a.FAPR = '1' AND IPTYP IN ('2','3')
  
 		]]>
 		<dynamic>
