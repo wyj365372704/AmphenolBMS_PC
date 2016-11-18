@@ -26,7 +26,7 @@ function radioChanged(){
 <body>
 	<s:form action="picklist!toPrintPick.action" method="post">
 		<div class="public_div">
-<input type="hidden" name="grnno" value="<s:property value="grnno"/>">
+			<input type="hidden" name="grnno" value="<s:property value='grnno'/>" />
 			<div class="public_inner">
 				<table width="100%" border="0" cellspacing="1" cellpadding="0"
 					class="public_table">
@@ -40,13 +40,16 @@ function radioChanged(){
 						</tr>
 						<tr>
 							<td class="td_w_s text_r">分仓打印：</td>
-							<td><input id="printA_type" type="checkbox" name="input2" value="1"/></td>
+							<td><input id="printA_type" type="checkbox" name="input2"
+								value="1" />
+							</td>
 						</tr>
 
 						<tr>
 
 							<td align="center" colspan="2"><s:submit id="queryId"
-									value="打印" onclick="return dosubmit()"></s:submit></td>
+									value="打印" onclick="return dosubmit()"></s:submit>
+							</td>
 						</tr>
 					</tbody>
 				</table>

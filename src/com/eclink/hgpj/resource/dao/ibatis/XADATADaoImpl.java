@@ -23,6 +23,7 @@ import com.eclink.hgpj.resource.vo.MenuVO;
 import com.eclink.hgpj.resource.vo.POBLKTVO;
 import com.eclink.hgpj.resource.vo.POITEMVO;
 import com.eclink.hgpj.resource.vo.POMASTVO;
+import com.eclink.hgpj.resource.vo.SCHRCPVO;
 import com.eclink.hgpj.resource.vo.SHPMSTVO;
 import com.eclink.hgpj.resource.vo.SLDATAVO;
 import com.eclink.hgpj.resource.vo.SLQNTYVO;
@@ -182,6 +183,11 @@ public class XADATADaoImpl extends SqlMapClientDaoSupport implements XADATADao {
 	@Override
 	public List<MODESCVO> queryModesc(Map map) throws Exception {
 		return this.getSqlMapClientTemplate().queryForList("XADATA.queryModesc",map);
+	}
+
+	@Override
+	public List<SCHRCPVO> querySchrcp(SCHRCPVO vo) {
+		return this.getSqlMapClientTemplate().queryForList("XADATA.querySchrcp",vo);
 	}
 
 

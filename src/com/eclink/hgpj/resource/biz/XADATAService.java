@@ -13,6 +13,7 @@ import com.eclink.hgpj.resource.vo.MOROUTVO;
 import com.eclink.hgpj.resource.vo.POBLKTVO;
 import com.eclink.hgpj.resource.vo.POITEMVO;
 import com.eclink.hgpj.resource.vo.POMASTVO;
+import com.eclink.hgpj.resource.vo.SCHRCPVO;
 import com.eclink.hgpj.resource.vo.SHPMSTVO;
 import com.eclink.hgpj.resource.vo.SLDATAVO;
 import com.eclink.hgpj.resource.vo.SLQNTYVO;
@@ -77,4 +78,6 @@ public interface XADATAService {
 	public List<MOROUTVO> queryMorout(Map map) throws Exception;
 	
 	public List<VENNAMVO> queryVennam(Map map) throws Exception;
+	
+	public List<SCHRCPVO> querySchrcp(SCHRCPVO vo) throws Exception;
 }

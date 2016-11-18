@@ -15,6 +15,7 @@
 	<typeAlias alias="POBLKTVO" type="com.eclink.hgpj.resource.vo.POBLKTVO" />
 	<typeAlias alias="MOROUTVO" type="com.eclink.hgpj.resource.vo.MOROUTVO" />
 	<typeAlias alias="MODESCVO" type="com.eclink.hgpj.resource.vo.MODESCVO" />
+	<typeAlias alias="SCHRCPVO" type="com.eclink.hgpj.resource.vo.SCHRCPVO" />
 	<typeAlias alias="VENNAMVO" type="com.eclink.hgpj.resource.vo.VENNAMVO" />
 	<resultMap id="MODATAVOMap" class="MODATAVO">
 		<result property="ordno" column="ORDNO" />
@@ -613,5 +614,26 @@
 			</isNotNull>
 		</dynamic>
 	</select>
+
+	<select id="querySchrcp" resultClass="SCHRCPVO" parameterClass="SCHRCPVO">
+		<![CDATA[ Select * from SCHRCP 
+		]]>
+		<dynamic prepend="WHERE">
+			<isNotNull prepend="AND" property="sctkji">
+				SCTKJI = #sctkji#
+			</isNotNull>
+			<isNotNull prepend="AND" property="ordrji">
+				ORDRJI = #ordrji#
+			</isNotNull>
+			<isNotNull prepend="AND" property="pisqji">
+				PISQJI = #pisqji#
+			</isNotNull>
+			<isNotNull prepend="AND" property="bksqji">
+				BKSQJI = #bksqji#
+			</isNotNull>
+		</dynamic>
+	</select>
+
+
 
 </sqlMap>

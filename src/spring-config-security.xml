@@ -80,6 +80,9 @@
 	
 	<bean id="shpdskDao" class="com.eclink.hgpj.resource.dao.ibatis.SHPDSKDaoImpl"></bean>
 	<bean id="shpdskService" class="com.eclink.hgpj.resource.biz.SHPDSKServiceImpl"></bean>
+	
+	<bean id="zvrhdrDao" class="com.eclink.hgpj.resource.dao.ibatis.ZVRHDRDaoImpl"></bean>
+	<bean id="zvrhdrService" class="com.eclink.hgpj.resource.biz.ZVRHDRServiceImpl"></bean>
 
 	<bean id="xadataDao" class="com.eclink.hgpj.resource.dao.ibatis.XADATADaoImpl">
 		<property name="dataSource" ref="dataSource2"></property>

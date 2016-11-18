@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
+import org.apache.struts2.ServletActionContext;
 
 import com.eclink.dfcm.paginator.common.PaginatorUtil;
 import com.eclink.dfcm.paginator.tag.PageVO;
@@ -19,6 +20,7 @@ import com.eclink.hgpj.resource.biz.ZBMSCTLService;
 import com.eclink.hgpj.resource.biz.ZIPHDRService;
 import com.eclink.hgpj.resource.biz.ZITMBXService;
 import com.eclink.hgpj.resource.biz.ZMBD1REPService;
+import com.eclink.hgpj.resource.biz.ZVRHDRService;
 import com.eclink.hgpj.resource.vo.BUYERFVO;
 import com.eclink.hgpj.resource.vo.ITMRVAVO;
 import com.eclink.hgpj.resource.vo.ITMSITVO;
@@ -29,6 +31,7 @@ import com.eclink.hgpj.resource.vo.MOROUTVO;
 import com.eclink.hgpj.resource.vo.POBLKTVO;
 import com.eclink.hgpj.resource.vo.POITEMVO;
 import com.eclink.hgpj.resource.vo.POMASTVO;
+import com.eclink.hgpj.resource.vo.SCHRCPVO;
 import com.eclink.hgpj.resource.vo.SHPMSTVO;
 import com.eclink.hgpj.resource.vo.VENNAMVO;
 import com.eclink.hgpj.resource.vo.ZBMSCTLVO;
@@ -39,8 +42,11 @@ import com.eclink.hgpj.resource.vo.ZIPHDRVO;
 import com.eclink.hgpj.resource.vo.ZIPHSTVO;
 import com.eclink.hgpj.resource.vo.ZITEMBXVO;
 import com.eclink.hgpj.resource.vo.ZMBD1REPVO;
+import com.eclink.hgpj.resource.vo.ZVRHDRVO;
+import com.eclink.hgpj.resource.vo.ZVRITMVO;
 import com.eclink.hgpj.user.biz.AUserService;
 import com.eclink.hgpj.util.Utils;
+import com.opensymphony.xwork2.ActionContext;
 
 /**
  * GrantAction.java
@@ -66,6 +72,10 @@ public class PomastAction extends BaseAction {
 
 	private POMASTVO pomast;
 
+	private SCHRCPVO schrcp;
+
+	private ZVRHDRVO zvrhdr;
+
 	private VENNAMVO  vennam;
 
 	private SHPMSTVO shpmst;
@@ -79,6 +89,8 @@ public class PomastAction extends BaseAction {
 	private ZITMBXService zitmbxService;
 
 	private ZBMSCTLService zbmsctlService;
+
+	private ZVRHDRService zvrhdrService;
 
 	private String ordno;
 
@@ -102,9 +114,27 @@ public class PomastAction extends BaseAction {
 
 	private String txsuf;
 
+	private String sctkji;
+
+	private String vndrji;
+
+	private String vrdno;
+
+	private String vrdln;
+
+	private String blksq;
+
+	private String returnType;
+
+	private String quantity;
+
 	private List<Map> pMaps;
 
 	private List<POMASTVO> results;
+
+	private List<SCHRCPVO> schrcpList ;
+
+	private List<ZVRHDRVO> zvrhdrList;
 
 	private boolean isOutSource = false ;
 
@@ -116,8 +146,96 @@ public class PomastAction extends BaseAction {
 		this.isOutSource = isOutSource;
 	}
 
+	public String getSctkji() {
+		return sctkji;
+	}
+
+	public void setSctkji(String sctkji) {
+		this.sctkji = sctkji;
+	}
+
+	public String getVrdln() {
+		return vrdln;
+	}
+
+	public void setVrdln(String vrdln) {
+		this.vrdln = vrdln;
+	}
+
+	public String getBlksq() {
+		return blksq;
+	}
+
+	public void setBlksq(String blksq) {
+		this.blksq = blksq;
+	}
+
+	public String getReturnType() {
+		return returnType;
+	}
+
+	public void setReturnType(String returnType) {
+		this.returnType = returnType;
+	}
+
+	public String getQuantity() {
+		return quantity;
+	}
+
+	public void setQuantity(String quantity) {
+		this.quantity = quantity;
+	}
+
+	public String getVndrji() {
+		return vndrji;
+	}
+
+	public void setVndrji(String vndrji) {
+		this.vndrji = vndrji;
+	}
+
 	public XADATAService getXadataService() {
 		return xadataService;
+	}
+
+	public ZVRHDRService getZvrhdrService() {
+		return zvrhdrService;
+	}
+
+	public void setZvrhdrService(ZVRHDRService zvrhdrService) {
+		this.zvrhdrService = zvrhdrService;
+	}
+
+	public List<SCHRCPVO> getSchrcpList() {
+		return schrcpList;
+	}
+
+	public SCHRCPVO getSchrcp() {
+		return schrcp;
+	}
+
+	public void setSchrcp(SCHRCPVO schrcp) {
+		this.schrcp = schrcp;
+	}
+
+	public ZVRHDRVO getZvrhdr() {
+		return zvrhdr;
+	}
+
+	public List<ZVRHDRVO> getZvrhdrList() {
+		return zvrhdrList;
+	}
+
+	public void setZvrhdrList(List<ZVRHDRVO> zvrhdrList) {
+		this.zvrhdrList = zvrhdrList;
+	}
+
+	public void setZvrhdr(ZVRHDRVO zvrhdr) {
+		this.zvrhdr = zvrhdr;
+	}
+
+	public void setSchrcpList(List<SCHRCPVO> schrcpList) {
+		this.schrcpList = schrcpList;
 	}
 
 	public void setXadataService(XADATAService xadataService) {
@@ -133,6 +251,14 @@ public class PomastAction extends BaseAction {
 	}
 
 
+
+	public String getVrdno() {
+		return vrdno;
+	}
+
+	public void setVrdno(String vrdno) {
+		this.vrdno = vrdno;
+	}
 
 	public ZBMSCTLService getZbmsctlService() {
 		return zbmsctlService;
@@ -434,7 +560,7 @@ public class PomastAction extends BaseAction {
 									if(moroutList!=null && moroutList.size()>0){
 										poitem.setMorout(moroutList.get(0));
 									}
-									
+
 									//取itmsit
 									ITMSITVO itmsitvo = new ITMSITVO();
 									itmsitvo.setHouse(pomast.getHouse());
@@ -445,14 +571,14 @@ public class PomastAction extends BaseAction {
 										itmsitvo.setUmstt9(umstt9List.get(0));
 										poitem.setItmsit(itmsitvo);
 									}
-									
+
 									//取modata
 									MODATAVO modata = new MODATAVO();
 									modata.setOrdno(moporf2.getMonr());
 									List<MODATAVO> modataList = xadataService.queryModatas(modata);
 									System.out.println("modataList size is "+modataList.size());
 									poitem.setModataList(modataList);
-									
+
 									//配置ZITEMBX
 									for(MODATAVO modataP:modataList){
 										ZITEMBXVO zitembx = new ZITEMBXVO();
@@ -481,11 +607,7 @@ public class PomastAction extends BaseAction {
 		}
 		return "printO";
 	}
-	/**
-	 * 生成领料单
-	 * @return
-	 * @throws Exception
-	 */
+
 	public String toPomast() throws Exception {
 		try {
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -541,18 +663,14 @@ public class PomastAction extends BaseAction {
 				}
 
 				results = this.xadataService.queryPomast(map);
-			}else{
-				pomast = new POMASTVO();
 
-				pomast.setStartDate(sdf.format(new Date()));
-				pomast.setEndDate(sdf.format(new Date()));
-			}
-			if(results!=null && results.size()>0){
-				for(int i=0;i<results.size();i++){
-					String d= (results.get(i).getActdt()==null || results.get(i).getActdt().doubleValue()==0.0)?"":results.get(i).getActdt().add(BigDecimal.valueOf(19000000)).toString().trim();
-					//					String d2 = (results.get(i).getOdudt()==null || results.get(i).getOdudt().doubleValue()==0.0)?"":results.get(i).getOdudt().add(BigDecimal.valueOf(19000000)).toString().trim();
-					results.get(i).setActdts(d.length()<8?d: (d.substring(0, 4)+"-"+d.substring(4, 6)+"-"+d.substring(6, 8)+" "));
-					//					results.get(i).setSodudt(d2.length()<8?d2: (d2.substring(0, 4)+"-"+d2.substring(4, 6)+"-"+d2.substring(6, 8)+" "));
+				if(results!=null && results.size()>0){
+					for(int i=0;i<results.size();i++){
+						String d= (results.get(i).getActdt()==null || results.get(i).getActdt().doubleValue()==0.0)?"":results.get(i).getActdt().add(BigDecimal.valueOf(19000000)).toString().trim();
+						//					String d2 = (results.get(i).getOdudt()==null || results.get(i).getOdudt().doubleValue()==0.0)?"":results.get(i).getOdudt().add(BigDecimal.valueOf(19000000)).toString().trim();
+						results.get(i).setActdts(d.length()<8?d: (d.substring(0, 4)+"-"+d.substring(4, 6)+"-"+d.substring(6, 8)+" "));
+						//					results.get(i).setSodudt(d2.length()<8?d2: (d2.substring(0, 4)+"-"+d2.substring(4, 6)+"-"+d2.substring(6, 8)+" "));
+					}
 				}
 			}
 			//momast.setSsstdt(ssstdt);
@@ -578,4 +696,217 @@ public class PomastAction extends BaseAction {
 		return "toPomast";
 	}
 
+	public String toPomastReturn() throws Exception {
+		try {
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			if(zvrhdr!=null){
+				Map map = new HashMap();
+				if(zvrhdr.getVrdno()!=null && !zvrhdr.getVrdno().trim().equals("")){
+					if(zvrhdr.getVrdno().indexOf(HGPJConstant.SPLIT_0)>=0){
+						String[] vrdnos = zvrhdr.getVrdno().split(HGPJConstant.SPLIT_0);
+						String temp="";
+						for(int i=0;i<vrdnos.length;i++){
+							if(!vrdnos[i].trim().equals("")){
+								temp=temp+"'"+vrdnos[i].trim()+"',";
+							}
+						}
+						//						pomast.setOrdnoF(temp);
+						map.put("vrdno", temp);
+					}else if(zvrhdr.getVrdno().indexOf(HGPJConstant.SPLIT_1)>=0){
+						String[] vrdnos = zvrhdr.getVrdno().split(HGPJConstant.SPLIT_1);
+						String temp="";
+						for(int i=0;i<vrdnos.length;i++){
+							if(!vrdnos[i].trim().equals("")){
+								temp=temp+"'"+vrdnos[i].trim()+"',";
+							}
+						}
+						//						pomast.setOrdnoF(temp);
+						map.put("vrdno", temp);
+					}else{
+						//						pomast.setOrdnoF(pomast.getOrdno());
+						map.put("vrdno", zvrhdr.getVrdno());
+					}
+				}
+
+				if(zvrhdr.getStartDate()!=null && !zvrhdr.getStartDate().trim().equals("")){
+					//					momast.setStartDateB(BigDecimal.valueOf(Long.valueOf("1"+Utils.formateDate(sdf.parse(momast.getStartDate()), "yyMMdd"))));
+					map.put("startDate", BigDecimal.valueOf(Long.valueOf("1"+Utils.formateDate(sdf.parse(zvrhdr.getStartDate()), "yyMMdd"))));
+				}
+				if(zvrhdr.getEndDate()!=null && !zvrhdr.getEndDate().trim().equals("")){
+					//					momast.setEndDateB(BigDecimal.valueOf(Long.valueOf("1"+Utils.formateDate(sdf.parse(momast.getEndDate()), "yyMMdd"))));
+					map.put("endDate", BigDecimal.valueOf(Long.valueOf("1"+Utils.formateDate(sdf.parse(zvrhdr.getEndDate()), "yyMMdd"))));
+				}
+
+				zvrhdrList = zvrhdrService.queryZvrhdr(map);
+
+				/*if(results!=null && results.size()>0){
+					for(int i=0;i<results.size();i++){
+						String d= (results.get(i).getActdt()==null || results.get(i).getActdt().doubleValue()==0.0)?"":results.get(i).getActdt().add(BigDecimal.valueOf(19000000)).toString().trim();
+						//					String d2 = (results.get(i).getOdudt()==null || results.get(i).getOdudt().doubleValue()==0.0)?"":results.get(i).getOdudt().add(BigDecimal.valueOf(19000000)).toString().trim();
+						results.get(i).setActdts(d.length()<8?d: (d.substring(0, 4)+"-"+d.substring(4, 6)+"-"+d.substring(6, 8)+" "));
+						//					results.get(i).setSodudt(d2.length()<8?d2: (d2.substring(0, 4)+"-"+d2.substring(4, 6)+"-"+d2.substring(6, 8)+" "));
+					}
+				}*/
+			}
+			//momast.setSsstdt(ssstdt);
+			// 获取分页信息
+			PageVO page = PaginatorUtil.getPaginator(getRequest());
+			//			setPagination(role,page);
+
+			// 查询总记录数
+			if (page.isQueryTotal()) {
+				page.setTotalRecord(0);
+			}
+
+			// 调用业务方法查询列表
+			//			roleList = roleService.queryRoleList(role);
+
+			// 分页对象保存至request
+			getRequest().setAttribute(HGPJConstant.PAGE_KEY, page);
+
+		} catch (Exception e) {e.printStackTrace();
+		log.error("Go to admin resource operation grant page occured error.", e);
+		return ERROR;
+		}
+		return "toPomastReturn";
+	}
+
+	public String toPomastReturnInquire() throws Exception {
+		try {
+			Map map = new HashMap();
+			map.put("vndnr", vndrji);
+			map.put("ostat", "05");
+
+			List<ZVRHDRVO> zvrhdrList = zvrhdrService.queryZvrhdr(map);
+			if(zvrhdrList.size()>0){//存在创建中的退货单,可以添加到此退货单中
+				ActionContext.getContext().getValueStack().set("zvrhdrList", zvrhdrList);
+			}
+			ActionContext.getContext().getValueStack().set("zvrhdrList", zvrhdrList);
+
+		} catch (Exception e) {e.printStackTrace();
+		log.error("Go to admin resource operation grant page occured error.", e);
+		return ERROR;
+		}
+		return "toPomastReturnInquire";
+	}
+
+	public String toPomastReturnSubmit() throws Exception {
+		try {
+			SCHRCPVO  schrcpvo = new SCHRCPVO();
+			schrcpvo.setSctkji(sctkji);
+			List<SCHRCPVO> schrcpList = xadataService.querySchrcp(schrcpvo);
+			if(schrcpList.size()>0){
+				schrcpvo = schrcpList.get(0);
+				ZVRITMVO vo = new ZVRITMVO();
+				vo.setVndnr(schrcpvo.getVndrji());
+				vo.setHouse((String) getSession().getAttribute("stid"));
+				vo.setOrdno(schrcpvo.getOrdrji());
+				vo.setPoisq(schrcpvo.getPisqji());
+				//				vo.setBlcod(schrcpvo.getBksqji().compareTo(new BigDecimal(0)) == 0 ? "0":"1");
+				vo.setBlksq(schrcpvo.getBksqji());
+				vo.setLstat("10");
+				vo.setItnbr(schrcpvo.getItnoji());
+				ITMSITVO itmsitvo = new ITMSITVO();
+				itmsitvo.setHouse((String) getSession().getAttribute("stid"));
+				itmsitvo.setItnot9(schrcpvo.getItnoji());
+				List<ITMSITVO> queryItrvtAll = xadataService.queryItrvtAll(itmsitvo);
+				if(queryItrvtAll.size()>0){
+					vo.setBlcf(queryItrvtAll.get(0).getBlcft9());
+				}else{
+					vo.setBlcf("0");
+				}
+				vo.setStkum(schrcpvo.getUmstji());
+				vo.setSctkji(sctkji);
+				vo.setPlnvq(new BigDecimal(quantity));
+				if(returnType.equals("0")){
+					String crus = (String) ServletActionContext.getContext().getSession().get("username");
+					String house = (String) getSession().getAttribute("stid");
+					vrdno = zvrhdrService.insertZvritmNewHdr(vo, crus,house);
+				}else if(returnType.equals("1") && vrdno!=null && !vrdno.trim().equals("")){
+					vo.setVrdno(vrdno);
+					zvrhdrService.insertZvritm(vo);
+				}else{
+					throw new RuntimeException();
+				}
+				data = "success";
+			}else{
+				throw new RuntimeException();
+			}
+
+		} catch (Exception e) {e.printStackTrace();
+		data = "fail";
+		log.error("Go to admin resource operation grant page occured error.", e);
+		}
+		return "toPomastReturnSubmit";
+	}
+
+	public String toSchrcp() throws Exception {
+		try {
+			SCHRCPVO vo = new SCHRCPVO();
+			vo.setOrdrji(ordno);
+			schrcpList = xadataService.querySchrcp(vo);
+		} catch (Exception e) {e.printStackTrace();
+		log.error("Go to admin resource operation grant page occured error.", e);
+		return ERROR;
+		}
+		return "toSchrcp";
+	}
+
+	public String toZvritm() throws Exception {
+		try {
+			Map map = new HashMap();
+			map.put("vrdno", vrdno);
+			List<ZVRHDRVO> zvritmList = zvrhdrService.queryZvritm(map);
+			ActionContext.getContext().getValueStack().set("zvritmList", zvritmList);
+		} catch (Exception e) {e.printStackTrace();
+		log.error("Go to admin resource operation grant page occured error.", e);
+		return ERROR;
+		}
+		return "toZvritm";
+	}
+
+	public String deleteZvritm() throws Exception {
+		try {
+			ZVRITMVO vo = new ZVRITMVO();
+			vo.setVrdno(vrdno);
+			vo.setVrdln(new BigDecimal(vrdln));
+			vo.setBlksq(new BigDecimal(blksq));
+			zvrhdrService.deleteZvritm(vo);
+			data = "success";
+		} catch (Throwable e) {e.printStackTrace();
+		log.error("Go to admin resource operation grant page occured error.", e);
+		data = "fail";
+		}
+		return "todata";
+	}
+
+	public String enableCreateZvritm() throws Exception {
+		try {
+			if(vrdno == null || vrdno.trim().equals("")){
+				throw new RuntimeException();
+			}else{
+				zvrhdrService.enableCreateZvritm(vrdno);
+				data = "success";
+			}
+		} catch (Throwable e) {e.printStackTrace();
+		log.error("Go to admin resource operation grant page occured error.", e);
+		data = "fail";
+		}
+		return "todata";
+	}
+
+	public String cancelZvritm() throws Exception {
+		try {
+			if(vrdno == null || vrdno.trim().equals("")){
+				throw new RuntimeException();
+			}else{
+				zvrhdrService.cancelZvritm(vrdno);
+				data = "success";
+			}
+		} catch (Throwable e) {e.printStackTrace();
+		log.error("Go to admin resource operation grant page occured error.", e);
+		data = "fail";
+		}
+		return "todata";
+	}
 }

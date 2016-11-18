@@ -79,8 +79,13 @@
 
 		<action name="pomast" class="com.eclink.hgpj.resource.action.PomastAction">
 			<result name="toPomast">/resource/pomast_list.jsp</result>
+			<result name="toPomastReturn">/resource/pomast_return_list.jsp</result>
+			<result name="toPomastReturnInquire">/resource/pomast_return_inquire.jsp</result>
+			<result name="toPomastReturnSubmit">/resource/pomast_return_inquire.jsp</result>
 			<result name="todata">/commons/data.jsp</result>
 			<result name="printO">/resource/printPage.jsp</result>
+			<result name="toSchrcp">/resource/schrcp_list.jsp</result>
+			<result name="toZvritm">/resource/zvritm_list.jsp</result>
 
 		</action>
 		<action name="ziphdr" class="com.eclink.hgpj.resource.action.ZiphdrAction">
