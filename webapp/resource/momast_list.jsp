@@ -19,6 +19,8 @@
 <link href="<%=request.getContextPath() %>/js/alert/alerts.css" rel="stylesheet" type="text/css" />
 </head>
 <script type="text/javascript">
+
+
 	function addZiphdr(ordno,house){
 	//alert(house);
 		window.open("ziphdr_add.jsp?ordno="+ordno+"&house="+house,'newwindow','height=251,width=400,top='+ (window.outerHeight/3)+',left='+ (window.outerWidth/2)+',toolbar=no,menubar=no,scrollbars=no, resizable=no,location=no, status=no');
@@ -88,14 +90,22 @@
 
 		var gno = new Array();
 		var count = 0;
-		cbs.forEach(function(p) {
+		for(var i=0;i<cbs.length;i++){
+			if (!cbs[i].checked) {
+				bool = false;
+			} else {
+				count++;
+				gno.push($.trim(cbs[i].value));
+			}
+		}
+	/* 	cbs.forEach(function(p) {
 			if (!p.checked) {
 				bool = false;
 			} else {
 				count++;
 				gno.push($.trim(p.value));
 			}
-		})
+		}) */
 
 		if (count <= 0) {
 			alert("未选中记录！");

@@ -52,7 +52,7 @@ public class ZVRHDRDaoImpl extends SqlMapClientDaoSupport implements ZVRHDRDao {
 	}
 
 	@Override
-	public List<ZVRHDRVO> queryZvritm(Map map) throws Exception {
+	public List<ZVRITMVO> queryZvritm(Map map) throws Exception {
 		return this.getSqlMapClientTemplate().queryForList("ZVRHDR.queryZvritm",map);
 	}
 	

@@ -25,7 +25,7 @@ import com.eclink.hgpj.resource.vo.ZWHSUBVO;
  */
 public interface ZVRHDRService {
 	public List<ZVRHDRVO> queryZvrhdr(Map map) throws Exception;
-	public List<ZVRHDRVO> queryZvritm(Map map) throws Exception;
+	public List<ZVRITMVO> queryZvritm(Map map) throws Exception;
 	public String insertZvritmNewHdr(ZVRITMVO vo,String crus,String house) throws Exception;
 	public void insertZvritm(ZVRITMVO vo) throws Exception;
 	

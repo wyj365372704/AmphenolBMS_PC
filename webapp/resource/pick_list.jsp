@@ -7,13 +7,13 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>领料单</title>
-<link href="../css/global.css" rel="stylesheet" type="text/css" />
-<script type="text/javascript" src="../js/My97DatePicker/WdatePicker.js"></script>
-<script type="text/javascript" src="../js/jquery-1.4.2.min.js"></script>
-<script src="../js/alert/jquery.ui.draggable.js" type="text/javascript"></script>    
-<script src="../js/alert/jquery.alerts.js" type="text/javascript"></script>
-<script src="../js/common.js" type="text/javascript"></script>
-<link href="../js/alert/alerts.css" rel="stylesheet" type="text/css" />
+<link href="<%=request.getContextPath() %>/css/global.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="<%=request.getContextPath() %>/js/My97DatePicker/WdatePicker.js"></script>
+<script type="text/javascript" src="<%=request.getContextPath() %>/js/jquery-1.4.2.min.js"></script>
+<script src="<%=request.getContextPath() %>/js/alert/jquery.ui.draggable.js" type="text/javascript"></script>    
+<script src="<%=request.getContextPath() %>/js/alert/jquery.alerts.js" type="text/javascript"></script>
+<script src="<%=request.getContextPath() %>/js/common.js" type="text/javascript"></script>
+<link href="<%=request.getContextPath() %>/js/alert/alerts.css" rel="stylesheet" type="text/css" />
 </head>
 <style type="text/css">
 .myli {
@@ -208,14 +208,15 @@
 
 		var gno = new Array();
 		var count = 0;
-		cbs.forEach(function(p) {
-			if (!p.checked) {
+		
+		for(var i=0;i<cbs.length;i++){
+			if (!cbs[i].checked) {
 				bool = false;
 			} else {
 				count++;
-				gno.push($.trim(p.value));
+				gno.push($.trim(cbs[i].value));
 			}
-		})
+		}
 
 		if (count <= 0) {
 			alert("未选中记录！");

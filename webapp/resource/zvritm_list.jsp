@@ -9,8 +9,10 @@
 <table width="100%" border="0" cellspacing="1" cellpadding="0"
 	class="list_table_s">
 	<tr>
-		<th>单号</th>
-		<th>行号</th>
+		<th>退货单号</th>
+		<th>退货单行号</th>
+		<th>采购单号</th>
+		<th>采购单行号</th>
 		<th>供应商代码</th>
 		<th>退货单行状态</th>
 		<th>物料</th>
@@ -30,6 +32,10 @@
 		<td><s:property value="vrdno" />
 		</td>
 		<td><s:property value="vrdln" />
+		</td>
+		<td><s:property value="ordno" />
+		</td>
+		<td><s:property value="poisq" />
 		</td>
 		<td><s:property value="vndnr" />
 		</td>

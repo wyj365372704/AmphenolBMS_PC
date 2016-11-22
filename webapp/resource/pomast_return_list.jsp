@@ -120,14 +120,15 @@
 
 		var gno = new Array();
 		var count = 0;
-		cbs.forEach(function(p) {
-			if (!p.checked) {
+		
+		for(var i=0;i<cbs.length;i++){
+			if (!cbs[i].checked) {
 				bool = false;
 			} else {
 				count++;
-				gno.push($.trim(p.value));
+				gno.push($.trim(cbs[i].value));
 			}
-		});
+		}
 
 		if (count <= 0) {
 			alert("未选中记录！");
@@ -138,7 +139,7 @@
 			grnnos : gno
 		});
 
-		window.open('momast!momastPrint.action?grnno=' + grnnos, 'newwindow', 'height=200,width=400,top=60,left=200,toolbar=no,menubar=no,scrollbars=no, resizable=no,location=no, status=no');
+		window.open('pomast!toPrintZvrhdr.action?grnno=' + grnnos, 'newwindow', 'height=200,width=400,top=60,left=200,toolbar=no,menubar=no,scrollbars=no, resizable=no,location=no, status=no');
 	}
 	
 		function selectrow(vrdno){//alert(idx);
@@ -173,10 +174,8 @@
 				<span class="fl">退料单查询</span> <span class="fr"> <s:submit
 						id="queryId" value="" cssClass="search_button"
 						onclick="return dosubmit()"></s:submit> <s:reset value=""
-						cssClass="purge_button"></s:reset> <input type="button"
-					id="addOperM" value="批量生成领料单" onclick="addZiphdrM();" /> <input
-					type="button" cssClass="search_button" onclick="myPrint()"
-					value="打印"> </span>
+						cssClass="purge_button"></s:reset> 
+						<input type="button" cssClass="search_button" onclick="myPrint()" value="打印"> </span>
 				<!--  span里无内容时，此span不能删除  -->
 			</h2>
 
@@ -264,8 +263,10 @@
 			<table width="100%" border="0" cellspacing="1" cellpadding="0"
 				class="list_table_s">
 				<tr>
-					<th>单号</th>
-					<th>行号</th>
+					<th>退货单号</th>
+					<th>退货单行号</th>
+					<th>采购单号</th>
+					<th>采购单行号</th>
 					<th>供应商代码</th>
 					<th>退货单行状态</th>
 					<th>物料</th>

@@ -43,7 +43,7 @@ public class ZVRHDRServiceImpl implements ZVRHDRService {
 	}
 
 	@Override
-	public List<ZVRHDRVO> queryZvritm(Map map) throws Exception {
+	public List<ZVRITMVO> queryZvritm(Map map) throws Exception {
 		return zvrhdrDao.queryZvritm(map);
 	}
 

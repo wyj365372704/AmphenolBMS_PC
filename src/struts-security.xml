@@ -86,6 +86,7 @@
 			<result name="printO">/resource/printPage.jsp</result>
 			<result name="toSchrcp">/resource/schrcp_list.jsp</result>
 			<result name="toZvritm">/resource/zvritm_list.jsp</result>
+			<result name="toPrintZvrhdr">/resource/zvrhdr_form.jsp</result>
 
 		</action>
 		<action name="ziphdr" class="com.eclink.hgpj.resource.action.ZiphdrAction">

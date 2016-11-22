@@ -6,13 +6,13 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>打印领料单</title>
-<link href="../css/global.css" rel="stylesheet" type="text/css" />
+<link href="<%=request.getContextPath() %>/css/global.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="../js/My97DatePicker/WdatePicker.js"></script>
 <script type="text/javascript" src="../js/jquery-1.4.2.min.js"></script>
-<script src="../js/alert/jquery.ui.draggable.js" type="text/javascript"></script>
-<script src="../js/alert/jquery.alerts.js" type="text/javascript"></script>
-<script src="../js/common.js" type="text/javascript"></script>
-<link href="../js/alert/alerts.css" rel="stylesheet" type="text/css" />
+<script src="<%=request.getContextPath() %>/js/alert/jquery.ui.draggable.js" type="text/javascript"></script>
+<script src="<%=request.getContextPath() %>/js/alert/jquery.alerts.js" type="text/javascript"></script>
+<script src="<%=request.getContextPath() %>/js/common.js" type="text/javascript"></script>
+<link href="<%=request.getContextPath() %>/js/alert/alerts.css" rel="stylesheet" type="text/css" />
 </head>
 <script type="text/javascript">
 

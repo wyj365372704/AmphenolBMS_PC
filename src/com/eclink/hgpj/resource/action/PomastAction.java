@@ -8,6 +8,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
+
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
 
@@ -41,10 +46,13 @@ import com.eclink.hgpj.resource.vo.ZIPDTLVO;
 import com.eclink.hgpj.resource.vo.ZIPHDRVO;
 import com.eclink.hgpj.resource.vo.ZIPHSTVO;
 import com.eclink.hgpj.resource.vo.ZITEMBXVO;
+import com.eclink.hgpj.resource.vo.ZITMEXTVO;
 import com.eclink.hgpj.resource.vo.ZMBD1REPVO;
 import com.eclink.hgpj.resource.vo.ZVRHDRVO;
 import com.eclink.hgpj.resource.vo.ZVRITMVO;
+import com.eclink.hgpj.resource.vo.ZWHSUBVO;
 import com.eclink.hgpj.user.biz.AUserService;
+import com.eclink.hgpj.util.QRcoderUtil;
 import com.eclink.hgpj.util.Utils;
 import com.opensymphony.xwork2.ActionContext;
 
@@ -138,12 +146,23 @@ public class PomastAction extends BaseAction {
 
 	private boolean isOutSource = false ;
 
+
+	private String grnno;
+
 	public boolean isOutSource() {
 		return isOutSource;
 	}
 
 	public void setOutSource(boolean isOutSource) {
 		this.isOutSource = isOutSource;
+	}
+
+	public String getGrnno() {
+		return grnno;
+	}
+
+	public void setGrnno(String grnno) {
+		this.grnno = grnno;
 	}
 
 	public String getSctkji() {
@@ -908,5 +927,98 @@ public class PomastAction extends BaseAction {
 		data = "fail";
 		}
 		return "todata";
+	}
+	
+	public String toPrintZvrhdr() throws Exception{
+		try {
+			List<Map> results = new ArrayList<Map>();
+			JSONArray jsonArray = JSONObject.fromObject(grnno).getJSONArray("grnnos");
+			for(int i = 0;i<jsonArray.size();i++){
+				Map parMap = new HashMap();
+				parMap.put("vrdno", jsonArray.get(i));
+				List<ZVRHDRVO> queryZvrhdr = zvrhdrService.queryZvrhdr(parMap);
+				for(ZVRHDRVO zvrhdrvo:queryZvrhdr){
+					Map zvrhdrMap = new HashMap();
+					zvrhdrMap.put("vrdno", zvrhdrvo.getVrdno());
+					zvrhdrMap.put("house", zvrhdrvo.getHouse());
+					zvrhdrMap.put("vndnr", zvrhdrvo.getVndnr());
+					zvrhdrMap.put("printDate", Utils.formateDate(null, "yyyy/MM/dd HH:mm:ss"));
+					
+					String qrMessage = "*T"+zvrhdrvo.getVrdno();
+					String encoderQRCoder = QRcoderUtil.encoderQRCoder(qrMessage, ServletActionContext.getContext().getSession().get("username").toString(),getSession().getServletContext().getRealPath("/"));
+					HttpServletRequest request = ServletActionContext.getRequest();
+					String path = request.getContextPath(); 
+					String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+					zvrhdrMap.put("qrcodeurl", basePath+"/"+encoderQRCoder);
+					
+					List<Map> zvritmList = new ArrayList<Map>();
+					zvrhdrMap.put("zvritmList", zvritmList);
+					
+					List<ZVRITMVO> queryZvritm = zvrhdrService.queryZvritm(parMap);
+					for(ZVRITMVO zvritmvo:queryZvritm){
+						Map zvritmMap = new HashMap();
+						zvritmMap.put("ordno-poisq", zvritmvo.getOrdno()+"-"+zvritmvo.getPoisq());
+						zvritmMap.put("itnbr", zvritmvo.getItnbr().trim());
+						
+						///
+						
+						JSONObject jo = new JSONObject();
+						ITMSITVO itmsitvo = new ITMSITVO();
+						itmsitvo.setHouse((String) getSession().getAttribute("stid"));
+						itmsitvo.setItnot9(itnot9);
+						String itrvt = "";
+						List<ITMSITVO> itrvts = this.xadataService.queryItrvtAll(itmsitvo);
+						if(itrvts!=null && itrvts.size()>0){
+							ZITMEXTVO extVo = new ZITMEXTVO();
+							ITMSITVO itmsitvot = itrvts.get(0);
+							jo.put("blcft9", itmsitvot.getBlcft9().trim());//批次控制标识
+							jo.put("umstt9", itmsitvot.getUmstt9().trim());
+							extVo.setItnbr(itnot9);
+							extVo.setStid((String) getSession().getAttribute("stid"));
+							extVo.setItrv(itmsitvot.getItrvt9().trim());
+							List<ZITMEXTVO> extLists = this.zitmextService.queryItemExt(extVo);
+							String ldesc = "";
+							ITMRVAVO itmrVo = new ITMRVAVO();
+							itmrVo.setItnbr(itnot9);
+							itmrVo.setHouse((String) getSession().getAttribute("stid"));
+							itmrVo.setItrv(itmsitvot.getItrvt9().trim());
+							List<ITMRVAVO> itmrLists = this.xadataService.queryItmrva(itmrVo);
+							if(itmrLists!=null && itmrLists.size()>0){
+								ITMRVAVO itmrvavo = itmrLists.get(0);
+								jo.put("single", itmrvavo.getWeght());
+								jo.put("single_unit", itmrvavo.getB2cqcd().trim());
+							}
+							if(extLists!=null && extLists.size()>0 && extLists.get(0).getLdesc().trim().length()>0){
+								ldesc=extLists.get(0).getLdesc();
+								jo.put("ldesc", ldesc.trim());
+								jo.put("sdesc", extLists.get(0).getSdesc().trim());
+							}else{
+
+								if(itmrLists!=null && itmrLists.size()>0){
+									ldesc=itmrLists.get(0).getItdsc();
+									jo.put("ldesc", ldesc.trim());
+									jo.put("sdesc", "");
+								}else{
+									jo.put("ldesc", "");
+									jo.put("sdesc", "");
+								}
+
+							}
+						}
+						///
+						
+						zvritmList.add(zvritmMap);
+					}
+					results.add(zvrhdrMap);
+				}
+			}
+			ActionContext.getContext().getValueStack().set("results", results);
+			return "toPrintZvrhdr";
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+			return ERROR;
+		}
+
 	}
 }
