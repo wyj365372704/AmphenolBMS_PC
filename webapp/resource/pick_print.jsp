@@ -47,8 +47,11 @@ function radioChanged(){
 
 						<tr>
 
-							<td align="center" colspan="2"><s:submit id="queryId"
+							<td align="center"  ><s:submit id="queryId"
 									value="打印" onclick="return dosubmit()"></s:submit>
+							</td>
+							<td align="center"  ><input id="printid" type="button"  class="gray_button" 
+									value="批量打印" onclick="mulprint()" />
 							</td>
 						</tr>
 					</tbody>
@@ -63,6 +66,22 @@ function radioChanged(){
 <script type="text/javascript">
 		function dosubmit(){
 			window.resizeTo(900, 750);
+		}
+		function mulprint(){
+			var temp = document.getElementsByName("grnno")[0].value;
+			var input2 = document.getElementsByName("input2")[0].value;
+			var input1 = document.getElementsByName("input1")[0].value;
+			var grnno = eval("(" + temp + ")");
+			//alert(grnno.grnnos);
+			for(var i=0;i<grnno.grnnos.length;i++){
+				var gno = new Array();
+				gno.push(grnno.grnnos[i]);
+				var grnnos = JSON.stringify({
+					grnnos : gno
+				});
+				window.open("picklist!toPrintPick.action?grnno="+grnnos+"&input2="+input2+"&input1="+input1);
+			}
+			
 		}
 	</script>
 </html>
