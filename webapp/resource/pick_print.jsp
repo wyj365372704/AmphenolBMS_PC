@@ -67,6 +67,10 @@ function radioChanged(){
 		function dosubmit(){
 			window.resizeTo(900, 750);
 		}
+		function sleep(n) {
+	   		var start = new Date().getTime();
+	    	while(true)  if(new Date().getTime()-start > n) break;
+	    }
 		function mulprint(){
 			var temp = document.getElementsByName("grnno")[0].value;
 			var input2 = document.getElementsByName("input2")[0].value;
@@ -80,6 +84,7 @@ function radioChanged(){
 					grnnos : gno
 				});
 				window.open("picklist!toPrintPick.action?grnno="+grnnos+"&input2="+input2+"&input1="+input1);
+				sleep(6000);
 			}
 			
 		}
