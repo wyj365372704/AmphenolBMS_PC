@@ -445,11 +445,11 @@ public class Utils {
 		sbuff.append("<Property path='quantity'>               <Value><![CDATA[");
 		sbuff.append(map.get("quantity"));
 		sbuff.append("]]></Value>               </Property>");
-		
-		sbuff.append("<Property path='batchLot'>               <Value><![CDATA[");
-		sbuff.append(map.get("batchLot"));
-		sbuff.append("]]></Value>               </Property>");
-		
+		if((String)map.get("batchlot")!=null && !((String)map.get("batchlot")).trim().equals("")){
+			sbuff.append("<Property path='batchLot'>               <Value><![CDATA[");
+			sbuff.append(map.get("batchlot"));
+			sbuff.append("]]></Value>               </Property>");
+		}
 		sbuff.append("<Property path='reference'>               <Value><![CDATA[");
 		sbuff.append(map.get("reference"));
 		sbuff.append("]]></Value>               </Property>");
