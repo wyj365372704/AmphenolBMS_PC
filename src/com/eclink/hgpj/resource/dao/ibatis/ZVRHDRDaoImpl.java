@@ -47,18 +47,16 @@ public class ZVRHDRDaoImpl extends SqlMapClientDaoSupport implements ZVRHDRDao {
 	}
 
 	@Override
-	public List<ZVRHDRVO> queryZvrhdrDesc(Map map) throws Exception {
-		return this.getSqlMapClientTemplate().queryForList("ZVRHDR.queryZvrhdrDesc",map);
-	}
-
-	@Override
 	public List<ZVRITMVO> queryZvritm(Map map) throws Exception {
 		return this.getSqlMapClientTemplate().queryForList("ZVRHDR.queryZvritm",map);
 	}
 	
 	public String insertZvrhdr(ZVRHDRVO vo) throws Exception {
 		String result = "";
-		List<ZVRHDRVO> queryForList = queryZvrhdrDesc(new HashMap());
+		Map parMap = new HashMap();
+		parMap.put("startDate", BigDecimal.valueOf(Long.valueOf("1"+Utils.formateDate(null, "yyMMdd"))));
+		parMap.put("endDate", BigDecimal.valueOf(Long.valueOf("1"+Utils.formateDate(null, "yyMMdd"))));
+		List<ZVRHDRVO> queryForList = queryZvrhdr(parMap);
 		if(queryForList.size()>0){
 			result = queryForList.get(0).getVrdno().substring(8,12);
 			result = "0000"+(Integer.parseInt(result)+1);

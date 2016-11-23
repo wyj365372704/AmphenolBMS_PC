@@ -6135,6 +6135,7 @@ public class ResourceAction extends BaseAction {
 				Map<String, String> parMap = new HashMap<String, String>();
 				parMap.put("vrdno", return_number);
 				parMap.put("house", warehouse);
+				parMap.put("ostat", "10,40,50");
 				List<ZVRHDRVO> zvrhdr = zvrhdrService.queryZvrhdr(parMap);
 				if(zvrhdr.size()>0){
 					jo.put("firm", zvrhdr.get(0).getVndnr());

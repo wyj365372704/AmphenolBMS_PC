@@ -20,7 +20,6 @@ import com.eclink.hgpj.resource.vo.ZWHSUBVO;
 public interface ZVRHDRDao {
 	
 	public List<ZVRHDRVO> queryZvrhdr(Map map) throws Exception;
-	public List<ZVRHDRVO> queryZvrhdrDesc(Map map) throws Exception;
 	public List<ZVRITMVO> queryZvritm(Map map) throws Exception;
 
 	
