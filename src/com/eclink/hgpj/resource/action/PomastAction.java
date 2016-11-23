@@ -24,6 +24,7 @@ import com.eclink.hgpj.resource.biz.XADATAService;
 import com.eclink.hgpj.resource.biz.ZBMSCTLService;
 import com.eclink.hgpj.resource.biz.ZIPHDRService;
 import com.eclink.hgpj.resource.biz.ZITMBXService;
+import com.eclink.hgpj.resource.biz.ZITMEXTService;
 import com.eclink.hgpj.resource.biz.ZMBD1REPService;
 import com.eclink.hgpj.resource.biz.ZVRHDRService;
 import com.eclink.hgpj.resource.vo.BUYERFVO;
@@ -116,6 +117,8 @@ public class PomastAction extends BaseAction {
 
 	private String cmmt;
 
+	private String ostat;
+	
 	private String chk;
 
 	private String buynm;
@@ -149,12 +152,23 @@ public class PomastAction extends BaseAction {
 
 	private String grnno;
 
+
+	private ZITMEXTService zitmextService;
+
 	public boolean isOutSource() {
 		return isOutSource;
 	}
 
 	public void setOutSource(boolean isOutSource) {
 		this.isOutSource = isOutSource;
+	}
+
+	public ZITMEXTService getZitmextService() {
+		return zitmextService;
+	}
+
+	public void setZitmextService(ZITMEXTService zitmextService) {
+		this.zitmextService = zitmextService;
 	}
 
 	public String getGrnno() {
@@ -171,6 +185,14 @@ public class PomastAction extends BaseAction {
 
 	public void setSctkji(String sctkji) {
 		this.sctkji = sctkji;
+	}
+
+	public String getOstat() {
+		return ostat;
+	}
+
+	public void setOstat(String ostat) {
+		this.ostat = ostat;
 	}
 
 	public String getVrdln() {
@@ -755,17 +777,9 @@ public class PomastAction extends BaseAction {
 					//					momast.setEndDateB(BigDecimal.valueOf(Long.valueOf("1"+Utils.formateDate(sdf.parse(momast.getEndDate()), "yyMMdd"))));
 					map.put("endDate", BigDecimal.valueOf(Long.valueOf("1"+Utils.formateDate(sdf.parse(zvrhdr.getEndDate()), "yyMMdd"))));
 				}
-
+				
+				map.put("ostat", ostat);
 				zvrhdrList = zvrhdrService.queryZvrhdr(map);
-
-				/*if(results!=null && results.size()>0){
-					for(int i=0;i<results.size();i++){
-						String d= (results.get(i).getActdt()==null || results.get(i).getActdt().doubleValue()==0.0)?"":results.get(i).getActdt().add(BigDecimal.valueOf(19000000)).toString().trim();
-						//					String d2 = (results.get(i).getOdudt()==null || results.get(i).getOdudt().doubleValue()==0.0)?"":results.get(i).getOdudt().add(BigDecimal.valueOf(19000000)).toString().trim();
-						results.get(i).setActdts(d.length()<8?d: (d.substring(0, 4)+"-"+d.substring(4, 6)+"-"+d.substring(6, 8)+" "));
-						//					results.get(i).setSodudt(d2.length()<8?d2: (d2.substring(0, 4)+"-"+d2.substring(4, 6)+"-"+d2.substring(6, 8)+" "));
-					}
-				}*/
 			}
 			//momast.setSsstdt(ssstdt);
 			// 获取分页信息
@@ -875,7 +889,7 @@ public class PomastAction extends BaseAction {
 		try {
 			Map map = new HashMap();
 			map.put("vrdno", vrdno);
-			List<ZVRHDRVO> zvritmList = zvrhdrService.queryZvritm(map);
+			List<ZVRITMVO> zvritmList = zvrhdrService.queryZvritm(map);
 			ActionContext.getContext().getValueStack().set("zvritmList", zvritmList);
 		} catch (Exception e) {e.printStackTrace();
 		log.error("Go to admin resource operation grant page occured error.", e);
@@ -957,56 +971,41 @@ public class PomastAction extends BaseAction {
 					List<ZVRITMVO> queryZvritm = zvrhdrService.queryZvritm(parMap);
 					for(ZVRITMVO zvritmvo:queryZvritm){
 						Map zvritmMap = new HashMap();
-						zvritmMap.put("ordno-poisq", zvritmvo.getOrdno()+"-"+zvritmvo.getPoisq());
+						zvritmMap.put("ordno_poisq", zvritmvo.getOrdno()+"-"+zvritmvo.getPoisq());
 						zvritmMap.put("itnbr", zvritmvo.getItnbr().trim());
 						
 						///
-						
-						JSONObject jo = new JSONObject();
+						String ldesc = "";
 						ITMSITVO itmsitvo = new ITMSITVO();
 						itmsitvo.setHouse((String) getSession().getAttribute("stid"));
-						itmsitvo.setItnot9(itnot9);
-						String itrvt = "";
+						itmsitvo.setItnot9(zvritmvo.getItnbr());
 						List<ITMSITVO> itrvts = this.xadataService.queryItrvtAll(itmsitvo);
 						if(itrvts!=null && itrvts.size()>0){
 							ZITMEXTVO extVo = new ZITMEXTVO();
 							ITMSITVO itmsitvot = itrvts.get(0);
-							jo.put("blcft9", itmsitvot.getBlcft9().trim());//批次控制标识
-							jo.put("umstt9", itmsitvot.getUmstt9().trim());
-							extVo.setItnbr(itnot9);
+							extVo.setItnbr(zvritmvo.getItnbr());
 							extVo.setStid((String) getSession().getAttribute("stid"));
 							extVo.setItrv(itmsitvot.getItrvt9().trim());
 							List<ZITMEXTVO> extLists = this.zitmextService.queryItemExt(extVo);
-							String ldesc = "";
 							ITMRVAVO itmrVo = new ITMRVAVO();
-							itmrVo.setItnbr(itnot9);
+							itmrVo.setItnbr(zvritmvo.getItnbr());
 							itmrVo.setHouse((String) getSession().getAttribute("stid"));
 							itmrVo.setItrv(itmsitvot.getItrvt9().trim());
 							List<ITMRVAVO> itmrLists = this.xadataService.queryItmrva(itmrVo);
-							if(itmrLists!=null && itmrLists.size()>0){
-								ITMRVAVO itmrvavo = itmrLists.get(0);
-								jo.put("single", itmrvavo.getWeght());
-								jo.put("single_unit", itmrvavo.getB2cqcd().trim());
-							}
 							if(extLists!=null && extLists.size()>0 && extLists.get(0).getLdesc().trim().length()>0){
 								ldesc=extLists.get(0).getLdesc();
-								jo.put("ldesc", ldesc.trim());
-								jo.put("sdesc", extLists.get(0).getSdesc().trim());
 							}else{
-
 								if(itmrLists!=null && itmrLists.size()>0){
 									ldesc=itmrLists.get(0).getItdsc();
-									jo.put("ldesc", ldesc.trim());
-									jo.put("sdesc", "");
-								}else{
-									jo.put("ldesc", "");
-									jo.put("sdesc", "");
 								}
-
 							}
 						}
+						zvritmMap.put("ldesc", ldesc);
 						///
 						
+						zvritmMap.put("plnvq", zvritmvo.getPlnvq().doubleValue());
+						zvritmMap.put("stkum", zvritmvo.getStkum());
+						zvritmMap.put("plloc", zvritmvo.getPlloc());
 						zvritmList.add(zvritmMap);
 					}
 					results.add(zvrhdrMap);

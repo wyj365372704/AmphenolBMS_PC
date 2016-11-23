@@ -139,7 +139,7 @@
 			grnnos : gno
 		});
 
-		window.open('pomast!toPrintZvrhdr.action?grnno=' + grnnos, 'newwindow', 'height=200,width=400,top=60,left=200,toolbar=no,menubar=no,scrollbars=no, resizable=no,location=no, status=no');
+		window.open('pomast!toPrintZvrhdr.action?grnno=' + grnnos, 'newwindow', 'height=900,width=750,top=60,left=200,toolbar=no,menubar=no,scrollbars=no, resizable=no,location=no, status=no');
 	}
 	
 		function selectrow(vrdno){//alert(idx);
@@ -194,8 +194,8 @@
 						onclick="WdatePicker()" autocomplete="on" />
 				</li>
 				<li><div class="w_s">退货状态：</div> <s:select
-						list="#{' ':'全部','1':'创建中','2':'已创建,未退货','3':'部分退货','4':'退货完成'}"
-						name="momast.uusamy" headerValue="momast.uusamy"
+						list="#{'':'全部','05':'创建中','10':'已创建,未退货','40':'部分退货','50':'退货完成'}"
+						name="ostate" headerValue="state"
 						style="width:80px" cssClass="select_s_2"></s:select></li>
 			</ul>
 		</div>

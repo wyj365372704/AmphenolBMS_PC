@@ -47,6 +47,7 @@ import com.eclink.hgpj.resource.biz.ZRMHSTService;
 import com.eclink.hgpj.resource.biz.ZSHPHDRService;
 import com.eclink.hgpj.resource.biz.ZSLLOGService;
 import com.eclink.hgpj.resource.biz.ZTWHDRService;
+import com.eclink.hgpj.resource.biz.ZVRHDRService;
 import com.eclink.hgpj.resource.biz.ZWHSUBService;
 import com.eclink.hgpj.resource.vo.ITMRVAVO;
 import com.eclink.hgpj.resource.vo.ITMSITVO;
@@ -87,6 +88,8 @@ import com.eclink.hgpj.resource.vo.ZSLLOGVO;
 import com.eclink.hgpj.resource.vo.ZTWBCHVO;
 import com.eclink.hgpj.resource.vo.ZTWDTLVO;
 import com.eclink.hgpj.resource.vo.ZTWHDRVO;
+import com.eclink.hgpj.resource.vo.ZVRHDRVO;
+import com.eclink.hgpj.resource.vo.ZVRITMVO;
 import com.eclink.hgpj.resource.vo.ZWHSUBVO;
 import com.eclink.hgpj.user.biz.AUserService;
 import com.eclink.hgpj.user.vo.AUserVO;
@@ -127,7 +130,7 @@ public class ResourceAction extends BaseAction {
 	private ZGRNHDRService zgrnhdrService;
 
 	private ZPLNMSTService zplnmstService;
-	
+
 	private SHPDSKService shpdskService;
 
 	private XADATAService xadataService;
@@ -280,12 +283,42 @@ public class ResourceAction extends BaseAction {
 
 	private String abnormal_hours;
 
+	private String return_number;
+
+	private ZVRHDRService zvrhdrService;
+
+	private String return_line;
+
 	public MenuService getMenuService() {
 		return menuService;
 	}
 
 	public void setMenuService(MenuService menuService) {
 		this.menuService = menuService;
+	}
+
+	public String getReturn_line() {
+		return return_line;
+	}
+
+	public void setReturn_line(String return_line) {
+		this.return_line = return_line;
+	}
+
+	public ZVRHDRService getZvrhdrService() {
+		return zvrhdrService;
+	}
+
+	public void setZvrhdrService(ZVRHDRService zvrhdrService) {
+		this.zvrhdrService = zvrhdrService;
+	}
+
+	public String getReturn_number() {
+		return return_number;
+	}
+
+	public void setReturn_number(String return_number) {
+		this.return_number = return_number;
 	}
 
 	public String getIa_quantity() {
@@ -6068,6 +6101,172 @@ public class ResourceAction extends BaseAction {
 		data=jo.toString();
 		return "todata";
 	}
+
+
+	/**
+	 * 查询退货单
+	 * @return
+	 * @throws Exception
+	 */
+	public String query_return() throws Exception{
+		JSONObject jo = new JSONObject();
+		try {
+
+			if(username==null || username.trim().equals("")){
+				jo.put("code", 2);
+				jo.put("desc", "not have username");
+			}else if(env==null || env.trim().equals("")){
+
+				jo.put("code", 3);
+				jo.put("desc", "env is needed");
+			}else if(return_number==null || return_number.trim().equals("")){
+				jo.put("code", 3);
+				jo.put("desc", "return_number is needed");
+			}else{
+				int idx = (Integer)this.getSession().getServletContext().getAttribute(env);
+				String dbconfigurl=(String)this.getSession().getServletContext().getAttribute("dbconfigurl");
+				if(dbconfigurl==null || dbconfigurl.trim().equals("")){
+					dbconfigurl=this.getSession().getServletContext().getRealPath("/WEB-INF")+ "/classes/com/eclink/hgpj/util/dbconfig.properties";
+					this.getSession().getServletContext().setAttribute("dbconfigurl",dbconfigurl);
+				}
+				DataSourceUtil.setDataSource(dbconfigurl, idx);
+				String stid =Utils.getDataSourceS(dbconfigurl, "STID"+idx);
+
+				Map<String, String> parMap = new HashMap<String, String>();
+				parMap.put("vrdno", return_number);
+				parMap.put("house", warehouse);
+				List<ZVRHDRVO> zvrhdr = zvrhdrService.queryZvrhdr(parMap);
+				if(zvrhdr.size()>0){
+					jo.put("firm", zvrhdr.get(0).getVndnr());
+					jo.put("status_code", zvrhdr.get(0).getOstat());
+					parMap.put("lstat", "10");
+					List<ZVRITMVO> queryZvritm = zvrhdrService.queryZvritm(parMap);
+					JSONArray zvritmJsonArray = new JSONArray();
+					for(ZVRITMVO zvritmvo:queryZvritm){
+						JSONObject zvritmJsonObject = new JSONObject();
+						zvritmJsonObject.put("mater_po", zvritmvo.getOrdno()+"-"+zvritmvo.getPoisq());
+						zvritmJsonObject.put("number", zvritmvo.getVrdln());
+						zvritmJsonObject.put("mater", zvritmvo.getItnbr());
+						zvritmJsonObject.put("quantity", zvritmvo.getPlnvq().doubleValue());
+						zvritmJsonObject.put("unit", zvritmvo.getStkum());
+						zvritmJsonArray.add(zvritmJsonObject);
+					}
+					jo.put("mater_list", zvritmJsonArray.toString());
+					jo.put("code", 1);
+					jo.put("desc", "OK");
+				}else{
+					jo.put("code", 6);
+					jo.put("desc", "查无退货单");
+				}
+			}
+		}catch (Throwable e) {
+			e.printStackTrace();
+			jo.put("code", 4);
+			jo.put("desc", "other exception");
+			data = jo.toString();
+			log.error("get env error.",e);
+			return "todata";
+		}finally{
+		}
+		data=jo.toString();
+		return "todata";
+	}
+
+	/**
+	 * 退货-查询物料明细
+	 * @return
+	 * @throws Exception
+	 */
+	public String query_return_item() throws Exception{
+		JSONObject jo = new JSONObject();
+		try {
+			if(username==null || username.trim().equals("")){
+				jo.put("code", 2);
+				jo.put("desc", "not have username");
+			}else if(env==null || env.trim().equals("")){
+				jo.put("code", 3);
+				jo.put("desc", "env is needed");
+			}else if(mater==null || mater.trim().equals("")){
+				jo.put("code", 3);
+				jo.put("desc", "mater is needed");
+			}else{
+				int idx = (Integer)this.getSession().getServletContext().getAttribute(env);
+				String dbconfigurl=(String)this.getSession().getServletContext().getAttribute("dbconfigurl");
+				if(dbconfigurl==null || dbconfigurl.trim().equals("")){
+					dbconfigurl=this.getSession().getServletContext().getRealPath("/WEB-INF")+ "/classes/com/eclink/hgpj/util/dbconfig.properties";
+					this.getSession().getServletContext().setAttribute("dbconfigurl",dbconfigurl);
+				}
+				DataSourceUtil.setDataSource(dbconfigurl, idx);
+				String stid =Utils.getDataSourceS(dbconfigurl, "STID"+idx);
+
+				Map map = new HashMap();
+				map.put("warehouse", warehouse);
+				map.put("stid", stid);
+				map.put("itnbr", mater);
+				List<SLQNTYVO> results = this.xadataService.querySlqnty(map);
+				if(results!=null && results.size()>0){
+					///
+					String ldesc = "";
+					ITMSITVO itmsitvo = new ITMSITVO();
+					itmsitvo.setHouse(warehouse);
+					itmsitvo.setItnot9(mater);
+					List<ITMSITVO> itrvts = this.xadataService.queryItrvtAll(itmsitvo);
+					if(itrvts!=null && itrvts.size()>0){
+						ZITMEXTVO extVo = new ZITMEXTVO();
+						ITMSITVO itmsitvot = itrvts.get(0);
+						extVo.setItnbr(mater);
+						extVo.setStid(warehouse);
+						extVo.setItrv(itmsitvot.getItrvt9().trim());
+						List<ZITMEXTVO> extLists = this.zitmextService.queryItemExt(extVo);
+						ITMRVAVO itmrVo = new ITMRVAVO();
+						itmrVo.setItnbr(mater);
+						itmrVo.setHouse(warehouse);
+						itmrVo.setItrv(itmsitvot.getItrvt9().trim());
+						List<ITMRVAVO> itmrLists = this.xadataService.queryItmrva(itmrVo);
+						if(extLists!=null && extLists.size()>0 && extLists.get(0).getLdesc().trim().length()>0){
+							ldesc=extLists.get(0).getLdesc();
+						}else{
+							if(itmrLists!=null && itmrLists.size()>0){
+								ldesc=itmrLists.get(0).getItdsc();
+							}
+						}
+					}
+					jo.put("mate_desc", ldesc);
+					///
+					
+					
+					List<Map> resultmap = new ArrayList<Map>();
+					for(int i=0;i<results.size();i++){
+						SLQNTYVO temp = results.get(i);
+						Map tm = new HashMap();
+						tm.put("shard", temp.getUucalm());
+						tm.put("location", temp.getLlocn());
+						tm.put("branch", temp.getLbhno());
+						tm.put("quantity", temp.getLqnty());
+						tm.put("unit", temp.getUnpurum());
+						resultmap.add(tm);
+					}
+					jo.put("location_list", resultmap);
+					jo.put("code", 1);
+					jo.put("desc", "ok");
+				}else{
+					jo.put("code", 5);
+					jo.put("desc", "no results");
+				}
+			}
+		}catch (Throwable e) {
+			e.printStackTrace();
+			jo.put("code", 4);
+			jo.put("desc", "other exception");
+			data = jo.toString();
+			log.error("get env error.",e);
+			return "todata";
+		}finally{
+		}
+		data=jo.toString();
+		return "todata";
+	}
+
 	/**
 	 * 菜单资源排序页面
 	 * @return
