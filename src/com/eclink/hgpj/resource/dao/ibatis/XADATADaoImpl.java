@@ -185,6 +185,10 @@ public class XADATADaoImpl extends SqlMapClientDaoSupport implements XADATADao {
 		return this.getSqlMapClientTemplate().queryForList("XADATA.queryModesc",map);
 	}
 
+	public List<POMASTVO> queryPomastState(Map map) throws Exception{
+		return this.getSqlMapClientTemplate().queryForList("XADATA.queryPomastState",map);
+	}
+	
 	@Override
 	public List<SCHRCPVO> querySchrcp(SCHRCPVO vo) {
 		return this.getSqlMapClientTemplate().queryForList("XADATA.querySchrcp",vo);

@@ -76,6 +76,8 @@ public interface XADATADao {
 	public List<String> queryMBADREP(Map map) throws Exception;
 	public List<MOROUTVO> queryMorout(Map map) throws Exception;
 	public List<MODESCVO> queryModesc(Map map) throws Exception;
+	
+	public List<POMASTVO> queryPomastState(Map map) throws Exception;
 
 	public List<VENNAMVO> queryVennam(Map map);
 	

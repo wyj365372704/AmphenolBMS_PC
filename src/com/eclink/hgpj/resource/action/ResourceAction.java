@@ -14,6 +14,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
+import javax.management.RuntimeErrorException;
+
 import javassist.expr.NewArray;
 
 import net.sf.json.JSONArray;
@@ -57,6 +59,7 @@ import com.eclink.hgpj.resource.vo.MOPORFVO;
 import com.eclink.hgpj.resource.vo.MOROUTVO;
 import com.eclink.hgpj.resource.vo.MenuVO;
 import com.eclink.hgpj.resource.vo.POITEMVO;
+import com.eclink.hgpj.resource.vo.POMASTVO;
 import com.eclink.hgpj.resource.vo.SHPDSKVO;
 import com.eclink.hgpj.resource.vo.SLDATAVO;
 import com.eclink.hgpj.resource.vo.SLQNTYVO;
@@ -90,6 +93,7 @@ import com.eclink.hgpj.resource.vo.ZTWDTLVO;
 import com.eclink.hgpj.resource.vo.ZTWHDRVO;
 import com.eclink.hgpj.resource.vo.ZVRHDRVO;
 import com.eclink.hgpj.resource.vo.ZVRITMVO;
+import com.eclink.hgpj.resource.vo.ZVRTRNVO;
 import com.eclink.hgpj.resource.vo.ZWHSUBVO;
 import com.eclink.hgpj.user.biz.AUserService;
 import com.eclink.hgpj.user.vo.AUserVO;
@@ -6190,6 +6194,9 @@ public class ResourceAction extends BaseAction {
 			}else if(mater==null || mater.trim().equals("")){
 				jo.put("code", 3);
 				jo.put("desc", "mater is needed");
+			}else if(warehouse==null || warehouse.trim().equals("")){
+				jo.put("code", 3);
+				jo.put("desc", "warehouse is needed");
 			}else{
 				int idx = (Integer)this.getSession().getServletContext().getAttribute(env);
 				String dbconfigurl=(String)this.getSession().getServletContext().getAttribute("dbconfigurl");
@@ -6199,7 +6206,6 @@ public class ResourceAction extends BaseAction {
 				}
 				DataSourceUtil.setDataSource(dbconfigurl, idx);
 				String stid =Utils.getDataSourceS(dbconfigurl, "STID"+idx);
-
 				Map map = new HashMap();
 				map.put("warehouse", warehouse);
 				map.put("stid", stid);
@@ -6234,8 +6240,8 @@ public class ResourceAction extends BaseAction {
 					}
 					jo.put("mate_desc", ldesc);
 					///
-					
-					
+
+
 					List<Map> resultmap = new ArrayList<Map>();
 					for(int i=0;i<results.size();i++){
 						SLQNTYVO temp = results.get(i);
@@ -6262,6 +6268,250 @@ public class ResourceAction extends BaseAction {
 			data = jo.toString();
 			log.error("get env error.",e);
 			return "todata";
+		}finally{
+		}
+		data=jo.toString();
+		return "todata";
+	}
+
+	/**
+	 * 退货-关闭物料退货
+	 * @return
+	 * @throws Exception
+	 */
+	public String mater_return_close() throws Exception{
+		JSONObject jo = new JSONObject();
+		try {
+			if(username==null || username.trim().equals("")){
+				jo.put("code", 2);
+				jo.put("desc", "not have username");
+			}else if(env==null || env.trim().equals("")){
+				jo.put("code", 3);
+				jo.put("desc", "env is needed");
+			}else if(return_number==null || return_number.trim().equals("")){
+				jo.put("code", 3);
+				jo.put("desc", "return_number is needed");
+			}else if(return_line==null || return_line.trim().equals("")){
+				jo.put("code", 3);
+				jo.put("desc", "return_line is needed");
+			}else{
+				int idx = (Integer)this.getSession().getServletContext().getAttribute(env);
+				String dbconfigurl=(String)this.getSession().getServletContext().getAttribute("dbconfigurl");
+				if(dbconfigurl==null || dbconfigurl.trim().equals("")){
+					dbconfigurl=this.getSession().getServletContext().getRealPath("/WEB-INF")+ "/classes/com/eclink/hgpj/util/dbconfig.properties";
+					this.getSession().getServletContext().setAttribute("dbconfigurl",dbconfigurl);
+				}
+				DataSourceUtil.setDataSource(dbconfigurl, idx);
+				String stid =Utils.getDataSourceS(dbconfigurl, "STID"+idx);
+
+				ZVRITMVO zvritmvo = new ZVRITMVO();
+				zvritmvo.setVrdno(return_number);
+				zvritmvo.setVndnr(return_line);
+				zvrhdrService.closePurchaseReturn(zvritmvo);
+
+				jo.put("code", 1);
+				jo.put("desc", "ok");
+			}
+		}catch (Throwable e) {
+			e.printStackTrace();
+			jo.put("code", 4);
+			jo.put("desc", "other exception");
+			log.error("get env error.",e);
+		}finally{
+		}
+		data=jo.toString();
+		return "todata";
+	}
+
+	/**
+	 * 退货-确认物料退货
+	 * @return
+	 * @throws Exception
+	 */
+	public String mater_return_confirm() throws Exception{
+		JSONObject jo = new JSONObject();
+		try {
+			if(username==null || username.trim().equals("")){
+				jo.put("code", 2);
+				jo.put("desc", "not have username");
+			}else if(env==null || env.trim().equals("")){
+				jo.put("code", 3);
+				jo.put("desc", "env is needed");
+			}else if(return_number==null || return_number.trim().equals("")){
+				jo.put("code", 3);
+				jo.put("desc", "return_number is needed");
+			}else if(return_line==null || return_line.trim().equals("")){
+				jo.put("code", 3);
+				jo.put("desc", "return_line is needed");
+			}else if(mater_list==null || mater_list.trim().equals("")){
+				jo.put("code", 3);
+				jo.put("desc", "mater_list is needed");
+			}else{
+				int idx = (Integer)this.getSession().getServletContext().getAttribute(env);
+				String dbconfigurl=(String)this.getSession().getServletContext().getAttribute("dbconfigurl");
+				if(dbconfigurl==null || dbconfigurl.trim().equals("")){
+					dbconfigurl=this.getSession().getServletContext().getRealPath("/WEB-INF")+ "/classes/com/eclink/hgpj/util/dbconfig.properties";
+					this.getSession().getServletContext().setAttribute("dbconfigurl",dbconfigurl);
+				}
+				DataSourceUtil.setDataSource(dbconfigurl, idx);
+				String stid =Utils.getDataSourceS(dbconfigurl, "STID"+idx);
+
+				Map map = new HashMap();
+				map.put("vrdno", return_number);
+				List<ZVRHDRVO> queryZvrhdr = zvrhdrService.queryZvrhdr(map);
+				if(queryZvrhdr.size()>0){
+					ZVRHDRVO zvrhdrvo = queryZvrhdr.get(0);
+					String ostat = zvrhdrvo.getOstat().trim();
+					if(ostat.equals("10")||ostat.equals("40")){
+						map.put("vrdln", return_line);
+						List<ZVRITMVO> queryZvritm = zvrhdrService.queryZvritm(map);
+						if(queryZvritm.size()>0){
+							ZVRITMVO zvritmvo = queryZvritm.get(0);
+							String lstat = zvritmvo.getLstat().trim();
+							if(lstat.equals("10")){
+								map.put("ordno", zvritmvo.getOrdno());
+								map.put("poisq", zvritmvo.getPoisq());
+								List<POMASTVO> queryPomastState = xadataService.queryPomastState(map);
+								if(queryPomastState.size()>0){
+									POMASTVO pomastvo = queryPomastState.get(0);
+									String pstts = pomastvo.getPstts().trim();
+									String staic =  pomastvo.getStaic().trim();
+									if((pstts.equals("20")
+											||pstts.equals("30")
+											||pstts.equals("35"))
+											&&(staic.equals("10")
+													||staic.equals("20")
+													||staic.equals("30")
+													||staic.equals("40"))){
+
+										ZBMSCTLVO bmsctlVO = new ZBMSCTLVO();
+										bmsctlVO.setSite(stid);
+										List<ZBMSCTLVO> bmsctlList = this.zbmsctlService.queryZbmsctl(bmsctlVO);
+
+										JSONObject json = JSONObject.fromObject(mater_list);
+										JSONArray jsonArr = JSONArray.fromObject(json.get("mater_list"));
+										if(jsonArr!=null && jsonArr.size()>0){
+											for(int i = 0;i<jsonArr.size();i++){
+												JSONObject branchJsonObject = jsonArr.getJSONObject(i);
+												String location = branchJsonObject.optString("location");
+												String branch_desc = branchJsonObject.optString("branch_desc");
+												String return_quantity = branchJsonObject.optString("return_quantity");
+
+												Map parames = new HashMap();
+												parames.put("sluserId", this.getSession().getServletContext().getAttribute("sluserId"));
+												parames.put("slpassword", this.getSession().getServletContext().getAttribute("slpassword"));
+												parames.put("slurl", this.getSession().getServletContext().getAttribute("slurl"));
+												parames.put("scheduledReceiptToken", zvritmvo.getSctkji() == null?"":zvritmvo.getSctkji());
+												parames.put("batchLot", branch_desc == null?"":branch_desc);
+												parames.put("receivedToStockWarehouseLocation", location == null?"":location);
+												parames.put("reference", zvritmvo.getVrdno().substring(2,zvritmvo.getVrdno().length()));
+												parames.put("unitofMeasure", zvritmvo.getStkum() == null?"":zvritmvo.getStkum());
+												parames.put("transactionDate", Utils.formateDate(null, "yyyyMMdd"));
+												parames.put("receivedToStockQuantity", return_quantity == null?"":Double.parseDouble(return_quantity)*-1);
+												
+
+												if(bmsctlList!=null && bmsctlList.size()>0){
+													parames.put("receivedToStockReason", bmsctlList.get(0).getRprsn().trim());
+												}else{
+													parames.put("receivedToStockReason", "");
+												}
+												
+												
+
+												String xaret0 = Utils.systemLinkPurchaseReturn(parames);
+												String retVal = (String)parames.get("systemLinkStr");
+
+												System.out.println("xaret0:"+xaret0);
+												System.out.println("um:"+retVal);
+												String errorStr1 = retVal.substring(retVal.indexOf("hasErrors"), retVal.indexOf("hasErrors")+17);
+												String warnStr2 = retVal.substring(retVal.indexOf("hasWarnings"), retVal.indexOf("hasWarnings")+19);
+												if(errorStr1.indexOf("true")>=0){
+													String now1 = Utils.formateDate(null, "yyyyMMdd");
+													String now3 = Utils.formateDate(null, "yyMMdd");
+													String now2 = Utils.formateDate(null, "HHmmss");
+													
+													String userDept="";
+													List<ZBMSU02VO> dps = this.auserService.queryDeptByUserName(username);
+													if(dps!=null && dps.size()>0){
+														for(ZBMSU02VO dp:dps){
+															if(dp.getDflt()!=null && "1".equals(dp.getDflt().trim())){
+																//							vo.setPlant(dp.getPlant());
+																userDept = (dp.getDept());
+															}
+														}
+													} 
+													
+													ZSLLOGVO sysliklog = new ZSLLOGVO();
+													int count = this.zsllogService.getCoutsByDt(BigDecimal.valueOf(Long.valueOf("1"+now3)))+1;
+													String index = "0000"+count;
+													sysliklog.setSldno("SL"+now3+index.substring(index.length()-4));
+													sysliklog.setAppl("A");
+													sysliklog.setSltype("12");
+													sysliklog.setDatyp("12");
+													//							sysliklog.setSlreq((String)xamap0.get("systemLinkStr"));
+													//							sysliklog.setSlrsp(retStr);
+													sysliklog.setSlreq("");
+													sysliklog.setSlrsp("");
+													sysliklog.setCrdpt(userDept);
+													sysliklog.setCrusr(username);
+													sysliklog.setCrdat(BigDecimal.valueOf(Long.valueOf("1"+now3)));
+													sysliklog.setCrtme(BigDecimal.valueOf(Long.valueOf(now2)));
+													sysliklog.setFprcs("0");
+													sysliklog.setHouse("");
+													sysliklog.setItnbr("");
+													sysliklog.setOsgrp("");
+													sysliklog.setTrqty(BigDecimal.valueOf(0));
+													sysliklog.setLlocn("");
+													sysliklog.setNlloc("");
+													//							this.zsllogService.insertZsllog(sysliklog);
+													
+													throw new RuntimeException("systemlink 错误");
+												}else{
+													ZVRTRNVO zvrtrnvo = new ZVRTRNVO();
+													zvrtrnvo.setVrdno(zvritmvo.getVrdno());
+													zvrtrnvo.setVrdln(zvritmvo.getVrdln());
+													zvrtrnvo.setVndnr(zvritmvo.getVndnr());
+													zvrtrnvo.setHouse(zvritmvo.getHouse());
+													zvrtrnvo.setOrdno(zvritmvo.getOrdno());
+													zvrtrnvo.setPoisq(zvritmvo.getPoisq());
+													zvrtrnvo.setBlksq(zvritmvo.getBlksq());
+													zvrtrnvo.setItnbr(zvritmvo.getItnbr());
+													zvrtrnvo.setStkum(zvritmvo.getStkum());
+													zvrtrnvo.setVrloc(location);
+													zvrtrnvo.setActvq(new BigDecimal(return_quantity).setScale(3));
+													zvrhdrService.insertZvrtrn(zvrtrnvo);
+												}
+											}
+											zvrhdrService.ensurePurchaseReturn(zvritmvo);
+											jo.put("code", 1);
+											jo.put("desc", "ok");
+										}else{
+											throw new RuntimeException("mater_list 错误");
+										}
+									}else{
+										throw new RuntimeException("采购单状态异常 错误");
+									}
+								}else{
+									throw new RuntimeException("xa采购单不存在 错误");
+								}
+							}else{
+								throw new RuntimeException("zvritm 状态 错误");
+							}
+						}else{
+							throw new RuntimeException("不存在zvritm 状态 错误");
+						}
+					}else{
+						throw new RuntimeException("zvrhdr 状态 错误");
+					}
+				}else{
+					throw new RuntimeException("不存在zvrhdr 状态 错误");
+				}
+			}
+		}catch (Throwable e) {
+			e.printStackTrace();
+			jo.put("code", 4);
+			jo.put("desc", e.getMessage());
+			log.error("get env error.",e);
 		}finally{
 		}
 		data=jo.toString();

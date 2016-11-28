@@ -6,6 +6,7 @@ import java.util.Map;
 import com.eclink.hgpj.resource.vo.ZBMSCTLVO;
 import com.eclink.hgpj.resource.vo.ZVRHDRVO;
 import com.eclink.hgpj.resource.vo.ZVRITMVO;
+import com.eclink.hgpj.resource.vo.ZVRTRNVO;
 import com.eclink.hgpj.resource.vo.ZWHSUBVO;
 
 /**
@@ -31,8 +32,12 @@ public interface ZVRHDRDao {
 	public String insertZvrhdr(ZVRHDRVO vo) throws Exception;
 	
 	public void insertZvritm(ZVRITMVO vo) throws Exception;
+
+	public void insertZvrtrn(ZVRTRNVO vo) throws Exception;
 	
 	public void deleteZvritm(ZVRITMVO vo) throws Exception;
+	
+	public void changeZvritmState(ZVRITMVO vo) throws Exception;
 	
 	public void changeZvrhdrState(ZVRHDRVO vo) throws Exception;
 }

@@ -11,6 +11,7 @@ import com.eclink.hgpj.resource.vo.ZSHPBCHVO;
 import com.eclink.hgpj.resource.vo.ZSHPHDRVO;
 import com.eclink.hgpj.resource.vo.ZVRHDRVO;
 import com.eclink.hgpj.resource.vo.ZVRITMVO;
+import com.eclink.hgpj.resource.vo.ZVRTRNVO;
 import com.eclink.hgpj.resource.vo.ZWHSUBVO;
 
 /**
@@ -31,7 +32,13 @@ public interface ZVRHDRService {
 	
 	public void deleteZvritm(ZVRITMVO vo) throws Exception;
 	
-	public void enableCreateZvritm(String vrdno) throws Exception;
+	public void closePurchaseReturn(ZVRITMVO vo) throws Exception;
 	
-	public void cancelZvritm(String vrdno) throws Exception;
+	public void insertZvrtrn(ZVRTRNVO vo) throws Exception;
+	
+	public void enableCreateZvrhdr(String vrdno) throws Exception;
+	
+	public void cancelZvrhdr(String vrdno) throws Exception;
+	
+	public void ensurePurchaseReturn(ZVRITMVO vo) throws Exception;
 }

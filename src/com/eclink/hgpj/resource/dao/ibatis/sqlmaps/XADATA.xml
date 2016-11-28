@@ -415,8 +415,9 @@
 		</dynamic>
 
 	</select>
-	
-	<select id="queryMoporfNormal" resultClass="MOPORFVO" parameterClass="MOPORFVO">
+
+	<select id="queryMoporfNormal" resultClass="MOPORFVO"
+		parameterClass="MOPORFVO">
 		<![CDATA[ select  a.*,c.SCTKJI from  MOPORF  a  left outer join SCHRCP c on 
 		       c.ORDRJI = a.PONR and c.PISQJI = a.PISQ
 			   and c.BKSQJI = a.BKSQ 		        
@@ -431,6 +432,17 @@
 		</dynamic>
 
 	</select>
+	
+	<select id="queryPomastState" resultClass="POMASTVO" parameterClass="Map">
+		<![CDATA[ 
+			SELECT A.PSTTS , B.STAIC FROM POMAST A
+			LEFT OUTER JOIN POITEM B ON A.ORDNO = B.ORDNO WHERE A.ORDNO
+			= #ordno# AND B.POISQ = #poisq#      
+		]]>
+
+	</select>
+
+
 
 	<select id="queryPomast" resultClass="POMASTVO" parameterClass="Map">
 		<![CDATA[ select  a.*,c.vn35,c.vcont,c.txsuf from  pomast   a  left outer join vennam  c on 

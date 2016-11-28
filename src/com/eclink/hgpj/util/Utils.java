@@ -699,6 +699,77 @@ public class Utils {
 		return sbuff.toString();
 	}
 	
+	/**
+	 * 采购退货systemlink
+	 * @param map
+	 * @return
+	 */
+	public static String systemLinkPurchaseReturn(Map map){
+		StringBuffer sbuff = new StringBuffer();
+		sbuff.append("<?xml version='1.0' encoding='UTF-8'?>");
+		sbuff.append("<!DOCTYPE System-Link SYSTEM 'SystemLinkRequest.dtd'>");
+		sbuff.append("<System-Link>");
+		sbuff.append("<Login userId='");
+		sbuff.append(map.get("sluserId"));
+		sbuff.append("' password='");
+		sbuff.append(map.get("slpassword"));
+		sbuff.append("' maxIdle='900000' properties='com.pjx.cas.domain.EnvironmentId=M1,com.pjx.cas.domain.SystemName=S844DD1W,com.pjx.cas.user.LanguageId=zh'/>");
+		sbuff.append("<Request sessionHandle='*current' workHandle='*new' broker='EJB' maxIdle='1000'>");
+		sbuff.append("<Create name = 'receiveScheduleReceipt' domainClass='com.mapics.mm.ReceiveScheduledReceiptTxn'>");
+		sbuff.append("<DomainEntity>            <Key>");
+		sbuff.append("<Property path='scheduledReceiptToken'><Value><![CDATA[");
+		sbuff.append(map.get("scheduledReceiptToken"));
+		sbuff.append("]]></Value>               </Property></Key>");
+		
+		sbuff.append("<Property path='grnInvoiceFlag'><Value><![CDATA[true]]></Value></Property>");
+
+		sbuff.append("<Property path='batchLot'>               <Value><![CDATA[");
+		sbuff.append(map.get("batchLot"));
+		sbuff.append("]]></Value>               </Property>");
+//		
+		sbuff.append("<Property path='receivedToStockWarehouseLocation'>               <Value><![CDATA[");
+		sbuff.append(map.get("receivedToStockWarehouseLocation"));
+		sbuff.append("]]></Value>               </Property>");
+		
+		sbuff.append("<Property path='reference'>               <Value><![CDATA[");
+		sbuff.append(map.get("reference"));
+		sbuff.append("]]></Value>               </Property>");
+		
+		sbuff.append("<Property path='unitOfMeasure'>               <Value><![CDATA[");
+		sbuff.append(map.get("unitofMeasure"));
+		sbuff.append("]]></Value>               </Property>");
+		
+		sbuff.append("<Property path='setScheduledReceiptStatus'>               <Value><![CDATA[");
+		sbuff.append("]]></Value>               </Property>");
+		
+		sbuff.append("<Property path='transactionDate'>               <Value><![CDATA[");
+		sbuff.append(map.get("transactionDate"));
+		sbuff.append("]]></Value>               </Property>");
+		
+		sbuff.append("<Property path='receivedToStockFlag'>               <Value><![CDATA[");
+		sbuff.append("true");
+		sbuff.append("]]></Value>               </Property>");
+		
+		sbuff.append("<Property path='goodsReceivedNote'>               <Value><![CDATA[");
+		sbuff.append("]]></Value>               </Property>");
+		
+		sbuff.append("<Property path='receivedToStockQuantity'>               <Value><![CDATA[");
+		sbuff.append(map.get("receivedToStockQuantity"));
+		sbuff.append("]]></Value>               </Property>");
+		
+		sbuff.append("<Property path='receivedToStockReason'>               <Value><![CDATA[");
+		sbuff.append(map.get("receivedToStockReason"));
+		sbuff.append("]]></Value>               </Property>");
+		
+		sbuff.append("</DomainEntity>      </Create>   </Request><Logout sessionHandle='*current'/></System-Link>");
+//		map.put("systemLinkStr", sbuff.toString());
+//		return postXMLRequest((String)map.get("slurl"), sbuff.toString());
+		String retStr = postXMLRequest((String)map.get("slurl"), sbuff.toString());
+		System.out.println( sbuff.toString());
+		map.put("systemLinkStr", retStr);
+		return sbuff.toString();
+	}
+	
 	public static String systemLinkRpo(Map map){
 		StringBuffer sbuff = new StringBuffer();
 		sbuff.append("<?xml version='1.0' encoding='UTF-8'?>");

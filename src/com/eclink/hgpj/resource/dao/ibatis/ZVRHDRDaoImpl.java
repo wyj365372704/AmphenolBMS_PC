@@ -26,6 +26,7 @@ import com.eclink.hgpj.resource.vo.ZGRNITMVO;
 import com.eclink.hgpj.resource.vo.ZSHPHDRVO;
 import com.eclink.hgpj.resource.vo.ZVRHDRVO;
 import com.eclink.hgpj.resource.vo.ZVRITMVO;
+import com.eclink.hgpj.resource.vo.ZVRTRNVO;
 import com.eclink.hgpj.resource.vo.ZWHSUBVO;
 import com.eclink.hgpj.util.Utils;
 import com.ibatis.sqlmap.client.SqlMapExecutor;
@@ -86,6 +87,21 @@ public class ZVRHDRDaoImpl extends SqlMapClientDaoSupport implements ZVRHDRDao {
 		vo.setVrdln(new BigDecimal(enableNewVrdln));
 		this.getSqlMapClientTemplate().insert("ZVRHDR.insertZvritm",vo);
 	}
+	
+	public void insertZvrtrn(ZVRTRNVO vo) throws Exception{
+		String enableNewVrdtx = "";
+		Map parMap = new HashMap();
+		parMap.put("vrdno", vo.getVrdno());
+		parMap.put("vrdln", vo.getVrdln());
+		List<ZVRTRNVO> zvrtrnvos = this.getSqlMapClientTemplate().queryForList("ZVRHDR.queryZvrtrnOBVrdtxDesc",parMap);
+		if(zvrtrnvos.size()>0){
+			enableNewVrdtx = String.valueOf(zvrtrnvos.get(0).getVrdtx().intValue()+1);
+		}else{
+			enableNewVrdtx = "1";
+		}
+		vo.setVrdtx(new BigDecimal(enableNewVrdtx));
+		this.getSqlMapClientTemplate().insert("ZVRHDR.insertZvrtrn",vo);
+	}
 
 	@Override
 	public void deleteZvritm(ZVRITMVO vo) throws Exception {
@@ -95,6 +111,11 @@ public class ZVRHDRDaoImpl extends SqlMapClientDaoSupport implements ZVRHDRDao {
 	@Override
 	public void changeZvrhdrState(ZVRHDRVO vo) throws Exception {
 		this.getSqlMapClientTemplate().update("ZVRHDR.changeZvrhdrState",vo);
+	}
+
+	@Override
+	public void changeZvritmState(ZVRITMVO vo) throws Exception {
+		this.getSqlMapClientTemplate().update("ZVRHDR.changeZvritmState",vo);
 	}
 
 }

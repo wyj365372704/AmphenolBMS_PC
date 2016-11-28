@@ -918,7 +918,7 @@ public class PomastAction extends BaseAction {
 			if(vrdno == null || vrdno.trim().equals("")){
 				throw new RuntimeException();
 			}else{
-				zvrhdrService.enableCreateZvritm(vrdno);
+				zvrhdrService.enableCreateZvrhdr(vrdno);
 				data = "success";
 			}
 		} catch (Throwable e) {e.printStackTrace();
@@ -933,7 +933,7 @@ public class PomastAction extends BaseAction {
 			if(vrdno == null || vrdno.trim().equals("")){
 				throw new RuntimeException();
 			}else{
-				zvrhdrService.cancelZvritm(vrdno);
+				zvrhdrService.cancelZvrhdr(vrdno);
 				data = "success";
 			}
 		} catch (Throwable e) {e.printStackTrace();

@@ -63,6 +63,7 @@ public class POMASTVO extends BaseVO{
 	private String curop;
 	private String wccur;
 	private Short shpid;
+	private String staic;
 	private Integer ldbdt;
 	private Integer popdt;
 	private Integer lrvdt;
@@ -186,6 +187,15 @@ public class POMASTVO extends BaseVO{
 
 	public String getVndnr() {
 		return this.vndnr;
+	}
+
+
+	public String getStaic() {
+		return staic;
+	}
+
+	public void setStaic(String staic) {
+		this.staic = staic;
 	}
 
 	public void setVndnr(String vndnr) {

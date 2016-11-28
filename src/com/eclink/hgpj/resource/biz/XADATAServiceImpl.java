@@ -261,7 +261,10 @@ public class XADATAServiceImpl implements XADATAService {
 	public List<MOMASTVO> queryMomastNoCarePrint(MOMASTVO vo) throws Exception {
 		return xadataDao.queryMomastNoCarePrint(vo);
 	}
-
+	
+	public List<POMASTVO> queryPomastState(Map map) throws Exception{
+		return xadataDao.queryPomastState(map);
+	}
 
 	@Override
 	public List<SCHRCPVO> querySchrcp(SCHRCPVO vo) throws Exception {

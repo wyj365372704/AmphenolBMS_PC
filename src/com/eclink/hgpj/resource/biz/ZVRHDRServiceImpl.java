@@ -11,6 +11,7 @@ import com.eclink.hgpj.resource.dao.ZVRHDRDao;
 import com.eclink.hgpj.resource.dao.ZWHSUBDao;
 import com.eclink.hgpj.resource.vo.ZVRHDRVO;
 import com.eclink.hgpj.resource.vo.ZVRITMVO;
+import com.eclink.hgpj.resource.vo.ZVRTRNVO;
 import com.eclink.hgpj.resource.vo.ZWHSUBVO;
 import com.eclink.hgpj.util.Utils;
 
@@ -73,9 +74,24 @@ public class ZVRHDRServiceImpl implements ZVRHDRService {
 		zvrhdrDao.deleteZvritm(vo);
 	}
 
-
 	@Override
-	public void enableCreateZvritm(String vrdno) throws Exception {
+	public void closePurchaseReturn(ZVRITMVO vo) throws Exception {
+		vo.setLstat("60");
+		zvrhdrDao.changeZvritmState(vo);
+		Map parMap = new HashMap();
+		parMap.put("vrdno", vo.getVrdno());
+		parMap.put("lstat", "10");
+		List<ZVRITMVO> queryZvritm = zvrhdrDao.queryZvritm(parMap);
+		if(queryZvritm.size() == 0){//zvrhdr ostat 修改为 50 全部完成退货
+			ZVRHDRVO zvrhdrvo =new ZVRHDRVO();
+			zvrhdrvo.setVrdno(vo.getVrdno());
+			zvrhdrvo.setOstat("50");
+			zvrhdrDao.changeZvrhdrState(zvrhdrvo);
+		}
+	}
+	
+	@Override
+	public void enableCreateZvrhdr(String vrdno) throws Exception {
 		ZVRHDRVO vo = new ZVRHDRVO();
 		vo.setVrdno(vrdno);
 		vo.setOstat("10");
@@ -84,12 +100,43 @@ public class ZVRHDRServiceImpl implements ZVRHDRService {
 
 
 	@Override
-	public void cancelZvritm(String vrdno) throws Exception {
+	public void cancelZvrhdr(String vrdno) throws Exception {
 		ZVRHDRVO vo = new ZVRHDRVO();
 		vo.setVrdno(vrdno);
 		vo.setOstat("99");
 		zvrhdrDao.changeZvrhdrState(vo);
 	}
+
+/**
+ * 确认退料业务
+ * 1.插入zvrtrn数据
+ * 2.修改zvritm状态为50 已退货
+ * 3.若该退货单下面没有状态为10未退货的子栏目,zvrhdr ostat 修改为50
+ */
+	@Override
+	public void insertZvrtrn(ZVRTRNVO vo) throws Exception {	
+		zvrhdrDao.insertZvrtrn(vo);
+	}
+	
+	@Override
+	public void ensurePurchaseReturn(ZVRITMVO vo) throws Exception{
+		ZVRITMVO zvritmvo =new ZVRITMVO();
+		zvritmvo.setVrdno(vo.getVrdno());
+		zvritmvo.setVrdln(vo.getVrdln());
+		zvritmvo.setLstat("50");
+		zvrhdrDao.changeZvritmState(zvritmvo);
+		Map parMap = new HashMap();
+		parMap.put("vrdno", vo.getVrdno());
+		parMap.put("lstat", "10");
+		List<ZVRITMVO> queryZvritm = zvrhdrDao.queryZvritm(parMap);
+		if(queryZvritm.size() == 0){//zvrhdr ostat 修改为 50 全部完成退货
+			ZVRHDRVO zvrhdrvo =new ZVRHDRVO();
+			zvrhdrvo.setVrdno(vo.getVrdno());
+			zvrhdrvo.setOstat("50");
+			zvrhdrDao.changeZvrhdrState(zvrhdrvo);
+		}
+	}
+
 }
 
 

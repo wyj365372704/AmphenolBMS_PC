@@ -3,6 +3,7 @@
 <sqlMap namespace="ZVRHDR">
 	<typeAlias alias="ZVRHDRVO" type="com.eclink.hgpj.resource.vo.ZVRHDRVO" />
 	<typeAlias alias="ZVRITMVO" type="com.eclink.hgpj.resource.vo.ZVRITMVO" />
+	<typeAlias alias="ZVRTRNVO" type="com.eclink.hgpj.resource.vo.ZVRTRNVO" />
 
 	<select id="queryZvrhdr" resultClass="ZVRHDRVO" parameterClass="map">
 		<![CDATA[ select  *  from  ZVRHDR
@@ -18,7 +19,8 @@
 				OSTAT IN (#ostat#)
 			</isNotEmpty>
 			<isEmpty prepend="AND" property="ostat">
-				OSTAT IN ('05','10','40','50')
+				OSTAT IN
+				('05','10','40','50')
 			</isEmpty>
 			<isNotEmpty prepend="AND" property="startDate">
 				CRDT >= #startDate#
@@ -33,6 +35,10 @@
 		parameterClass="String">
 		<![CDATA[ select  *  from  ZVRITM WHERE VRDNO = #vrdno#  ORDER BY VRDLN DESC ]]>
 	</select>
+	<select id="queryZvrtrnOBVrdtxDesc" resultClass="ZVRTRNVO"
+		parameterClass="Map">
+		<![CDATA[ select  *  from  ZVRTRN WHERE VRDNO = #vrdno# AND VRDLN = #vrdln# ORDER BY VRDTX DESC ]]>
+	</select>
 	<select id="queryZvritm" resultClass="ZVRITMVO" parameterClass="map">
 		<![CDATA[ select  *  from  ZVRITM
 		]]>
@@ -46,8 +52,11 @@
 			<isNotEmpty prepend="AND" property="blksq">
 				BLKSQ = #blksq#
 			</isNotEmpty>
+			<isNotEmpty prepend="AND" property="lstat">
+				LSTAT IN (#lstat#)
+			</isNotEmpty>
 		</dynamic>
-		
+
 	</select>
 	<insert id="insertZvrhdr" parameterClass="ZVRHDRVO">
 		INSERT INTO ZVRHDR (
@@ -127,11 +136,62 @@
         ) 
     ]]>
 	</insert>
+	<insert id="insertZvrtrn" parameterClass="ZVRTRNVO">
+		INSERT INTO ZVRTRN (
+		<dynamic prepend=" ">
+			<isNotNull prepend="," property="vrdno">VRDNO</isNotNull>
+			<isNotNull prepend="," property="vrdln">VRDLN</isNotNull>
+			<isNotNull prepend="," property="vrdtx">VRDTX</isNotNull>
+			<isNotNull prepend="," property="vndnr">VNDNR</isNotNull>
+			<isNotNull prepend="," property="house">HOUSE</isNotNull>
+			<isNotNull prepend="," property="ordno">ORDNO</isNotNull>
+			<isNotNull prepend="," property="poisq">POISQ</isNotNull>
+			<isNotNull prepend="," property="blksq">BLKSQ</isNotNull>
+			<isNotNull prepend="," property="itnbr">ITNBR</isNotNull>
+			<isNotNull prepend="," property="stkum">STKUM</isNotNull>
+			<isNotNull prepend="," property="vrloc">VRLOC</isNotNull>
+			<isNotNull prepend="," property="actvq">ACTVQ</isNotNull>
+			<isNotNull prepend="," property="lbhno">LBHNO</isNotNull>
+			<isNotNull prepend="," property="vrdte">VRDTE</isNotNull>
+			<isNotNull prepend="," property="vrdtm">VRDTM</isNotNull>
+			<isNotNull prepend="," property="vremp">VREMP</isNotNull>
+		</dynamic>
+	 <![CDATA[ 
+        ) VALUES ( 
+    ]]>
+		<dynamic prepend=" ">
+			<isNotNull prepend="," property="vrdno">#vrdno#</isNotNull>
+			<isNotNull prepend="," property="vrdln">#vrdln#</isNotNull>
+			<isNotNull prepend="," property="vrdtx">#vrdtx#</isNotNull>
+			<isNotNull prepend="," property="vndnr">#vndnr#</isNotNull>
+			<isNotNull prepend="," property="house">#house#</isNotNull>
+			<isNotNull prepend="," property="ordno">#ordno#</isNotNull>
+			<isNotNull prepend="," property="poisq">#poisq#</isNotNull>
+			<isNotNull prepend="," property="blksq">#blksq#</isNotNull>
+			<isNotNull prepend="," property="itnbr">#itnbr#</isNotNull>
+			<isNotNull prepend="," property="stkum">#stkum#</isNotNull>
+			<isNotNull prepend="," property="vrloc">#vrloc#</isNotNull>
+			<isNotNull prepend="," property="actvq">#actvq#</isNotNull>
+			<isNotNull prepend="," property="lbhno">#lbhno#</isNotNull>
+			<isNotNull prepend="," property="vrdte">#vrdte#</isNotNull>
+			<isNotNull prepend="," property="vrdtm">#vrdtm#</isNotNull>
+			<isNotNull prepend="," property="vremp">#vremp#</isNotNull>
+		</dynamic>
+		   <![CDATA[ 
+        ) 
+    ]]>
+	</insert>
 	<update id="changeZvrhdrState" parameterClass="ZVRHDRVO">
-		UPDATE ZVRHDR SET OSTAT = #ostat# where VRDNO = #vrdno#
+		UPDATE ZVRHDR SET
+		OSTAT = #ostat# where VRDNO = #vrdno#
+	</update>
+	<update id="changeZvritmState" parameterClass="ZVRITMVO">
+		UPDATE ZVRITM SET
+		LSTAT = #lstat# where VRDNO = #vrdno# AND VRDLN = #vrdln#
 	</update>
 	<delete id="deleteZvritm">
-		DELETE FROM ZVRITM WHERE VRDNO = #vrdno# AND VRDLN = #vrdln# AND BLKSQ = #blksq#
+		DELETE FROM ZVRITM WHERE VRDNO = #vrdno# AND VRDLN =
+		#vrdln# AND BLKSQ = #blksq#
 	</delete>
 
 </sqlMap>
