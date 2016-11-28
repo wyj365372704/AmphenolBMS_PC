@@ -4331,17 +4331,17 @@ public class ResourceAction extends BaseAction {
 				if(results!=null && results.size()>0){
 					MOMASTVO vo = results.get(0);
 					ITMSITVO itmsitvo = new ITMSITVO();
-					itmsitvo.setHouse(stid.trim());
-					itmsitvo.setItnot9(vo.getFitem().trim());
+					itmsitvo.setHouse(stid);
+					itmsitvo.setItnot9(vo.getFitem());
 					String itrvt = "";
 					List<String> itrvts = this.xadataService.queryItrvt(itmsitvo);
 					if(itrvts!=null && itrvts.size()>0){
 						itrvt=itrvts.get(0);
 					}
 					ZITMEXTVO extVo = new ZITMEXTVO();
-					extVo.setItnbr(vo.getFitem().trim().trim());
-					extVo.setStid(stid.trim());
-					extVo.setItrv(itrvt.trim());
+					extVo.setItnbr(vo.getFitem());
+					extVo.setStid(stid);
+					extVo.setItrv(itrvt);
 					List<ZITMEXTVO> extLists = this.zitmextService.queryItemExt(extVo);
 					String ldesc = "";
 					if(extLists!=null && extLists.size()>0 && extLists.get(0).getLdesc().trim().length()>0){
@@ -4350,9 +4350,9 @@ public class ResourceAction extends BaseAction {
 						jo.put("product_form", extLists.get(0).getSdesc());
 					}else{
 						ITMRVAVO itmrVo = new ITMRVAVO();
-						itmrVo.setItnbr(vo.getFitem().trim().trim());
-						itmrVo.setHouse(stid.trim());
-						itmrVo.setItrv(itrvt.trim());
+						itmrVo.setItnbr(vo.getFitem());
+						itmrVo.setHouse(stid);
+						itmrVo.setItrv(itrvt);
 						List<ITMRVAVO> itmrLists = this.xadataService.queryItmrva(itmrVo);
 						if(itmrLists!=null && itmrLists.size()>0){
 							ldesc=itmrLists.get(0).getItdsc();
@@ -4429,28 +4429,28 @@ public class ResourceAction extends BaseAction {
 					}
 					if(vo.getCono()!=null && vo.getCono().trim().length()>0){
 						Map c6map = new HashMap();
-						c6map.put("cono", vo.getCono().trim());
-						c6map.put("ortp", vo.getOrtp().trim());
-						c6map.put("ordnc", vo.getOrdnc().trim());
+						c6map.put("cono", vo.getCono());
+						c6map.put("ortp", vo.getOrtp());
+						c6map.put("ordnc", vo.getOrdnc());
 
 						String customercode = xadataService.queryMBC6REP(c6map);
 						jo.put("customer_code", customercode);
 						Map cmap = new HashMap();
 						cmap.put("c6bcanb", customercode.equals("")?0:Long.valueOf(customercode) );
-						cmap.put("cono", vo.getCono().trim());
+						cmap.put("cono", vo.getCono());
 						jo.put("customer_name", xadataService.queryCusnm(cmap));
 
 						Map mbmap = new HashMap();
-						mbmap.put("cono", vo.getCono().trim());
-						mbmap.put("ortp", vo.getOrtp().trim());
-						mbmap.put("ordnc", vo.getOrdnc().trim());
+						mbmap.put("cono", vo.getCono());
+						mbmap.put("ortp", vo.getOrtp());
+						mbmap.put("ordnc", vo.getOrdnc());
 
 						jo.put("customer_purchase_order_number", xadataService.queryBMCBTX(mbmap));
 
 						Map mbcdmap = new HashMap();
-						mbcdmap.put("cono", vo.getCono().trim());
-						mbcdmap.put("ortp", vo.getOrtp().trim());
-						mbcdmap.put("ordnc", vo.getOrdnc().trim());
+						mbcdmap.put("cono", vo.getCono());
+						mbcdmap.put("ortp", vo.getOrtp());
+						mbcdmap.put("ordnc", vo.getOrdnc());
 						mbcdmap.put("itmsq", vo.getItmsq());
 
 						String qtys = xadataService.queryMBCDREP(mbcdmap);
@@ -4467,9 +4467,9 @@ public class ResourceAction extends BaseAction {
 						}
 
 						Map cpldmap = new HashMap();
-						cpldmap.put("cono", vo.getCono().trim());
-						cpldmap.put("ortp", vo.getOrtp().trim());
-						cpldmap.put("ordnc", vo.getOrdnc().trim());
+						cpldmap.put("cono", vo.getCono());
+						cpldmap.put("ortp", vo.getOrtp());
+						cpldmap.put("ordnc", vo.getOrdnc());
 						cpldmap.put("itmsq", vo.getItmsq());
 						String dtemp = xadataService.queryMBADREP(cpldmap);
 
@@ -5020,7 +5020,7 @@ public class ResourceAction extends BaseAction {
 						zmojobvo.setOstat("20");
 						zmojobvo.setFcls("0");
 						zmojobvo.setFitem(momastList.get(0).getFitem());
-						zmojobvo.setDptno(momastList.get(0).getDptno() == ""?"":momastList.get(0).getDptno());
+						zmojobvo.setDptno(momastList.get(0).getDptno());
 						BigDecimal jstrdt=BigDecimal.valueOf(Long.valueOf("1"+begin_time.substring(2,4)+begin_time.substring(5,7)+begin_time.substring(8,10)) );
 						zmojobvo.setJstrdt(jstrdt);
 						BigDecimal jstrtm=BigDecimal.valueOf(Long.valueOf(begin_time.substring(11,13)+begin_time.substring(14,16)+begin_time.substring(17,19)) );
@@ -5209,11 +5209,13 @@ public class ResourceAction extends BaseAction {
 						zdeptParMap.put("plant",String.valueOf(dps.get(0).getPlant()));
 					}
 
-					zdeptParMap.put("dept", zmojobvo.getDptno());
+				/*	原方案,ZDEPT.DEPT 关联查询出ZDEPT.DNAME
+				  	zdeptParMap.put("dept", zmojobvo.getDptno());
 					List<ZDEPTVO> zdeptList = zdeptService.queryZdeptByMap(zdeptParMap);
 					if(zdeptList.size()>0){
 						jo.put("department", zdeptList.get(0).getDname());
-					}
+					}*/
+						jo.put("department", zmojobvo.getDptno());
 
 					String createDate = "";
 					if(zmojobvo.getCrdt()!=null){
@@ -6306,7 +6308,7 @@ public class ResourceAction extends BaseAction {
 
 				ZVRITMVO zvritmvo = new ZVRITMVO();
 				zvritmvo.setVrdno(return_number);
-				zvritmvo.setVndnr(return_line);
+				zvritmvo.setVrdln(new BigDecimal(return_line));
 				zvrhdrService.closePurchaseReturn(zvritmvo);
 
 				jo.put("code", 1);

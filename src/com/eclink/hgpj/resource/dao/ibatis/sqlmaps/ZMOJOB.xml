@@ -34,31 +34,33 @@
 		<![CDATA[ select  *  from  ZMOJOB 
 		]]>
 		<dynamic prepend="WHERE">
-			<isNotNull prepend="AND" property="ostat">
+			<isNotEmpty prepend="AND" property="ostat">
 				OSTAT = #ostat#
-			</isNotNull>
-			<isNotNull prepend="AND" property="mjdno">
+			</isNotEmpty>
+			<isNotEmpty prepend="AND" property="mjdno">
 				MJDNO = #mjdno#
-			</isNotNull>
-			<isNotNull prepend="AND" property="ordno">
+			</isNotEmpty>
+			<isNotEmpty prepend="AND" property="ordno">
 				ORDNO = #ordno#
-			</isNotNull>
-			<isNotNull prepend="AND" property="opseq">
+			</isNotEmpty>
+			<isNotEmpty prepend="AND" property="opseq">
 				OPSEQ = #opseq#
-			</isNotNull>
-			<isNotNull prepend="AND" property="pline">
+			</isNotEmpty>
+			<isNotEmpty prepend="AND" property="pline">
 				PLINE = #pline#
-			</isNotNull>
-			<isNotNull prepend="AND" property="house">
+			</isNotEmpty>
+			<isNotEmpty prepend="AND" property="house">
 				HOUSE = #house#
-			</isNotNull>
-			<isNotNull prepend="AND" property="ostat">
+			</isNotEmpty>
+			<isNotEmpty prepend="AND" property="ostat">
 				OSTAT = #ostat#
-			</isNotNull>
-			<isNotNull prepend="AND" property="crus">
+			</isNotEmpty>
+			<isNotEmpty prepend="AND" property="crus">
 				CRUS = #crus#
-			</isNotNull>
+			</isNotEmpty>
 		</dynamic>
+			<![CDATA[ ORDER BY MJDNO DESC
+		]]>
 	</select>
 
 	<select id="queryMaxIndex" resultClass="String" parameterClass="String">
@@ -69,65 +71,65 @@
 	<insert id="insertZmojob" parameterClass="ZMOJOBVO">
 		INSERT INTO ZMOJOB (
 		<dynamic prepend=" ">
-			<isNotNull prepend="," property="mjdno">MJDNO</isNotNull>
-			<isNotNull prepend="," property="house">HOUSE</isNotNull>
-			<isNotNull prepend="," property="ordno">ORDNO</isNotNull>
-			<isNotNull prepend="," property="opseq">OPSEQ</isNotNull>
-			<isNotNull prepend="," property="pline">PLINE</isNotNull>
-			<isNotNull prepend="," property="ostat">OSTAT</isNotNull>
-			<isNotNull prepend="," property="fcls">FCLS</isNotNull>
-			<isNotNull prepend="," property="fitem">FITEM</isNotNull>
-			<isNotNull prepend="," property="dptno">DPTNO</isNotNull>
+			<isNotEmpty prepend="," property="mjdno">MJDNO</isNotEmpty>
+			<isNotEmpty prepend="," property="house">HOUSE</isNotEmpty>
+			<isNotEmpty prepend="," property="ordno">ORDNO</isNotEmpty>
+			<isNotEmpty prepend="," property="opseq">OPSEQ</isNotEmpty>
+			<isNotEmpty prepend="," property="pline">PLINE</isNotEmpty>
+			<isNotEmpty prepend="," property="ostat">OSTAT</isNotEmpty>
+			<isNotEmpty prepend="," property="fcls">FCLS</isNotEmpty>
+			<isNotEmpty prepend="," property="fitem">FITEM</isNotEmpty>
+			<isNotEmpty prepend="," property="dptno">DPTNO</isNotEmpty>
 
-			<isNotNull prepend="," property="jbqty">JBQTY</isNotNull>
-			<isNotNull prepend="," property="slhrs">SLHRS</isNotNull>
-			<isNotNull prepend="," property="rlhrs1">RLHRS1</isNotNull>
-			<isNotNull prepend="," property="rlhrs2">RLHRS2</isNotNull>
-			<isNotNull prepend="," property="rmhrs1">RMHRS1</isNotNull>
-			<isNotNull prepend="," property="rmhrs2">RMHRS2</isNotNull>
-			<isNotNull prepend="," property="abrsn">ABRSN</isNotNull>
-			<isNotNull prepend="," property="ablhr">ABLHR</isNotNull>
+			<isNotEmpty prepend="," property="jbqty">JBQTY</isNotEmpty>
+			<isNotEmpty prepend="," property="slhrs">SLHRS</isNotEmpty>
+			<isNotEmpty prepend="," property="rlhrs1">RLHRS1</isNotEmpty>
+			<isNotEmpty prepend="," property="rlhrs2">RLHRS2</isNotEmpty>
+			<isNotEmpty prepend="," property="rmhrs1">RMHRS1</isNotEmpty>
+			<isNotEmpty prepend="," property="rmhrs2">RMHRS2</isNotEmpty>
+			<isNotEmpty prepend="," property="abrsn">ABRSN</isNotEmpty>
+			<isNotEmpty prepend="," property="ablhr">ABLHR</isNotEmpty>
 
-			<isNotNull prepend="," property="fshpac">FSHPAC</isNotNull>
-			<isNotNull prepend="," property="jstrdt">JSTRDT</isNotNull>
-			<isNotNull prepend="," property="jstrtm">JSTRTM</isNotNull>
-			<isNotNull prepend="," property="jenddt">JENDDT</isNotNull>
-			<isNotNull prepend="," property="jendtm">JENDTM</isNotNull>
-			<isNotNull prepend="," property="crus">CRUS</isNotNull>
-			<isNotNull prepend="," property="crdt">CRDT</isNotNull>
-			<isNotNull prepend="," property="crtm">CRTM</isNotNull>
+			<isNotEmpty prepend="," property="fshpac">FSHPAC</isNotEmpty>
+			<isNotEmpty prepend="," property="jstrdt">JSTRDT</isNotEmpty>
+			<isNotEmpty prepend="," property="jstrtm">JSTRTM</isNotEmpty>
+			<isNotEmpty prepend="," property="jenddt">JENDDT</isNotEmpty>
+			<isNotEmpty prepend="," property="jendtm">JENDTM</isNotEmpty>
+			<isNotEmpty prepend="," property="crus">CRUS</isNotEmpty>
+			<isNotEmpty prepend="," property="crdt">CRDT</isNotEmpty>
+			<isNotEmpty prepend="," property="crtm">CRTM</isNotEmpty>
 		</dynamic>
 	 <![CDATA[ 
         ) VALUES ( 
     ]]>
 		<dynamic prepend=" ">
-			<isNotNull prepend="," property="mjdno">#mjdno#</isNotNull>
-			<isNotNull prepend="," property="house">#house#</isNotNull>
-			<isNotNull prepend="," property="ordno">#ordno#</isNotNull>
-			<isNotNull prepend="," property="opseq">#opseq#</isNotNull>
-			<isNotNull prepend="," property="pline">#pline#</isNotNull>
-			<isNotNull prepend="," property="ostat">#ostat#</isNotNull>
-			<isNotNull prepend="," property="fcls">#fcls#</isNotNull>
-			<isNotNull prepend="," property="fitem">#fitem#</isNotNull>
-			<isNotNull prepend="," property="dptno">#dptno#</isNotNull>
+			<isNotEmpty prepend="," property="mjdno">#mjdno#</isNotEmpty>
+			<isNotEmpty prepend="," property="house">#house#</isNotEmpty>
+			<isNotEmpty prepend="," property="ordno">#ordno#</isNotEmpty>
+			<isNotEmpty prepend="," property="opseq">#opseq#</isNotEmpty>
+			<isNotEmpty prepend="," property="pline">#pline#</isNotEmpty>
+			<isNotEmpty prepend="," property="ostat">#ostat#</isNotEmpty>
+			<isNotEmpty prepend="," property="fcls">#fcls#</isNotEmpty>
+			<isNotEmpty prepend="," property="fitem">#fitem#</isNotEmpty>
+			<isNotEmpty prepend="," property="dptno">#dptno#</isNotEmpty>
 
-			<isNotNull prepend="," property="jbqty">#jbqty#</isNotNull>
-			<isNotNull prepend="," property="slhrs">#slhrs#</isNotNull>
-			<isNotNull prepend="," property="rlhrs1">#rlhrs1#</isNotNull>
-			<isNotNull prepend="," property="rlhrs2">#rlhrs2#</isNotNull>
-			<isNotNull prepend="," property="rmhrs1">#rmhrs1#</isNotNull>
-			<isNotNull prepend="," property="rmhrs2">#rmhrs2#</isNotNull>
-			<isNotNull prepend="," property="abrsn">#abrsn#</isNotNull>
-			<isNotNull prepend="," property="ablhr">#ablhr#</isNotNull>
+			<isNotEmpty prepend="," property="jbqty">#jbqty#</isNotEmpty>
+			<isNotEmpty prepend="," property="slhrs">#slhrs#</isNotEmpty>
+			<isNotEmpty prepend="," property="rlhrs1">#rlhrs1#</isNotEmpty>
+			<isNotEmpty prepend="," property="rlhrs2">#rlhrs2#</isNotEmpty>
+			<isNotEmpty prepend="," property="rmhrs1">#rmhrs1#</isNotEmpty>
+			<isNotEmpty prepend="," property="rmhrs2">#rmhrs2#</isNotEmpty>
+			<isNotEmpty prepend="," property="abrsn">#abrsn#</isNotEmpty>
+			<isNotEmpty prepend="," property="ablhr">#ablhr#</isNotEmpty>
 
-			<isNotNull prepend="," property="fshpac">#fshpac#</isNotNull>
-			<isNotNull prepend="," property="jstrdt">#jstrdt#</isNotNull>
-			<isNotNull prepend="," property="jstrtm">#jstrtm#</isNotNull>
-			<isNotNull prepend="," property="jenddt">#jenddt#</isNotNull>
-			<isNotNull prepend="," property="jendtm">#jendtm#</isNotNull>
-			<isNotNull prepend="," property="crus">#crus#</isNotNull>
-			<isNotNull prepend="," property="crdt">#crdt#</isNotNull>
-			<isNotNull prepend="," property="crtm">#crtm#</isNotNull>
+			<isNotEmpty prepend="," property="fshpac">#fshpac#</isNotEmpty>
+			<isNotEmpty prepend="," property="jstrdt">#jstrdt#</isNotEmpty>
+			<isNotEmpty prepend="," property="jstrtm">#jstrtm#</isNotEmpty>
+			<isNotEmpty prepend="," property="jenddt">#jenddt#</isNotEmpty>
+			<isNotEmpty prepend="," property="jendtm">#jendtm#</isNotEmpty>
+			<isNotEmpty prepend="," property="crus">#crus#</isNotEmpty>
+			<isNotEmpty prepend="," property="crdt">#crdt#</isNotEmpty>
+			<isNotEmpty prepend="," property="crtm">#crtm#</isNotEmpty>
 		</dynamic>
 		   <![CDATA[ 
         ) 
@@ -137,51 +139,51 @@
 	<update id="updateZmojob" parameterClass="ZMOJOBVO">
 		UPDATE ZMOJOB
 		<dynamic prepend=" SET ">
-			<isNotNull prepend="," property="ostat">
+			<isNotEmpty prepend="," property="ostat">
 				OSTAT = #ostat#
-			</isNotNull>
-			<isNotNull prepend="," property="fcls">
+			</isNotEmpty>
+			<isNotEmpty prepend="," property="fcls">
 				FCLS = #fcls#
-			</isNotNull>
-			<isNotNull prepend="," property="jbqty">
+			</isNotEmpty>
+			<isNotEmpty prepend="," property="jbqty">
 				JBQTY = #jbqty#
-			</isNotNull>
-			<isNotNull prepend="," property="slhrs">
+			</isNotEmpty>
+			<isNotEmpty prepend="," property="slhrs">
 				SLHRS = #slhrs#
-			</isNotNull>
-			<isNotNull prepend="," property="rlhrs1">
+			</isNotEmpty>
+			<isNotEmpty prepend="," property="rlhrs1">
 				RLHRS1 = #rlhrs1#
-			</isNotNull>
-			<isNotNull prepend="," property="rlhrs2">
+			</isNotEmpty>
+			<isNotEmpty prepend="," property="rlhrs2">
 				RLHRS2 = #rlhrs2#
-			</isNotNull>
-			<isNotNull prepend="," property="rmhrs1">
+			</isNotEmpty>
+			<isNotEmpty prepend="," property="rmhrs1">
 				RMHRS1 = #rmhrs1#
-			</isNotNull>
-			<isNotNull prepend="," property="rmhrs2">
+			</isNotEmpty>
+			<isNotEmpty prepend="," property="rmhrs2">
 				RMHRS2 = #rmhrs2#
-			</isNotNull>
-			<isNotNull prepend="," property="abrsn">
+			</isNotEmpty>
+			<isNotEmpty prepend="," property="abrsn">
 				ABRSN = #abrsn#
-			</isNotNull>
-			<isNotNull prepend="," property="ablhr">
+			</isNotEmpty>
+			<isNotEmpty prepend="," property="ablhr">
 				ABLHR = #ablhr#
-			</isNotNull>
-			<isNotNull prepend="," property="fshpac">
+			</isNotEmpty>
+			<isNotEmpty prepend="," property="fshpac">
 				FSHPAC = #fshpac#
-			</isNotNull>
-			<isNotNull prepend="," property="jenddt">
+			</isNotEmpty>
+			<isNotEmpty prepend="," property="jenddt">
 				JENDDT = #jenddt#
-			</isNotNull>
-			<isNotNull prepend="," property="jendtm">
+			</isNotEmpty>
+			<isNotEmpty prepend="," property="jendtm">
 				JENDTM = #jendtm#
-			</isNotNull>
+			</isNotEmpty>
 		</dynamic>
 
 		<dynamic prepend=" WHERE">
-			<isNotNull prepend="AND" property="mjdno">
+			<isNotEmpty prepend="AND" property="mjdno">
 				MJDNO = #mjdno#
-			</isNotNull>
+			</isNotEmpty>
 			
 		</dynamic>
 	</update>
