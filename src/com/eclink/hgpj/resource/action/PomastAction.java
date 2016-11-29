@@ -960,7 +960,7 @@ public class PomastAction extends BaseAction {
 					zvrhdrMap.put("vndnr", zvrhdrvo.getVndnr());
 					zvrhdrMap.put("printDate", Utils.formateDate(null, "yyyy/MM/dd HH:mm:ss"));
 					
-					String qrMessage = "*T"+zvrhdrvo.getVrdno();
+					String qrMessage = "*V"+zvrhdrvo.getVrdno();
 					String encoderQRCoder = QRcoderUtil.encoderQRCoder(qrMessage, ServletActionContext.getContext().getSession().get("username").toString(),getSession().getServletContext().getRealPath("/"));
 					HttpServletRequest request = ServletActionContext.getRequest();
 					String path = request.getContextPath(); 
