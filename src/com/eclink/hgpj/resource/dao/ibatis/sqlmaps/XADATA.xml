@@ -233,7 +233,7 @@
 		</dynamic>
 		<dynamic>
 			<isNotEmpty prepend="AND" property="ordnoF">
-				(a.ORDNO IN (#ordnoF#)
+				(a.ORDNO IN ($ordnoF$)
 				or a.ORDNO like ('%'||#ordnoF#||'%'))
 			</isNotEmpty>
 		</dynamic>
@@ -286,7 +286,7 @@
 		</dynamic>
 		<dynamic>
 			<isNotEmpty prepend="AND" property="ordnoF">
-				(a.ORDNO IN (#ordnoF#)
+				(a.ORDNO IN ($ordnoF$)
 				or a.ORDNO like ('%'||#ordnoF#||'%'))
 			</isNotEmpty>
 		</dynamic>
@@ -339,7 +339,7 @@
 		</dynamic>
 		<dynamic>
 			<isNotEmpty prepend="AND" property="ordnoF">
-				(a.ORDNO IN (#ordnoF#)
+				(a.ORDNO IN ($ordnoF$)
 				or a.ORDNO like ('%'||#ordnoF#||'%'))
 			</isNotEmpty>
 		</dynamic>
@@ -457,7 +457,7 @@
 		</dynamic>
 		<dynamic>
 			<isNotEmpty prepend="AND" property="ordno">
-				(a.ORDNO IN (#ordno#)
+				(a.ORDNO IN ($ordno$)
 				or a.ORDNO like ('%'||#ordno#||'%'))
 			</isNotEmpty>
 		</dynamic>

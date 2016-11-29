@@ -721,6 +721,7 @@ public class MomastAction extends BaseAction {
 								temp=temp+"'"+ordnos[i].trim()+"',";
 							}
 						}
+						temp=temp.substring(0, temp.length()-1);
 						momast.setOrdnoF(temp);
 					}else if(momast.getOrdno().indexOf(HGPJConstant.SPLIT_1)>=0){
 						String[] ordnos = momast.getOrdno().split(HGPJConstant.SPLIT_1);
@@ -730,6 +731,7 @@ public class MomastAction extends BaseAction {
 								temp=temp+"'"+ordnos[i].trim()+"',";
 							}
 						}
+						temp=temp.substring(0, temp.length()-1);
 						momast.setOrdnoF(temp);
 					}else{
 						momast.setOrdnoF(momast.getOrdno());

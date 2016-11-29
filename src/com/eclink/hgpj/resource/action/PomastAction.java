@@ -667,6 +667,7 @@ public class PomastAction extends BaseAction {
 								temp=temp+"'"+ordnos[i].trim()+"',";
 							}
 						}
+						temp=temp.substring(0, temp.length()-1);
 						//						pomast.setOrdnoF(temp);
 						map.put("ordno", temp);
 					}else if(pomast.getOrdno().indexOf(HGPJConstant.SPLIT_1)>=0){
@@ -677,6 +678,7 @@ public class PomastAction extends BaseAction {
 								temp=temp+"'"+ordnos[i].trim()+"',";
 							}
 						}
+						temp=temp.substring(0, temp.length()-1);
 						//						pomast.setOrdnoF(temp);
 						map.put("ordno", temp);
 					}else{
