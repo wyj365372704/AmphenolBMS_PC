@@ -10,7 +10,7 @@
 
 <title>深圳安费诺BMS系统</title>
 
-<link href="../css/global.css" rel="stylesheet" type="text/css" />
+<link href="<%=request.getContextPath()%>/css/global.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript"
 	src="<%=request.getContextPath() %>/js/My97DatePicker/WdatePicker.js"></script>
 <script type="text/javascript"
@@ -55,7 +55,7 @@
 		      type:'post',  
 		      cache:false,  
 		      success:function(data) {  
-		      	if(data.trim()=='success'){
+		      	if($.trim(data) == 'success'){
 		      		 alert("删除成功");
 		      		 location.reload();
 		      	}else{
@@ -68,7 +68,7 @@
 		  });
 	}
 		function enableCreateZvritm(vrdno){
-		$.ajax( {  
+		$.ajax( {
 		       url:'pomast!enableCreateZvritm.action',// 跳转到 action  
 		       data:{  
 		                vrdno : vrdno
@@ -76,7 +76,7 @@
 		      type:'post',  
 		      cache:false,  
 		      success:function(data) {  
-		      	if(data.trim()=='success'){
+		      if($.trim(data) == 'success'){
 		      		 alert("操作成功");
 		      		 location.reload();
 		      	}else{
@@ -97,7 +97,7 @@
 		      type:'post',  
 		      cache:false,  
 		      success:function(data) {  
-		      	if(data.trim()=='success'){
+		      	if($.trim(data) == 'success'){
 		      		 alert("操作成功");
 		      		 location.reload();
 		      	}else{
