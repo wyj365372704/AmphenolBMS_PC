@@ -683,7 +683,7 @@ public class PomastAction extends BaseAction {
 						map.put("ordno", temp);
 					}else{
 						//						pomast.setOrdnoF(pomast.getOrdno());
-						map.put("ordno", pomast.getOrdno());
+						map.put("ordno", "'"+pomast.getOrdno()+"'");
 					}
 				}
 				//				Date d = sdf.parse(pomast.getStartDate());

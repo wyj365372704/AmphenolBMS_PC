@@ -192,7 +192,7 @@ public class TurnoverTagAction extends BaseAction {
 						}
 						momast.setOrdnoF(temp);
 					}else{
-						momast.setOrdnoF(momast.getOrdno());
+						momast.setOrdnoF("'"+momast.getOrdno()+"'");
 					}
 				}
 //				Date d = sdf.parse(momast.getStartDate());
