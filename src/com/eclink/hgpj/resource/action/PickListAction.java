@@ -26,6 +26,7 @@ import com.eclink.hgpj.resource.biz.ZBMSCTLService;
 import com.eclink.hgpj.resource.biz.ZIPHDRService;
 import com.eclink.hgpj.resource.vo.MODATAVO;
 import com.eclink.hgpj.resource.vo.MOMASTVO;
+import com.eclink.hgpj.resource.vo.SLQNTYVO;
 import com.eclink.hgpj.resource.vo.ZBMSCTLVO;
 import com.eclink.hgpj.resource.vo.ZIPDTLVO;
 import com.eclink.hgpj.resource.vo.ZIPHDRVO;
@@ -346,7 +347,18 @@ public class PickListAction extends BaseAction {
 
 							map.put("whsub", zipdtl.getWhsub());
 
-							/////////!!!!!!!!!!!!!1
+							Map teMap = new HashMap();
+							teMap.put("house", zipdtl.getHouse());
+							teMap.put("citem", zipdtl.getCitem());
+							teMap.put("whsub", zipdtl.getWhsub().trim());
+							List<SLQNTYVO> querySlqntyForPickList = xadataService.querySlqntyForPickList(teMap);
+							if(querySlqntyForPickList.size()>0){
+								SLQNTYVO slqntyvo = querySlqntyForPickList.get(0);
+								map.put("llocn", slqntyvo.getLlocn());
+								map.put("lbhno", slqntyvo.getLbhno());
+								map.put("lqnty", slqntyvo.getLqnty().doubleValue()+"");
+							}
+							
 
 							items.add(map);
 						}

@@ -11,27 +11,7 @@ RESN NUMERIC(6),RFNO CHAR(10),OCMPC CHAR(1),AWKCT CHAR(5),EMPNO NUMERIC(5,0),
 ERATE NUMERIC(5,3),SHIFT CHAR(1),TCOST NUMERIC(13,2),TDATE NUMERIC(6,0))  NOT   LOGGED   INITIALLY ]]>
 	</statement>
 
-	<statement id="alterlog">
-<![CDATA[ 
-	ALTER TABLE SHPDSK ACTIVATE NOT LOGGED INITIALLY
-	]]>
-	</statement>
-	
-	<statement id="upcommandcoff">
-<![CDATA[ 
-	
-UPDATE COMMAND OPTIONS USING C OFF --
-	]]>
-	</statement>
-	
-		<statement id="upcommandcon">
-<![CDATA[ 
-	
-UPDATE COMMAND OPTIONS USING C ON
-	]]>
-	</statement>
-
-	<insert id="insertShpdsk" parameterClass="SHPDSKVO">
+		<insert id="insertShpdsk" parameterClass="SHPDSKVO">
 
 		INSERT INTO SHPDSK (
 		<dynamic prepend=" ">

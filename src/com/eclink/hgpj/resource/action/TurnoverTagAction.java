@@ -42,6 +42,7 @@ public class TurnoverTagAction extends BaseAction {
 	private String b2cqcd;
 	private String mydate;
 	private String prounit;
+	private String batch;
 	/**
 	 * 日志对象
 	 */
@@ -69,6 +70,14 @@ public class TurnoverTagAction extends BaseAction {
 
 	public void setMomast(MOMASTVO momast) {
 		this.momast = momast;
+	}
+
+	public String getBatch() {
+		return batch;
+	}
+
+	public void setBatch(String batch) {
+		this.batch = batch;
 	}
 
 	public String getWeght() {
@@ -302,11 +311,11 @@ public class TurnoverTagAction extends BaseAction {
 			}
 			ActionContext.getContext().getValueStack().set("netWeight", netWeight.toString());
 			
-			String result = "*W"+ordno;
-			result += "*M"+fitem;
-			result+="*Q"+moqty;
 			
-			String encoderQRCoder = QRcoderUtil.encoderQRCoder(result, ServletActionContext.getContext().getSession().get("username").toString(),getSession().getServletContext().getRealPath("/"));
+			StringBuffer resultBuffer =new StringBuffer();
+			resultBuffer.append("*W"+ordno).append("*M"+fitem).append("*Q"+moqty).append("*B"+batch);
+			
+			String encoderQRCoder = QRcoderUtil.encoderQRCoder(resultBuffer.toString(), ServletActionContext.getContext().getSession().get("username").toString(),getSession().getServletContext().getRealPath("/"));
 			System.out.println("encoderQRCoder is "+encoderQRCoder);
 			
 			

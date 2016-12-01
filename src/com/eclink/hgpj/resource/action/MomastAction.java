@@ -744,14 +744,8 @@ public class MomastAction extends BaseAction {
 				if(momast.getEndDate()!=null && !momast.getEndDate().trim().equals("")){
 					momast.setEndDateB(BigDecimal.valueOf(Long.valueOf("1"+Utils.formateDate(sdf.parse(momast.getEndDate()), "yyMMdd"))));
 				}
-				if(momast.getUusamy().equals("1")){
-					results = this.xadataService.queryMomastPrinted(momast);
-				}else if (momast.getUusamy().equals("0")) {
-					results = this.xadataService.queryMomast(momast);
-				}else{
-					results = this.xadataService.queryMomastNoCarePrint(momast);
-				}
-
+				
+				results = this.xadataService.queryMomast(momast);
 
 			}else{
 				momast = new MOMASTVO();

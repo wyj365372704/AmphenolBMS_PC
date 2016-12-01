@@ -40,10 +40,6 @@ public interface XADATADao {
 	
 	public List<MOMASTVO> queryMomast(MOMASTVO vo) throws Exception;
 
-	public List<MOMASTVO> queryMomastPrinted(MOMASTVO vo) throws Exception;
-
-	public List<MOMASTVO> queryMomastNoCarePrint(MOMASTVO vo) throws Exception;
-	
 	public List<MOMASTVO> queryMomastBystate(MOMASTVO vo) throws Exception;
 	
 	public List<MODATAVO> queryModatas(MODATAVO vo) throws Exception;
@@ -60,7 +56,8 @@ public interface XADATADao {
 	
 	public List<String> queryBuyer(Map map) throws Exception;
 
-	
+	public List<SLQNTYVO> querySlqntyForPickList(Map map) throws Exception;
+
 	public List<POITEMVO> queryPoitem(Map map) throws Exception;
 	
 	public List<POMASTVO> queryPomast(Map map) throws Exception;

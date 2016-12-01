@@ -95,7 +95,7 @@
 									<td align="center"><s:property value="cdesc"/></td>
 									<td align="center"><s:property value="shqty"/></td>
 									<td align="center"><s:property value="whsub"/></td>
-									<td align="center">P02004 / P20160726 / 1200</td>
+									<td align="center"><s:property value="llocn"/> / <s:property value="lbhno"/> / <s:property value="lqnty"/></td>
 								</tr>
 							</s:iterator>
 

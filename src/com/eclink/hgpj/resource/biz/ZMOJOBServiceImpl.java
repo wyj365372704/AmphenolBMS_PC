@@ -183,13 +183,7 @@ public class ZMOJOBServiceImpl implements ZMOJOBService {
 		}
 		zmojobDao.updateZmojob(zmojobvo);
 		
-		/*
-		 * SHKDSP数据库操作,日志问题未能解决,暂时注释。goodluck~！
-		 * 
-		 * try {
-			shpdskService.createTable();
-		} catch (Exception e) {
-		}
+	
 		SHPDSKVO shpdskvo = new SHPDSKVO();
 		shpdskvo.setRcdcd("PA");
 		shpdskvo.setOrdno(zmojobvo.getOrdno());
@@ -212,6 +206,6 @@ public class ZMOJOBServiceImpl implements ZMOJOBService {
 		String now1 = Utils.formateDate(null, "MMddyy");
 		shpdskvo.setTdate(BigDecimal.valueOf(Long.valueOf(now1)) );
 		
-		shpdskService.insertShpdsk(shpdskvo);*/
+		shpdskService.insertShpdsk(shpdskvo);
 	}
 }

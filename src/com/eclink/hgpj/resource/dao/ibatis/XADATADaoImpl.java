@@ -171,16 +171,6 @@ public class XADATADaoImpl extends SqlMapClientDaoSupport implements XADATADao {
 	}
 
 	@Override
-	public List<MOMASTVO> queryMomastPrinted(MOMASTVO vo) throws Exception {
-		return this.getSqlMapClientTemplate().queryForList("XADATA.queryMomastPrinted",vo);
-	}
-
-	@Override
-	public List<MOMASTVO> queryMomastNoCarePrint(MOMASTVO vo) throws Exception {
-		return this.getSqlMapClientTemplate().queryForList("XADATA.queryMomastNoCarePrint",vo);
-	}
-
-	@Override
 	public List<MODESCVO> queryModesc(Map map) throws Exception {
 		return this.getSqlMapClientTemplate().queryForList("XADATA.queryModesc",map);
 	}
@@ -194,5 +184,10 @@ public class XADATADaoImpl extends SqlMapClientDaoSupport implements XADATADao {
 		return this.getSqlMapClientTemplate().queryForList("XADATA.querySchrcp",vo);
 	}
 
+	@Override
+	public List<SLQNTYVO> querySlqntyForPickList(Map map)
+			throws Exception {
+		return this.getSqlMapClientTemplate().queryForList("XADATA.querySlqntyForPickList",map);
+	}
 
 }

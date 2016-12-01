@@ -250,18 +250,6 @@ public class XADATAServiceImpl implements XADATAService {
 		return xadataDao.queryVennam(map);
 	}
 
-
-	@Override
-	public List<MOMASTVO> queryMomastPrinted(MOMASTVO vo) throws Exception {
-		return xadataDao.queryMomastPrinted(vo);
-	}
-
-
-	@Override
-	public List<MOMASTVO> queryMomastNoCarePrint(MOMASTVO vo) throws Exception {
-		return xadataDao.queryMomastNoCarePrint(vo);
-	}
-	
 	public List<POMASTVO> queryPomastState(Map map) throws Exception{
 		return xadataDao.queryPomastState(map);
 	}
@@ -270,4 +258,12 @@ public class XADATAServiceImpl implements XADATAService {
 	public List<SCHRCPVO> querySchrcp(SCHRCPVO vo) throws Exception {
 		return xadataDao.querySchrcp(vo);
 	}
+
+
+	@Override
+	public List<SLQNTYVO> querySlqntyForPickList(Map map)
+			throws Exception {
+		return xadataDao.querySlqntyForPickList(map);
+	}
+
 }

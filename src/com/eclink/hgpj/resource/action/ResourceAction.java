@@ -6074,7 +6074,10 @@ public class ResourceAction extends BaseAction {
 				}
 				DataSourceUtil.setDataSource(dbconfigurl, idx);
 				String stid =Utils.getDataSourceS(dbconfigurl, "STID"+idx);
-
+				String lib = Utils.getDataSourceS(dbconfigurl, "AMTLIB"+idx);
+				String lib1 = Utils.getDataSourceS(dbconfigurl, "AMPHLIB"+idx);
+				
+				
 				//查询作业信息是否存在
 				Map<String,String> zmojobParMap =  new HashMap<String, String>();
 				zmojobParMap.put("mjdno", job_number);
@@ -6085,6 +6088,17 @@ public class ResourceAction extends BaseAction {
 				}else{
 					ZMOJOBVO zmojobvo = zmojobLsit.get(0);
 					if(zmojobvo.getOstat().equals("20")){
+						/*
+						 * SHKDSP数据库操作
+						 * 
+						 */
+						try {
+							new Utils().createShpdsk(lib, dbconfigurl, lib1);
+						} catch (Exception e) {
+							e.printStackTrace();
+							throw new Exception("创建shpdsk失败");
+						}
+						
 						zmojobService.finishZmojob(zmojobvo,username,step_quantity,artificial_hours_after,machine_hours_after,abnormal_hours,abnormal_reason);
 						jo.put("code", 1);
 						jo.put("desc", "OK");

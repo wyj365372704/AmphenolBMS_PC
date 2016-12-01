@@ -158,7 +158,7 @@
 						cssClass="input_w" style="height:30px"></s:textarea></li>
 				<li><div class="w_s">打印状态：</div> 
 			
-				<s:select list="#{' ':'全部','1':'已打印','0':'未打印'}" name="momast.uusamy"
+				<s:select list="#{'':'全部','1':'已打印',' ':'未打印'}" name="momast.uusamy"
 				headerValue="momast.uusamy" style="width:80px" cssClass="select_s_2" ></s:select>
 				</li>
 			</ul>
