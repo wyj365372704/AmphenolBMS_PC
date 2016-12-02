@@ -153,6 +153,11 @@ public class XADATAServiceImpl implements XADATAService {
 	public List<ITMSITVO> queryItrvtAll(ITMSITVO vo) throws Exception {
 		return xadataDao.queryItrvtAll(vo);
 	}
+	
+	@Override
+	public List<ITMSITVO> queryItmsitByItnot9Like(ITMSITVO vo) throws Exception {
+		return xadataDao.queryItmsitByItnot9Like(vo);
+	}
 
 
 	@Override

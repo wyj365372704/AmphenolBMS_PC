@@ -14,7 +14,9 @@
 <script src="../js/alert/jquery.ui.draggable.js" type="text/javascript"></script>
 <script src="../js/alert/jquery.alerts.js" type="text/javascript"></script>
 <script src="../js/common.js" type="text/javascript"></script>
+<script type="text/javascript" src="../js/jquery.selectseach.min.js"></script>
 <link href="../js/alert/alerts.css" rel="stylesheet" type="text/css" />
+
 </head>
 <script type="text/javascript">
 function changeF() {
@@ -38,6 +40,22 @@ function changeF() {
                  }});
          //  alert(htmlobj.responseText);
 	} 
+	$(document).ready(function() {
+		$('select').selectseach();
+		//alert(document.getElementsByName("searcht")[0].value);onchange='getItems();'
+		
+	});
+	function getItems(){
+		//alert(document.getElementsByName("searcht")[0].value);
+		var itnot9=document.getElementsByName("searcht")[0].value;
+		$.ajax({url:"material!searchMaterialTag.action?itnot9="+itnot9,async:false,  type: "GET" , 
+		success:function(data) {//这里的data是由请求页面返回的数据    
+                 //var dataJson = JSON.parse(data); // 使用json2.js中的parse方法将data转换成json格式   
+                 //$("#show").html("data=" + data + " name="+dataJson.name+"  age=" + dataJson.age);  
+                 //alert(data);   
+             document.getElementById('sel').innerHTML= data;       
+                 }});
+	}
 </script>
 <body class="right_body">
 	<s:form action="#" method="post" name="makeMark">
@@ -57,7 +75,13 @@ function changeF() {
 					<tr>
 						<td align="right">物料：<font color="red">*</font></td>
 						<td>
-						<s:select list="itmsitList" id="sel" emptyOption="false" name="fordrji" m="search" class='input_w' listKey="itnot9" listValue="itnot9" onchange="changeF();"></s:select>
+						<%-- <s:select list="itmsitList" id="sel" emptyOption="false" name="fordrji" m="search"  listKey="itnot9" listValue="itnot9" onchange="changeF();"></s:select> --%>
+						<select id="sel" name="fordrji" m='search'
+							class='input_w' onchange="changeF();" >
+							<s:iterator value="itmsitList">
+							<option value="<s:property value="itnot9.trim()"/>"><s:property value="itnot9.trim()"/></option>
+							</s:iterator>
+						</select>
 						</td>
 						<td rowspan="11" width="55%">
 							<div id="qrtlb">

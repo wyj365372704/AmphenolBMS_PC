@@ -112,6 +112,7 @@
 			class="com.eclink.hgpj.resource.action.MaterialTagAction">
 			<result name="toMaterialTag">/resource/material_tag.jsp</result>
 			<result name="toPrintMaterialTag">/resource/material_form.jsp</result>
+			<result name="searchMaterialTag">/resource/searchMaterialTag_data.jsp</result>
 		</action>
 
 		<action name="myGrn" class="com.eclink.hgpj.resource.action.GrnAction">

@@ -156,7 +156,25 @@
 			</isNotEmpty>
 		</dynamic>
 	</select>
-
+	<select id="queryItmsitByItnot9Like" resultClass="ITMSITVO"
+		parameterClass="ITMSITVO">
+		<![CDATA[select temp.itnot9,temp.itrvt9,
+		temp.umstt9,temp.blcft9 
+		from (select a.* ,rownumber() over() as rowid from 
+		(select  *  from  ITMSIT  
+		]]>
+		<dynamic prepend="where">
+			<isNotEmpty prepend="and" property="house">
+				STIDT9=#house#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="itnot9">
+				ITNOT9 like
+				('%'||#itnot9#||'%' )
+			</isNotEmpty>
+		</dynamic>
+		<![CDATA[ ) a) temp where temp.rowid>=0 and temp.rowid <= 10
+		]]>
+	</select>
 	<select id="queryItmrva" resultMap="ITMRVAVOMap" parameterClass="ITMRVAVO">
 		<![CDATA[ select  * from  ITMRVA where STID=#house# 
 		]]>
@@ -216,7 +234,7 @@
 			order by FDATE
 		]]>
 	</select>
-	
+
 	<select id="querySldata" resultClass="SLDATAVO" parameterClass="Map">
 		<![CDATA[ select b.* from sldata b  
 				where b.house = #warehouse#   

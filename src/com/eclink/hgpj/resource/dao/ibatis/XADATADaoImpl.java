@@ -119,6 +119,11 @@ public class XADATADaoImpl extends SqlMapClientDaoSupport implements XADATADao {
 	public List<ITMSITVO> queryItrvtAll(ITMSITVO vo) throws Exception {
 		return this.getSqlMapClientTemplate().queryForList("XADATA.queryItrvtAll",vo);
 	}
+	
+	@Override
+	public List<ITMSITVO> queryItmsitByItnot9Like(ITMSITVO vo) throws Exception {
+		return this.getSqlMapClientTemplate().queryForList("XADATA.queryItmsitByItnot9Like",vo);
+	}
 
 	@Override
 	public List<POBLKTVO> queryPoblkt(Map map) throws Exception {

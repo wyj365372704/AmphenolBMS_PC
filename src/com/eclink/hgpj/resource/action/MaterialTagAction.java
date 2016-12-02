@@ -186,12 +186,23 @@ public class MaterialTagAction extends BaseAction {
 		ITMSITVO itmsitvo = new ITMSITVO();
 		itmsitvo.setHouse((String) getSession().getAttribute("stid"));
 		itmsitvo.setItnot9(itnot9);
-		List<ITMSITVO> itmsitList = this.xadataService.queryItrvtAll(itmsitvo);
-		System.out.println("itmsitList's size is "+itmsitList.size());
+		List<ITMSITVO> itmsitList = this.xadataService.queryItmsitByItnot9Like(itmsitvo);
 		ActionContext.getContext().getValueStack().set("itmsitList", itmsitList);
 		
 		return "toMaterialTag";
 	}
+	
+	public String searchMaterialTag() throws Exception {
+		ITMSITVO itmsitvo = new ITMSITVO();
+		itmsitvo.setHouse((String) getSession().getAttribute("stid"));
+		itmsitvo.setItnot9(itnot9);
+		List<ITMSITVO> itmsitList = this.xadataService.queryItmsitByItnot9Like(itmsitvo);
+		ActionContext.getContext().getValueStack().set("itmsitList", itmsitList);
+		
+		return "searchMaterialTag";
+	}
+	
+	
 	/**
 	 * 打印物料标签
 	 * @return

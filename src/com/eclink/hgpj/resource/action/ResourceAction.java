@@ -5209,13 +5209,13 @@ public class ResourceAction extends BaseAction {
 						zdeptParMap.put("plant",String.valueOf(dps.get(0).getPlant()));
 					}
 
-				/*	原方案,ZDEPT.DEPT 关联查询出ZDEPT.DNAME
+//					原方案,ZDEPT.DEPT 关联查询出ZDEPT.DNAME
 				  	zdeptParMap.put("dept", zmojobvo.getDptno());
 					List<ZDEPTVO> zdeptList = zdeptService.queryZdeptByMap(zdeptParMap);
 					if(zdeptList.size()>0){
 						jo.put("department", zdeptList.get(0).getDname());
-					}*/
-						jo.put("department", zmojobvo.getDptno());
+					}
+//						jo.put("department", zmojobvo.getDptno());
 
 					String createDate = "";
 					if(zmojobvo.getCrdt()!=null){

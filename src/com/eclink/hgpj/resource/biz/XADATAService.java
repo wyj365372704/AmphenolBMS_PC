@@ -38,6 +38,8 @@ public interface XADATAService {
 
 	public List<ITMSITVO> queryItrvtAll(ITMSITVO vo) throws Exception;
 	
+	public List<ITMSITVO> queryItmsitByItnot9Like(ITMSITVO vo) throws Exception;
+	
 	public List<SLQNTYVO> querySlqnty(Map map) throws Exception;
 	
 	public List<MOMASTVO> queryMomast(MOMASTVO vo) throws Exception;
