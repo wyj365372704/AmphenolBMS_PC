@@ -3749,18 +3749,16 @@ public class ResourceAction extends BaseAction {
 					if(lists!=null && lists.size()>0){
 						boolean issuccuess = util.insertTrdata(lib,env, lists,lib1);
 						if(issuccuess){
-
 							Map map1 = new HashMap();
 							map1.put("ZIPHDRVO", phdrvo);
 							map1.put("ZIPDTLVO", pdtlvo);
 							this.ziphdrService.updateZiphdr(map1);
+							jo.put("code", 1);
+							jo.put("desc", "ok");
 						}else{throw new RuntimeException();}
-					}
+					}else{throw new RuntimeException();}
 
-				}
-				jo.put("code", 1);
-				jo.put("desc", "ok");
-
+				}else{throw new RuntimeException();}
 			}
 		}catch (Exception e) {e.printStackTrace();
 		jo.put("code", 4);
@@ -3905,23 +3903,65 @@ public class ResourceAction extends BaseAction {
 							}
 							pdtlvo.setItemList(subItemList);
 						}
+					}else{
+						Map map = new HashMap();
+						map.put("badge", au.getXsBda());
+						map.put("hdept", vo.getDept());
+						map.put("iploc", vo.getHouse());
+						map.put("itnbr", vo.getCitem());
+						map.put("lbhno", "");
+						map.put("lloc", location);
+						map.put("ordno", vo.getOrdno());
+						map.put("reasn", "");//TODO:需要根据类型从ZBMSRSN表中取值
+						map.put("seqnm", vo.getSeqnm());
+						map.put("tdate", BigDecimal.valueOf(Long.valueOf("1"+now3)));
+						map.put("trqty", BigDecimal.valueOf(Double.valueOf(actual_quantity ==null?"0":actual_quantity )));
+						map.put("ttime", BigDecimal.valueOf(Long.valueOf(now2)));
+						map.put("wsid", username);
+						map.put("usrsq", vo.getUsrsq());
+						map.put("turna", vo.getTurna());
+						map.put("turnn", vo.getTurnn());
+						map.put("turnc", vo.getTurnc());
+
+						ZIPHSTVO hvo = new ZIPHSTVO();
+						hvo.setIpdno(pick_number);
+						hvo.setIpdln(BigDecimal.valueOf(Long.valueOf(pick_line)));
+						hvo.setIpddl(BigDecimal.valueOf(1));
+						hvo.setOrdno(vo.getOrdno());
+						hvo.setFitem(vo.getFitem());
+						hvo.setDept(vo.getDept());
+						hvo.setCitem(vo.getCitem());
+						hvo.setCum(vo.getCuom());
+						hvo.setHouse(vo.getHouse());
+						hvo.setDlsub(shard);
+						hvo.setDlloc(location);
+						hvo.setDlqty(BigDecimal.valueOf(Double.valueOf(Double.valueOf(actual_quantity ==null?"0":actual_quantity ))));
+						hvo.setDlbch("");
+						hvo.setIpus2(username);
+						hvo.setIpdp2(userDept);
+						hvo.setIpdt2(BigDecimal.valueOf(Long.valueOf("1"+now3)));
+						hvo.setIptm2(BigDecimal.valueOf(Long.valueOf(now2)));
+						subItemList.add(hvo);
+						lists.add(map);
+						pdtlvo.setItemList(subItemList);
 					}
 
-					if(lists!=null && lists.size()>0){
-						boolean issuccuess = util.insertTrdata(lib,env, lists,lib1);
-						if(issuccuess){
-
-							Map map1 = new HashMap();
-							map1.put("ZIPHDRVO", phdrvo);
-							map1.put("ZIPDTLVO", pdtlvo);
-							this.ziphdrService.updateZiphdr(map1);
-						}
+					boolean issuccuess = util.insertTrdata(lib,env, lists,lib1);
+					if(issuccuess){
+						Map map1 = new HashMap();
+						map1.put("ZIPHDRVO", phdrvo);
+						map1.put("ZIPDTLVO", pdtlvo);
+						this.ziphdrService.updateZiphdr(map1);
+						jo.put("code", 1);
+						jo.put("desc", "ok");
+					}else{
+						jo.put("code", 4);
+						jo.put("desc", "other exception");
 					}
-
+				}else{
+					jo.put("code", 4);
+					jo.put("desc", "other exception");
 				}
-				jo.put("code", 1);
-				jo.put("desc", "ok");
-
 			}
 		}catch (Exception e) {e.printStackTrace();
 		jo.put("code", 4);
@@ -4682,7 +4722,7 @@ public class ResourceAction extends BaseAction {
 					ZITMEXTVO extVo = new ZITMEXTVO();
 					ITMSITVO itmsitvot = itrvts.get(0);
 					jo.put("storage_unit", itmsitvot.getUmstt9());//数量(单位)
-					jo.put("branched", itmsitvot.getBlcft9());
+					jo.put("branched", Integer.parseInt(itmsitvot.getBlcft9()));
 
 					extVo.setItnbr(mater.trim());
 					extVo.setStid(stid.trim());
@@ -5209,13 +5249,13 @@ public class ResourceAction extends BaseAction {
 						zdeptParMap.put("plant",String.valueOf(dps.get(0).getPlant()));
 					}
 
-//					原方案,ZDEPT.DEPT 关联查询出ZDEPT.DNAME
-				  	zdeptParMap.put("dept", zmojobvo.getDptno());
+					//					原方案,ZDEPT.DEPT 关联查询出ZDEPT.DNAME
+					zdeptParMap.put("dept", zmojobvo.getDptno());
 					List<ZDEPTVO> zdeptList = zdeptService.queryZdeptByMap(zdeptParMap);
 					if(zdeptList.size()>0){
 						jo.put("department", zdeptList.get(0).getDname());
 					}
-//						jo.put("department", zmojobvo.getDptno());
+					//						jo.put("department", zmojobvo.getDptno());
 
 					String createDate = "";
 					if(zmojobvo.getCrdt()!=null){
@@ -6076,8 +6116,8 @@ public class ResourceAction extends BaseAction {
 				String stid =Utils.getDataSourceS(dbconfigurl, "STID"+idx);
 				String lib = Utils.getDataSourceS(dbconfigurl, "AMTLIB"+idx);
 				String lib1 = Utils.getDataSourceS(dbconfigurl, "AMPHLIB"+idx);
-				
-				
+
+
 				//查询作业信息是否存在
 				Map<String,String> zmojobParMap =  new HashMap<String, String>();
 				zmojobParMap.put("mjdno", job_number);
@@ -6098,7 +6138,7 @@ public class ResourceAction extends BaseAction {
 							e.printStackTrace();
 							throw new Exception("创建shpdsk失败");
 						}
-						
+
 						zmojobService.finishZmojob(zmojobvo,username,step_quantity,artificial_hours_after,machine_hours_after,abnormal_hours,abnormal_reason);
 						jo.put("code", 1);
 						jo.put("desc", "OK");
@@ -6424,15 +6464,15 @@ public class ResourceAction extends BaseAction {
 												parames.put("unitofMeasure", zvritmvo.getStkum() == null?"":zvritmvo.getStkum());
 												parames.put("transactionDate", Utils.formateDate(null, "yyyyMMdd"));
 												parames.put("receivedToStockQuantity", return_quantity == null?"":Double.parseDouble(return_quantity)*-1);
-												
+
 
 												if(bmsctlList!=null && bmsctlList.size()>0){
 													parames.put("receivedToStockReason", bmsctlList.get(0).getRprsn().trim());
 												}else{
 													parames.put("receivedToStockReason", "");
 												}
-												
-												
+
+
 
 												String xaret0 = Utils.systemLinkPurchaseReturn(parames);
 												String retVal = (String)parames.get("systemLinkStr");
@@ -6445,7 +6485,7 @@ public class ResourceAction extends BaseAction {
 													String now1 = Utils.formateDate(null, "yyyyMMdd");
 													String now3 = Utils.formateDate(null, "yyMMdd");
 													String now2 = Utils.formateDate(null, "HHmmss");
-													
+
 													String userDept="";
 													List<ZBMSU02VO> dps = this.auserService.queryDeptByUserName(username);
 													if(dps!=null && dps.size()>0){
@@ -6456,7 +6496,7 @@ public class ResourceAction extends BaseAction {
 															}
 														}
 													} 
-													
+
 													ZSLLOGVO sysliklog = new ZSLLOGVO();
 													int count = this.zsllogService.getCoutsByDt(BigDecimal.valueOf(Long.valueOf("1"+now3)))+1;
 													String index = "0000"+count;
@@ -6480,7 +6520,7 @@ public class ResourceAction extends BaseAction {
 													sysliklog.setLlocn("");
 													sysliklog.setNlloc("");
 													//							this.zsllogService.insertZsllog(sysliklog);
-													
+
 													throw new RuntimeException("systemlink 错误");
 												}else{
 													ZVRTRNVO zvrtrnvo = new ZVRTRNVO();
