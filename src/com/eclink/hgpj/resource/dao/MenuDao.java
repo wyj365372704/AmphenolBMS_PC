@@ -24,6 +24,7 @@ public interface MenuDao {
 	 * @throws Exception
 	 */
 	public List<MenuVO> queryOrgMenuTreeList(int orgId) throws Exception;
+	public List<MenuVO> getMenuTreeListForUserN(String userName) throws Exception;
 	
 	/**
 	 * 获取系统菜单树列表

@@ -441,4 +441,13 @@ public class MenuServiceImpl implements MenuService {
 			}
 		}
 	}
+
+	@Override
+	public List<MenuVO> getMenuTreeListForUserN(String userName)
+			throws Exception {
+		List<MenuVO> list = menuDao.getMenuTreeListForUserN(userName);
+		//转换resources成节点与子节点关联的形式并排
+		converAndSortMenuTree(list);
+		return list;
+	}
 }

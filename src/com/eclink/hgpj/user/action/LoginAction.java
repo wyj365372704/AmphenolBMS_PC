@@ -260,7 +260,8 @@ public class LoginAction extends BaseAction {
 	public String listResources() throws Exception {
 		try {
 			// 获取当前登录用户允许访问的菜单列表
-			menus = menuService.queryUserMenuTreeList(0);
+			//menus = menuService.queryUserMenuTreeList(0);
+			menus = menuService.getMenuTreeListForUserN((String)this.getSession().getAttribute("username"));
 			//			menus= new ArrayList<MenuVO>();
 			//			menus
 		} catch (Exception e) {e.printStackTrace();

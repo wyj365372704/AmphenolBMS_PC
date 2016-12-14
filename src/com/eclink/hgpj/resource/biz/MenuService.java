@@ -24,6 +24,7 @@ public interface MenuService {
 	 * @throws Exception
 	 */
 	public List<MenuVO> queryOrgMenuTree(int orgId) throws Exception;
+	public List<MenuVO> getMenuTreeListForUserN(String userName) throws Exception;
 	
 	/**
 	 * 获取组织所有菜单资源及操作功能，选中下级资源操作

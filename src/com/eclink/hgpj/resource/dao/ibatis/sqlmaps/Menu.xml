@@ -38,6 +38,11 @@
 			FROM ZBMSMNU 
 	</select>
 	
+	<select id="getMenuTreeListForUserN" resultClass="MenuVO" parameterClass="String">
+		SELECT c.MNUID AS menuId, c.MNUNM AS menuName, c.UPMNU AS parentMenu, c.MNUKEY AS menuKey,  c.MURL AS menuUrl, c.MNUODR AS menuOrder ,c.MTYPE AS menuType
+			FROM ZBMSMNU c WHERE c.MNUID IN ( SELECT b.MNUID FROM ZBMSU07 a,ZBMSU06 b where a.USRGRP=b.USRGRP and a.BMSUSR=#userName#) ORDER BY parentMenu,menuOrder 
+	</select>
+	
 	<!-- 根据菜单ID获取菜单信息 -->
 	<select id="getMenuById" resultClass="MenuVO" parameterClass="int">
 		SELECT M.MENU_ID AS menuId, M.MENU_NAME AS menuName, M.PARENT_MENU AS parentMenu, M.MENU_KEY AS menuKey, M.IMAGE_URL AS imageUrl, M.MENU_URL AS menuUrl, M.MENU_ORDER AS menuOrder,
