@@ -262,6 +262,32 @@ public class LoginAction extends BaseAction {
 			// 获取当前登录用户允许访问的菜单列表
 			//menus = menuService.queryUserMenuTreeList(0);
 			menus = menuService.getMenuTreeListForUserN((String)this.getSession().getAttribute("username"));
+			List<MenuVO> list = new ArrayList<MenuVO>();
+			if(menus!=null && menus.size()>0){
+				for(int i=0;i<menus.size();i++){
+					MenuVO mvo=menus.get(i);
+					Map menuM = new HashMap();
+					if(mvo.getMenuType()!=null && mvo.getMenuType().trim().equals("2")){
+						menus.remove(i);
+						i--;
+					}else{
+						List<MenuVO> lmv=mvo.getSubMenuList();
+						if(lmv!=null && lmv.size()>0){
+							for(int j=0;j<lmv.size();j++){
+								MenuVO cmvo=lmv.get(j);
+								if(cmvo.getMenuType()!=null && cmvo.getMenuType().trim().equals("2")){
+									lmv.remove(j);
+									j--;
+								}
+//									menuM.put(cmvo.getMenuKey().trim(), cmvo.getMenuName().trim());
+							}
+//							list.add(menuM);
+						}
+					}
+					
+				}
+				
+			}
 			//			menus= new ArrayList<MenuVO>();
 			//			menus
 		} catch (Exception e) {e.printStackTrace();

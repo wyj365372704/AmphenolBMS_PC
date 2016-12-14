@@ -1175,7 +1175,7 @@ public class ResourceAction extends BaseAction {
 				}
 				DataSourceUtil.setDataSource(dbconfigurl, idx);
 				//TODO:获取菜单接口，后续需要完善成根据用户名获取相应的菜单
-				menus = menuService.queryUserMenuTreeList(0);
+				menus = menuService.getMenuTreeListForUserN(username);
 				List<Map> list = new ArrayList<Map>();
 				if(menus!=null && menus.size()>0){
 					for(int i=0;i<menus.size();i++){
