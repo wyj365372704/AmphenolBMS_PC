@@ -15,6 +15,7 @@
 	    <result column="FASUB" property="fasun" />
 	    <result column="NMCHS" property="nmchs" />
 	    <result column="NMENG" property="nmeng" />
+	    <result column="CURID" property="curid" />
 	  </resultMap>
 	<select id="queryZbmsctl" resultMap="ZBMSCTLVOMap" parameterClass="ZBMSCTLVO">
 		<![CDATA[ select  *  from  ZBMSCTL where SITE=#site#  

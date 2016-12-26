@@ -2,6 +2,7 @@ package com.eclink.hgpj.resource.dao.ibatis;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.orm.ibatis.SqlMapClientCallback;
 import org.springframework.orm.ibatis.support.SqlMapClientDaoSupport;
@@ -42,8 +43,8 @@ public class ZSHPHDRDaoImpl extends SqlMapClientDaoSupport implements ZSHPHDRDao
 	}
 
 	@Override
-	public List<ZSHPBCHVO> queryBch(String shpno) throws Exception {
-		return this.getSqlMapClientTemplate().queryForList("ZSHPHDR.queryBch", shpno);
+	public List<ZSHPBCHVO> queryBch(Map map) throws Exception {
+		return this.getSqlMapClientTemplate().queryForList("ZSHPHDR.queryBch", map);
 	}
 
 }

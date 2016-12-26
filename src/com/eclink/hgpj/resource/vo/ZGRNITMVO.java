@@ -55,6 +55,8 @@ public class ZGRNITMVO extends BaseVO{
 	
 	private BigDecimal shqty;
 	
+	private BigDecimal dkqty;
+	
 	private BigDecimal grqty;
 	
 	private String purum;
@@ -112,6 +114,14 @@ public class ZGRNITMVO extends BaseVO{
 
 	public String getVn35() {
 		return vn35;
+	}
+
+	public BigDecimal getDkqty() {
+		return dkqty;
+	}
+
+	public void setDkqty(BigDecimal dkqty) {
+		this.dkqty = dkqty;
 	}
 
 	public String getItdsc() {

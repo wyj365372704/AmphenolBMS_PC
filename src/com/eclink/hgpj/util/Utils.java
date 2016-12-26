@@ -1099,7 +1099,14 @@ public class Utils {
 			//			conn=DriverManager.getConnection("jdbc:mysql://localhost:3306/QGPL", "", "");
 			String dburl=properties.getProperty("DBURL");
 			String dbip=dburl.split("/")[2];
-			conn=DriverManager.getConnection("jdbc:as400://"+dbip+"/"+lib+";translate binary=true", properties.getProperty("DBUSER"), properties.getProperty("DBPASSWORD"));
+			
+			
+			System.out.println("CallJournal:start");
+			this.CallJournal(dbip, properties.getProperty("DBUSER"), properties.getProperty("DBPASSWORD"), lib1);
+			System.out.println("CallJournal:finish");
+			
+			
+			/*conn=DriverManager.getConnection("jdbc:as400://"+dbip+"/"+lib+";translate binary=true", properties.getProperty("DBUSER"), properties.getProperty("DBPASSWORD"));
 			String sql="CREATE TABLE  SHPDSK (RCDCD CHAR(2),ORDNO CHAR(7),OPSEQ CHAR(4),RUNCD CHAR(1)," +
 					"LBTIM NUMERIC(7,2),MATIM NUMERIC(7,2),QCOMP NUMERIC(10,3),QSCRP NUMERIC(10,3)," +
 					"RESN NUMERIC(6),RFNO CHAR(10),OCMPC CHAR(1),AWKCT CHAR(5),EMPNO NUMERIC(5,0)," +
@@ -1113,14 +1120,14 @@ public class Utils {
 
 					conn.commit();
 					conn.setAutoCommit(true);
-				
+
 				} catch (Exception e) {
 					// TODO: handle exception
 				}
 				this.CallJournal(dbip, properties.getProperty("DBUSER"), properties.getProperty("DBPASSWORD"), lib1);
 			}else{
 				throw new Exception("conn is null");	
-			}
+			}*/
 
 		}catch(Exception e){
 			if(conn!=null){
@@ -1130,8 +1137,8 @@ public class Utils {
 					e1.printStackTrace();
 				}
 			}
+			e.printStackTrace();
 			throw e;
-			//			e.printStackTrace();
 			//			return false;
 		}finally{
 			try{
@@ -1202,7 +1209,7 @@ public class Utils {
 		AS400 as400 = null; 
 		ProgramCall pgm; 
 
-		String progname = "STRJRNPF FILE("+env.trim()+"/SHPDSK) JRN("+env.trim()+"/BMSJRN)";
+		String progname = "STRJRNPF FILE("+env.trim()+"/SHPDSK) JRN("+env.trim()+"/BMSJRN) IMAGES(*AFTER) OMTJRNE(*NONE) LOGLVL(*ERRORS)";
 		System.out.println("progname:"+progname);
 		as400 = new AS400(host, userName, password);
 

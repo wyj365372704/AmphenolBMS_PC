@@ -1,282 +1,226 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
-<sqlMap namespace="ZGRNHDR" >
-	
-	<typeAlias alias="ZGRNHDRVO" type="com.eclink.hgpj.resource.vo.ZGRNHDRVO"/>
-	<typeAlias alias="ZGRNITMVO" type="com.eclink.hgpj.resource.vo.ZGRNITMVO"/>
-	<typeAlias alias="ZGRNBCHVO" type="com.eclink.hgpj.resource.vo.ZGRNBCHVO"/>
+<sqlMap namespace="ZGRNHDR">
+
+	<typeAlias alias="ZGRNHDRVO" type="com.eclink.hgpj.resource.vo.ZGRNHDRVO" />
+	<typeAlias alias="ZGRNITMVO" type="com.eclink.hgpj.resource.vo.ZGRNITMVO" />
+	<typeAlias alias="ZGRNBCHVO" type="com.eclink.hgpj.resource.vo.ZGRNBCHVO" />
 	<resultMap id="ZGRNBCHVOMap" class="ZGRNBCHVO">
-	   <result property="grnno"
-	    column="GRNNO" />
-	   <result property="grnln"
-	    column="GRNLN" />
-	   <result property="grnbn"
-	    column="GRNBN" />
-	   <result property="shpno"
-	    column="SHPNO" />
-	    <result property="shpln"
-	    column="SHPLN" />
-	    <result property="vndnr"
-	    column="VNDNR" />
-	    <result property="house"
-	    column="HOUSE" />
-	     <result property="ordno"
-	    column="ORDNO" />
-	    <result property="poisq"
-	    column="POISQ" />
-	    <result property="blksq"
-	    column="BLKSQ" />
-	     <result property="itnbr"
-	    column="ITNBR" />
-	   <result property="purum"
-	    column="PURUM" />
-	    <result property="sbqty"
-	    column="SBQTY" />
-	    <result property="gbqty"
-	    column="GBQTY" />
-	    <result property="lbhno"
-	    column="LBHNO" />
-	    
-	    <result property="mfgdt"
-	    column="MFGDT" />
-	    <result property="expdt"
-	    column="EXPDT" /> 	     
+		<result property="grnno" column="GRNNO" />
+		<result property="grnln" column="GRNLN" />
+		<result property="grnbn" column="GRNBN" />
+		<result property="shpno" column="SHPNO" />
+		<result property="shpln" column="SHPLN" />
+		<result property="shpbn" column="SHPBN" />
+		<result property="vndnr" column="VNDNR" />
+		<result property="house" column="HOUSE" />
+		<result property="ordno" column="ORDNO" />
+		<result property="poisq" column="POISQ" />
+		<result property="blksq" column="BLKSQ" />
+		<result property="itnbr" column="ITNBR" />
+		<result property="purum" column="PURUM" />
+		<result property="sbqty" column="SBQTY" />
+		<result property="gbqty" column="GBQTY" />
+		<result property="lbhno" column="LBHNO" />
+
+		<result property="mfgdt" column="MFGDT" />
+		<result property="expdt" column="EXPDT" />
 	</resultMap>
-	
+
 	<resultMap id="ZGRNITMVOMap" class="ZGRNITMVO">
-		<result property="grnno"
-	    column="GRNNO" />
-	    <result property="grnln"
-	    column="GRNLN" />
-	   <result property="shpno"
-	    column="SHPNO" />
-	    <result property="shpln"
-	    column="SHPLN" />
-	    <result property="vndnr"
-	    column="VNDNR" />
-	    <result property="house"
-	    column="HOUSE" />
-	     <result property="ordno"
-	    column="ORDNO" />
-	    <result property="poisq"
-	    column="POISQ" />
-	    <result property="blcod"
-	    column="BLCOD" />
-	    <result property="blksq"
-	    column="BLKSQ" />
-	    <result property="lstat"
-	    column="LSTAT" />
-	     <result property="itnbr"
-	    column="ITNBR" />
-	    <result property="blcf"
-	    column="BLCF" />
-	    <result property="iqcf"
-	    column="IQCF" />
-	    <result property="shqty"
-	    column="SHQTY" />
-	    <result property="purum"
-	    column="PURUM" />
-	    <result property="sctkji"
-	    column="SCTKJI" />
-	    
-	    <result property="grqty"
-	    column="GRQTY" />
-	    <result property="grloc"
-	    column="GRLOC" />
-	     <result property="grwgt1"
-	    column="GRWGT1" />
-	    <result property="grwum1"
-	    column="GRWUM1" />
-	    <result property="grwgt2"
-	    column="GRWGT2" />
-	    <result property="grwum2"
-	    column="GRWUM2" />
+		<result property="grnno" column="GRNNO" />
+		<result property="grnln" column="GRNLN" />
+		<result property="shpno" column="SHPNO" />
+		<result property="shpln" column="SHPLN" />
+		<result property="vndnr" column="VNDNR" />
+		<result property="house" column="HOUSE" />
+		<result property="ordno" column="ORDNO" />
+		<result property="poisq" column="POISQ" />
+		<result property="blcod" column="BLCOD" />
+		<result property="blksq" column="BLKSQ" />
+		<result property="lstat" column="LSTAT" />
+		<result property="itnbr" column="ITNBR" />
+		<result property="blcf" column="BLCF" />
+		<result property="iqcf" column="IQCF" />
+		<result property="shqty" column="SHQTY" />
+		<result property="purum" column="PURUM" />
+		<result property="sctkji" column="SCTKJI" />
+		<result property="dkqty" column="DKQTY" />
+		<result property="grqty" column="GRQTY" />
+		<result property="grloc" column="GRLOC" />
+		<result property="grwgt1" column="GRWGT1" />
+		<result property="grwum1" column="GRWUM1" />
+		<result property="grwgt2" column="GRWGT2" />
+		<result property="grwum2" column="GRWUM2" />
 	</resultMap>
-	
+
 	<resultMap id="ZGRNHDRVOMap" class="ZGRNHDRVO">
-	   <result property="grnno"
-	    column="GRNNO" />
-	   <result property="shpno"
-	    column="SHPNO" />
-	   <result property="vndnr"
-	    column="VNDNR" />
-	   <result property="lgwno"
-	    column="LGWNO" />
-	    <result property="ostat"
-	    column="OSTAT" />
-	    
-	    <result property="grdte"
-	    column="GRDTE" />
-	    <result property="grdtm"
-	    column="GRDTM" />
-	  	<result property="gremp"
-	    column="GREMP" />
-	    
-	    <result property="crus"
-	    column="CRUS" />
-	    <result property="crdt"
-	    column="CRDT" />
-	    <result property="crtm"
-	    column="CRTM" />
-	    <result property="chus"
-	    column="CHUS" />
-	    <result property="chdt"
-	    column="CHDT" />
-	    <result property="chtm"
-	    column="CHTM" />
-	   <result property="itemsList" 
- 	     column="GRNNO" resultMap="ZGRNHDR.ZGRNITMVOMap"/>
- 	</resultMap>
- 	
- 	<resultMap id="ZGRNHDRVOMapS" class="ZGRNHDRVO">
-	   <result property="grnno"
-	    column="GRNNO" />
-	   <result property="shpno"
-	    column="SHPNO" />
-	   <result property="vndnr"
-	    column="VNDNR" />
-	   <result property="lgwno"
-	    column="LGWNO" />
-	    <result property="ostat"
-	    column="OSTAT" />
-	    
-	    <result property="grdte"
-	    column="GRDTE" />
-	    <result property="grdtm"
-	    column="GRDTM" />
-	  	<result property="gremp"
-	    column="GREMP" />
-	    
-	    <result property="crus"
-	    column="CRUS" />
-	    <result property="crdt"
-	    column="CRDT" />
-	    <result property="crtm"
-	    column="CRTM" />
-	    <result property="chus"
-	    column="CHUS" />
-	    <result property="chdt"
-	    column="CHDT" />
-	    <result property="chtm"
-	    column="CHTM" />
- 	</resultMap>
- 	
- 	<resultMap id="ZGRNHDR2VOMap" class="ZGRNHDRVO">
-	   <result property="grnno"
-	    column="GRNNO" />
-	   <result property="shpno"
-	    column="SHPNO" />
-	   <result property="vndnr"
-	    column="VNDNR" />
-	   <result property="lgwno"
-	    column="LGWNO" />
-	    <result property="ostat"
-	    column="OSTAT" />
-	    
-	    <result property="grdte"
-	    column="GRDTE" />
-	    <result property="grdtm"
-	    column="GRDTM" />
-	  	<result property="gremp"
-	    column="GREMP" />
-	    
-	    <result property="crus"
-	    column="CRUS" />
-	    <result property="crdt"
-	    column="CRDT" />
-	    <result property="crtm"
-	    column="CRTM" />
-	    <result property="chus"
-	    column="CHUS" />
-	    <result property="chdt"
-	    column="CHDT" />
-	    <result property="chtm"
-	    column="CHTM" />
- 	</resultMap>
- 	
- 	<!-- 查询收货单 -->
- 	<select id="queryReceiptList" resultMap="ZGRNHDR2VOMap" parameterClass="ZGRNITMVO">
+		<result property="grnno" column="GRNNO" />
+		<result property="shpno" column="SHPNO" />
+		<result property="vndnr" column="VNDNR" />
+		<result property="lgwno" column="LGWNO" />
+		<result property="ostat" column="OSTAT" />
+
+		<result property="grdte" column="GRDTE" />
+		<result property="grdtm" column="GRDTM" />
+		<result property="gremp" column="GREMP" />
+
+		<result property="crus" column="CRUS" />
+		<result property="crdt" column="CRDT" />
+		<result property="crtm" column="CRTM" />
+		<result property="chus" column="CHUS" />
+		<result property="chdt" column="CHDT" />
+		<result property="chtm" column="CHTM" />
+		<result property="itemsList" column="GRNNO" resultMap="ZGRNHDR.ZGRNITMVOMap" />
+	</resultMap>
+
+	<resultMap id="ZGRNHDRVOMapS" class="ZGRNHDRVO">
+		<result property="grnno" column="GRNNO" />
+		<result property="shpno" column="SHPNO" />
+		<result property="vndnr" column="VNDNR" />
+		<result property="lgwno" column="LGWNO" />
+		<result property="ostat" column="OSTAT" />
+
+		<result property="grdte" column="GRDTE" />
+		<result property="grdtm" column="GRDTM" />
+		<result property="gremp" column="GREMP" />
+
+		<result property="crus" column="CRUS" />
+		<result property="crdt" column="CRDT" />
+		<result property="crtm" column="CRTM" />
+		<result property="chus" column="CHUS" />
+		<result property="chdt" column="CHDT" />
+		<result property="chtm" column="CHTM" />
+	</resultMap>
+
+	<resultMap id="ZGRNHDR2VOMap" class="ZGRNHDRVO">
+		<result property="grnno" column="GRNNO" />
+		<result property="shpno" column="SHPNO" />
+		<result property="vndnr" column="VNDNR" />
+		<result property="lgwno" column="LGWNO" />
+		<result property="ostat" column="OSTAT" />
+
+		<result property="grdte" column="GRDTE" />
+		<result property="grdtm" column="GRDTM" />
+		<result property="gremp" column="GREMP" />
+
+		<result property="crus" column="CRUS" />
+		<result property="crdt" column="CRDT" />
+		<result property="crtm" column="CRTM" />
+		<result property="chus" column="CHUS" />
+		<result property="chdt" column="CHDT" />
+		<result property="chtm" column="CHTM" />
+	</resultMap>
+
+	<!-- 查询收货单 -->
+	<select id="queryReceiptList" resultMap="ZGRNHDR2VOMap"
+		parameterClass="ZGRNITMVO">
 		<![CDATA[select  *
 		from  ZGRNHDR where   GRNNO like ('%'||#grnno#||'%')
-		]]>	 
-		<!-- <![CDATA[select  *
-		from  ZGRNHDR where OSTAT='10'
-		]]>	 
-		<dynamic>
-		   	<isNotEmpty prepend="AND" property="grnno">
-                GRNNO like ('%'||#grnno#||'%')
-            </isNotEmpty>
-		</dynamic> -->
+		]]>
+		<!-- <![CDATA[select * from ZGRNHDR where OSTAT='10' ]]> <dynamic> <isNotEmpty 
+			prepend="AND" property="grnno"> GRNNO like ('%'||#grnno#||'%') </isNotEmpty> 
+			</dynamic> -->
 	</select>
-	
-	<select id="queryReceiptItems" resultMap="ZGRNITMVOMap" parameterClass="ZGRNITMVO">
+
+	<select id="queryReceiptItems" resultMap="ZGRNITMVOMap"
+		parameterClass="ZGRNITMVO">
 		<![CDATA[select  item.* 
 		from ZGRNITM as item where item.LSTAT='50' and item.Grnno=#grnno#
-		]]>	 
+		]]>
 	</select>
- 	
-	<select id="queryReceiptSelf" resultMap="ZGRNHDRVOMap" parameterClass="String">
+
+	<select id="queryReceiptSelf" resultMap="ZGRNHDRVOMap"
+		parameterClass="Map">
 		<![CDATA[select  dr.*,item.* 
-		from  ZGRNHDR as dr,ZGRNITM as item where dr.shpno=#grnno# and dr.GRNNO=item.GRNNO and (item.LSTAT<>'50' and item.LSTAT<>'60') 	and (dr.OSTAT<>'50' and dr.OSTAT<>'60')	
-		]]>	 
+		from  ZGRNHDR as dr,ZGRNITM as item where dr.shpno=#grnno# and dr.GRNNO=item.GRNNO and (item.LSTAT = #lstat# ) 	and (dr.OSTAT<>'50' and dr.OSTAT<>'60')	
+		]]>
 	</select>
-	
+
 	<select id="getCoutsByDt" resultClass="Integer" parameterClass="java.math.BigDecimal">
 		<![CDATA[ select  count(*) as ct   
 		from  ZGRNHDR where GRDTE=#grdte#  
-		]]>	 		
+		]]>
 	</select>
-	
-	<select id="getCoutsByState" resultClass="Integer" parameterClass="String">
+
+	<select id="getCoutsByState" resultClass="Integer"
+		parameterClass="String">
 		<![CDATA[ select  count(*) as ct   
 		from  ZGRNITM where LSTAT<>#lstat#  
-		]]>	 		
+		]]>
 	</select>
-	
-	<select id="getBchCoutsByln" resultClass="Integer" parameterClass="ZGRNITMVO">
-		select  count(*) as ct   
-		from  ZGRNBCH as bch where bch.SHPNO=#shpno# and bch.GRNLN=#grnln#		
+
+	<select id="getMaxGrnbn" resultClass="Integer" parameterClass="ZGRNITMVO">
+		select GRNBN
+		from ZGRNBCH as bch where
+		bch.SHPNO=#shpno# and
+		bch.GRNLN=#grnln# ORDER BY
+		GRNBN DESC
 	</select>
-	
-	<select id="queryZgrnBch" resultMap="ZGRNBCHVOMap" parameterClass="String">
-		select  bch.*  
-		from  ZGRNBCH as bch where bch.SHPNO=#shpno# 
-		
+
+	<select id="queryZgrnBch" resultMap="ZGRNBCHVOMap"
+		parameterClass="String">
+		select bch.*
+		from ZGRNBCH as bch where bch.SHPNO=#shpno#
+
 	</select>
-	
-	<select id="queryZgrnByNo" resultMap="ZGRNHDRVOMapS" parameterClass="String">
-		select  bch.*  
-		from  ZGRNHDR as bch where bch.SHPNO=#shpno# 
-		
+
+	<select id="queryZgrnByNo" resultMap="ZGRNHDRVOMapS"
+		parameterClass="String">
+		select bch.*
+		from ZGRNHDR as bch where bch.SHPNO=#shpno#
+
 	</select>
-	
-	<select id="queryReceiptItem" resultMap="ZGRNITMVOMap" parameterClass="ZGRNITMVO">
+
+	<select id="queryReceiptItem" resultMap="ZGRNITMVOMap"
+		parameterClass="ZGRNITMVO">
 		<![CDATA[ select  item.*  
 		from  ZGRNITM as item where item.SHPNO=#shpno# and item.GRNLN=#grnln#  and (item.LSTAT<>'50' and item.LSTAT<>'60')
 		]]>
 	</select>
-	
-	<select id="queryZgrnBchByln" resultMap="ZGRNBCHVOMap" parameterClass="ZGRNITMVO">
-		select  bch.*  
-		from  ZGRNBCH as bch where bch.SHPNO=#shpno# and bch.GRNLN=#grnln#	 
-		<dynamic>
-		   	<isNotEmpty prepend="AND" property="grnno">
-                bch.GRNNO = #grnno#
-            </isNotEmpty>
-		</dynamic>	
+
+	<select id="queryZgrnitm" resultMap="ZGRNITMVOMap"
+		parameterClass="Map">
+		<![CDATA[ select  *  from  ZGRNITM 
+		]]>
+		<dynamic prepend="WHERE">
+			<isNotEmpty prepend="and" property="shpno">
+				SHPNO=#shpno#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="grnln">
+				GRNLN=#grnln#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="lstat">
+				LSTAT IN ($lstat$)
+			</isNotEmpty>
+		</dynamic>
 	</select>
-	
-	  <!-- 更新资源操作 -->
-  <update id="updateItemStat" parameterClass="ZGRNITMVO">
-  	UPDATE ZGRNITM SET LSTAT=#lstat# where SHPNO=#shpno# and GRNLN=#grnln# 
-  </update>
-  
-  <update id="updateHdrStat" parameterClass="ZGRNHDRVO">
-  	UPDATE ZGRNHDR SET OSTAT=#ostat# where SHPNO=#shpno#  
-  </update>
-  
-<!-- 插入操作 -->
-  <insert id="insertZgrnhdr" parameterClass="ZGRNHDRVO">
+
+	<select id="queryZgrnBchByln" resultMap="ZGRNBCHVOMap"
+		parameterClass="ZGRNITMVO">
+		select bch.*
+		from ZGRNBCH as bch where bch.SHPNO=#shpno# and
+		bch.GRNLN=#grnln#
+		<dynamic>
+			<isNotEmpty prepend="AND" property="grnno">
+				bch.GRNNO = #grnno#
+			</isNotEmpty>
+		</dynamic>
+	</select>
+
+	<!-- 更新资源操作 -->
+	<update id="updateItemStat" parameterClass="ZGRNITMVO">
+		UPDATE ZGRNITM SET
+		LSTAT=#lstat# where SHPNO=#shpno# and GRNLN=#grnln#
+	</update>
+
+	<update id="updateHdrStat" parameterClass="ZGRNHDRVO">
+		UPDATE ZGRNHDR SET
+		OSTAT=#ostat# where SHPNO=#shpno#
+	</update>
+
+	<!-- 插入操作 -->
+	<insert id="insertZgrnhdr" parameterClass="ZGRNHDRVO">
 	<![CDATA[
 	INSERT  INTO ZGRNHDR (
 		SHPNO,
@@ -311,11 +255,11 @@
             #chdt#,
 	        #chtm#,		        
 	        #grnno# )
-	]]>	
-  </insert>
-  
-  <!-- 插入操作 -->
-  <insert id="insertZgrnitm" parameterClass="ZGRNITMVO">
+	]]>
+	</insert>
+
+	<!-- 插入操作 -->
+	<insert id="insertZgrnitm" parameterClass="ZGRNITMVO">
 	<![CDATA[
 	INSERT  INTO ZGRNITM (
 		GRNNO,
@@ -370,13 +314,13 @@
 	        #grwum1#,
             #grwgt2#,
 	        #grwum2# )
-	]]>	
-  </insert>
+	]]>
+	</insert>
 
 
 
-  <!-- 插入操作 -->
-  <insert id="insertZgrnbch" parameterClass="ZGRNBCHVO">
+	<!-- 插入操作 -->
+	<insert id="insertZgrnbch" parameterClass="ZGRNBCHVO">
 	<![CDATA[
 	INSERT  INTO ZGRNBCH (
 	        GRNNO,
@@ -384,7 +328,7 @@
 	        GRNBN,
 	        SHPNO,
 	        SHPLN,
-	        
+	        SHPBN,
 	        VNDNR,
 		    HOUSE,
 	        ORDNO,
@@ -405,6 +349,7 @@
             #grnbn#,
 	        #shpno#,
 	        #shpln#,		        
+	        #shpbn#,		        
 	        #vndnr#,
 	        
 	        #house#,
@@ -420,25 +365,63 @@
 	        #purum#,
             #mfgdt#,
 	        #expdt# )
-	]]>	
-  </insert>
-   <!-- 更新操作 -->
-  <update id="updateBch" parameterClass="ZGRNBCHVO">
-	<![CDATA[
-		UPDATE ZGRNBCH SET GBQTY=#gbqty#,MFGDT=#mfgdt#,EXPDT=#expdt#,LBHNO=#lbhno# WHERE SHPNO = #shpno# AND GRNLN=#grnln# AND GRNBN=#grnbn# 
-	]]>	
-  </update>
-  
-     <!-- 更新操作 -->
-  <update id="updateItem" parameterClass="ZGRNITMVO">
-	<![CDATA[
-		UPDATE ZGRNITM SET GRQTY=#grqty#,GRLOC=#grloc#,GRWGT1=#grwgt1# WHERE SHPNO = #shpno# AND GRNLN=#grnln#  
-	]]>	
-  </update>
-  
-    <!-- 资源操作删除 -->
-  <delete id="deleteBch" parameterClass="ZGRNBCHVO">
-  	DELETE ZGRNBCH WHERE SHPNO = #shpno# AND GRNLN=#grnln# AND GRNBN=#grnbn# 
-  </delete>
-  
+	]]>
+	</insert>
+	<!-- 更新操作 -->
+	<update id="updateBch" parameterClass="ZGRNBCHVO">
+		<![CDATA[
+			UPDATE ZGRNBCH
+		]]>
+		<dynamic prepend="SET">
+			<isNotEmpty prepend="," property="gbqty">
+				GBQTY=#gbqty#
+			</isNotEmpty>
+			<isNotEmpty prepend="," property="mfgdt">
+				MFGDT=#mfgdt#
+			</isNotEmpty>
+			<isNotEmpty prepend="," property="expdt">
+				EXPDT=#expdt#
+			</isNotEmpty>
+			<isNotEmpty prepend="," property="lbhno">
+				LBHNO=#lbhno#
+			</isNotEmpty>
+		</dynamic>
+		<![CDATA[
+	 		WHERE SHPNO = #shpno# AND GRNLN=#grnln# AND GRNBN=#grnbn# 
+		]]>
+	</update>
+
+	<!-- 更新操作 -->
+	<update id="updateItem" parameterClass="ZGRNITMVO">
+		<![CDATA[
+			UPDATE ZGRNITM
+		]]>
+		<dynamic prepend="SET">
+			<isNotEmpty prepend="," property="grqty">
+				GRQTY=#grqty#
+			</isNotEmpty>
+			<isNotEmpty prepend="," property="dkqty">
+				DKQTY=#dkqty#
+			</isNotEmpty>
+			<isNotEmpty prepend="," property="grloc">
+				GRLOC=#grloc#
+			</isNotEmpty>
+			<isNotEmpty prepend="," property="lstat">
+				LSTAT = #lstat#
+			</isNotEmpty>
+			<isNotEmpty prepend="," property="grwgt1">
+				GRWGT1=#grwgt1#
+			</isNotEmpty>
+		</dynamic>
+		<![CDATA[
+			WHERE SHPNO = #shpno# AND GRNLN=#grnln#  
+		]]>
+	</update>
+
+	<!-- 资源操作删除 -->
+	<delete id="deleteBch" parameterClass="ZGRNBCHVO">
+		DELETE ZGRNBCH WHERE SHPNO
+		= #shpno# AND GRNLN=#grnln# AND GRNBN=#grnbn#
+	</delete>
+
 </sqlMap>

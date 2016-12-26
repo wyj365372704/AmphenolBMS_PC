@@ -10,13 +10,13 @@
 		]]>
 		<dynamic prepend="WHERE">
 			<isNotEmpty prepend="AND" property="vrdno">
-				VRDNO IN (#vrdno#)
+				VRDNO IN ($vrdno$)
 			</isNotEmpty>
 			<isNotEmpty prepend="AND" property="vndnr">
-				VNDNR IN (#vndnr#)
+				VNDNR IN ($vndnr$)
 			</isNotEmpty>
 			<isNotEmpty prepend="AND" property="ostat">
-				OSTAT IN (#ostat#)
+				OSTAT IN ($ostat$)
 			</isNotEmpty>
 			<isEmpty prepend="AND" property="ostat">
 				OSTAT IN
@@ -53,7 +53,7 @@
 				BLKSQ = #blksq#
 			</isNotEmpty>
 			<isNotEmpty prepend="AND" property="lstat">
-				LSTAT IN (#lstat#)
+				LSTAT IN ($lstat$)
 			</isNotEmpty>
 		</dynamic>
 

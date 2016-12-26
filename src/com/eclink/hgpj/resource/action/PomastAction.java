@@ -491,7 +491,9 @@ public class PomastAction extends BaseAction {
 
 
 	public String printO()throws Exception {
+		Map resultMap = new HashMap();
 		try{
+			
 			Map map = new HashMap();
 			map.put("ordnoO", ordno);
 
@@ -499,6 +501,18 @@ public class PomastAction extends BaseAction {
 			System.out.println("result's size is "+results.size());
 			if(results!=null && results.size()>0){
 				pomast = results.get(0);
+				
+				resultMap.put("house", pomast.getHouse());
+				resultMap.put("ordno", pomast.getOrdno());
+				resultMap.put("revnb", pomast.getRevnb());
+				resultMap.put("sn35", pomast.getSn35());
+				resultMap.put("s135", pomast.getS135());
+				resultMap.put("s235", pomast.getS235());
+				resultMap.put("buyno", pomast.getBuyno());
+				resultMap.put("vndnr", pomast.getVndnr());
+				resultMap.put("trmds", pomast.getTrmds());
+				resultMap.put("viads", pomast.getViads());
+				
 
 				//判断是否为外协订单
 				MOPORFVO moporf = new  MOPORFVO();
@@ -507,18 +521,33 @@ public class PomastAction extends BaseAction {
 				System.out.println("moporfList size is "+moporfList.size());
 				if(moporfList!=null && moporfList.size()>0){//为外协订单
 					isOutSource = true;
+					resultMap.put("outSource", true);
+				}else {
+					resultMap.put("outSource", false);
 				}
 
 				String d= (pomast.getActdt()==null || pomast.getActdt().doubleValue()==0.0)?"":pomast.getActdt().add(BigDecimal.valueOf(19000000)).toString().trim();
 				pomast.setActdts((d.length()<8?d: (d.substring(0, 4)+"-"+d.substring(4, 6)+"-"+d.substring(6, 8)+" ")));
-
+				resultMap.put("actdts", pomast.getActdts());
+				
 				zbmsctl = new ZBMSCTLVO();
 				zbmsctl.setSite((String) getSession().getAttribute("stid"));
 				List<ZBMSCTLVO> bmsctlList = this.zbmsctlService.queryZbmsctl(zbmsctl);
 				System.out.println("bmsctlList size is "+bmsctlList.size());
 				if(bmsctlList!=null && bmsctlList.size()>0){
 					zbmsctl = bmsctlList.get(0);
-					System.out.println("zbmsctl's nmchs is "+zbmsctl.getNmchs());
+					resultMap.put("nmchs", zbmsctl.getNmchs());
+					resultMap.put("nmeng", zbmsctl.getNmeng());
+					
+					if(pomast.getCurid() == null || pomast.getCurid().trim().equals("")){
+						if(zbmsctl.getCurid() == null || zbmsctl.getCurid().trim().equals("")){
+							resultMap.put("curid","CNY");
+						}else{
+							resultMap.put("curid",zbmsctl.getCurid());
+						}
+					}else{
+						resultMap.put("curid",pomast.getCurid());
+					}
 				}
 
 				System.out.println("pomast's buyno is "+pomast.getBuyno());
@@ -526,6 +555,7 @@ public class PomastAction extends BaseAction {
 				buynmMap.put("buyno", pomast.getBuyno());
 				buynm = this.xadataService.queryBuyer(buynmMap);
 				System.out.println("buynm is "+buynm);
+				resultMap.put("buynm", buynm);
 
 				System.out.println("pomast's house is "+pomast.getHouse());
 				Map mstmap = new HashMap();
@@ -534,9 +564,12 @@ public class PomastAction extends BaseAction {
 				List<SHPMSTVO> shpmstList = this.xadataService.queryShpmst(mstmap);
 				System.out.println("shpmstList size is "+shpmstList.size());
 				if(shpmstList!=null && shpmstList.size()>0){
-
 					shpmst = shpmstList.get(0);
 					System.out.println("shpmst s135 is "+shpmst.getS135());
+					resultMap.put("shpnm", shpmst.getShpnm());
+					resultMap.put("shpmst_s135", shpmst.getS135());
+					resultMap.put("shpmst_s235", shpmst.getS235());
+					resultMap.put("scont", shpmst.getScont());
 				}
 
 				Map vennamMap = new HashMap();
@@ -546,32 +579,58 @@ public class PomastAction extends BaseAction {
 				if(vennamList!=null && vennamList.size()>0){
 
 					vennam = vennamList.get(0);
-					System.out.println("vennam's vn35 is "+vennam.getVn35());
+					resultMap.put("vn35", vennam.getVn35());
+					resultMap.put("vcont", vennam.getVcont());
 				}
 
 				txsuf = vennam.getTxsuf().trim();
 				if(!txsuf.equals(""))
 					txsuf = txsuf.substring(1, 3)+"%";
+				resultMap.put("txsuf",txsuf);
 
 				Map poitemMap = new HashMap();
 				poitemMap.put("ordno", pomast.getOrdno());
 				List<POITEMVO> poitemList = this.xadataService.queryPoitem(poitemMap);
 				System.out.println("poitemList's size is "+poitemList.size());
 				pomast.setPoitemList(poitemList);
+				
+				List<Map> item = new ArrayList<Map>();
+				resultMap.put("item", item);
+				
 				for(POITEMVO poitem:poitemList){
+					Map son1 = new HashMap();
+					item.add(son1);
 					String blcod = poitem.getBlcod().trim();
-					System.out.println("blcod is "+blcod);
+					son1.put("staic", poitem.getStaic().trim());
+					son1.put("blcod", blcod.trim());//是否总括订单
+					son1.put("itnbr", poitem.getItnbr());
+					son1.put("itdsc", poitem.getItdsc());
+					son1.put("ucorq", poitem.getUcorq());
+					son1.put("curpr", poitem.getCurpr());
 					if(blcod.equals("1")){//总括订单
 						Map blktmap = new HashMap();
 						blktmap.put("ordno", poitem.getOrdno());
 						List<POBLKTVO> blktList = this.xadataService.queryPoblkt(blktmap);
 						System.out.println("blktList's size is "+blktList.size());
 						poitem.setPoblktList(blktList);
+						
+						List<Map> son1_ = new ArrayList<Map>();
+						son1.put("son1_", son1_);
+						
 						for(POBLKTVO poblkt:blktList){
 							d= (poblkt.getDokdt()==null || poblkt.getDokdt().doubleValue()==0.0)?"":new BigDecimal(poblkt.getDokdt()).add(BigDecimal.valueOf(19000000)).toString().trim();
 							poblkt.setDokdts((d.length()<8?d: (d.substring(0, 4)+"-"+d.substring(4, 6)+"-"+d.substring(6, 8)+" ")));
 
+							Map son11 = new HashMap();
+							son1_.add(son11);
+							son11.put("staic", poblkt.getStaic().trim());
+							son11.put("dokdts", poblkt.getDokdts());
+							son11.put("relqt", poblkt.getRelqt());
+							
 							if(isOutSource){//如果是外协订单,配置上生产信息
+								Map son2=  new HashMap();
+								son11.put("son2", son2);
+								
 								MOPORFVO moporf2 = new  MOPORFVO();
 								moporf2.setPonr(poblkt.getOrdno());
 								moporf2.setPisq(poblkt.getPoisq());
@@ -582,6 +641,8 @@ public class PomastAction extends BaseAction {
 								if(moporfList2!=null && moporfList2.size()>0){//为外协订单
 									moporf2 = moporfList2.get(0);
 									poitem.setMoporf(moporf2);
+									son2.put("monr", moporf2.getMonr());
+									son2.put("opsq", moporf2.getOpsq());
 
 									//取momast
 									MOMASTVO momast = new MOMASTVO();
@@ -589,7 +650,12 @@ public class PomastAction extends BaseAction {
 									List<MOMASTVO> momastList = xadataService.queryMomast(momast);
 									System.out.println("momastList size is "+momastList.size());
 									if(momastList!=null && momastList.size()>0){
-										poitem.setMomast(momastList.get(0));
+										MOMASTVO momastvo = momastList.get(0);
+										poitem.setMomast(momastvo);
+										son2.put("fitem", momastvo.getFitem());
+										son2.put("fdesc", momastvo.getFdesc());
+										son2.put("orqty", momastvo.getOrqty());
+										son2.put("qtdev", momastvo.getQtdev());
 									}
 
 									//取morout
@@ -599,7 +665,9 @@ public class PomastAction extends BaseAction {
 									List<MOROUTVO> moroutList = xadataService.queryMorout(moroutMap);
 									System.out.println("moroutList size is "+moroutList.size());
 									if(moroutList!=null && moroutList.size()>0){
+										MOROUTVO moroutvo = moroutList.get(0);
 										poitem.setMorout(moroutList.get(0));
+										son2.put("opdsc", moroutvo.getOpdsc());
 									}
 
 									//取itmsit
@@ -611,7 +679,10 @@ public class PomastAction extends BaseAction {
 									if(umstt9List!=null && umstt9List.size()>0){
 										itmsitvo.setUmstt9(umstt9List.get(0));
 										poitem.setItmsit(itmsitvo);
+										son2.put("umstt9", umstt9List.get(0));
 									}
+									
+									
 
 									//取modata
 									MODATAVO modata = new MODATAVO();
@@ -619,26 +690,117 @@ public class PomastAction extends BaseAction {
 									List<MODATAVO> modataList = xadataService.queryModatas(modata);
 									System.out.println("modataList size is "+modataList.size());
 									poitem.setModataList(modataList);
-
-									//配置ZITEMBX
-									for(MODATAVO modataP:modataList){
+									List<Map> son2_ = new ArrayList<Map>();
+									son2.put("son2_", son2_);
+									for(MODATAVO modatavo:modataList){
+										Map son22 = new HashMap();
+										son2_.add(son22);
+										son22.put("citem", modatavo.getCitem());
+										son22.put("cdesc", modatavo.getCdesc());
+										son22.put("qtreq", modatavo.getQtreq());
+										son22.put("unmsr", modatavo.getUnmsr());
+										
 										ZITEMBXVO zitembx = new ZITEMBXVO();
-										zitembx.setHouse(modataP.getCitwh());
-										zitembx.setItnbr(modataP.getCitem());
+										zitembx.setHouse(modatavo.getCitwh());
+										zitembx.setItnbr(modatavo.getCitem());
 										List<ZITEMBXVO> zitembxList = zitmbxService.queryItemBx(zitembx);
-										System.out.println("zitembxList size is "+zitembxList.size());
 										if(zitembxList!=null && zitembxList.size()>0){
-											modataP.setZitembx(zitembxList.get(0));
+											modatavo.setZitembx(zitembxList.get(0));
+											son22.put("whsub2", zitembxList.get(0).getWhsub2());
 										}
 									}
 								}
 							}
-
 						}
 					}else{
 						d= (poitem.getDokdt()==null || poitem.getDokdt().doubleValue()==0.0)?"":new BigDecimal(poitem.getDokdt()).add(BigDecimal.valueOf(19000000)).toString().trim();
 						poitem.setDokdts((d.length()<8?d: (d.substring(0, 4)+"-"+d.substring(4, 6)+"-"+d.substring(6, 8)+" ")));
+						son1.put("dokdts", poitem.getDokdts());
+						
+						if(isOutSource){//如果是外协订单,配置上生产信息
+							Map son2=  new HashMap();
+							son1.put("son2", son2);
+							
+							MOPORFVO moporf2 = new  MOPORFVO();
+							moporf2.setPonr(poitem.getOrdno());
+							moporf2.setPisq(poitem.getPoisq());
+							moporf2.setLseq((int)(poitem.getLinsq()));
+							List<MOPORFVO> moporfList2 = xadataService.queryMoporf(moporf2);
+							if(moporfList2!=null && moporfList2.size()>0){//为外协订单
+								moporf2 = moporfList2.get(0);
+								poitem.setMoporf(moporf2);
+								son2.put("monr", moporf2.getMonr());
+								son2.put("opsq", moporf2.getOpsq());
+
+								//取momast
+								MOMASTVO momast = new MOMASTVO();
+								momast.setOrdno(moporf2.getMonr());
+								List<MOMASTVO> momastList = xadataService.queryMomastByordno(momast);
+								System.out.println("momastList size is "+momastList.size());
+								if(momastList!=null && momastList.size()>0){
+									MOMASTVO momastvo = momastList.get(0);
+									poitem.setMomast(momastvo);
+									son2.put("fitem", momastvo.getFitem());
+									son2.put("fdesc", momastvo.getFdesc());
+									son2.put("orqty", momastvo.getOrqty());
+									son2.put("qtdev", momastvo.getQtdev());
+								}
+
+								//取morout
+								Map<String,String> moroutMap = new HashMap<String, String>();
+								moroutMap.put("ordno", moporf2.getMonr());
+								moroutMap.put("opseq", moporf2.getOpsq());
+								List<MOROUTVO> moroutList = xadataService.queryMorout(moroutMap);
+								System.out.println("moroutList size is "+moroutList.size());
+								if(moroutList!=null && moroutList.size()>0){
+									MOROUTVO moroutvo = moroutList.get(0);
+									poitem.setMorout(moroutList.get(0));
+									son2.put("opdsc", moroutvo.getOpdsc());
+								}
+
+								//取itmsit
+								ITMSITVO itmsitvo = new ITMSITVO();
+								itmsitvo.setHouse(pomast.getHouse());
+								itmsitvo.setItnot9(momast.getFitem());
+								List<ITMSITVO> itmsitvos = this.xadataService.queryItrvtAll(itmsitvo);
+								System.out.println("itmsitvos size is "+itmsitvos.size());
+								if(itmsitvos!=null && itmsitvos.size()>0){
+									poitem.setItmsit(itmsitvos.get(0));
+									son2.put("umstt9", itmsitvos.get(0).getUmstt9());
+								}
+								
+								
+
+								//取modata
+								MODATAVO modata = new MODATAVO();
+								modata.setOrdno(moporf2.getMonr());
+								List<MODATAVO> modataList = xadataService.queryModatas(modata);
+								System.out.println("modataList size is "+modataList.size());
+								poitem.setModataList(modataList);
+								List<Map> son2_ = new ArrayList<Map>();
+								son2.put("son2_", son2_);
+								for(MODATAVO modatavo:modataList){
+									Map son22 = new HashMap();
+									son2_.add(son22);
+									son22.put("citem", modatavo.getCitem());
+									son22.put("cdesc", modatavo.getCdesc());
+									son22.put("qtreq", modatavo.getQtreq());
+									son22.put("unmsr", modatavo.getUnmsr());
+									
+									ZITEMBXVO zitembx = new ZITEMBXVO();
+									zitembx.setHouse(modatavo.getCitwh());
+									zitembx.setItnbr(modatavo.getCitem());
+									List<ZITEMBXVO> zitembxList = zitmbxService.queryItemBx(zitembx);
+									if(zitembxList!=null && zitembxList.size()>0){
+										modatavo.setZitembx(zitembxList.get(0));
+										son22.put("whsub2", zitembxList.get(0).getWhsub2());
+									}
+								}
+							}
+						}
 					}
+	
+					
 				}
 			}
 		}catch(Exception e){
@@ -646,6 +808,7 @@ public class PomastAction extends BaseAction {
 			log.error("printO error", e);
 			return ERROR;
 		}
+		ActionContext.getContext().getValueStack().set("resultMap", resultMap);
 		return "printO";
 	}
 

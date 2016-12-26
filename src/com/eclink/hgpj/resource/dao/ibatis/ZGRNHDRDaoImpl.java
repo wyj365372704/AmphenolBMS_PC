@@ -3,6 +3,7 @@ package com.eclink.hgpj.resource.dao.ibatis;
 import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.orm.ibatis.SqlMapClientCallback;
 import org.springframework.orm.ibatis.support.SqlMapClientDaoSupport;
@@ -39,8 +40,8 @@ public class ZGRNHDRDaoImpl extends SqlMapClientDaoSupport implements ZGRNHDRDao
 	}
 
 	@Override
-	public List<ZGRNHDRVO> queryReceiptSelf(String grnno) throws Exception {
-		return this.getSqlMapClientTemplate().queryForList("ZGRNHDR.queryReceiptSelf", grnno);
+	public List<ZGRNHDRVO> queryReceiptSelf(Map map) throws Exception {
+		return this.getSqlMapClientTemplate().queryForList("ZGRNHDR.queryReceiptSelf", map);
 	}
 
 	@Override
@@ -107,9 +108,9 @@ public class ZGRNHDRDaoImpl extends SqlMapClientDaoSupport implements ZGRNHDRDao
 	}
 
 	@Override
-	public int getBchCoutsByln(ZGRNITMVO vo) throws Exception {
-		List temp = this.getSqlMapClientTemplate().queryForList("ZGRNHDR.getBchCoutsByln", vo);
-		if(temp!=null){
+	public int getMaxGrnbn(ZGRNITMVO vo) throws Exception {
+		List temp = this.getSqlMapClientTemplate().queryForList("ZGRNHDR.getMaxGrnbn", vo);
+		if(temp!=null && temp.size()>0){
 			return (Integer)temp.get(0);
 		}
 		return 0;
@@ -134,5 +135,10 @@ public class ZGRNHDRDaoImpl extends SqlMapClientDaoSupport implements ZGRNHDRDao
 	public List<ZGRNITMVO> queryReceiptItems(ZGRNITMVO vo) throws Exception {
 		// TODO Auto-generated method stub
 		return this.getSqlMapClientTemplate().queryForList("ZGRNHDR.queryReceiptItems", vo);
+	}
+
+	@Override
+	public List<ZGRNITMVO> queryZgrnitm(Map map) throws Exception {
+		return this.getSqlMapClientTemplate().queryForList("ZGRNHDR.queryZgrnitm", map);
 	}
 }

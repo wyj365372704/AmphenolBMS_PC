@@ -261,9 +261,11 @@ public class LoginAction extends BaseAction {
 		try {
 			// 获取当前登录用户允许访问的菜单列表
 			//menus = menuService.queryUserMenuTreeList(0);
+			System.out.print("listResources");
 			menus = menuService.getMenuTreeListForUserN((String)this.getSession().getAttribute("username"));
 			List<MenuVO> list = new ArrayList<MenuVO>();
-			if(menus!=null && menus.size()>0){
+			
+			if(menus!=null && menus.size()>0){System.out.print("menus.size"+menus.size());
 				for(int i=0;i<menus.size();i++){
 					MenuVO mvo=menus.get(i);
 					Map menuM = new HashMap();
@@ -291,8 +293,8 @@ public class LoginAction extends BaseAction {
 			//			menus= new ArrayList<MenuVO>();
 			//			menus
 		} catch (Exception e) {e.printStackTrace();
-		log.error("获取登录用户允许访问的菜单资源错误.userId=" + getLoginUser().getUserId(),
-				e);
+//		log.error("获取登录用户允许访问的菜单资源错误.userId=" + getLoginUser().getUserId(),
+//				e);
 		setBackUrl("/login.jsp");
 		return ERROR;
 		}

@@ -11,6 +11,8 @@
 	    column="SHPNO" />
 	    <result property="shpln"
 	    column="SHPLN" />
+	    <result property="shpbn"
+	    column="SHPBN" />
 	    <result property="vndnr"
 	    column="VNDNR" />
 	    <result property="house"
@@ -111,9 +113,9 @@
 		
 	</select>
 	
-	<select id="queryBch" resultMap="ZSHPBCHVOMap" parameterClass="String">
+	<select id="queryBch" resultMap="ZSHPBCHVOMap" parameterClass="Map">
 		select  bch.*  
-		from  ZSHPBCH as bch where bch.SHPNO=#shpno# 
+		from  ZSHPBCH as bch where bch.SHPNO=#shpno#  AND bch.SHPLN = #shpln#
 		
 	</select>
 	

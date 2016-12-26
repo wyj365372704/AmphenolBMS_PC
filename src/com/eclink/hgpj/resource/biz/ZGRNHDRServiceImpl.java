@@ -2,7 +2,9 @@ package com.eclink.hgpj.resource.biz;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.eclink.hgpj.resource.dao.ZGRNHDRDao;
 import com.eclink.hgpj.resource.dao.ZSHPHDRDao;
@@ -66,8 +68,8 @@ public class ZGRNHDRServiceImpl implements ZGRNHDRService {
 	}
 
 	@Override
-	public List<ZGRNHDRVO> queryReceiptSelf(String grnno) throws Exception {
-		List<ZGRNHDRVO> zgrnhdrList = zgrnhdrDao.queryReceiptSelf(grnno);
+	public List<ZGRNHDRVO> queryReceiptSelf(Map map) throws Exception {
+		List<ZGRNHDRVO> zgrnhdrList = zgrnhdrDao.queryReceiptSelf(map);
 		List<ZGRNITMVO> list = new ArrayList<ZGRNITMVO>();
 		List<ZGRNHDRVO> list2 = new ArrayList<ZGRNHDRVO>();
 		ZGRNHDRVO vo = null;
@@ -132,12 +134,15 @@ public class ZGRNHDRServiceImpl implements ZGRNHDRService {
 		if(subList!=null && subList.size()>0){
 			for(int i=0;i<subList.size();i++){
 				ZGRNBCHVO temp = subList.get(i);
-				if("-1".equals(temp.getGrnbn())){
+				if(temp.getGrnbn().compareTo(new BigDecimal(-1)) == 0){
 					//新增的情况怎么处理
-					//					zgrnhdrDao.deleteBch(temp);
-					List<ZGRNITMVO> itmList = zgrnhdrDao.queryReceiptItem(vo);
+//					zgrnhdrDao.deleteBch(temp);
+					Map map = new HashMap();
+					map.put("shpno", vo.getShpno());
+					map.put("grnln", vo.getGrnln());
+					List<ZGRNITMVO> itmList = zgrnhdrDao.queryZgrnitm(map);
 					ZGRNITMVO itmTemp = itmList.get(0);
-					int bchcount = zgrnhdrDao.getBchCoutsByln(vo);
+					int bchcount = zgrnhdrDao.getMaxGrnbn(vo);
 					temp.setBlksq(itmTemp.getBlksq());
 					temp.setGrnln(itmTemp.getGrnln());
 					temp.setGrnbn(BigDecimal.valueOf(bchcount+1));
@@ -150,6 +155,8 @@ public class ZGRNHDRServiceImpl implements ZGRNHDRService {
 					temp.setShpln(itmTemp.getShpln());
 					temp.setShpno(itmTemp.getShpno());
 					temp.setVndnr(itmTemp.getVndnr());
+					temp.setSbqty(new BigDecimal(0));
+					temp.setShpbn(new BigDecimal(0));
 					zgrnhdrDao.insertZgrnbch(temp);
 				}else{
 					//删除通过设置批次信息里面的实际数量为0及设置表体状态为50来实现					
@@ -157,13 +164,22 @@ public class ZGRNHDRServiceImpl implements ZGRNHDRService {
 				}
 			}
 		}
-		vo.setLstat("50");
-		zgrnhdrDao.updateItemStat(vo);
-	}
-
-	@Override
-	public int getBchCoutsByln(ZGRNITMVO vo) throws Exception {
-		return zgrnhdrDao.getBchCoutsByln(vo);
+		if("50".equals(vo.getLstat())||"60".equals(vo.getLstat())){
+			Map map = new HashMap();
+			map.put("shpno", vo.getShpno());
+			map.put("lstat", "10,40");
+			List<ZGRNITMVO> zgrnitms = zgrnhdrDao.queryZgrnitm(map);
+			ZGRNHDRVO hvo = new ZGRNHDRVO();
+			hvo.setShpno(vo.getShpno());
+			if(zgrnitms.size()>0){
+				hvo.setOstat("40");
+			}else{
+				hvo.setOstat("50");
+			}
+			zgrnhdrDao.updateHdrStat(hvo);
+		}
+//		vo.setLstat("50");
+//		zgrnhdrDao.updateItemStat(vo);
 	}
 
 	@Override
@@ -185,5 +201,10 @@ public class ZGRNHDRServiceImpl implements ZGRNHDRService {
 			zgrnitmvo.setItemList(zgrnbchList);
 		}
 		return list;
+	}
+
+	@Override
+	public List<ZGRNITMVO> queryZgrnitm(Map map) throws Exception {
+		return zgrnhdrDao.queryZgrnitm(map);
 	}
 }

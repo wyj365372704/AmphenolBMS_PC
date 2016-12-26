@@ -92,7 +92,7 @@ public class ZSHPHDRServiceImpl implements ZSHPHDRService {
 
 
 	@Override
-	public List<ZSHPBCHVO> queryBch(String shpno) throws Exception {
-		return this.zshphdrDao.queryBch(shpno);
+	public List<ZSHPBCHVO> queryBch(Map map) throws Exception {
+		return this.zshphdrDao.queryBch(map);
 	}
 }

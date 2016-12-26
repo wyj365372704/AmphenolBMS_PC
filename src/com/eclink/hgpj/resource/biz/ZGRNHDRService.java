@@ -2,6 +2,7 @@ package com.eclink.hgpj.resource.biz;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 
 import com.eclink.hgpj.resource.vo.ZGRNBCHVO;
 import com.eclink.hgpj.resource.vo.ZGRNHDRVO;
@@ -24,14 +25,13 @@ public interface ZGRNHDRService {
 	//收货单信息
 	public List<ZGRNITMVO> queryReceiptItems(ZGRNITMVO vo) throws Exception;
 	
-	public List<ZGRNHDRVO> queryReceiptSelf(String grnno) throws Exception;
+	public List<ZGRNHDRVO> queryReceiptSelf(Map map) throws Exception;
 	public List<ZGRNBCHVO> queryZgrnBch(String grnno) throws Exception;
 	public int getCoutsByDt(BigDecimal gtdte) throws Exception;
 	public ZGRNHDRVO queryZgrnByNo(String grnno) throws Exception;
 	public int getCoutsByState(String state) throws Exception;
-	public int getBchCoutsByln(ZGRNITMVO vo) throws Exception;
 	public void updateItemStat(ZGRNITMVO vo) throws Exception;
-	
+	public List<ZGRNITMVO> queryZgrnitm(Map map) throws Exception;
 	public void updateHdrStat(ZGRNHDRVO vo) throws Exception;
 	
 	public void insertZgrnhdr(ZGRNHDRVO vo) throws Exception;

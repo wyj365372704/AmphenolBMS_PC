@@ -35,6 +35,8 @@ public class ZGRNBCHVO extends BaseVO{
 	
 	private BigDecimal shpln;
 	
+	private BigDecimal shpbn;
+	
 	
 	private String vndnr;
 	
@@ -87,6 +89,14 @@ public class ZGRNBCHVO extends BaseVO{
 
 	public BigDecimal getGrnbn() {
 		return grnbn;
+	}
+
+	public BigDecimal getShpbn() {
+		return shpbn;
+	}
+
+	public void setShpbn(BigDecimal shpbn) {
+		this.shpbn = shpbn;
 	}
 
 	public void setGrnbn(BigDecimal grnbn) {

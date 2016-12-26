@@ -47,6 +47,8 @@ public class ZBMSCTLVO extends BaseVO{
 	
 	private String fnqty;
 
+	private String curid;
+	
 	private String fasun;
 
 	public String getSite() {
@@ -63,6 +65,14 @@ public class ZBMSCTLVO extends BaseVO{
 
 	public void setRprsn(String rprsn) {
 		this.rprsn = rprsn;
+	}
+
+	public String getCurid() {
+		return curid;
+	}
+
+	public void setCurid(String curid) {
+		this.curid = curid;
 	}
 
 	public String getRmrsn() {

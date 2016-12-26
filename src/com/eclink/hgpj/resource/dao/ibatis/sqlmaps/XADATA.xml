@@ -348,6 +348,9 @@
 			<isNotEmpty prepend="and" property="opsq">
 				a.OPSQ=#opsq#
 			</isNotEmpty>
+			<isNotEmpty prepend="and" property="ponr">
+				a.PONR=#ponr#
+			</isNotEmpty>
 		</dynamic>
 
 	</select>
@@ -385,8 +388,13 @@
 		<![CDATA[ select  a.*,c.vn35,c.vcont,c.txsuf from  pomast   a  left outer join vennam  c on 
 		       c.vndnr  = a.vndnr 	        
 		 		where a.pstts in ('10', '20' , '30', '35', '40') 
-		 		and a.ORDNO NOT IN (select d.PONR from MOPORF d where d.MONR is not null AND d.MONR<>'') 
+		 	
 		]]>
+		<!-- <![CDATA[ select  a.*,c.vn35,c.vcont,c.txsuf from  pomast   a  left outer join vennam  c on 
+		       c.vndnr  = a.vndnr 	        
+		 		where a.pstts in ('10', '20' , '30', '35', '40') 
+		 		and a.ORDNO NOT IN (select d.PONR from MOPORF d where d.MONR is not null AND d.MONR<>'')
+		]]> -->
 		<dynamic>
 			<isNotEmpty prepend="AND" property="ordnoO">
 				a.ORDNO =(#ordnoO#)

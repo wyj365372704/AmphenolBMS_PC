@@ -1,6 +1,7 @@
 package com.eclink.hgpj.resource.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import com.eclink.hgpj.resource.vo.MenuVO;
 import com.eclink.hgpj.resource.vo.ZSHPBCHVO;
@@ -19,7 +20,7 @@ public interface ZSHPHDRDao {
 	
 	public List<ZSHPHDRVO> queryReceipt(String shpno) throws Exception;
 	
-	public List<ZSHPBCHVO> queryBch(String shpno) throws Exception;	
+	public List<ZSHPBCHVO> queryBch(Map map) throws Exception;	
 	
 	public void updateZshphdr(String shpno) throws Exception;
 	
