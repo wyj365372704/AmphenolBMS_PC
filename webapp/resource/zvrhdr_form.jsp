@@ -44,7 +44,7 @@
 								</tr>
 								<tr>
 									<td align="center" width="100%"><span
-										style="font-weight: bold;font-size:18px;">生产订单</span>
+										style="font-weight: bold;font-size:18px;">采购退料单</span>
 									</td>
 									<td align="right" nowrap="nowrap">打印日期: <s:property
 											value="printDate" /></td>

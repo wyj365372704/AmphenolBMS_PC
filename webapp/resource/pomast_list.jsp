@@ -238,7 +238,7 @@
 	  					收货完成
 	  				</s:elseif> <s:elseif test="pstts==50">
 	  					发票、收货都完成
-	  				</s:elseif> <s:elseif test="pstts==50">
+	  				</s:elseif> <s:elseif test="pstts==99">
 	  					已取消
 	  				</s:elseif></td>
 						<td><s:property value="uusapm" />

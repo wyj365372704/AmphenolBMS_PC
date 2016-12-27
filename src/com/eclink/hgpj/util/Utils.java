@@ -1099,35 +1099,41 @@ public class Utils {
 			//			conn=DriverManager.getConnection("jdbc:mysql://localhost:3306/QGPL", "", "");
 			String dburl=properties.getProperty("DBURL");
 			String dbip=dburl.split("/")[2];
-			
-			
-			System.out.println("CallJournal:start");
-			this.CallJournal(dbip, properties.getProperty("DBUSER"), properties.getProperty("DBPASSWORD"), lib1);
-			System.out.println("CallJournal:finish");
-			
-			
-			/*conn=DriverManager.getConnection("jdbc:as400://"+dbip+"/"+lib+";translate binary=true", properties.getProperty("DBUSER"), properties.getProperty("DBPASSWORD"));
-			String sql="CREATE TABLE  SHPDSK (RCDCD CHAR(2),ORDNO CHAR(7),OPSEQ CHAR(4),RUNCD CHAR(1)," +
-					"LBTIM NUMERIC(7,2),MATIM NUMERIC(7,2),QCOMP NUMERIC(10,3),QSCRP NUMERIC(10,3)," +
-					"RESN NUMERIC(6),RFNO CHAR(10),OCMPC CHAR(1),AWKCT CHAR(5),EMPNO NUMERIC(5,0)," +
-					"ERATE NUMERIC(5,3),SHIFT CHAR(1),TCOST NUMERIC(13,2),TDATE NUMERIC(6,0))  NOT   LOGGED   INITIALLY";
+
+			conn=DriverManager.getConnection("jdbc:as400://"+dbip+"/"+lib+";translate binary=true", properties.getProperty("DBUSER"), properties.getProperty("DBPASSWORD"));
 			if(conn!=null){
 				try {
 					conn.setAutoCommit(false);
-					//System.out.println("insertsql="+insertsql);
+					String sql = "select count(*) as ct from sysibm.TABLES where table_name='SHPDSK' and table_schema='"+lib1.trim().toUpperCase()+"'";
+					System.out.println("find is "+sql);
 					stmt = (Statement) conn.createStatement();
-					boolean execute = stmt.execute(sql);
-
-					conn.commit();
-					conn.setAutoCommit(true);
+					ResultSet executeQuery = stmt.executeQuery(sql);
+					if(executeQuery.next()){
+						int count = executeQuery.getInt("ct");
+						executeQuery.close();
+						stmt.close();
+						if(count==0){
+							sql="CREATE TABLE "+lib1.trim().toUpperCase()+".SHPDSK (RCDCD CHAR(2),ORDNO CHAR(7),OPSEQ CHAR(4),RUNCD CHAR(1)," +
+									"LBTIM NUMERIC(7,2),MATIM NUMERIC(7,2),QCOMP NUMERIC(10,3),QSCRP NUMERIC(10,3)," +
+									"RESN NUMERIC(6),RFNO CHAR(10),OCMPC CHAR(1),AWKCT CHAR(5),EMPNO NUMERIC(5,0)," +
+									"ERATE NUMERIC(5,3),SHIFT CHAR(1),TCOST NUMERIC(13,2),TDATE NUMERIC(6,0))  NOT   LOGGED   INITIALLY";
+							stmt = (Statement) conn.createStatement();
+							stmt.execute(sql);
+							stmt.close();
+							conn.commit();
+							System.out.println("CallJournal:start");
+							this.CallJournal(dbip, properties.getProperty("DBUSER"), properties.getProperty("DBPASSWORD"), lib1);
+							System.out.println("CallJournal:finish");
+						
+						}	
+					}
 
 				} catch (Exception e) {
-					// TODO: handle exception
+					e.printStackTrace();
 				}
-				this.CallJournal(dbip, properties.getProperty("DBUSER"), properties.getProperty("DBPASSWORD"), lib1);
 			}else{
 				throw new Exception("conn is null");	
-			}*/
+			}
 
 		}catch(Exception e){
 			if(conn!=null){
@@ -1209,7 +1215,7 @@ public class Utils {
 		AS400 as400 = null; 
 		ProgramCall pgm; 
 
-		String progname = "STRJRNPF FILE("+env.trim()+"/SHPDSK) JRN("+env.trim()+"/BMSJRN) IMAGES(*AFTER) OMTJRNE(*NONE) LOGLVL(*ERRORS)";
+		String progname = "/QSYS.LIB/"+env.trim()+".lib/TSHPDSK.pgm";
 		System.out.println("progname:"+progname);
 		as400 = new AS400(host, userName, password);
 
