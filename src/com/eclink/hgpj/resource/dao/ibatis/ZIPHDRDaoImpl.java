@@ -164,4 +164,14 @@ public class ZIPHDRDaoImpl extends SqlMapClientDaoSupport implements ZIPHDRDao {
 		return this.getSqlMapClientTemplate().queryForList("ZIPHDR.queryHdrsByParForApproval", vo);
 	}
 
+	@Override
+	public void deleteZiphdr(ZIPHDRVO vo) throws Exception {
+		this.getSqlMapClientTemplate().delete("ZIPHDR.deleteZiphdr", vo);
+	}
+
+	@Override
+	public void deleteZiphst(ZIPHSTVO vo) throws Exception {
+		this.getSqlMapClientTemplate().delete("ZIPHDR.deleteZiphst", vo);
+	}
+
 }

@@ -406,7 +406,33 @@ public class ZiphdrAction extends BaseAction {
 		}
 		return "todata";
 	}
-	
+	/**
+	 * 删除领料单
+	 * @return
+	 * @throws Exception
+	 */
+	public String toDeleteZiphdr() throws Exception {
+		try {
+//			ZIPDTLVO pvo = new ZIPDTLVO();
+//			pvo.setIpdno(ipdno);
+//			pvo.setIpdln(BigDecimal.valueOf(Double.valueOf(ipdln).longValue()));
+//			this.ziphdrService.deleteZipdtl(pvo);
+			ZIPHDRVO pvo = new ZIPHDRVO();
+			pvo.setIpdno(ipdno);
+			if(ipdno!=null && ipdno.trim().length()>0){
+				this.ziphdrService.deleteZiphdr(pvo);
+				data="success";
+			}else{
+				data="fail";
+			}
+			
+		} catch (Exception e) {e.printStackTrace();
+			log.error("Go to admin resource operation grant page occured error.", e);
+			data="fail";
+			return "todata";
+		}
+		return "todata";
+	}
 	/**
 	 * 领料单列表
 	 * @return
