@@ -585,8 +585,11 @@ public class PomastAction extends BaseAction {
 
 				txsuf = vennam.getTxsuf().trim();
 				if(!txsuf.equals(""))
-					txsuf = txsuf.substring(1, 3)+"%";
-				resultMap.put("txsuf",txsuf);
+					txsuf = txsuf.substring(1, 3);
+				else {
+					txsuf = "0";
+				}
+				resultMap.put("txsuf",Integer.parseInt(txsuf));
 
 				Map poitemMap = new HashMap();
 				poitemMap.put("ordno", pomast.getOrdno());
