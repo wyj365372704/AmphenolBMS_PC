@@ -585,7 +585,7 @@ public class PomastAction extends BaseAction {
 
 				txsuf = vennam.getTxsuf().trim();
 				if(!txsuf.equals(""))
-					txsuf = txsuf.substring(1, 3);
+					txsuf = txsuf.trim().substring(1, 3);
 				else {
 					txsuf = "0";
 				}
@@ -676,7 +676,7 @@ public class PomastAction extends BaseAction {
 									//取itmsit
 									ITMSITVO itmsitvo = new ITMSITVO();
 									itmsitvo.setHouse(pomast.getHouse());
-									itmsitvo.setItnot9(momast.getFitem());
+									itmsitvo.setItnot9((String) (son2.containsKey("fitem")?son2.get("fitem"):""));
 									List<String> umstt9List = this.xadataService.queryUmstt9(itmsitvo);
 									System.out.println("umstt9List size is "+umstt9List.size());
 									if(umstt9List!=null && umstt9List.size()>0){
@@ -764,7 +764,7 @@ public class PomastAction extends BaseAction {
 								//取itmsit
 								ITMSITVO itmsitvo = new ITMSITVO();
 								itmsitvo.setHouse(pomast.getHouse());
-								itmsitvo.setItnot9(momast.getFitem());
+								itmsitvo.setItnot9((String) (son2.containsKey("fitem")?son2.get("fitem"):""));
 								List<ITMSITVO> itmsitvos = this.xadataService.queryItrvtAll(itmsitvo);
 								System.out.println("itmsitvos size is "+itmsitvos.size());
 								if(itmsitvos!=null && itmsitvos.size()>0){
