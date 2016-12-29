@@ -32,7 +32,7 @@
 </style>
 
 <body class="right_body">
-	<s:form action="allotted!tofindAllotted.action" method="post" name="queryform">
+	<s:form action="sales!toSalesList.action" method="post" name="queryform">
 
 		<div class="path">您现在的位置： 首页 &gt; 仓库 &gt; 销售出货单</div>
 		
@@ -48,20 +48,17 @@
 			<ul>
 				
 				<li class="myli"><div class="w_s">仓库：</div>
-					<select id="warehouse" style="width:60px">
-						<option value="">-</option>
-						<option value="A">A</option>
-						<option value="B">B</option>
-						<option value="C">C</option>
-					</select>					
+					<s:select name="mbcdrep.cda3cd"
+						list="#session.houses" listKey="house" listValue="house"
+						cssClass="select_s_2" style="width:60px"></s:select>					
 				</li>
 				
 				<li class="mylirt"><div class="w_s">客户：</div>
-					<s:textfield name="customer" cssClass="input_w"/>
+					<s:textfield name="mbcdrep.cdaayy" cssClass="input_w"/>
 				</li>
 				
 				<li><div class="w_s">订单号：</div>
-	            	<s:textfield name="orderno" cssClass="input_w"/>
+	            	<s:textfield name="mbcdrep.cdcvnb" cssClass="input_w"/>
 	            </li>
 	        
 	            <li><div class="w_s">计划出货日期：</div> 
@@ -73,11 +70,11 @@
             	
 				
 				<li><div class="w_s">客户PO：</div>
-	            	<s:textfield name="customerpo" cssClass="input_w"/>
+	            	<s:textfield name="mbcdrep.ponum" cssClass="input_w"/>
 	            </li>
             
 				<li class="mybtnsch">
-					<input type="button" cssClass="search_button"  onclick="myPrint()" value="生产销售出货通知单">
+					<input type="button" cssClass="search_button"  onclick="createNotice();" value="生成销售出货通知单">
 				</li>
 			</ul>
 		</div>
@@ -94,7 +91,6 @@
 					<th><input type="checkbox" name="cba" onclick="selectall(this)" />选择</th>
 					<th>客户编码</th>
 					<th>客户名称</th>
-					<th>计划员</th>
 					<th>订单号</th>
 					<th>行号</th>	
 					<th>产品</th>
@@ -104,20 +100,46 @@
 					<th>库存量</th>
 					<th>未出货量</th>
 				  </tr>
-  				 <tr class="td_bgcolor">
-		      		<td><input type="checkbox" name="cb" value="123" onclick="subselectall()" /></td>
-	  				<td>AMCU00340</td>
-	  				<td>TCL（深圳）</td>
-	  				<td>Jack</td>
-	  				<td>T00052400</td>
-	  				<td>1</td>
-	  				<td>CGT903456</td>
-	  				<td>YG63446654</td>
-	  				<td>2000</td>
-	  				<td>1000</td>
-	  				<td>30000</td>
-	  				<td>29000</td>
-  			   </tr>
+				  <s:iterator value="results" id="results" status="st">
+						<s:if test="#st.Even">
+							<tr class="td_bgcolor" >
+						</s:if>
+						<s:else>
+							<tr class="td_bgcolor2" >
+						</s:else>
+						<td><input name="chk" type="checkbox"
+							value="<s:property value="cdcvnb"/>" />
+						</td>
+						<td><s:property value="cdaayy" />
+						</td>
+						<td><s:property value="cdaayyn" />
+						</td>
+						<td>
+								<s:property value="cdcvnb" />
+						</td>
+						<td><s:property value="cdfcnb" />
+						</td>
+						<td>
+							<s:property value="cdaitx" />
+						</td>
+						<td>
+							<s:property value="cdaltx" />
+						</td>
+						<td>
+							<s:property value="cdacqty" />
+						</td>
+						<td><s:property value="cdz901" />
+						</td>
+						<td><s:property value="cdfxva" />
+						</td>
+						
+						<td>
+							
+						</td>
+
+						</tr>
+					</s:iterator>
+					
 			  </table>
 			  <div class="page">
 		  			<page:paginator formName="queryform" nameInRequest="paginator"/>
@@ -162,7 +184,10 @@
         	cba.checked = false;
 	    }
 	}
+	function createNotice(){
+		window.open("sales!toCreateNotice.action",'newwindow','width=400','toolbar=no,menubar=no,scrollbars=no, resizable=no,location=no, status=no');
 	
+	}
 	// 打印
 	function myPrint(){
 		// 检查是否选中记录

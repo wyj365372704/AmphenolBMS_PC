@@ -17,6 +17,61 @@
 	<typeAlias alias="MODESCVO" type="com.eclink.hgpj.resource.vo.MODESCVO" />
 	<typeAlias alias="SCHRCPVO" type="com.eclink.hgpj.resource.vo.SCHRCPVO" />
 	<typeAlias alias="VENNAMVO" type="com.eclink.hgpj.resource.vo.VENNAMVO" />
+	
+	<typeAlias alias="MBC6REPVO" type="com.eclink.hgpj.resource.vo.MBC6REPVO" />
+	<typeAlias alias="MBCDREPVO" type="com.eclink.hgpj.resource.vo.MBCDREPVO" />
+	<typeAlias alias="MBADREPVO" type="com.eclink.hgpj.resource.vo.MBADREPVO" />
+	<typeAlias alias="MBS2REPVO" type="com.eclink.hgpj.resource.vo.MBS2REPVO" />
+	<typeAlias alias="MBALREPVO" type="com.eclink.hgpj.resource.vo.MBALREPVO" />
+	
+	
+	<resultMap id="MBC6REPVOMap" class="MBC6REPVO">
+		<result property="c6aenb" column="C6AENB" />
+		<result property="c6dccd" column="C6DCCD" />
+		<result property="c6cvnb" column="C6CVNB" />
+		<result property="c6acdt" column="C6ACDT" />
+		<result property="c6c0cd" column="C6C0CD" />
+		<result property="c6canb" column="C6CANB" />
+		<result property="c6b9cd" column="C6B9CD" />
+		<result property="c6f1cd" column="C6F1CD" />
+	</resultMap>
+	
+	<resultMap id="MBCDREPVOMap" class="MBCDREPVO">
+		<result property="cdaenb" column="CDAENB" />
+		<result property="cddccd" column="CDDCCD" />
+		<result property="cdcvnb" column="CDCVNB" />
+		<result property="cdfcnb" column="CDFCNB" />
+		<result property="cdktnb" column="CDKTNB" />
+		<result property="cdacqty" column="CDACQT" />
+		<result property="cdh3st" column="CDH3ST" />
+		<result property="cdfxva" column="CDFXVA" />
+		<result property="cdafvl" column="CDAFVL" />
+		<result property="cdaa9m" column="CDAA9M" />
+		<result property="cdabaz" column="CDABAZ" />
+		<result property="cdz903" column="CDZ903" />
+		<result property="cdaayy" column="CDAAYY" />
+		<result property="cdaayyn" column="CDAAYYN" />
+		<result property="cdaltx" column="CDALTX" />
+		<result property="cddhcd" column="CDDHCD" />
+		<result property="cdaitx" column="CDAITX" />
+		<result property="cda3cd" column="CDA3CD" />
+		<result property="cdz901" column="CDZ901" />
+		
+	</resultMap>
+	
+	<resultMap id="MBADREPVOMap" class="MBADREPVO">
+		<result property="adaenb" column="ADAENB" />
+		<result property="addccd" column="ADDCCD" />
+		<result property="adcvnb" column="ADCVNB" />
+		<result property="adfcnb" column="ADFCNB" />
+		<result property="addrnb" column="ADDRNB" />
+		<result property="adaasz" column="ADAASZ" />
+		<result property="adbidt" column="ADBIDT" />
+		<result property="adaidt" column="ADAIDT" />
+		<result property="adbjdt" column="ADBJDT" />
+		<result property="adajdt" column="ADAJDT" />
+	</resultMap>
+	
 	<resultMap id="MODATAVOMap" class="MODATAVO">
 		<result property="ordno" column="ORDNO" />
 		<result property="citem" column="CITEM" />
@@ -135,6 +190,33 @@
 			</isNotEmpty>
 		</dynamic>
 		<![CDATA[ order by a.SEQNM ]]>
+
+	</select>
+	
+	<select id="queryMbcdrep" resultMap="MBCDREPVOMap"
+		parameterClass="MBCDREPVO">
+		<![CDATA[ select a.*, b.CUSNM as CDAAYYN                        
+					from MBCDREP a 
+					inner join MBBMCPP c 
+					on a.CDAENB = c.BMAENB and a.CDDCCD=c.BMDCCD and a.CDCVNB=c.BMCVNB                                
+					left join MBBFREP b
+					on a.CDAAYY = b.CUSNO 
+		]]>
+		<dynamic prepend="where">
+			<isNotEmpty prepend="AND" property="cda3cd">
+				a.CDA3CD = #cda3cd#
+			</isNotEmpty>
+			<isNotEmpty prepend="AND" property="cdaayy">
+				a.CDAAYY = #cdaayy#
+			</isNotEmpty>
+			<isNotEmpty prepend="AND" property="cdcvnb">
+				b.CDCVNB like ('%'||#cdcvnb#||'%' )
+			</isNotEmpty>
+			<isNotEmpty prepend="AND" property="ponum">
+				c.BMCBTX like ('%'||#ponum#||'%' )
+			</isNotEmpty>			
+		</dynamic>
+		<![CDATA[ order by a.CDCVNB,CDFCNB ]]>
 
 	</select>
 

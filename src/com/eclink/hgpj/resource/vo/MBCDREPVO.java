@@ -16,13 +16,13 @@ public class MBCDREPVO extends BaseVO{
 	
 	private static final long serialVersionUID = 2317968819354022841L;
 	
-	private BigDecimal cdaenb;
+	private String cdaenb;
 	
 	private String cddccd;
 	
 	private String cdcvnb;
 	
-	private BigDecimal cdfcnb;
+	private String cdfcnb;
 
 	private String cdktnb;
 
@@ -40,7 +40,9 @@ public class MBCDREPVO extends BaseVO{
 	
 	private String cdz903;
 	
-	private BigDecimal cdaayy;
+	private String cdaayy;
+	
+	private String cdaayyn;
 	
 	private String cdaltx;
 	
@@ -50,13 +52,17 @@ public class MBCDREPVO extends BaseVO{
 	
 	private String cda3cd;
 	
+	private String cusnm;
+	
 	private BigDecimal cdz901;
+	
+	private String ponum;
 
-	public BigDecimal getCdaenb() {
+	public String getCdaenb() {
 		return cdaenb;
 	}
 
-	public void setCdaenb(BigDecimal cdaenb) {
+	public void setCdaenb(String cdaenb) {
 		this.cdaenb = cdaenb;
 	}
 
@@ -76,11 +82,11 @@ public class MBCDREPVO extends BaseVO{
 		this.cdcvnb = cdcvnb;
 	}
 
-	public BigDecimal getCdfcnb() {
+	public String getCdfcnb() {
 		return cdfcnb;
 	}
 
-	public void setCdfcnb(BigDecimal cdfcnb) {
+	public void setCdfcnb(String cdfcnb) {
 		this.cdfcnb = cdfcnb;
 	}
 
@@ -148,11 +154,11 @@ public class MBCDREPVO extends BaseVO{
 		this.cdz903 = cdz903;
 	}
 
-	public BigDecimal getCdaayy() {
+	public String getCdaayy() {
 		return cdaayy;
 	}
 
-	public void setCdaayy(BigDecimal cdaayy) {
+	public void setCdaayy(String cdaayy) {
 		this.cdaayy = cdaayy;
 	}
 
@@ -194,6 +200,30 @@ public class MBCDREPVO extends BaseVO{
 
 	public void setCdz901(BigDecimal cdz901) {
 		this.cdz901 = cdz901;
+	}
+
+	public String getCdaayyn() {
+		return cdaayyn;
+	}
+
+	public void setCdaayyn(String cdaayyn) {
+		this.cdaayyn = cdaayyn;
+	}
+
+	public String getPonum() {
+		return ponum;
+	}
+
+	public void setPonum(String ponum) {
+		this.ponum = ponum;
+	}
+
+	public String getCusnm() {
+		return cusnm;
+	}
+
+	public void setCusnm(String cusnm) {
+		this.cusnm = cusnm;
 	}
 
 	
