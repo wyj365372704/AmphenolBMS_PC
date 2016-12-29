@@ -12,9 +12,11 @@ import com.eclink.hgpj.base.BaseVO;
  * @version 1.0
  * 
  */
-public class ZPLHDRVO extends BaseVO{
+public class ZSAHDRVO extends BaseVO{
 	
 	private static final long serialVersionUID = 2317968819354022841L;
+	
+	private String sadno;
 	
 	private String pldno;
 	
@@ -70,17 +72,23 @@ public class ZPLHDRVO extends BaseVO{
 	
 	private String sczip;
 	
-	private BigDecimal etdate;
+	private String saus1;
 	
-	private String plus1;
+	private String sadp1;
 	
-	private String pldp1;
+	private BigDecimal sadt1;
 	
-	private BigDecimal pldt1;
-	
-	private BigDecimal pltm1;
+	private BigDecimal satm1;
 	
 	private String cmmt;
+
+	public String getSadno() {
+		return sadno;
+	}
+
+	public void setSadno(String sadno) {
+		this.sadno = sadno;
+	}
 
 	public String getPldno() {
 		return pldno;
@@ -298,48 +306,37 @@ public class ZPLHDRVO extends BaseVO{
 		this.sczip = sczip;
 	}
 
-
-	public BigDecimal getEtdate() {
-		return etdate;
+	public String getSaus1() {
+		return saus1;
 	}
 
-	public void setEtdate(BigDecimal etdate) {
-		this.etdate = etdate;
+	public void setSaus1(String saus1) {
+		this.saus1 = saus1;
 	}
 
-	public BigDecimal getPldt1() {
-		return pldt1;
+	public String getSadp1() {
+		return sadp1;
 	}
 
-	public void setPldt1(BigDecimal pldt1) {
-		this.pldt1 = pldt1;
+	public void setSadp1(String sadp1) {
+		this.sadp1 = sadp1;
 	}
 
-	public BigDecimal getPltm1() {
-		return pltm1;
+	public BigDecimal getSadt1() {
+		return sadt1;
 	}
 
-	public void setPltm1(BigDecimal pltm1) {
-		this.pltm1 = pltm1;
+	public void setSadt1(BigDecimal sadt1) {
+		this.sadt1 = sadt1;
 	}
 
-	public String getPlus1() {
-		return plus1;
+	public BigDecimal getSatm1() {
+		return satm1;
 	}
 
-	public void setPlus1(String plus1) {
-		this.plus1 = plus1;
+	public void setSatm1(BigDecimal satm1) {
+		this.satm1 = satm1;
 	}
-
-	public String getPldp1() {
-		return pldp1;
-	}
-
-	public void setPldp1(String pldp1) {
-		this.pldp1 = pldp1;
-	}
-
-	
 
 	public String getCmmt() {
 		return cmmt;
@@ -348,6 +345,6 @@ public class ZPLHDRVO extends BaseVO{
 	public void setCmmt(String cmmt) {
 		this.cmmt = cmmt;
 	}
-	
+
 	
 }

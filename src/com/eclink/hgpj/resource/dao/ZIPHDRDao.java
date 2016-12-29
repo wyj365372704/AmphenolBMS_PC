@@ -65,6 +65,10 @@ public interface ZIPHDRDao {
 
 	public void deleteZipdtl(ZIPDTLVO vo) throws Exception;
 
+	public void deleteZiphdr(ZIPHDRVO vo) throws Exception;
+	
+	public void deleteZiphst(ZIPHSTVO vo) throws Exception;
 
+	
 
 }

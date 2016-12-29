@@ -105,6 +105,35 @@
 		}
 		
 	}
+	function deleteO(ipdno){
+		//document.getElementsByName("ipdno")[0].value=ipdno;
+		if(confirm("确定对该单据进行删除操作吗？")){
+			//document.getElementsByName("queryform")[0].submit();
+			var aj = $.ajax( {  
+		       url:'resource/ziphdr!toDeleteZiphdr.action',// 跳转到 action  
+		       data:{  
+		                ipdno : ipdno
+		       },  
+		      type:'post',  
+		      cache:false,  
+		      success:function(data) {  
+		      	if(data='success'){
+		      		 alert("删除物料成功！"); 
+			         document.getElementsByName("queryform")[0].submit();
+		      	}else{
+		      		 alert("删除物料失败！"); 
+		      	}
+		        
+		        
+		       },  
+		       error : function() {  
+		            // view("异常！");  
+		            alert("删除物料失败！");  
+		       }  
+		  });
+		}
+		
+	}
 	function goadd(ipdno,ordno,house,iptyp){
 		var ref=window.open("resource/ziphdr!toAddZipdtl.action?ordno="+ordno+"&ipdno="+ipdno+"&house="+house+"&iptyp="+iptyp,'newwindow','height=251,width=400,top='+ (window.outerHeight/3)+',left='+ (window.outerWidth/2)+',toolbar=no,menubar=no,scrollbars=no, resizable=no,location=no, status=no');
 		
@@ -225,6 +254,7 @@
 					<th>审批日期</th>
 					<th>审批时间</th>
 					<th>审批</th>
+					<th>操作</th> 
 
 					<!-- -->
 				</tr>
@@ -281,6 +311,12 @@
 	  				</s:if> <s:else>
 	  					无需审批
 	  				</s:else></td>
+	  				<td>
+	  					<s:if test="ostat==05">
+	  						<input type="button" id="deleteO" value="删除" class="gray_button"
+									onclick="deleteO('<s:property value="ipdno"/>');" />
+	  					</s:if>
+	  				</td>
 					</tr>
 				</s:iterator>
 			</table>

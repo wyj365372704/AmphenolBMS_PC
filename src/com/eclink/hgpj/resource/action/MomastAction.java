@@ -106,6 +106,7 @@ public class MomastAction extends BaseAction {
 
 	private String input1,input2;
 
+	private String cnote;
 
 	public String getInput1() {
 		return input1;
@@ -317,6 +318,7 @@ public class MomastAction extends BaseAction {
 						ZIPHDRVO hdrvo = new ZIPHDRVO();
 
 						String idx = "000"+(count+1);
+						count++;
 						String hdrno = "IP"+now1+idx.substring(idx.length()-4);
 						hdrvo.setIpdno(hdrno);
 						hdrvo.setOrdno(ordnot);
@@ -1057,6 +1059,7 @@ public class MomastAction extends BaseAction {
 						}
 					}
 					resultMap.put("morouts", morouts);
+					resultMap.put("cnote", cnote);
 				}
 
 				results.add(resultMap);
@@ -1069,5 +1072,13 @@ public class MomastAction extends BaseAction {
 			return ERROR;
 		}
 
+	}
+
+	public String getCnote() {
+		return cnote;
+	}
+
+	public void setCnote(String cnote) {
+		this.cnote = cnote;
 	}
 }

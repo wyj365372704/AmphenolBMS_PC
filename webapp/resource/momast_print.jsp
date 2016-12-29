@@ -38,6 +38,11 @@
 							</td>
 						</tr>
 						<tr>
+							<td class="td_w_s text_r">备注：</td>
+							<td><input type="text" name="cnote"  value=""/>
+							</td>
+						</tr>
+						<tr>
 
 							<td align="center" colspan="2"><s:submit id="queryId"
 									value="打印" onclick="return dosubmit()"></s:submit>

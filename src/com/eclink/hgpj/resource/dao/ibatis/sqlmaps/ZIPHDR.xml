@@ -95,7 +95,7 @@
 				a.ORDNO = #ordno#
 			</isNotEmpty>
 			<isNotEmpty prepend="AND" property="ipdno">
-				a.IPDNO = #ipdno#
+				a.IPDNO = #ipdno# AND a.LSTAT!='99' 
 			</isNotEmpty>
 			<isNotEmpty prepend="AND" property="ipdln">
 				a.IPDLN = #ipdln#
@@ -130,7 +130,7 @@
 				a.ORDNO = #ordno#
 			</isNotEmpty>
 			<isNotEmpty prepend="AND" property="ipdno">
-				a.IPDNO = #ipdno#
+				a.IPDNO = #ipdno# AND a.LSTAT!='99' 
 			</isNotEmpty>
 			<isNotEmpty prepend="AND" property="ipdln">
 				a.IPDLN = #ipdln#
@@ -509,5 +509,12 @@
 				IPDLN = #ipdln#
 			</isNotEmpty>
 		</dynamic>
+	</delete>
+	
+	<delete id="deleteZiphdr" parameterClass="ZIPHDRVO">
+		update ZIPHDR set OSTAT='99' where IPDNO=#ipdno#		
+	</delete>
+	<delete id="deleteZiphst" parameterClass="ZIPHSTVO">
+		update ZIPDTL set LSTAT='99' where IPDNO=#ipdno#		
 	</delete>
 </sqlMap>

@@ -207,4 +207,27 @@ public class ZIPHDRServiceImpl implements ZIPHDRService {
 		return this.ziphdrDao.queryHdrsByParForApproval(vo);
 	}
 
+	@Override
+	public void deleteZiphdr(ZIPHDRVO vo) throws Exception {
+//		List<ZIPDTLVO> subList = vo.getItemList();
+//		if(subList!=null && subList.size()>0){
+//			for(int i=0;i<subList.size();i++){
+//				List<ZIPHSTVO> subList2 = subList.get(i).getItemList();
+//				this.ziphdrDao.deleteZipdtl(subList.get(i));
+//			}			
+//		}
+		ZIPHSTVO hstvo = new ZIPHSTVO();
+		hstvo.setIpdno(vo.getIpdno());
+		this.ziphdrDao.deleteZiphst(hstvo);
+//		ZIPDTLVO dtlvo = new ZIPDTLVO();
+//		dtlvo.setIpdno(vo.getIpdno());
+//		this.ziphdrDao.deleteZipdtl(dtlvo);
+		this.ziphdrDao.deleteZiphdr(vo);
+	}
+
+	@Override
+	public void deleteZiphst(ZIPHSTVO vo) throws Exception {
+		this.ziphdrDao.deleteZiphst(vo);
+	}
+
 }
