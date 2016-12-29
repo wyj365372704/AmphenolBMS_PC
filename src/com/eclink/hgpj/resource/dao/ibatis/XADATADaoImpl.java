@@ -14,6 +14,7 @@ import com.eclink.hgpj.resource.dao.ZGRNHDRDao;
 import com.eclink.hgpj.resource.dao.ZSHPHDRDao;
 import com.eclink.hgpj.resource.vo.ITMRVAVO;
 import com.eclink.hgpj.resource.vo.ITMSITVO;
+import com.eclink.hgpj.resource.vo.MBCDREPVO;
 import com.eclink.hgpj.resource.vo.MODATAVO;
 import com.eclink.hgpj.resource.vo.MODESCVO;
 import com.eclink.hgpj.resource.vo.MOMASTVO;
@@ -193,6 +194,11 @@ public class XADATADaoImpl extends SqlMapClientDaoSupport implements XADATADao {
 	public List<SLQNTYVO> querySlqntyForPickList(Map map)
 			throws Exception {
 		return this.getSqlMapClientTemplate().queryForList("XADATA.querySlqntyForPickList",map);
+	}
+
+	@Override
+	public List<MBCDREPVO> queryMbcdrep(MBCDREPVO vo) throws Exception {
+		return this.getSqlMapClientTemplate().queryForList("XADATA.queryMbcdrep",vo);
 	}
 
 }

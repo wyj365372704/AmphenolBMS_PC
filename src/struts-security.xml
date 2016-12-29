@@ -76,7 +76,7 @@
 			<result name="toPrintMomast">/resource/momast_form.jsp</result>
 
 		</action>
-
+		
 		<action name="pomast" class="com.eclink.hgpj.resource.action.PomastAction">
 			<result name="toPomast">/resource/pomast_list.jsp</result>
 			<result name="toPomastReturn">/resource/pomast_return_list.jsp</result>
@@ -134,8 +134,9 @@
 			<result name="toPrintTurnoverTag">/resource/turnover_form.jsp</result>
 		</action>
 
-		<action name="sales" class="com.eclink.hgpj.resource.action.SalesOrderAction">
-			<result name="toSalesList">/resource/sales_order.jsp</result>
+		<action name="sales" class="com.eclink.hgpj.resource.action.MbcdrepAction">
+			<result name="toMbcdrep">/resource/sales_order.jsp</result>
+			<result name="toCreateNotice">/resource/create_notice.jsp</result>
 		</action>
 
 	</package>

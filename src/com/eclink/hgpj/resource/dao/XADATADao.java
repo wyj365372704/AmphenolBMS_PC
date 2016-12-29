@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.eclink.hgpj.resource.vo.ITMRVAVO;
 import com.eclink.hgpj.resource.vo.ITMSITVO;
+import com.eclink.hgpj.resource.vo.MBCDREPVO;
 import com.eclink.hgpj.resource.vo.MODATAVO;
 import com.eclink.hgpj.resource.vo.MODESCVO;
 import com.eclink.hgpj.resource.vo.MOMASTVO;
@@ -47,6 +48,8 @@ public interface XADATADao {
 	public List<MODATAVO> queryModatas(MODATAVO vo) throws Exception;
 	
 	public List<MOMASTVO> queryMomastByordno(MOMASTVO vo) throws Exception;
+	
+	public List<MBCDREPVO> queryMbcdrep(MBCDREPVO vo) throws Exception;
 	
 	public List<SLDATAVO> querySldata(Map map) throws Exception;
 	

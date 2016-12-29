@@ -6,6 +6,7 @@ import java.util.Map;
 import com.eclink.hgpj.resource.vo.BUYERFVO;
 import com.eclink.hgpj.resource.vo.ITMRVAVO;
 import com.eclink.hgpj.resource.vo.ITMSITVO;
+import com.eclink.hgpj.resource.vo.MBCDREPVO;
 import com.eclink.hgpj.resource.vo.MODATAVO;
 import com.eclink.hgpj.resource.vo.MOMASTVO;
 import com.eclink.hgpj.resource.vo.MOPORFVO;
@@ -43,6 +44,8 @@ public interface XADATAService {
 	public List<SLQNTYVO> querySlqnty(Map map) throws Exception;
 	
 	public List<MOMASTVO> queryMomast(MOMASTVO vo) throws Exception;
+	
+	public List<MBCDREPVO> queryMbcdrep(MBCDREPVO vo) throws Exception;
 	
 	public List<MOMASTVO> queryMomastBystate(MOMASTVO vo) throws Exception;
 	
