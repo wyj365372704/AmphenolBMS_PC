@@ -43,6 +43,26 @@ public class MBS2REPVO extends BaseVO{
 	private String s2g5cd;
 
 	private String s2bkcd;
+	
+	private String s2cptx;
+	
+	private String s2cvcd;
+	
+	public String getS2cptx() {
+		return s2cptx;
+	}
+
+	public void setS2cptx(String s2cptx) {
+		this.s2cptx = s2cptx;
+	}
+
+	public String getS2cvcd() {
+		return s2cvcd;
+	}
+
+	public void setS2cvcd(String s2cvcd) {
+		this.s2cvcd = s2cvcd;
+	}
 
 	public BigDecimal getS2aenb() {
 		return s2aenb;

@@ -214,7 +214,21 @@
 			</isNotEmpty>
 			<isNotEmpty prepend="AND" property="ponum">
 				c.BMCBTX like ('%'||#ponum#||'%' )
-			</isNotEmpty>			
+			</isNotEmpty>	
+			<isNotEmpty prepend="AND" property="startDateB">
+				<![CDATA[a.CDFCNB in ( select ADFCNB from MBADREP where ADBIDT>=#startDateB# ]]>
+				<isNotEmpty prepend="AND" property="endDateB">
+					<![CDATA[ADBIDT<=#endDateB#]]>
+				</isNotEmpty>
+				)
+			</isNotEmpty>
+			<isEmpty prepend="AND" property="startDateB">
+				
+				<isNotEmpty prepend="AND" property="endDateB">
+					<![CDATA[a.CDFCNB in ( select ADFCNB from MBADREP where ADBIDT<=#endDateB# )]]>
+				</isNotEmpty>
+				
+			</isEmpty>		
 		</dynamic>
 		<![CDATA[ order by a.CDCVNB,CDFCNB ]]>
 
@@ -588,6 +602,27 @@
 	<select id="queryCusnm" resultClass="String" parameterClass="Map">
 		<![CDATA[ Select a.cusnm from MBBFREP a
        where a.COMNO = #cono# and a.CUSNO = #c6bcanb# 
+		]]>
+	</select>
+	
+	<select id="queryCusnms" resultClass="String" parameterClass="Map">
+		<![CDATA[ Select a.CUSNO ||'-'|| a.CUSNM  from MBBFREP a where a.COMNO =#plant# 
+		]]>
+	</select>
+	
+	<select id="queryCarrier" resultClass="String" parameterClass="Map">
+		<![CDATA[ Select a.ATF1CD ||'-'|| a.ATGHTX from MBATREP a 
+		]]>
+	</select>
+	
+	<select id="queryTransport" resultClass="String" parameterClass="Map">
+		<![CDATA[ Select a.C8BHST ||'-'|| a.C8HYTX from MBC8REP a 
+		]]>
+	</select>
+	
+	<select id="queryShipTo" resultClass="MBS2REPVO" parameterClass="Map">
+		<![CDATA[ Select a.* from MBS2REP a
+       where a.S2AENB = #cono# and a.S2CANB = #c6bcanb# and S2E2ST = '2' 
 		]]>
 	</select>
 

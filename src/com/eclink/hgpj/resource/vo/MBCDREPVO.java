@@ -57,6 +57,14 @@ public class MBCDREPVO extends BaseVO{
 	private BigDecimal cdz901;
 	
 	private String ponum;
+	
+	private String startDate;
+	
+	private String endDate;
+	
+	private BigDecimal startDateB;
+	
+	private BigDecimal endDateB;
 
 	public String getCdaenb() {
 		return cdaenb;
@@ -224,6 +232,38 @@ public class MBCDREPVO extends BaseVO{
 
 	public void setCusnm(String cusnm) {
 		this.cusnm = cusnm;
+	}
+
+	public String getStartDate() {
+		return startDate;
+	}
+
+	public void setStartDate(String startDate) {
+		this.startDate = startDate;
+	}
+
+	public String getEndDate() {
+		return endDate;
+	}
+
+	public void setEndDate(String endDate) {
+		this.endDate = endDate;
+	}
+
+	public BigDecimal getStartDateB() {
+		return startDateB;
+	}
+
+	public void setStartDateB(BigDecimal startDateB) {
+		this.startDateB = startDateB;
+	}
+
+	public BigDecimal getEndDateB() {
+		return endDateB;
+	}
+
+	public void setEndDateB(BigDecimal endDateB) {
+		this.endDateB = endDateB;
 	}
 
 	

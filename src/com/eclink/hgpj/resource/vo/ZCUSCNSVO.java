@@ -18,7 +18,7 @@ public class ZCUSCNSVO extends BaseVO{
 	
 	private BigDecimal comno;
 	
-	private String cusnm;
+	private Integer cusnm;
 	
 	private String cnsign;
 	
@@ -42,11 +42,11 @@ public class ZCUSCNSVO extends BaseVO{
 		this.comno = comno;
 	}
 
-	public String getCusnm() {
+	public Integer getCusnm() {
 		return cusnm;
 	}
 
-	public void setCusnm(String cusnm) {
+	public void setCusnm(Integer cusnm) {
 		this.cusnm = cusnm;
 	}
 

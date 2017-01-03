@@ -12,6 +12,7 @@ import com.eclink.hgpj.resource.vo.BUYERFVO;
 import com.eclink.hgpj.resource.vo.ITMRVAVO;
 import com.eclink.hgpj.resource.vo.ITMSITVO;
 import com.eclink.hgpj.resource.vo.MBCDREPVO;
+import com.eclink.hgpj.resource.vo.MBS2REPVO;
 import com.eclink.hgpj.resource.vo.MODATAVO;
 import com.eclink.hgpj.resource.vo.MODESCVO;
 import com.eclink.hgpj.resource.vo.MOMASTVO;
@@ -276,6 +277,30 @@ public class XADATAServiceImpl implements XADATAService {
 	@Override
 	public List<MBCDREPVO> queryMbcdrep(MBCDREPVO vo) throws Exception {
 		return xadataDao.queryMbcdrep(vo);
+	}
+
+
+	@Override
+	public List<String> queryCarrier(Map map) throws Exception {
+		return xadataDao.queryCarrier(map);
+	}
+
+
+	@Override
+	public List<MBS2REPVO> queryShipTo(Map map) throws Exception {
+		return xadataDao.queryShipTo(map);
+	}
+
+
+	@Override
+	public List<String> queryTransport(Map map) throws Exception {
+		return xadataDao.queryTransport(map);
+	}
+
+
+	@Override
+	public List<String> queryCusnms(Map map) throws Exception {
+		return xadataDao.queryCusnms(map);
 	}
 
 }

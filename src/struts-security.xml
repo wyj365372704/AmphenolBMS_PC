@@ -137,6 +137,7 @@
 		<action name="sales" class="com.eclink.hgpj.resource.action.MbcdrepAction">
 			<result name="toMbcdrep">/resource/sales_order.jsp</result>
 			<result name="toCreateNotice">/resource/create_notice.jsp</result>
+			<result name="todata">/commons/data.jsp</result>
 		</action>
 
 	</package>

@@ -22,6 +22,7 @@ import com.eclink.hgpj.base.BaseAction;
 import com.eclink.hgpj.common.HGPJConstant;
 import com.eclink.hgpj.resource.biz.XADATAService;
 import com.eclink.hgpj.resource.biz.ZBMSCTLService;
+import com.eclink.hgpj.resource.biz.ZCUSCNSService;
 import com.eclink.hgpj.resource.biz.ZIPHDRService;
 import com.eclink.hgpj.resource.biz.ZITMBXService;
 import com.eclink.hgpj.resource.biz.ZITMEXTService;
@@ -31,6 +32,7 @@ import com.eclink.hgpj.resource.dao.ibatis.ZITEMBXDaoImpl;
 import com.eclink.hgpj.resource.vo.ITMRVAVO;
 import com.eclink.hgpj.resource.vo.ITMSITVO;
 import com.eclink.hgpj.resource.vo.MBCDREPVO;
+import com.eclink.hgpj.resource.vo.MBS2REPVO;
 import com.eclink.hgpj.resource.vo.MODATAVO;
 import com.eclink.hgpj.resource.vo.MOMASTVO;
 import com.eclink.hgpj.resource.vo.MOPORFVO;
@@ -40,12 +42,14 @@ import com.eclink.hgpj.resource.vo.VENNAMVO;
 import com.eclink.hgpj.resource.vo.ZBMSCTLVO;
 import com.eclink.hgpj.resource.vo.ZBMSRSNVO;
 import com.eclink.hgpj.resource.vo.ZBMSU02VO;
+import com.eclink.hgpj.resource.vo.ZCUSCNSVO;
 import com.eclink.hgpj.resource.vo.ZIPDTLVO;
 import com.eclink.hgpj.resource.vo.ZIPHDRVO;
 import com.eclink.hgpj.resource.vo.ZIPHSTVO;
 import com.eclink.hgpj.resource.vo.ZITEMBXVO;
 import com.eclink.hgpj.resource.vo.ZITMEXTVO;
 import com.eclink.hgpj.resource.vo.ZMBD1REPVO;
+import com.eclink.hgpj.resource.vo.ZPLHDRVO;
 import com.eclink.hgpj.resource.vo.ZWHSUBVO;
 import com.eclink.hgpj.user.biz.AUserService;
 import com.eclink.hgpj.util.QRcoderUtil;
@@ -77,6 +81,8 @@ public class MbcdrepAction extends BaseAction {
 	private MOMASTVO momast;
 	
 	private MBCDREPVO mbcdrep;
+	
+	private ZPLHDRVO zplhdr;
 
 	private AUserService auserService;
 
@@ -86,6 +92,8 @@ public class MbcdrepAction extends BaseAction {
 
 	private ZITMEXTService zitmextService;
 
+	private ZCUSCNSService zcuscnsService;
+	
 	private String ordno;
 	
 	private String ponum;
@@ -99,16 +107,24 @@ public class MbcdrepAction extends BaseAction {
 	private String cmmt;
 
 	private String chk;
+	
+	private String startDate;
 
 	private List<MBCDREPVO> results;
 
+	private List<Map> carriers;
 	
+	private List<Map> salestts;
+	
+	private List<Map> customers;
 
 	private String grnno;
 
 	private String input1,input2;
 
 	private String cnote;
+	
+	private String cusno;
 
 	public String getInput1() {
 		return input1;
@@ -166,6 +182,14 @@ public class MbcdrepAction extends BaseAction {
 
 	public void setZitmextService(ZITMEXTService zitmextService) {
 		this.zitmextService = zitmextService;
+	}
+
+	public ZCUSCNSService getZcuscnsService() {
+		return zcuscnsService;
+	}
+
+	public void setZcuscnsService(ZCUSCNSService zcuscnsService) {
+		this.zcuscnsService = zcuscnsService;
 	}
 
 	public MOMASTVO getMomast() {
@@ -284,6 +308,54 @@ public class MbcdrepAction extends BaseAction {
 
 	public void setPonum(String ponum) {
 		this.ponum = ponum;
+	}
+
+	public ZPLHDRVO getZplhdr() {
+		return zplhdr;
+	}
+
+	public void setZplhdr(ZPLHDRVO zplhdr) {
+		this.zplhdr = zplhdr;
+	}
+
+	public String getStartDate() {
+		return startDate;
+	}
+
+	public void setStartDate(String startDate) {
+		this.startDate = startDate;
+	}
+
+	public List<Map> getCarriers() {
+		return carriers;
+	}
+
+	public void setCarriers(List<Map> carriers) {
+		this.carriers = carriers;
+	}
+
+	public List<Map> getSalestts() {
+		return salestts;
+	}
+
+	public void setSalestts(List<Map> salestts) {
+		this.salestts = salestts;
+	}
+
+	public List<Map> getCustomers() {
+		return customers;
+	}
+
+	public void setCustomers(List<Map> customers) {
+		this.customers = customers;
+	}
+
+	public String getCusno() {
+		return cusno;
+	}
+
+	public void setCusno(String cusno) {
+		this.cusno = cusno;
 	}
 
 	public String addZiphdrM()throws Exception {
@@ -496,22 +568,23 @@ public class MbcdrepAction extends BaseAction {
 	public String toSalesList() throws Exception {
 		try {
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-			if(mbcdrep!=null){				
+			if(mbcdrep!=null){	
+				System.out.println("mbcdrep.getStartDate()="+mbcdrep.getCda3cd());
 				//				Date d = sdf.parse(momast.getStartDate());
-//				if(momast.getStartDate()!=null && !momast.getStartDate().trim().equals("")){
-//					momast.setStartDateB(BigDecimal.valueOf(Long.valueOf("1"+Utils.formateDate(sdf.parse(momast.getStartDate()), "yyMMdd"))));
-//				}
-//				if(momast.getEndDate()!=null && !momast.getEndDate().trim().equals("")){
-//					momast.setEndDateB(BigDecimal.valueOf(Long.valueOf("1"+Utils.formateDate(sdf.parse(momast.getEndDate()), "yyMMdd"))));
-//				}
+				if(mbcdrep.getStartDate()!=null && !mbcdrep.getStartDate().trim().equals("")){
+					mbcdrep.setStartDateB(BigDecimal.valueOf(Long.valueOf("1"+Utils.formateDate(sdf.parse(mbcdrep.getStartDate()), "yyMMdd"))));
+				}
+				if(mbcdrep.getEndDate()!=null && !mbcdrep.getEndDate().trim().equals("")){
+					mbcdrep.setEndDateB(BigDecimal.valueOf(Long.valueOf("1"+Utils.formateDate(sdf.parse(mbcdrep.getEndDate()), "yyMMdd"))));
+				}
 				
 				results = this.xadataService.queryMbcdrep(mbcdrep);
 
 			}else{
 				mbcdrep = new MBCDREPVO();
 
-//				momast.setStartDate(sdf.format(new Date()));
-//				momast.setEndDate(sdf.format(new Date()));
+				mbcdrep.setStartDate(sdf.format(new Date()));
+				mbcdrep.setEndDate(sdf.format(new Date()));
 			}
 			if(results!=null && results.size()>0){
 //				for(int i=0;i<results.size();i++){
@@ -541,12 +614,78 @@ public class MbcdrepAction extends BaseAction {
 		return "toMbcdrep";
 	}
 	public String toCreateNotice()throws Exception{
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		try {	
-			ActionContext.getContext().getValueStack().set("grnno", grnno);
+			String stid = (String)this.getSession().getAttribute("stid");
 			// 获取分页信息
 			PageVO page = PaginatorUtil.getPaginator(getRequest());
 			// setPagination(role,page);
-
+			this.zplhdr = new ZPLHDRVO();
+			this.startDate=sdf.format(new Date());
+			List<String> templist = this.xadataService.queryCarrier(null);
+			if(templist!=null && templist.size()>0){
+				this.carriers = new ArrayList<Map>();
+				Map map0 = new HashMap();
+				map0.put("atf1cd", "");
+				map0.put("atghtx", "");
+				carriers.add(map0);
+				for(int i=0;i<templist.size();i++){
+					Map map = new HashMap();
+					String vo = templist.get(i);
+					String[] sts=vo.split("-");
+					map.put("atf1cd", sts[0]);
+					map.put("atghtx", sts[1]);
+					carriers.add(map);
+				}
+			}
+			
+			List<String> templist2 = this.xadataService.queryTransport(null);
+			if(templist2!=null && templist2.size()>0){
+				this.salestts = new ArrayList<Map>();
+				Map map0 = new HashMap();
+				map0.put("c8bhst", "");
+				map0.put("c8hytx", "");
+				salestts.add(map0);
+				for(int i=0;i<templist2.size();i++){
+					Map map = new HashMap();
+					String vo = templist2.get(i);
+					String[] sts=vo.split("-");
+					map.put("c8bhst", sts[0]);
+					map.put("c8hytx", sts[1]);
+					salestts.add(map);
+				}
+			}
+			Map parMap = new HashMap();
+			parMap.put("plant", (Integer)this.getSession().getAttribute("plant"));
+			List<String> templist3 = this.xadataService.queryCusnms(parMap);
+			if(templist3!=null && templist3.size()>0){
+				this.customers = new ArrayList<Map>();
+				Map map0 = new HashMap();
+				map0.put("cusno", "");
+				map0.put("cusnm", "");
+				customers.add(map0);
+				for(int i=0;i<templist3.size();i++){
+					Map map = new HashMap();
+					String vo = templist3.get(i);
+					String[] sts=vo.split("-");
+					map.put("cusno", sts[0]);
+					map.put("cusnm", sts[1]);
+					customers.add(map);
+				}
+			}
+			ZBMSCTLVO pvo = new ZBMSCTLVO();
+			pvo.setSite(stid);
+			List<ZBMSCTLVO> zbmsctls = this.zbmsctlService.queryZbmsctl(pvo);
+			if(zbmsctls!=null && zbmsctls.size()>0){
+				ZBMSCTLVO rvo = zbmsctls.get(0);
+				zplhdr.setSfnam(rvo.getSfnam());
+				zplhdr.setSfadd1(rvo.getSfadd1());
+				zplhdr.setSfadd2(rvo.getSfadd2());
+				zplhdr.setSfcity(rvo.getSfcity());
+				zplhdr.setSfctr(rvo.getSfctr());
+				zplhdr.setSfzip(rvo.getSfzip());
+			}
+			
 			// 查询总记录数
 			if (page.isQueryTotal()) {
 				page.setTotalRecord(0);
@@ -559,6 +698,61 @@ public class MbcdrepAction extends BaseAction {
 		return ERROR;
 		}
 		return "toCreateNotice";
+	}
+	public String getAddByCus()throws Exception {
+		JSONObject jo = new JSONObject();
+		try {
+			int plant =(Integer)this.getSession().getAttribute("plant");
+			if(this.cusno!=null && !this.cusno.trim().equals("")){
+				
+				Map map = new HashMap();
+				map.put("cono", plant);
+				map.put("c6bcanb", Long.valueOf(cusno));
+				List<MBS2REPVO> shipto = this.xadataService.queryShipTo(map);
+				if(shipto!=null && shipto.size()>0){
+					jo.put("stnam", shipto.get(0).getS2cltx());
+					jo.put("stadd1", shipto.get(0).getS2cmtx());
+					jo.put("stadd2", shipto.get(0).getS2cntx());
+					jo.put("stcity", shipto.get(0).getS2cptx());
+					jo.put("stctr", shipto.get(0).getS2cocd());
+					jo.put("stzip", shipto.get(0).getS2cvcd());
+				}else{
+					jo.put("stnam", "");
+					jo.put("stadd1", "");
+					jo.put("stadd2", "");
+					jo.put("stcity", "");
+					jo.put("stctr", "");
+					jo.put("stzip", "");
+				}
+				ZCUSCNSVO pvo = new ZCUSCNSVO();
+				pvo.setComno(BigDecimal.valueOf(plant) );
+				pvo.setCusnm(Integer.valueOf(cusno));
+				
+				List<ZCUSCNSVO> zcuscns = this.zcuscnsService.queryZcuscns(pvo);
+				if(zcuscns!=null && zcuscns.size()>0){
+					jo.put("scnam", zcuscns.get(0).getCname());
+					jo.put("scadd1", zcuscns.get(0).getCaddr1());
+					jo.put("scadd2", zcuscns.get(0).getCaddr2());
+					jo.put("sccity", zcuscns.get(0).getCcity());
+					jo.put("scctr", zcuscns.get(0).getCcntr());
+					jo.put("sczip", zcuscns.get(0).getCzip());
+				}else{
+					jo.put("scnam", "");
+					jo.put("scadd1", "");
+					jo.put("scadd2", "");
+					jo.put("sccity", "");
+					jo.put("scctr", "");
+					jo.put("sczip", "");
+				}
+				jo.put("result", "success");
+				data=jo.toString();
+			}
+		}catch (Exception e) {e.printStackTrace();
+		log.error("Go to admin resource operation grant page occured error.", e);
+		jo.put("result", "fail");
+		return "todata";
+		}
+		return "todata";
 	}
 	public String momastPrint() throws Exception{
 		try {	
@@ -581,273 +775,6 @@ public class MbcdrepAction extends BaseAction {
 		return "momastPrint";
 	}
 
-	public String toPrintMomast() throws Exception{
-		try {
-			List<Map<String, Object>> results = new ArrayList<Map<String, Object>>();
-			JSONArray jsonArray = JSONObject.fromObject(grnno).getJSONArray("grnnos");
-			for(int i = 0;i<jsonArray.size();i++){
-				Map<String,Object> resultMap = new HashMap<String, Object>();
-
-				ZBMSCTLVO zbmsctl = new ZBMSCTLVO();
-				zbmsctl.setSite((String) getSession().getAttribute("stid"));
-				List<ZBMSCTLVO> bmsctlList = zbmsctlService.queryZbmsctl(zbmsctl);
-				if(bmsctlList!=null && bmsctlList.size()>0){
-					resultMap.put("nmchs", bmsctlList.get(0).getNmchs());
-				}
-
-				resultMap.put("printDate", Utils.formateDate(null, "yyyy/MM/dd"));
-
-				MOMASTVO momastvo = new MOMASTVO();
-				momastvo.setOrdno(jsonArray.getString(i));
-				List<MOMASTVO> momastList = xadataService.queryMomastByordno(momastvo);
-
-				resultMap.put("ordno", momastList.get(0).getOrdno());
-				resultMap.put("fitwh", momastList.get(0).getFitwh());
-				resultMap.put("fitem", momastList.get(0).getFitem());
-
-				String qrMessage = "*W"+momastList.get(0).getOrdno();
-				String encoderQRCoder = QRcoderUtil.encoderQRCoder(qrMessage, ServletActionContext.getContext().getSession().get("username").toString(),getSession().getServletContext().getRealPath("/"));
-				HttpServletRequest request = ServletActionContext.getRequest();
-				String path = request.getContextPath(); 
-				String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
-				resultMap.put("qrcodeurl", basePath+"/"+encoderQRCoder);
-
-
-				String d= (momastList.get(0).getCrdt()==null || momastList.get(0).getCrdt().doubleValue()==0.0)?"":momastList.get(0).getCrdt().add(BigDecimal.valueOf(19000000)).toString().trim();
-				resultMap.put("crdt", d.length()<8?d: (d.substring(0, 4)+"-"+d.substring(4, 6)+"-"+d.substring(6, 8)+" "));
-
-				resultMap.put("fdesc", momastList.get(0).getFdesc());
-				resultMap.put("fdesc", momastList.get(0).getFdesc());
-
-				ITMSITVO itmsitvo = new ITMSITVO();
-				itmsitvo.setHouse((String) getSession().getAttribute("stid"));
-				itmsitvo.setItnot9(momastList.get(0).getFitem());
-				List<ITMSITVO> itmsitList = xadataService.queryItrvtAll(itmsitvo);
-				if(itmsitList.size()>0){
-					resultMap.put("umstt9", itmsitList.get(0).getUmstt9());
-
-					ZITMEXTVO zitmextvo = new ZITMEXTVO();
-					zitmextvo.setStid(itmsitList.get(0).getHouse());
-					zitmextvo.setItnbr(itmsitList.get(0).getItnot9());
-					zitmextvo.setItrv(itmsitList.get(0).getItrvt9());
-					List<ZITMEXTVO> zitmextList = zitmextService.queryItemExt(zitmextvo);
-					if(zitmextList.size()>0){
-						resultMap.put("sdesc", zitmextList.get(0).getSdesc());
-					}
-				}
-
-				resultMap.put("dptno", momastList.get(0).getDptno());
-				resultMap.put("quantity", momastList.get(0).getOrqty().add(momastList.get(0).getQtdev()).floatValue());
-
-				d= (momastList.get(0).getSstdt()==null || momastList.get(0).getSstdt().doubleValue()==0.0)?"":momastList.get(0).getSstdt().add(BigDecimal.valueOf(19000000)).toString().trim();
-				resultMap.put("sstdt", d.length()<8?d: (d.substring(0, 4)+"-"+d.substring(4, 6)+"-"+d.substring(6, 8)+" "));
-
-				d= (momastList.get(0).getOdudt()==null || momastList.get(0).getOdudt().doubleValue()==0.0)?"":momastList.get(0).getOdudt().add(BigDecimal.valueOf(19000000)).toString().trim();
-				resultMap.put("odudt", d.length()<8?d: (d.substring(0, 4)+"-"+d.substring(4, 6)+"-"+d.substring(6, 8)+" "));
-
-				if(!momastList.get(0).getCono().equals("0")){//如果 MOMAST.CONO <> 0, 表示该生产订单由销售订单创建
-					Map<String,String> mbc6repParMap = new HashMap<String, String>();
-					mbc6repParMap.put("cono", momastList.get(0).getCono());
-					mbc6repParMap.put("ortp", momastList.get(0).getOrtp());
-					mbc6repParMap.put("ordnc", momastList.get(0).getOrdnc());
-					String c6canb = xadataService.queryMBC6REP(mbc6repParMap);
-					String bmcbtx = xadataService.queryBMCBTX(mbc6repParMap);
-					mbc6repParMap.put("c6canb", c6canb);
-					String cusnm = xadataService.queryCusnm(mbc6repParMap);
-					resultMap.put("c6canb", c6canb);
-					resultMap.put("bmcbtx", bmcbtx);
-					resultMap.put("cusnm", cusnm);
-
-					mbc6repParMap.put("itmsq", momastList.get(0).getItmsq());
-					String axhdtx = xadataService.queryAxhdtx(mbc6repParMap);
-					resultMap.put("axhdtx", axhdtx);
-				}
-
-				//组件信息
-				if("1".equals(input1)){
-
-					List<Map<String, String>> modatas = new ArrayList<Map<String,String>>();
-					MODATAVO modatavo = new MODATAVO();
-					modatavo.setOrdno(momastList.get(0).getOrdno());
-					List<MODATAVO> modataList = xadataService.queryModatas(modatavo);
-					for(MODATAVO modata:modataList){
-						Map<String, String> modataMap = new HashMap<String, String>();
-						modataMap.put("citem", modata.getCitem());
-						modataMap.put("cdesc", modata.getCdesc());
-
-						ITMSITVO itmsitvo2 = new ITMSITVO();
-						itmsitvo2.setHouse((String) getSession().getAttribute("stid"));
-						itmsitvo2.setItnot9(modata.getCitem());
-						List<ITMSITVO> itmsitList2 = xadataService.queryItrvtAll(itmsitvo2);
-						if(itmsitList2.size()>0){
-							ZITMEXTVO zitmextvo = new ZITMEXTVO();
-							zitmextvo.setStid(itmsitList2.get(0).getHouse());
-							zitmextvo.setItnbr(itmsitList2.get(0).getItnot9());
-							zitmextvo.setItrv(itmsitList2.get(0).getItrvt9());
-							List<ZITMEXTVO> zitmextList = zitmextService.queryItemExt(zitmextvo);
-							if(zitmextList.size()>0){
-								modataMap.put("sdesc", zitmextList.get(0).getSdesc());
-							}
-						}
-
-						ZITEMBXVO zitembxvo = new ZITEMBXVO();
-						zitembxvo.setHouse(modata.getCitwh());
-						zitembxvo.setItnbr(modata.getCitem());
-						List<ZITEMBXVO> zitembxList = zitmbxService.queryItemBx(zitembxvo);
-						if(zitembxList.size()>0){
-							modataMap.put("whsub2", zitembxList.get(0).getWhsub2());
-							ZWHSUBVO zwhsubvo = new ZWHSUBVO();
-							zwhsubvo.setHouse(modata.getCitwh());
-							zwhsubvo.setWhsub(zitembxList.get(0).getWhsub2());
-							List<ZWHSUBVO> zwhsubList = zwhsubService.queryZwhsub(zwhsubvo);
-							if(zwhsubList.size()>0){
-								modataMap.put("dsp1", zwhsubList.get(0).getDsp1());
-							}
-						}
-
-
-						modataMap.put("unmsr", modata.getUnmsr());
-						modataMap.put("qtreq", modata.getQtreq().floatValue()+"");
-						modataMap.put("isqty", modata.getIsqty().floatValue()+"");
-
-						modatas.add(modataMap);
-					}
-					resultMap.put("modatas", modatas);
-
-				}
-				//工序信息
-				if("1".equals(input2)){
-					List<Map<String, String>> morouts = new ArrayList<Map<String,String>>();
-					Map<String, String> moroutParMap = new HashMap<String, String>();
-					moroutParMap.put("ordno", momastList.get(0).getOrdno());
-					List<MOROUTVO> moroutList = xadataService.queryMorout(moroutParMap);
-					for(MOROUTVO morout:moroutList){
-						Map<String, String> moroutMap = new HashMap<String, String>();
-						moroutMap.put("opseq", morout.getOpseq());
-
-						String desc = morout.getOpdsc().trim();
-						if(morout.getTbcde().equals("C")){//外协工序
-							desc+="<br/>";
-							desc+="委外订单号:";
-							MOPORFVO moporfvo = new MOPORFVO();
-							moporfvo.setMonr(morout.getOrdno());
-							moporfvo.setOpsq(morout.getOpseq());
-							List<MOPORFVO> moporfList = xadataService.queryMoporfNormal(moporfvo);
-							if(moporfList.size()>0){
-								desc+=moporfList.get(0).getPonr().trim();
-								if(moporfList.get(0).getPonr().trim().startsWith("P")){
-									desc+="<br/>";
-									desc+="委外供应商:";
-									desc+=moporfList.get(0).getVndr().trim();
-
-									Map<String, String> parMap = new HashMap<String, String>();
-									parMap.put("vndnr", moporfList.get(0).getVndr());
-									List<VENNAMVO> vennamList = xadataService.queryVennam(parMap);
-									if(vennamList.size()>0){
-										desc+=" ";
-										desc+=vennamList.get(0).getVn35().trim();
-									}
-									parMap.clear();
-									parMap.put("ordno", moporfList.get(0).getPonr());
-									parMap.put("house", moporfList.get(0).getWhid());
-									parMap.put("poisq", moporfList.get(0).getPisq()+"");
-									parMap.put("linsq", moporfList.get(0).getBksq()+"");
-									List<POITEMVO> poitemList = xadataService.queryPoitem(parMap);
-									if(poitemList.size()>0){
-										desc+="<br/>";
-										desc+="采购价格:";
-										desc+=poitemList.get(0).getCurpr();
-										desc+=" ";
-										desc+=poitemList.get(0).getCurid().trim();
-									}
-									desc+=moporfList.get(0).getVndr().trim();
-								}
-							}
-
-							desc+="<br/>";
-						}else{//非外协工序
-							BigDecimal orderQuantity = momastList.get(0).getOrqty().add(momastList.get(0).getQtdev());
-							desc+="<br/>";
-							desc+="标准人工时间:";
-							if(morout.getTbcde() == null || morout.getTbcde().equals("")){
-								desc+=orderQuantity.multiply(morout.getSrlhu()).floatValue();
-							}else if(morout.getTbcde().equals("1")){
-								desc+=orderQuantity.multiply(morout.getSrlhu()).divide(BigDecimal.valueOf(10)).floatValue();
-							}else if(morout.getTbcde().equals("2")){
-								desc+=orderQuantity.multiply(morout.getSrlhu()).divide(BigDecimal.valueOf(100)).floatValue();
-							}else if(morout.getTbcde().equals("3")){
-								desc+=orderQuantity.multiply(morout.getSrlhu()).divide(BigDecimal.valueOf(1000)).floatValue();
-							}else if(morout.getTbcde().equals("4")){
-								desc+=orderQuantity.multiply(morout.getSrlhu()).divide(BigDecimal.valueOf(10000)).floatValue();
-							}else if(morout.getTbcde().equals("P")){
-								desc+=orderQuantity.divide(morout.getSrlhu()).floatValue();
-							}else if(morout.getTbcde().equals("M")){
-								desc+=orderQuantity.multiply(morout.getSrlhu()).divide(BigDecimal.valueOf(60)).floatValue();
-							}else{
-								desc+="0.0";
-							}
-							desc+="小时";
-							desc+="<br/>";
-							desc+="标准机器时间:";
-							if(morout.getTbcde() == null || morout.getTbcde().equals("")){
-								desc+=orderQuantity.multiply(morout.getSrmhu()).floatValue();
-							}else if(morout.getTbcde().equals("1")){
-								desc+=orderQuantity.multiply(morout.getSrmhu()).divide(BigDecimal.valueOf(10)).floatValue();
-							}else if(morout.getTbcde().equals("2")){
-								desc+=orderQuantity.multiply(morout.getSrmhu()).divide(BigDecimal.valueOf(100)).floatValue();
-							}else if(morout.getTbcde().equals("3")){
-								desc+=orderQuantity.multiply(morout.getSrmhu()).divide(BigDecimal.valueOf(1000)).floatValue();
-							}else if(morout.getTbcde().equals("4")){
-								desc+=orderQuantity.multiply(morout.getSrmhu()).divide(BigDecimal.valueOf(10000)).floatValue();
-							}else if(morout.getTbcde().equals("P")){
-								desc+=orderQuantity.divide(morout.getSrmhu()).floatValue();
-							}else if(morout.getTbcde().equals("M")){
-								desc+=orderQuantity.multiply(morout.getSrmhu()).divide(BigDecimal.valueOf(60)).floatValue();
-							}else{
-								desc+="0.0";
-							}
-							desc+="小时";
-							desc+="<br/>";
-						}
-						desc+="工序附加说明:";
-						Map<String, String> parMap = new HashMap<String, String>();
-						parMap.put("ordno", morout.getOrdno());
-						parMap.put("opseq", morout.getOpseq());
-						String aadesc = xadataService.queryADDSC(parMap);
-						desc+=aadesc;
-						moroutMap.put("desc", desc);
-						morouts.add(moroutMap);
-
-						Map xamap0 = new HashMap();
-						xamap0.put("sluserId", this.getSession().getServletContext().getAttribute("sluserId"));
-						xamap0.put("slpassword", this.getSession().getServletContext().getAttribute("slpassword"));
-						xamap0.put("slurl", this.getSession().getServletContext().getAttribute("slurl"));
-						xamap0.put("order", momastList.get(0).getOrdno());
-
-						Utils.systemLinkOrder(xamap0);
-						String retStr =(String)xamap0.get("systemLinkStr");
-						System.out.println("Tw:"+retStr);
-						String errorStr1 = retStr.substring(retStr.indexOf("hasErrors"), retStr.indexOf("hasErrors")+17);
-						String warnStr2 = retStr.substring(retStr.indexOf("hasWarnings"), retStr.indexOf("hasWarnings")+19);
-						if(errorStr1.indexOf("true")>=0){
-							throw new RuntimeException();
-						}
-					}
-					resultMap.put("morouts", morouts);
-					resultMap.put("cnote", cnote);
-				}
-
-				results.add(resultMap);
-			}
-			ActionContext.getContext().getValueStack().set("results", results);
-			return "toPrintMomast";
-		} catch (Exception e) {
-			// TODO: handle exception
-			e.printStackTrace();
-			return ERROR;
-		}
-
-	}
 
 	public String getCnote() {
 		return cnote;

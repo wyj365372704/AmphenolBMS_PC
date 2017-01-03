@@ -6,6 +6,7 @@ import java.util.Map;
 import com.eclink.hgpj.resource.vo.ITMRVAVO;
 import com.eclink.hgpj.resource.vo.ITMSITVO;
 import com.eclink.hgpj.resource.vo.MBCDREPVO;
+import com.eclink.hgpj.resource.vo.MBS2REPVO;
 import com.eclink.hgpj.resource.vo.MODATAVO;
 import com.eclink.hgpj.resource.vo.MODESCVO;
 import com.eclink.hgpj.resource.vo.MOMASTVO;
@@ -73,6 +74,10 @@ public interface XADATADao {
 	public List<String> queryAXHDTX(Map map) throws Exception;
 	public List<String> queryMBC6REP(Map map) throws Exception;
 	public List<String> queryCusnm(Map map) throws Exception;
+	public List<String> queryCusnms(Map map) throws Exception;
+	public List<String> queryCarrier(Map map) throws Exception;
+	public List<String> queryTransport(Map map) throws Exception;
+	public List<MBS2REPVO> queryShipTo(Map map) throws Exception;
 	public List<String> queryBMCBTX(Map map) throws Exception;
 	public List<String> queryMBCDREP(Map map) throws Exception;
 	public List<String> queryMBADREP(Map map) throws Exception;

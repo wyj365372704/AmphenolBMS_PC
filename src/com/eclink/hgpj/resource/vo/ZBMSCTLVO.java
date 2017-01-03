@@ -50,6 +50,18 @@ public class ZBMSCTLVO extends BaseVO{
 	private String curid;
 	
 	private String fasun;
+	
+	private String sfnam;
+	
+	private String sfadd1;
+	
+	private String sfadd2;
+	
+	private String sfcity;
+	
+	private String sfctr;
+	
+	private String sfzip;
 
 	public String getSite() {
 		return site;
@@ -153,6 +165,54 @@ public class ZBMSCTLVO extends BaseVO{
 
 	public void setNmeng(String nmeng) {
 		this.nmeng = nmeng;
+	}
+
+	public String getSfnam() {
+		return sfnam;
+	}
+
+	public void setSfnam(String sfnam) {
+		this.sfnam = sfnam;
+	}
+
+	public String getSfadd1() {
+		return sfadd1;
+	}
+
+	public void setSfadd1(String sfadd1) {
+		this.sfadd1 = sfadd1;
+	}
+
+	public String getSfadd2() {
+		return sfadd2;
+	}
+
+	public void setSfadd2(String sfadd2) {
+		this.sfadd2 = sfadd2;
+	}
+
+	public String getSfcity() {
+		return sfcity;
+	}
+
+	public void setSfcity(String sfcity) {
+		this.sfcity = sfcity;
+	}
+
+	public String getSfctr() {
+		return sfctr;
+	}
+
+	public void setSfctr(String sfctr) {
+		this.sfctr = sfctr;
+	}
+
+	public String getSfzip() {
+		return sfzip;
+	}
+
+	public void setSfzip(String sfzip) {
+		this.sfzip = sfzip;
 	}
 	
 

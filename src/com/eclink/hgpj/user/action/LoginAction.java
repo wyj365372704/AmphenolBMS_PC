@@ -188,6 +188,8 @@ public class LoginAction extends BaseAction {
 					List<ZBMSU01VO> zbmsList = this.zbmsu01Service.queryZbmsu(vo);
 					getSession().setAttribute("houses", zbmsList);
 					getSession().setAttribute("username", user.getUserName());
+
+					getSession().setAttribute("plant", au.getPlant());
 				}
 			}
 			//			// 根据用户名获取用户信息

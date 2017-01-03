@@ -16,6 +16,15 @@
 	    <result column="NMCHS" property="nmchs" />
 	    <result column="NMENG" property="nmeng" />
 	    <result column="CURID" property="curid" />
+	    
+	    
+	    <result column="SFNAM" property="sfnam" />
+	    <result column="SFADD1" property="sfadd1" />
+	    <result column="SFADD2" property="sfadd2" />
+	    <result column="SFCITY" property="sfcity" />
+	    <result column="SFCTR" property="sfctr" />
+	    <result column="SFZIP" property="sfzip" />
+	    
 	  </resultMap>
 	<select id="queryZbmsctl" resultMap="ZBMSCTLVOMap" parameterClass="ZBMSCTLVO">
 		<![CDATA[ select  *  from  ZBMSCTL where SITE=#site#  

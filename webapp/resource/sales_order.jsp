@@ -62,9 +62,9 @@
 	            </li>
 	        
 	            <li><div class="w_s">计划出货日期：</div> 
-	            	<s:textfield  id="startDate" name="startDate" cssClass="time_input" onclick="WdatePicker()" autocomplete="on"/>
+	            	<s:textfield  name="mbcdrep.startDate" cssClass="time_input" onclick="WdatePicker()" autocomplete="on"/>
 	            	-
-            		<s:textfield  id="endDate" name="endDate" cssClass="time_input" onclick="WdatePicker()" autocomplete="on"/>
+            		<s:textfield  name="mbcdrep.endDate" cssClass="time_input" onclick="WdatePicker()" autocomplete="on"/>
             	</li>
             	
             	
@@ -185,7 +185,7 @@
 	    }
 	}
 	function createNotice(){
-		window.open("sales!toCreateNotice.action",'newwindow','width=400','toolbar=no,menubar=no,scrollbars=no, resizable=no,location=no, status=no');
+		window.open("sales!toCreateNotice.action",'newwindow','height=900, width=800, top=0, left=0, toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no');
 	
 	}
 	// 打印

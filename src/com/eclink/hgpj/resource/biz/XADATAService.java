@@ -7,6 +7,7 @@ import com.eclink.hgpj.resource.vo.BUYERFVO;
 import com.eclink.hgpj.resource.vo.ITMRVAVO;
 import com.eclink.hgpj.resource.vo.ITMSITVO;
 import com.eclink.hgpj.resource.vo.MBCDREPVO;
+import com.eclink.hgpj.resource.vo.MBS2REPVO;
 import com.eclink.hgpj.resource.vo.MODATAVO;
 import com.eclink.hgpj.resource.vo.MOMASTVO;
 import com.eclink.hgpj.resource.vo.MOPORFVO;
@@ -76,6 +77,13 @@ public interface XADATAService {
 	public String queryADDSC(Map map) throws Exception;
 	public String queryMBC6REP(Map map) throws Exception;
 	public String queryCusnm(Map map) throws Exception;
+
+
+	public List<String> queryCusnms(Map map) throws Exception;
+	public List<String> queryCarrier(Map map) throws Exception;
+	public List<String> queryTransport(Map map) throws Exception;
+	public List<MBS2REPVO> queryShipTo(Map map) throws Exception;
+	
 	public String queryBMCBTX(Map map) throws Exception;
 	public String queryMBCDREP(Map map) throws Exception;
 	public String queryMBADREP(Map map) throws Exception;

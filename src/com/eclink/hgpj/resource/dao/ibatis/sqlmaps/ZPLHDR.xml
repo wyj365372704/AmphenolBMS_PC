@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="ZPLHDR" >
+	
+	<typeAlias alias="ZPLHDRVO" type="com.eclink.hgpj.resource.vo.ZPLHDRVO"/>
+	<typeAlias alias="ZPLDTLVO" type="com.eclink.hgpj.resource.vo.ZPLDTLVO"/>
+	<typeAlias alias="ZPLBOXVO" type="com.eclink.hgpj.resource.vo.ZPLBOXVO"/>
+	 	
+	<select id="queryZplhdr" resultClass="ZPLHDRVO" parameterClass="ZPLHDRVO">
+		select  dr.*   
+		from  ZPLHDR as dr  where dr.PLDNO=#pldno# 
+		
+	</select>
+	<select id="queryReceipt" resultClass="ZPLDTLVO" parameterClass="ZPLDTLVO">
+		select  item.*   
+		from  ZPLDTL as item  where item.PLDNO=#pldno# 
+		
+	</select>
+	
+	<select id="queryBch" resultClass="ZPLBOXVO" parameterClass="ZPLBOXVO">
+		select  bch.*  
+		from  ZPLBOX as bch where bch.PLDNO=#pldno# 
+		
+	</select>
+	
+	<select id="queryDtlQty" resultClass="Integer" parameterClass="ZPLDTLVO">
+		select  count(a.PLQTY) as sumqty    
+		from  ZPLDTL as a,ZPLHDR as b where a.PLDNO=b.PLDNO and a.FPOST='0' and a.C6CVNB=#c6cvnb#  
+		
+	</select>
+	<select id="getCoutsByDt" resultClass="Integer" parameterClass="java.math.BigDecimal">
+		<![CDATA[ select  count(*) as ct   
+		from  ZPLHDR where PLDT1=#grdte#  
+		]]>
+	</select>
+	  <!-- 更新资源操作 -->
+  <update id="updateZplhdr" parameterClass="String">
+  	UPDATE ZPLHDR SET OSTAT = '50' WHERE  PLDNO=#pldno#   
+  </update>
+  
+    <update id="updateZplitm" parameterClass="ZPLDTLVO">
+  	UPDATE ZPLDTL SET FPOST = '1' WHERE  PLDNO=#pldno# AND PLDLN=#pldln#  
+  </update>
+  
+  <insert id="insertZplhdr" parameterClass="ZPLHDRVO">
+		<![CDATA[
+		INSERT  INTO ZPLDTL(
+			PLDNO,
+			PLANT,
+			CUSNO,
+			CUSNM,
+			HOUSE,
+			SCAC,
+			INCOT,
+			OSTAT,
+			INVNO,
+			STNAM,
+			STADD1,
+			STADD2,
+			STCITY,		
+			STCTR,
+			
+			STZIP,
+			SFNAM,
+			SFADD1,
+			SFADD2,
+			SFCITY,
+			SFCTR,
+			
+			SFZIP,
+			SCNAM,
+			SCADD1,
+			SCADD2,
+			SCCITY,
+			SCCTR,
+			
+			SCZIP,
+			ETDATE,
+			PLUS1,
+			PLDP1,
+			PLDT1,
+			PLTM1,
+			CMMT
+			)	
+	       VALUES (
+	       		#pldno#,
+	            #plant#,
+		        #cusno#,
+		        #cusnm#,
+		        #house#,		        
+		        #scac#,
+		        
+		        #incot#,
+	            #ostat#,
+		        #invno#,
+		        #stnam#,		        
+		        #stadd1#,
+		        
+		        #stadd2#,
+	            #stcity#,
+		        #stctr#,		        
+		        #stzip#,		        
+		        #sfnam#,		        
+		        #sfadd1#,		        
+		        #sfadd2#,		        
+		        #sfcity#,		        
+		        #sfctr#,		        
+		        #sfzip#,		        
+		        #scnam#,		        
+		        #scadd1#,		        
+		        #scadd2#,		        
+		        #sccity#,		        
+		        #scctr#,		        
+		        #sczip#,		        
+		        #etdate#,		        
+		        #plus1#,		        
+		        #pldp1#,		        
+		        #pldt1#,		        
+		        #pltm1#,		        
+		        #cmmt#)
+		]]>
+	</insert>
+	
+	<insert id="insertZpldtl" parameterClass="ZPLDTLVO">
+		<![CDATA[
+		INSERT  INTO ZPLDTL(
+			PLDNO,
+			PLDLN,
+			C6AENB,
+			C6DCCD,
+			C6CVNB,
+			PONUM,
+			HOUSE,
+			CDFCNB,
+			ADDRNB,
+			ADAASZ,
+			ITNBR,
+			UNMSR,
+			PLSUB,		
+			PLLOC,
+			
+			PLQTY,
+			FPOST,
+			WGHT1,
+			WTUM1,
+			WGHT2,
+			WTUM2
+			)	
+	       VALUES (
+	       		#pldno#,
+	            #pldln#,
+		        #c6aenb#,
+		        #c6dccd#,
+		        #c6cvnb#,		        
+		        #ponum#,
+		        
+		        #house#,
+	            #cdfcnb#,
+		        #addrnb#,
+		        #adaasz#,		        
+		        #itnbr#,
+		        
+		        #unmsr#,
+	            #plsub#,
+		        #plloc#,		        
+		        #plqty#,		        
+		        #fpost#,		        
+		        #wght1#,		        
+		        #wtum1#,		        
+		        #wght2#,		        
+		        #wtum2# )
+		]]>
+	</insert>
+	
+	<insert id="insertZplbox" parameterClass="ZPLBOXVO">
+		<![CDATA[
+		INSERT  INTO ZPLBOX(
+			PLDNO,
+			PLDLN,
+			BOXLN,
+			BOXNM,
+			BOXES
+			)	
+	       VALUES (
+	       		#pldno#,
+	            #pldln#,
+		        #boxln#,
+		        #boxnm#,
+		        #boxes#)
+		]]>
+	</insert>
+</sqlMap>

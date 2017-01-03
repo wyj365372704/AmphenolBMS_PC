@@ -83,6 +83,12 @@
 	
 	<bean id="zvrhdrDao" class="com.eclink.hgpj.resource.dao.ibatis.ZVRHDRDaoImpl"></bean>
 	<bean id="zvrhdrService" class="com.eclink.hgpj.resource.biz.ZVRHDRServiceImpl"></bean>
+	
+	<bean id="zcuscnsDao" class="com.eclink.hgpj.resource.dao.ibatis.ZCUSCNSDaoImpl"></bean>
+	<bean id="zcuscnsService" class="com.eclink.hgpj.resource.biz.ZCUSCNSServiceImpl"></bean>
+	
+	<bean id="zplhdrDao" class="com.eclink.hgpj.resource.dao.ibatis.ZPLHDRDaoImpl"></bean>
+	<bean id="zplhdrService" class="com.eclink.hgpj.resource.biz.ZPLHDRServiceImpl"></bean>
 
 	<bean id="xadataDao" class="com.eclink.hgpj.resource.dao.ibatis.XADATADaoImpl">
 		<property name="dataSource" ref="dataSource2"></property>
