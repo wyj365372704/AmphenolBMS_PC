@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
 <sqlMap namespace="ZDELIDA">
-	<select id="queryZdelida" resultMap="Map" parameterClass="Map">
+	<typeAlias alias="ZDELIDAVO" type="com.eclink.hgpj.resource.vo.ZDELIDAVO" />
+	<select id="queryZdelida" resultClass="ZDELIDAVO"
+		parameterClass="Map">
 		<![CDATA[ select  *  from  ZDELIDA 
 			]]>
 		<dynamic prepend="where">
@@ -11,10 +13,16 @@
 			<isNotEmpty prepend="and" property="whidji">
 				WHIDJI = #whidji#
 			</isNotEmpty>
-			<isNotEmpty prepend="and" property="stasu">
+			<isNotEmpty prepend="and" property="staus">
 				STAUS in ($staus$)
 			</isNotEmpty>
 		</dynamic>
 	</select>
+
+	<update id="updateStaus" parameterClass="ZDELIDAVO">
+	<![CDATA[ update   ZDELIDA set STAUS = #staus# WHERE ORDRJI = #ordrji# AND  
+	PISQJI = #pisqji# AND  BKSQJI = #bksqji# AND STAUS = '10'
+			]]>
+	</update>
 
 </sqlMap>

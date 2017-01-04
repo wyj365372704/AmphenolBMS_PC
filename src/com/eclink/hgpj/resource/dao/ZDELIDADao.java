@@ -20,4 +20,6 @@ import com.eclink.hgpj.resource.vo.ZWHSUBVO;
 public interface ZDELIDADao {
 	
 	public List<ZDELIDAVO> queryZdelida(Map map) throws Exception;
+
+	public void updateStaus(ZDELIDAVO vo) throws Exception;
 }

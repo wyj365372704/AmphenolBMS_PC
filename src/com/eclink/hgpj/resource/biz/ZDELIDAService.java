@@ -21,4 +21,6 @@ import com.eclink.hgpj.resource.vo.ZSHPHDRVO;
  */
 public interface ZDELIDAService {
 	public List<ZDELIDAVO> queryZdelida(Map map) throws Exception;
+
+	public String auditZdelida(Map map) throws Exception;
 }

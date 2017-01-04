@@ -156,9 +156,17 @@ public class PomastAction extends BaseAction {
 
 	private String grnno;
 
-	private String WHIDJI;
+	private String whidji;
 
-	private String ORDRJI;
+	private String ordrji;
+
+	private String pisqji;
+
+	private String bksqji;
+
+	private String wkdtji;
+
+	private String allow;
 
 
 	private ZITMEXTService zitmextService;
@@ -179,6 +187,38 @@ public class PomastAction extends BaseAction {
 		this.zitmextService = zitmextService;
 	}
 
+	public String getAllow() {
+		return allow;
+	}
+
+	public void setAllow(String allow) {
+		this.allow = allow;
+	}
+
+	public String getWkdtji() {
+		return wkdtji;
+	}
+
+	public void setWkdtji(String wkdtji) {
+		this.wkdtji = wkdtji;
+	}
+
+	public String getPisqji() {
+		return pisqji;
+	}
+
+	public void setPisqji(String pisqji) {
+		this.pisqji = pisqji;
+	}
+
+	public String getBksqji() {
+		return bksqji;
+	}
+
+	public void setBksqji(String bksqji) {
+		this.bksqji = bksqji;
+	}
+
 	public ZDELIDAService getZdelidaService() {
 		return zdelidaService;
 	}
@@ -187,20 +227,20 @@ public class PomastAction extends BaseAction {
 		this.zdelidaService = zdelidaService;
 	}
 
-	public String getWHIDJI() {
-		return WHIDJI;
+	public String getWhidji() {
+		return whidji;
 	}
 
-	public void setWHIDJI(String wHIDJI) {
-		WHIDJI = wHIDJI;
+	public void setWhidji(String whidji) {
+		this.whidji = whidji;
 	}
 
-	public String getORDRJI() {
-		return ORDRJI;
+	public String getOrdrji() {
+		return ordrji;
 	}
 
-	public void setORDRJI(String oRDRJI) {
-		ORDRJI = oRDRJI;
+	public void setOrdrji(String ordrji) {
+		this.ordrji = ordrji;
 	}
 
 	public String getGrnno() {
@@ -1223,11 +1263,11 @@ public class PomastAction extends BaseAction {
 
 	public String toEnsureList() throws Exception{
 		try {
-			List<SCHRCPVO> results = new ArrayList<SCHRCPVO>();
-			
+			List<Map> results = new ArrayList();
+
 			Map map = new HashMap();
-			map.put("ordrji", ORDRJI);
-			map.put("whidji", WHIDJI);
+			map.put("ordrji", ordrji);
+			map.put("whidji", whidji);
 			map.put("staus", "10");
 			List<ZDELIDAVO> queryZdelida = zdelidaService.queryZdelida(map);
 			for(ZDELIDAVO zdelidavo:queryZdelida){
@@ -1237,14 +1277,56 @@ public class PomastAction extends BaseAction {
 				schrcpvo.setBksqji(zdelidavo.getBksqji());
 				List<SCHRCPVO> querySchrcp = xadataService.querySchrcp(schrcpvo);
 				if(querySchrcp.size()>0){
-					results.add(querySchrcp.get(0));
+					schrcpvo = querySchrcp.get(0);
+					Map item = new HashMap();
+					item.put("whidji", schrcpvo.getWhidji());
+					item.put("ordrji", schrcpvo.getOrdrji());
+					item.put("pisqji", schrcpvo.getPisqji().intValue());
+					item.put("bksqji", schrcpvo.getBksqji().intValue());
+					item.put("itnoji", schrcpvo.getItnoji());
+					item.put("ds40ji", schrcpvo.getDs40ji());
+					item.put("orumji", schrcpvo.getOrumji());
+					item.put("ucoqji", schrcpvo.getUcoqji());
+					item.put("qtyoji", schrcpvo.getQtyoji());
+					item.put("wkdtji", zdelidavo.getWkdtji().add(new BigDecimal(19000000)).intValue());
+					item.put("dkdtji", schrcpvo.getDkdtji().add(new BigDecimal(19000000)).intValue());
+					results.add(item);
 				}
 			}
 			ActionContext.getContext().getValueStack().set("results", results);
 			return "toEnsureList";
 		} catch (Exception e) {
+			e.printStackTrace();
 			return ERROR;
 		}
 
+	}
+
+	public String auditZdelida(){
+		try {
+			Map parames = new HashMap();
+			parames.put("sluserId", this.getSession().getServletContext().getAttribute("sluserId"));
+			parames.put("slpassword", this.getSession().getServletContext().getAttribute("slpassword"));
+			parames.put("slurl", this.getSession().getServletContext().getAttribute("slurl"));
+			parames.put("ordrji", ordrji);
+			parames.put("pisqji", pisqji);
+			parames.put("bksqji", bksqji);
+			parames.put("wkdtji", wkdtji);
+			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
+			String currentDate = dateFormat.format(new Date());
+			parames.put("currentDate", currentDate);
+			if(allow.equals("1")){
+				parames.put("staus", "40");
+			}else{
+				parames.put("staus", "50");
+			}
+			System.out.println("wyj11");
+			data = zdelidaService.auditZdelida(parames);
+			
+		} catch (Throwable e) {e.printStackTrace();
+		log.error("Go to admin resource operation grant page occured error.", e);
+		data = "fail";
+		}
+		return "todata";
 	}
 }

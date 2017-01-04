@@ -48,4 +48,9 @@ public class ZDELIDADaoImpl extends SqlMapClientDaoSupport implements ZDELIDADao
 	public List<ZDELIDAVO> queryZdelida(Map map) throws Exception {
 		return this.getSqlMapClientTemplate().queryForList("ZDELIDA.queryZdelida",map);
 	}
+
+	@Override
+	public void updateStaus(ZDELIDAVO vo) throws Exception {
+		getSqlMapClientTemplate().update("ZDELIDA.updateStaus", vo);
+	}
 }
