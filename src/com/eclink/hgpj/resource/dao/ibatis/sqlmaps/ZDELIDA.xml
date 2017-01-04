@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<sqlMap namespace="ZDELIDA">
+	<select id="queryZdelida" resultMap="Map" parameterClass="Map">
+		<![CDATA[ select  *  from  ZDELIDA 
+			]]>
+		<dynamic prepend="where">
+			<isNotEmpty prepend="and" property="ordrji">
+				ORDRJI = #ordrji#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="whidji">
+				WHIDJI = #whidji#
+			</isNotEmpty>
+			<isNotEmpty prepend="and" property="stasu">
+				STAUS in ($staus$)
+			</isNotEmpty>
+		</dynamic>
+	</select>
+
+</sqlMap>

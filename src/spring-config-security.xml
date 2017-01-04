@@ -89,6 +89,9 @@
 	
 	<bean id="zplhdrDao" class="com.eclink.hgpj.resource.dao.ibatis.ZPLHDRDaoImpl"></bean>
 	<bean id="zplhdrService" class="com.eclink.hgpj.resource.biz.ZPLHDRServiceImpl"></bean>
+	
+	<bean id="zdelidaDao" class="com.eclink.hgpj.resource.dao.ibatis.ZDELIDADaoImpl"></bean>
+	<bean id="zdelidaService" class="com.eclink.hgpj.resource.biz.ZDELIDAServiceImpl"></bean>
 
 	<bean id="xadataDao" class="com.eclink.hgpj.resource.dao.ibatis.XADATADaoImpl">
 		<property name="dataSource" ref="dataSource2"></property>

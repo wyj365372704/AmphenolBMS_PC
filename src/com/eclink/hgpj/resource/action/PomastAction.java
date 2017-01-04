@@ -22,6 +22,7 @@ import com.eclink.hgpj.base.BaseAction;
 import com.eclink.hgpj.common.HGPJConstant;
 import com.eclink.hgpj.resource.biz.XADATAService;
 import com.eclink.hgpj.resource.biz.ZBMSCTLService;
+import com.eclink.hgpj.resource.biz.ZDELIDAService;
 import com.eclink.hgpj.resource.biz.ZIPHDRService;
 import com.eclink.hgpj.resource.biz.ZITMBXService;
 import com.eclink.hgpj.resource.biz.ZITMEXTService;
@@ -43,6 +44,7 @@ import com.eclink.hgpj.resource.vo.VENNAMVO;
 import com.eclink.hgpj.resource.vo.ZBMSCTLVO;
 import com.eclink.hgpj.resource.vo.ZBMSRSNVO;
 import com.eclink.hgpj.resource.vo.ZBMSU02VO;
+import com.eclink.hgpj.resource.vo.ZDELIDAVO;
 import com.eclink.hgpj.resource.vo.ZIPDTLVO;
 import com.eclink.hgpj.resource.vo.ZIPHDRVO;
 import com.eclink.hgpj.resource.vo.ZIPHSTVO;
@@ -78,6 +80,8 @@ public class PomastAction extends BaseAction {
 	private ZIPHDRService ziphdrService;
 
 	private ZMBD1REPService zmbd1repService;
+
+	private ZDELIDAService zdelidaService;
 
 	private POMASTVO pomast;
 
@@ -118,7 +122,7 @@ public class PomastAction extends BaseAction {
 	private String cmmt;
 
 	private String ostat;
-	
+
 	private String chk;
 
 	private String buynm;
@@ -152,6 +156,10 @@ public class PomastAction extends BaseAction {
 
 	private String grnno;
 
+	private String WHIDJI;
+
+	private String ORDRJI;
+
 
 	private ZITMEXTService zitmextService;
 
@@ -169,6 +177,30 @@ public class PomastAction extends BaseAction {
 
 	public void setZitmextService(ZITMEXTService zitmextService) {
 		this.zitmextService = zitmextService;
+	}
+
+	public ZDELIDAService getZdelidaService() {
+		return zdelidaService;
+	}
+
+	public void setZdelidaService(ZDELIDAService zdelidaService) {
+		this.zdelidaService = zdelidaService;
+	}
+
+	public String getWHIDJI() {
+		return WHIDJI;
+	}
+
+	public void setWHIDJI(String wHIDJI) {
+		WHIDJI = wHIDJI;
+	}
+
+	public String getORDRJI() {
+		return ORDRJI;
+	}
+
+	public void setORDRJI(String oRDRJI) {
+		ORDRJI = oRDRJI;
 	}
 
 	public String getGrnno() {
@@ -493,7 +525,7 @@ public class PomastAction extends BaseAction {
 	public String printO()throws Exception {
 		Map resultMap = new HashMap();
 		try{
-			
+
 			Map map = new HashMap();
 			map.put("ordnoO", ordno);
 
@@ -501,7 +533,7 @@ public class PomastAction extends BaseAction {
 			System.out.println("result's size is "+results.size());
 			if(results!=null && results.size()>0){
 				pomast = results.get(0);
-				
+
 				resultMap.put("house", pomast.getHouse());
 				resultMap.put("ordno", pomast.getOrdno());
 				resultMap.put("revnb", pomast.getRevnb());
@@ -512,7 +544,7 @@ public class PomastAction extends BaseAction {
 				resultMap.put("vndnr", pomast.getVndnr());
 				resultMap.put("trmds", pomast.getTrmds());
 				resultMap.put("viads", pomast.getViads());
-				
+
 
 				//判断是否为外协订单
 				MOPORFVO moporf = new  MOPORFVO();
@@ -529,7 +561,7 @@ public class PomastAction extends BaseAction {
 				String d= (pomast.getActdt()==null || pomast.getActdt().doubleValue()==0.0)?"":pomast.getActdt().add(BigDecimal.valueOf(19000000)).toString().trim();
 				pomast.setActdts((d.length()<8?d: (d.substring(0, 4)+"-"+d.substring(4, 6)+"-"+d.substring(6, 8)+" ")));
 				resultMap.put("actdts", pomast.getActdts());
-				
+
 				zbmsctl = new ZBMSCTLVO();
 				zbmsctl.setSite((String) getSession().getAttribute("stid"));
 				List<ZBMSCTLVO> bmsctlList = this.zbmsctlService.queryZbmsctl(zbmsctl);
@@ -538,7 +570,7 @@ public class PomastAction extends BaseAction {
 					zbmsctl = bmsctlList.get(0);
 					resultMap.put("nmchs", zbmsctl.getNmchs());
 					resultMap.put("nmeng", zbmsctl.getNmeng());
-					
+
 					if(pomast.getCurid() == null || pomast.getCurid().trim().equals("")){
 						if(zbmsctl.getCurid() == null || zbmsctl.getCurid().trim().equals("")){
 							resultMap.put("curid","CNY");
@@ -596,10 +628,10 @@ public class PomastAction extends BaseAction {
 				List<POITEMVO> poitemList = this.xadataService.queryPoitem(poitemMap);
 				System.out.println("poitemList's size is "+poitemList.size());
 				pomast.setPoitemList(poitemList);
-				
+
 				List<Map> item = new ArrayList<Map>();
 				resultMap.put("item", item);
-				
+
 				for(POITEMVO poitem:poitemList){
 					Map son1 = new HashMap();
 					item.add(son1);
@@ -616,10 +648,10 @@ public class PomastAction extends BaseAction {
 						List<POBLKTVO> blktList = this.xadataService.queryPoblkt(blktmap);
 						System.out.println("blktList's size is "+blktList.size());
 						poitem.setPoblktList(blktList);
-						
+
 						List<Map> son1_ = new ArrayList<Map>();
 						son1.put("son1_", son1_);
-						
+
 						for(POBLKTVO poblkt:blktList){
 							d= (poblkt.getDokdt()==null || poblkt.getDokdt().doubleValue()==0.0)?"":new BigDecimal(poblkt.getDokdt()).add(BigDecimal.valueOf(19000000)).toString().trim();
 							poblkt.setDokdts((d.length()<8?d: (d.substring(0, 4)+"-"+d.substring(4, 6)+"-"+d.substring(6, 8)+" ")));
@@ -629,11 +661,11 @@ public class PomastAction extends BaseAction {
 							son11.put("staic", poblkt.getStaic().trim());
 							son11.put("dokdts", poblkt.getDokdts());
 							son11.put("relqt", poblkt.getRelqt());
-							
+
 							if(isOutSource){//如果是外协订单,配置上生产信息
 								Map son2=  new HashMap();
 								son11.put("son2", son2);
-								
+
 								MOPORFVO moporf2 = new  MOPORFVO();
 								moporf2.setPonr(poblkt.getOrdno());
 								moporf2.setPisq(poblkt.getPoisq());
@@ -684,8 +716,8 @@ public class PomastAction extends BaseAction {
 										poitem.setItmsit(itmsitvo);
 										son2.put("umstt9", umstt9List.get(0));
 									}
-									
-									
+
+
 
 									//取modata
 									MODATAVO modata = new MODATAVO();
@@ -702,7 +734,7 @@ public class PomastAction extends BaseAction {
 										son22.put("cdesc", modatavo.getCdesc());
 										son22.put("qtreq", modatavo.getQtreq());
 										son22.put("unmsr", modatavo.getUnmsr());
-										
+
 										ZITEMBXVO zitembx = new ZITEMBXVO();
 										zitembx.setHouse(modatavo.getCitwh());
 										zitembx.setItnbr(modatavo.getCitem());
@@ -719,11 +751,11 @@ public class PomastAction extends BaseAction {
 						d= (poitem.getDokdt()==null || poitem.getDokdt().doubleValue()==0.0)?"":new BigDecimal(poitem.getDokdt()).add(BigDecimal.valueOf(19000000)).toString().trim();
 						poitem.setDokdts((d.length()<8?d: (d.substring(0, 4)+"-"+d.substring(4, 6)+"-"+d.substring(6, 8)+" ")));
 						son1.put("dokdts", poitem.getDokdts());
-						
+
 						if(isOutSource){//如果是外协订单,配置上生产信息
 							Map son2=  new HashMap();
 							son1.put("son2", son2);
-							
+
 							MOPORFVO moporf2 = new  MOPORFVO();
 							moporf2.setPonr(poitem.getOrdno());
 							moporf2.setPisq(poitem.getPoisq());
@@ -771,8 +803,8 @@ public class PomastAction extends BaseAction {
 									poitem.setItmsit(itmsitvos.get(0));
 									son2.put("umstt9", itmsitvos.get(0).getUmstt9());
 								}
-								
-								
+
+
 
 								//取modata
 								MODATAVO modata = new MODATAVO();
@@ -789,7 +821,7 @@ public class PomastAction extends BaseAction {
 									son22.put("cdesc", modatavo.getCdesc());
 									son22.put("qtreq", modatavo.getQtreq());
 									son22.put("unmsr", modatavo.getUnmsr());
-									
+
 									ZITEMBXVO zitembx = new ZITEMBXVO();
 									zitembx.setHouse(modatavo.getCitwh());
 									zitembx.setItnbr(modatavo.getCitem());
@@ -802,8 +834,8 @@ public class PomastAction extends BaseAction {
 							}
 						}
 					}
-	
-					
+
+
 				}
 			}
 		}catch(Exception e){
@@ -945,7 +977,7 @@ public class PomastAction extends BaseAction {
 					//					momast.setEndDateB(BigDecimal.valueOf(Long.valueOf("1"+Utils.formateDate(sdf.parse(momast.getEndDate()), "yyMMdd"))));
 					map.put("endDate", BigDecimal.valueOf(Long.valueOf("1"+Utils.formateDate(sdf.parse(zvrhdr.getEndDate()), "yyMMdd"))));
 				}
-				
+
 				map.put("ostat", ostat);
 				zvrhdrList = zvrhdrService.queryZvrhdr(map);
 			}
@@ -1110,7 +1142,7 @@ public class PomastAction extends BaseAction {
 		}
 		return "todata";
 	}
-	
+
 	public String toPrintZvrhdr() throws Exception{
 		try {
 			List<Map> results = new ArrayList<Map>();
@@ -1125,23 +1157,23 @@ public class PomastAction extends BaseAction {
 					zvrhdrMap.put("house", zvrhdrvo.getHouse());
 					zvrhdrMap.put("vndnr", zvrhdrvo.getVndnr());
 					zvrhdrMap.put("printDate", Utils.formateDate(null, "yyyy/MM/dd HH:mm:ss"));
-					
+
 					String qrMessage = "*V"+zvrhdrvo.getVrdno();
 					String encoderQRCoder = QRcoderUtil.encoderQRCoder(qrMessage, ServletActionContext.getContext().getSession().get("username").toString(),getSession().getServletContext().getRealPath("/"));
 					HttpServletRequest request = ServletActionContext.getRequest();
 					String path = request.getContextPath(); 
 					String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 					zvrhdrMap.put("qrcodeurl", basePath+"/"+encoderQRCoder);
-					
+
 					List<Map> zvritmList = new ArrayList<Map>();
 					zvrhdrMap.put("zvritmList", zvritmList);
-					
+
 					List<ZVRITMVO> queryZvritm = zvrhdrService.queryZvritm(parMap);
 					for(ZVRITMVO zvritmvo:queryZvritm){
 						Map zvritmMap = new HashMap();
 						zvritmMap.put("ordno_poisq", zvritmvo.getOrdno()+"-"+zvritmvo.getPoisq());
 						zvritmMap.put("itnbr", zvritmvo.getItnbr().trim());
-						
+
 						///
 						String ldesc = "";
 						ITMSITVO itmsitvo = new ITMSITVO();
@@ -1170,7 +1202,7 @@ public class PomastAction extends BaseAction {
 						}
 						zvritmMap.put("ldesc", ldesc);
 						///
-						
+
 						zvritmMap.put("plnvq", zvritmvo.getPlnvq().doubleValue());
 						zvritmMap.put("stkum", zvritmvo.getStkum());
 						zvritmMap.put("plloc", zvritmvo.getPlloc());
@@ -1184,6 +1216,33 @@ public class PomastAction extends BaseAction {
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
+			return ERROR;
+		}
+
+	}
+
+	public String toEnsureList() throws Exception{
+		try {
+			List<SCHRCPVO> results = new ArrayList<SCHRCPVO>();
+			
+			Map map = new HashMap();
+			map.put("ordrji", ORDRJI);
+			map.put("whidji", WHIDJI);
+			map.put("staus", "10");
+			List<ZDELIDAVO> queryZdelida = zdelidaService.queryZdelida(map);
+			for(ZDELIDAVO zdelidavo:queryZdelida){
+				SCHRCPVO schrcpvo = new SCHRCPVO();
+				schrcpvo.setOrdrji(zdelidavo.getOrdrji());
+				schrcpvo.setPisqji(zdelidavo.getPisqji());
+				schrcpvo.setBksqji(zdelidavo.getBksqji());
+				List<SCHRCPVO> querySchrcp = xadataService.querySchrcp(schrcpvo);
+				if(querySchrcp.size()>0){
+					results.add(querySchrcp.get(0));
+				}
+			}
+			ActionContext.getContext().getValueStack().set("results", results);
+			return "toEnsureList";
+		} catch (Exception e) {
 			return ERROR;
 		}
 
