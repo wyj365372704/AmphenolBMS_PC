@@ -754,6 +754,56 @@ public class MbcdrepAction extends BaseAction {
 		}
 		return "todata";
 	}
+	public String getSalesList()throws Exception {
+		JSONObject jo = new JSONObject();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		try {
+			int plant =(Integer)this.getSession().getAttribute("plant");
+//			if(this.cusno!=null && !this.cusno.trim().equals("")){
+
+			StringBuffer strbuf = new StringBuffer();
+				if(mbcdrep.getStartDate()!=null && !mbcdrep.getStartDate().trim().equals("")){
+					mbcdrep.setStartDateB(BigDecimal.valueOf(Long.valueOf("1"+Utils.formateDate(sdf.parse(mbcdrep.getStartDate()), "yyMMdd"))));
+				}
+				if(mbcdrep.getEndDate()!=null && !mbcdrep.getEndDate().trim().equals("")){
+					mbcdrep.setEndDateB(BigDecimal.valueOf(Long.valueOf("1"+Utils.formateDate(sdf.parse(mbcdrep.getEndDate()), "yyMMdd"))));
+				}
+				
+				results = this.xadataService.queryMbcdrep(mbcdrep);
+				if(results!=null && results.size()>0){
+					
+					for(int i=0;i<results.size();i++){
+						MBCDREPVO temp = results.get(i);
+						if(i%2==0){
+							strbuf.append("<tr class='td_bgcolor' >");
+						}else{
+							strbuf.append("<tr class='td_bgcolor2' >");
+						}
+						strbuf.append("<td><input name='chk' type='checkbox' value='"+temp.getCdcvnb()+"'> /></td>");
+						strbuf.append("<td>"+temp.getCdaayyn()+"</td>");
+						strbuf.append("<td>"+temp.getCdcvnb()+"</td>");
+						strbuf.append("<td>"+temp.getPonum()+"</td>");
+						strbuf.append("<td>"+temp.getCdfcnb()+"</td>");
+						strbuf.append("<td>"+temp.getCdaitx()+"</td>");
+						strbuf.append("<td>"+temp.getCdaltx()+"</td>");
+						strbuf.append("<td>"+temp.getCdacqty()+"</td>");
+						strbuf.append("<td>"+temp.getCdz901()+"</td>");
+						strbuf.append("<td>"+temp.getCdfxva()+"</td>");
+						strbuf.append("<td></td>");
+						strbuf.append("</tr>");
+					}
+				}
+				jo.put("retStr", strbuf.toString());
+				jo.put("result", "success");
+				data=jo.toString();
+//			}
+		}catch (Exception e) {e.printStackTrace();
+		log.error("Go to admin resource operation grant page occured error.", e);
+		jo.put("result", "fail");
+		return "todata";
+		}
+		return "todata";
+	}
 	public String momastPrint() throws Exception{
 		try {	
 			ActionContext.getContext().getValueStack().set("grnno", grnno);

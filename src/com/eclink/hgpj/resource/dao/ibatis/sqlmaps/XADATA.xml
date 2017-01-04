@@ -56,7 +56,7 @@
 		<result property="cdaitx" column="CDAITX" />
 		<result property="cda3cd" column="CDA3CD" />
 		<result property="cdz901" column="CDZ901" />
-		
+		<result property="ponum" column="BMCBTX" />
 	</resultMap>
 	
 	<resultMap id="MBADREPVOMap" class="MBADREPVO">
@@ -195,7 +195,7 @@
 	
 	<select id="queryMbcdrep" resultMap="MBCDREPVOMap"
 		parameterClass="MBCDREPVO">
-		<![CDATA[ select a.*, b.CUSNM as CDAAYYN                        
+		<![CDATA[ select a.*, b.CUSNM as CDAAYYN, c.BMCBTX as ponum                        
 					from MBCDREP a 
 					inner join MBBMCPP c 
 					on a.CDAENB = c.BMAENB and a.CDDCCD=c.BMDCCD and a.CDCVNB=c.BMCVNB                                

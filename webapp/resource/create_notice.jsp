@@ -73,7 +73,28 @@
 		  });
 	}
 	function searchDetail(){
-		
+		var startDate=document.getElementsByName("startDate")[0].value;
+		var cusno=document.getElementsByName("zplhdr.cusno")[0].value;
+		var house=document.getElementsByName("zplhdr.house")[0].value;
+		$.ajax( {  
+		       url:'sales!getSalesList.action',// 跳转到 action  
+		       data:{  
+		                "mbcdrep.cda3cd" : house,
+		                "mbcdrep.cdaayy" : cusno,
+		                "mbcdrep.startDate" :startDate
+		       },  
+		      type:'post',  
+		      cache:false,  
+		      success:function(data) { 
+		      	var json = $.parseJSON(data);
+		        alert(json.retStr); 
+		        document.getElementById("info").innerHTML=json.retStr;
+		       },  
+		       error : function() {  
+		            // view("异常！");  
+		           // alert("删除物料失败！");  
+		       }  
+		  });
 	}
 </script>
 <body>
@@ -150,11 +171,13 @@
 				<td>
 					<table width="100%" border="1" cellpadding="3px" style="border-collapse: collapse;">
 						<tbody>
+						
 							<tr>
 								<th><input type="checkbox" name="cba" onclick="selectall(this)" />选择</th>
-								<th>客户编码</th>
+								<!-- <th>客户编码</th>  -->
 								<th>客户名称</th>
 								<th>订单号</th>
+								<th>客户PO</th>
 								<th>行号</th>	
 								<th>产品</th>
 								<th>产品描述</th>
@@ -163,7 +186,7 @@
 								<th>库存量</th>
 								<th>未出货量</th>
 							</tr>
-							
+							<div id="info"></div>
 						</tbody>
 					</table>
 				</td>
