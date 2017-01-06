@@ -11,21 +11,51 @@
 		from  ZPLHDR as dr  where dr.PLDNO=#pldno# 
 		
 	</select>
+	
+	<select id="queryZplhdrByPar" resultClass="ZPLHDRVO"
+		parameterClass="Map">
+		<![CDATA[ select  a.*   
+		from  ZPLHDR as a  
+		]]>
+		<dynamic prepend="where">
+			<isNotEmpty prepend="AND" property="pldno">
+				a.PLDNO like ('%'||#pldno#||'%' ) 
+			</isNotEmpty>
+			<isNotEmpty prepend="AND" property="house">
+				a.HOUSE = #house#
+			</isNotEmpty>
+			<isNotEmpty prepend="AND" property="ostat">
+				a.OSTAT != #ostat#
+			</isNotEmpty>
+			<isNotEmpty prepend="AND" property="cusnm">
+				a.CUSNM  like ('%'||#cusnm#||'%' ) 
+			</isNotEmpty>
+			<isNotEmpty prepend="AND" property="startDateB">
+				<![CDATA[a.ETDATE>=#startDateB# ]]>				
+			</isNotEmpty>
+			<isNotEmpty prepend="AND" property="endDateB">
+					<![CDATA[a.ETDATE<=#endDateB#]]>
+			</isNotEmpty>
+		</dynamic>
+		<![CDATA[ order by a.PLDNO ]]>
+
+	</select>
+	
 	<select id="queryReceipt" resultClass="ZPLDTLVO" parameterClass="ZPLDTLVO">
 		select  item.*   
-		from  ZPLDTL as item  where item.PLDNO=#pldno# 
+		from  ZPLDTL as item  where item.PLDNO=#pldno# order by item.PLDNO,item.PLDLN
 		
 	</select>
 	
 	<select id="queryBch" resultClass="ZPLBOXVO" parameterClass="ZPLBOXVO">
 		select  bch.*  
-		from  ZPLBOX as bch where bch.PLDNO=#pldno# 
+		from  ZPLBOX as bch where bch.PLDNO=#pldno# order by bch.PLDNO,bch.PLDLN
 		
 	</select>
 	
-	<select id="queryDtlQty" resultClass="Integer" parameterClass="ZPLDTLVO">
-		select  count(a.PLQTY) as sumqty    
-		from  ZPLDTL as a,ZPLHDR as b where a.PLDNO=b.PLDNO and a.FPOST='0' and a.C6CVNB=#c6cvnb#  
+	<select id="queryDtlQty" resultClass="Double" parameterClass="ZPLDTLVO">
+		select  sum(a.PLQTY) as sumqty    
+		from  ZPLDTL as a,ZPLHDR as b  where a.PLDNO=b.PLDNO and b.OSTAT='10' and a.FPOST='0' and a.C6CVNB=#c6cvnb# and a.C6AENB=#c6aenb# and a.C6DCCD=#c6dccd# and a.CDFCNB=#cdfcnb#  
 		
 	</select>
 	<select id="getCoutsByDt" resultClass="Integer" parameterClass="java.math.BigDecimal">
@@ -41,10 +71,121 @@
     <update id="updateZplitm" parameterClass="ZPLDTLVO">
   	UPDATE ZPLDTL SET FPOST = '1' WHERE  PLDNO=#pldno# AND PLDLN=#pldln#  
   </update>
+  <update id="deleteZplhdr" parameterClass="String">
+  	UPDATE ZPLHDR SET OSTAT = '99' WHERE  PLDNO=#pldno#   
+  </update>
+  <update id="updateZplhdrByPar" parameterClass="ZPLHDRVO">
+  	UPDATE ZPLHDR 
+  	<dynamic prepend="set" >
+	  	<isNotEmpty prepend="," property="ostat" >
+        	OSTAT = #ostat#
+      	</isNotEmpty>
+      	<isNotEmpty prepend="," property="stnam" >
+        	STNAM = #stnam#
+      	</isNotEmpty>
+      	<isNotEmpty prepend="," property="stadd1" >
+        	STADD1 = #stadd1#
+      	</isNotEmpty>
+      	<isNotEmpty prepend="," property="stadd2" >
+        	STADD2 = #stadd2#
+      	</isNotEmpty>
+      	<isNotEmpty prepend="," property="stcity" >
+        	STCITY = #stcity#
+      	</isNotEmpty>
+      	<isNotEmpty prepend="," property="stctr" >
+        	STCTR = #stctr#
+      	</isNotEmpty>
+      	<isNotEmpty prepend="," property="stzip" >
+        	STZIP = #stzip#
+      	</isNotEmpty>
+      	<isNotEmpty prepend="," property="sfnam" >
+        	SFNAM = #sfnam#
+      	</isNotEmpty>
+      	<isNotEmpty prepend="," property="sfadd1" >
+        	SFADD1 = #sfadd1#
+      	</isNotEmpty>
+      	<isNotEmpty prepend="," property="sfadd2" >
+        	SFADD2 = #sfadd2#
+      	</isNotEmpty>
+      	<isNotEmpty prepend="," property="sfcity" >
+        	SFCITY = #sfcity#
+      	</isNotEmpty>
+      	<isNotEmpty prepend="," property="sfctr" >
+        	SFCTR = #sfctr#
+      	</isNotEmpty>
+      	<isNotEmpty prepend="," property="sfzip" >
+        	SFZIP = #sfzip#
+      	</isNotEmpty>
+      	<isNotEmpty prepend="," property="scnam" >
+        	SCNAM = #scnam#
+      	</isNotEmpty>
+      	<isNotEmpty prepend="," property="scadd1" >
+        	SCADD1 = #scadd1#
+      	</isNotEmpty>
+      	<isNotEmpty prepend="," property="scadd2" >
+        	SCADD2 = #scadd2#
+      	</isNotEmpty>
+      	<isNotEmpty prepend="," property="sccity" >
+        	SCCITY = #sccity#
+      	</isNotEmpty>
+      	<isNotEmpty prepend="," property="scctr" >
+        	SCCTR = #scctr#
+      	</isNotEmpty>
+      	<isNotEmpty prepend="," property="sczip" >
+        	SCZIP = #sczip#
+      	</isNotEmpty>
+	  </dynamic>
+  	 WHERE  PLDNO=#pldno#   
+  </update>
   
+  <update id="updateZpldtlByPar" parameterClass="ZPLDTLVO">
+  	UPDATE ZPLDTL  
+  	<dynamic prepend="set" >
+	  	<isNotEmpty prepend="," property="ostat" >
+        	OSTAT = #ostat#
+      	</isNotEmpty>
+      	<isNotEmpty prepend="," property="plsub" >
+        	PLSUB = #plsub#
+      	</isNotEmpty>
+      	<isNotEmpty prepend="," property="plloc" >
+        	PLLOC = #plloc#
+      	</isNotEmpty>
+      	<isNotEmpty prepend="," property="plqty" >
+        	PLQTY = #plqty#
+      	</isNotEmpty>
+      	<isNotEmpty prepend="," property="fpost" >
+        	FPOST = #fpost#
+      	</isNotEmpty>
+      	<isNotEmpty prepend="," property="wght1" >
+        	WGHT1 = #wght1#
+      	</isNotEmpty>
+      	<isNotEmpty prepend="," property="wtum1" >
+        	WTUM1 = #wtum1#
+      	</isNotEmpty>
+      	<isNotEmpty prepend="," property="wght2" >
+        	WGHT2 = #wght2#
+      	</isNotEmpty>
+      	<isNotEmpty prepend="," property="wtum2" >
+        	WTUM2 = #wtum2#
+      	</isNotEmpty>
+	  </dynamic>
+  	 WHERE  PLDNO=#pldno# and PLDLN=#pldln#   
+  </update>
+  <update id="updateZplboxByPar" parameterClass="ZPLBOXVO">
+  	UPDATE ZPLDTL  
+  	<dynamic prepend="set" >
+	  	<isNotEmpty prepend="," property="boxnm" >
+        	BOXNM = #boxnm#
+      	</isNotEmpty>
+      	<isNotEmpty prepend="," property="boxes" >
+        	BOXES = #boxes#
+      	</isNotEmpty>
+	  </dynamic>
+  	 WHERE  PLDNO=#pldno# and PLDLN=#pldln# and BOXLN=#boxln#   
+  </update>
   <insert id="insertZplhdr" parameterClass="ZPLHDRVO">
 		<![CDATA[
-		INSERT  INTO ZPLDTL(
+		INSERT  INTO ZPLHDR(
 			PLDNO,
 			PLANT,
 			CUSNO,

@@ -140,6 +140,10 @@
 			<result name="toCreateNotice">/resource/create_notice.jsp</result>
 			<result name="todata">/commons/data.jsp</result>
 		</action>
+		<action name="zplhdrs" class="com.eclink.hgpj.resource.action.ZplhdrAction">
+			<result name="toZplhdr">/resource/sales_notice.jsp</result>
+			<result name="todata">/commons/data.jsp</result>
+		</action>
 
 	</package>
 

@@ -58,6 +58,10 @@ public class MBCDREPVO extends BaseVO{
 	
 	private String ponum;
 	
+	private String bihjtx;
+	
+	private String bihltx;
+	
 	private String startDate;
 	
 	private String endDate;
@@ -264,6 +268,22 @@ public class MBCDREPVO extends BaseVO{
 
 	public void setEndDateB(BigDecimal endDateB) {
 		this.endDateB = endDateB;
+	}
+
+	public String getBihjtx() {
+		return bihjtx;
+	}
+
+	public void setBihjtx(String bihjtx) {
+		this.bihjtx = bihjtx;
+	}
+
+	public String getBihltx() {
+		return bihltx;
+	}
+
+	public void setBihltx(String bihltx) {
+		this.bihltx = bihltx;
 	}
 
 	

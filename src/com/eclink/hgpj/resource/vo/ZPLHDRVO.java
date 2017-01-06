@@ -70,7 +70,7 @@ public class ZPLHDRVO extends BaseVO{
 	
 	private String sczip;
 	
-	private BigDecimal etdate;
+	private Long etdate;
 	
 	private String plus1;
 	
@@ -299,11 +299,11 @@ public class ZPLHDRVO extends BaseVO{
 	}
 
 
-	public BigDecimal getEtdate() {
+	public Long getEtdate() {
 		return etdate;
 	}
 
-	public void setEtdate(BigDecimal etdate) {
+	public void setEtdate(Long etdate) {
 		this.etdate = etdate;
 	}
 

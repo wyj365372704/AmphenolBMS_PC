@@ -303,4 +303,14 @@ public class XADATAServiceImpl implements XADATAService {
 		return xadataDao.queryCusnms(map);
 	}
 
+
+	@Override
+	public String queryMBADREPM(Map map) throws Exception {
+		List<String> list= xadataDao.queryMBADREPM(map);
+		if(list!=null && list.size()>0){
+			return list.get(0);
+		}
+		return "";
+	}
+
 }

@@ -57,6 +57,8 @@
 		<result property="cda3cd" column="CDA3CD" />
 		<result property="cdz901" column="CDZ901" />
 		<result property="ponum" column="BMCBTX" />
+		<result property="bihjtx" column="bihjtx" />
+		<result property="bihltx" column="bihltx" />
 	</resultMap>
 	
 	<resultMap id="MBADREPVOMap" class="MBADREPVO">
@@ -117,6 +119,9 @@
 		<result property="b2z95s" column="B2Z95S" />
 		<result property="b2z93r" column="B2Z93R" />
 		<result property="b2z95t" column="B2Z95T" />
+		<result property="b2aas3" column="B2AAS3" />
+		<result property="b2aapt" column="B2AAPT" />
+		
 	</resultMap>
 	<resultMap id="SLQNTYVOMap" class="SLQNTYVO">
 		<result column="ITNBR" property="itnbr" />
@@ -195,19 +200,30 @@
 	
 	<select id="queryMbcdrep" resultMap="MBCDREPVOMap"
 		parameterClass="MBCDREPVO">
-		<![CDATA[ select a.*, b.CUSNM as CDAAYYN, c.BMCBTX as ponum                        
+		<![CDATA[ select a.*, b.CUSNM as CDAAYYN, c.BMCBTX , d.bihjtx ,d.BIHLTX as bihltx                        
 					from MBCDREP a 
 					inner join MBBMCPP c 
 					on a.CDAENB = c.BMAENB and a.CDDCCD=c.BMDCCD and a.CDCVNB=c.BMCVNB                                
 					left join MBBFREP b
 					on a.CDAAYY = b.CUSNO 
+					left outer join MBBIREP d 
+					on a.CDAITX = d.biaitx and a.CDAAYY=d.bicanb  
 		]]>
 		<dynamic prepend="where">
+			<isNotEmpty prepend="AND" property="cdaenb">
+				a.CDAENB = #cdaenb#
+			</isNotEmpty>
 			<isNotEmpty prepend="AND" property="cda3cd">
 				a.CDA3CD = #cda3cd#
 			</isNotEmpty>
 			<isNotEmpty prepend="AND" property="cdaayy">
 				a.CDAAYY = #cdaayy#
+			</isNotEmpty>
+			<isNotEmpty prepend="AND" property="cddccd">
+				a.CDDCCD = #cddccd#
+			</isNotEmpty>
+			<isNotEmpty prepend="AND" property="cdfcnb">
+				a.CDFCNB = #cdfcnb#
 			</isNotEmpty>
 			<isNotEmpty prepend="AND" property="cdcvnb">
 				b.CDCVNB like ('%'||#cdcvnb#||'%' )
@@ -663,6 +679,13 @@
 		]]>
 	</select>
 
+	<select id="queryMBADREPM" resultClass="String" parameterClass="Map">
+		<![CDATA[ Select a.ADDRNB ||'-'|| a.ADAASZ ||'-'|| a.ADBIDT from MBADREP a
+       where a.ADAENB = #cono# and a.ADDCCD = #ortp#
+       and a.ADCVNB = #ordnc# and a.ADFCNB = #itmsq#
+		]]>
+	</select>
+	
 	<select id="queryMorout" resultClass="MOROUTVO" parameterClass="Map">
 		<![CDATA[ Select * from MOROUT 
 		]]>

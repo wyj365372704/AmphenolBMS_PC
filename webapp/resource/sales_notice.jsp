@@ -6,7 +6,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>销售出货单</title>
+    <title>销售出货通知单</title>
 
 <link href="../css/global.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="../js/My97DatePicker/WdatePicker.js"></script>
@@ -32,13 +32,13 @@
 </style>
 
 <body class="right_body">
-	<s:form action="sales!toSalesList.action" method="post" name="queryform">
+	<s:form action="zplhdrs!toZplhdr.action" method="post" name="queryform">
 
-		<div class="path">您现在的位置： 首页 &gt; 仓库 &gt; 销售出货单</div>
+		<div class="path">您现在的位置： 首页 &gt; 销售 &gt; 销售出货通知单</div>
 		
 			<div class="search">
 			<h2>
-				<span class="fl">销售订单查询</span>
+				<span class="fl">销售出货通知单查询</span>
 				<span class="fr">
 					<s:submit id="queryId" value="" cssClass="search_button" onclick="return dosubmit()"></s:submit>
 					<s:reset value="" cssClass="purge_button"></s:reset>
@@ -48,40 +48,30 @@
 			<ul>
 				
 				<li class="myli"><div class="w_s">仓库：</div>
-					<s:select name="mbcdrep.cda3cd"
+					<s:select name="zplhdr.house"
 						list="#session.houses" listKey="house" listValue="house"
 						cssClass="select_s_2" style="width:60px"></s:select>					
 				</li>
 				
 				<li class="mylirt"><div class="w_s">客户：</div>
-					<s:textfield name="mbcdrep.cdaayy" cssClass="input_w"/>
+					<s:textfield name="zplhdr.cusnm" cssClass="input_w"/>
 				</li>
 				
-				<li><div class="w_s">订单号：</div>
-	            	<s:textfield name="mbcdrep.cdcvnb" cssClass="input_w"/>
+				<li><div class="w_s">通知单号：</div>
+	            	<s:textfield name="zplhdr.pldno" cssClass="input_w"/>
 	            </li>
 	        
-	            <li><div class="w_s">计划出货日期：</div> 
-	            	<s:textfield  name="mbcdrep.startDate" cssClass="time_input" onclick="WdatePicker()" autocomplete="on"/>
+	            <li><div class="w_s">出货日期：</div> 
+	            	<s:textfield  name="startDate" cssClass="time_input" onclick="WdatePicker()" autocomplete="on"/>
 	            	-
-            		<s:textfield  name="mbcdrep.endDate" cssClass="time_input" onclick="WdatePicker()" autocomplete="on"/>
+            		<s:textfield  name="endDate" cssClass="time_input" onclick="WdatePicker()" autocomplete="on"/>
             	</li>
-            	
-            	
-				
-				<li><div class="w_s">客户PO：</div>
-	            	<s:textfield name="mbcdrep.ponum" cssClass="input_w"/>
-	            </li>
-            
-				<li class="mybtnsch">
-					<input type="button" cssClass="search_button"  onclick="createNotice();" value="生成销售出货通知单">
-				</li>
 			</ul>
 		</div>
 		
 		<div class="data_list">
 			<h2>
-				<span class="fl">销售订单列表</span>
+				<span class="fl">出货通知单列表</span>
 				<span class="fr"></span><!--  span里无内容时，此span不能删除  -->
 			</h2>
 			
@@ -89,16 +79,14 @@
 				<table width="100%" border="0" cellspacing="1" cellpadding="0" class="list_table_s">
 				  <tr>
 					<th><input type="checkbox" name="cba" onclick="selectall(this)" />选择</th>
-					<th>客户编码</th>
+					<th>通知单号</th>
 					<th>客户名称</th>
-					<th>订单号</th>
-					<th>行号</th>	
-					<th>产品</th>
-					<th>产品描述</th>
-					<th>订货量</th>
-					<th>已出货量</th>
-					<th>库存量</th>
-					<th>未出货量</th>
+					<th>仓库</th>
+					<th>运输方式</th>	
+					<th>预计出货日期</th>
+					<th>状态</th>
+					<th>备注</th>
+					<th>操作</th>
 				  </tr>
 				  <s:iterator value="results" id="results" status="st">
 						<s:if test="#st.Even">
@@ -108,35 +96,46 @@
 							<tr class="td_bgcolor2" >
 						</s:else>
 						<td><input name="chk" type="checkbox"
-							value="<s:property value="cdcvnb"/>" />
-						</td>
-						<td><s:property value="cdaayy" />
-						</td>
-						<td><s:property value="cdaayyn" />
+							value="" />
 						</td>
 						<td>
-								<s:property value="cdcvnb" />
+							<s:property value="pldno"/>
 						</td>
-						<td><s:property value="cdfcnb" />
-						</td>
-						<td>
-							<s:property value="cdaitx" />
+						<td><s:property value="cusnm"/>
 						</td>
 						<td>
-							<s:property value="cdaltx" />
+							<s:property value="house"/>	
+						</td>
+						<td><s:property value="scac"/>	
 						</td>
 						<td>
-							<s:property value="cdacqty" />
+							<s:property value="etdate"/>	
 						</td>
-						<td><s:property value="cdz901" />
-						</td>
-						<td><s:property value="cdfxva" />
-						</td>
-						
 						<td>
+							<s:if test="ostat==05">
+			  					创建中
+			  				</s:if>
+			  				<s:if test="ostat==10">
+			  					已创建
+			  				</s:if>
+			  				<s:if test="ostat==50">
+			  					已完成
+			  				</s:if>
+						</td>
+						<td>
+							<s:property value="cmmt"/>
+						</td>
+						<td>
+							<s:if test="ostat==05">
+			  					<input type="button" id="editbtn" value="编辑" class="gray_button" onclick="goedit('<s:property value="pldno"/>');"/>
+			  					<input type="button" id="deletebtn" value="删除" class="gray_button" onclick="godelete('<s:property value="pldno"/>');"/>
+			  				
+			  				</s:if>
+			  				<s:else>
+			  					<input type="button" id="printbtn" value="打印" class="gray_button" onclick=""/>
+			  				</s:else>
+						</td>
 							
-						</td>
-
 						</tr>
 					</s:iterator>
 					

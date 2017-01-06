@@ -174,7 +174,7 @@
 <body>
 	<table cellpadding="5px" width="100%" class="tb">
 		<tbody>
-			<s:form action="sales!createNotice.action" method="post" name="queryform">
+			<s:form action="sales!editNotice.action" method="post" name="queryform">
 			<input name="ordernos" type="hidden" value="" />
 			<input name="qtys" type="hidden" value="" />
 			<input name="ddlxs" type="hidden" value="" />
@@ -192,23 +192,14 @@
 					<table width="100%" cellpadding="3px" border="1px" style="border-collapse: collapse;">
 						<tbody>
 							<tr>
-								<td colspan="2">出货日期: <s:textfield  name="startDate" cssClass="time_input" onclick="WdatePicker()" autocomplete="on"/></td>
-									<td>仓库: <s:select name="zplhdr.house"
-						list="#session.houses" listKey="house" listValue="house"
-						cssClass="select_s_2" style="width:60px"></s:select></td>
+								<td colspan="2">出货日期: <s:property  value="zplhdr.etdate" /></td>
+									<td>仓库: <s:property  value="zplhdr.house" /></td>
 									</tr>
 							<tr>
-								<td>客户: <s:select name="zplhdr.cusno" id="cusno" 
-						list="%{customers}" listKey="cusno" listValue="cusnm"
-						cssClass="select_s_2" style="width:60%" onchange="getAddByCus();"></s:select>
-						<s:hidden name="zplhdr.cusnm"></s:hidden>
+								<td>客户: <s:property  value="zplhdr.cusnm" /></s:hidden>
 						</td>
-								<td>运输方式: <s:select name="zplhdr.scac"
-						list="%{carriers}" listKey="atf1cd" listValue="atf1cd"
-						cssClass="select_s_2" style="width:60%"></s:select></td>
-								<td>国际贸易条款: <s:select name="zplhdr.incot"
-						list="%{salestts}" listKey="c8bhst" listValue="c8hytx"
-						cssClass="select_s_2" style="width:60%"></s:select></td>
+								<td>运输方式:<s:property  value="zplhdr.scac" /> </td>
+								<td>国际贸易条款:<s:property  value="zplhdr.incot" /> </td>
 						
 							</tr>
 							<tr>

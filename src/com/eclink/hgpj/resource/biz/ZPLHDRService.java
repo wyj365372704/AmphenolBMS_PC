@@ -32,12 +32,16 @@ public interface ZPLHDRService {
 	public double queryDtlQty(ZPLDTLVO vo) throws Exception;
 
 	public List<ZPLHDRVO> queryZplhdr(ZPLHDRVO vo) throws Exception;
+	
+	public List<ZPLHDRVO> queryZplhdrByPar(Map vo) throws Exception;
 
 	public List<ZPLDTLVO> queryReceipt(ZPLDTLVO vo) throws Exception;
 
 	public List<ZPLBOXVO> queryBch(ZPLBOXVO vo) throws Exception;
 
 	public void insertZplhdr(ZPLHDRVO vo) throws Exception;
+
+	public void insertZplhdrA(ZPLHDRVO vo,List<ZPLDTLVO> vos, List<ZPLBOXVO> bvos) throws Exception;
 
 	public void insertZpldtl(ZPLDTLVO vo) throws Exception;
 
@@ -46,4 +50,12 @@ public interface ZPLHDRService {
 	public void updateZplhdr(String pldno) throws Exception;	
 	
 	public void updateZplitm(ZPLDTLVO VO) throws Exception;	
+	
+	public void updateZplhdrByPar(ZPLHDRVO vo) throws Exception;
+
+	public void updateZpldtlByPar(ZPLDTLVO vo) throws Exception;
+
+	public void updateZplboxByPar(ZPLBOXVO vo) throws Exception;
+
+	public void deleteZplhdr(String pldno) throws Exception;
 }

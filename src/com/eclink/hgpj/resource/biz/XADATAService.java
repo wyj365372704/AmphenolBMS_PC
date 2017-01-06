@@ -88,6 +88,7 @@ public interface XADATAService {
 	public String queryMBCDREP(Map map) throws Exception;
 	public String queryMBADREP(Map map) throws Exception;
 	public List<MOROUTVO> queryMorout(Map map) throws Exception;
+	public String queryMBADREPM(Map map) throws Exception;
 	
 	public List<POMASTVO> queryPomastState(Map map) throws Exception;
 	

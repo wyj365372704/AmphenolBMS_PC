@@ -27,6 +27,7 @@ import com.eclink.hgpj.resource.biz.ZIPHDRService;
 import com.eclink.hgpj.resource.biz.ZITMBXService;
 import com.eclink.hgpj.resource.biz.ZITMEXTService;
 import com.eclink.hgpj.resource.biz.ZMBD1REPService;
+import com.eclink.hgpj.resource.biz.ZPLHDRService;
 import com.eclink.hgpj.resource.biz.ZWHSUBService;
 import com.eclink.hgpj.resource.dao.ibatis.ZITEMBXDaoImpl;
 import com.eclink.hgpj.resource.vo.ITMRVAVO;
@@ -49,6 +50,8 @@ import com.eclink.hgpj.resource.vo.ZIPHSTVO;
 import com.eclink.hgpj.resource.vo.ZITEMBXVO;
 import com.eclink.hgpj.resource.vo.ZITMEXTVO;
 import com.eclink.hgpj.resource.vo.ZMBD1REPVO;
+import com.eclink.hgpj.resource.vo.ZPLBOXVO;
+import com.eclink.hgpj.resource.vo.ZPLDTLVO;
 import com.eclink.hgpj.resource.vo.ZPLHDRVO;
 import com.eclink.hgpj.resource.vo.ZWHSUBVO;
 import com.eclink.hgpj.user.biz.AUserService;
@@ -94,6 +97,8 @@ public class MbcdrepAction extends BaseAction {
 
 	private ZCUSCNSService zcuscnsService;
 	
+	private ZPLHDRService zplhdrService;
+	
 	private String ordno;
 	
 	private String ponum;
@@ -125,6 +130,26 @@ public class MbcdrepAction extends BaseAction {
 	private String cnote;
 	
 	private String cusno;
+	
+	private String ordernos;
+	
+	private String qtys;
+	
+	private String ddlxs;
+	
+	private String ddhhs;
+	
+	private String wlhs;
+	
+	private String houses;
+	
+	private String kcdws;
+	
+	private String ponums;
+	
+	private String zxdhs;
+	
+	private String xss;
 
 	public String getInput1() {
 		return input1;
@@ -192,6 +217,14 @@ public class MbcdrepAction extends BaseAction {
 		this.zcuscnsService = zcuscnsService;
 	}
 
+	public ZPLHDRService getZplhdrService() {
+		return zplhdrService;
+	}
+
+	public void setZplhdrService(ZPLHDRService zplhdrService) {
+		this.zplhdrService = zplhdrService;
+	}
+
 	public MOMASTVO getMomast() {
 		return momast;
 	}
@@ -239,6 +272,86 @@ public class MbcdrepAction extends BaseAction {
 
 	public void setOrdno(String ordno) {
 		this.ordno = ordno;
+	}
+
+	public String getOrdernos() {
+		return ordernos;
+	}
+
+	public void setOrdernos(String ordernos) {
+		this.ordernos = ordernos;
+	}
+
+	public String getQtys() {
+		return qtys;
+	}
+
+	public void setQtys(String qtys) {
+		this.qtys = qtys;
+	}
+
+	public String getDdlxs() {
+		return ddlxs;
+	}
+
+	public void setDdlxs(String ddlxs) {
+		this.ddlxs = ddlxs;
+	}
+
+	public String getDdhhs() {
+		return ddhhs;
+	}
+
+	public void setDdhhs(String ddhhs) {
+		this.ddhhs = ddhhs;
+	}
+
+	public String getWlhs() {
+		return wlhs;
+	}
+
+	public void setWlhs(String wlhs) {
+		this.wlhs = wlhs;
+	}
+
+	public String getHouses() {
+		return houses;
+	}
+
+	public void setHouses(String houses) {
+		this.houses = houses;
+	}
+
+	public String getKcdws() {
+		return kcdws;
+	}
+
+	public void setKcdws(String kcdws) {
+		this.kcdws = kcdws;
+	}
+
+	public String getPonums() {
+		return ponums;
+	}
+
+	public void setPonums(String ponums) {
+		this.ponums = ponums;
+	}
+
+	public String getZxdhs() {
+		return zxdhs;
+	}
+
+	public void setZxdhs(String zxdhs) {
+		this.zxdhs = zxdhs;
+	}
+
+	public String getXss() {
+		return xss;
+	}
+
+	public void setXss(String xss) {
+		this.xss = xss;
 	}
 
 	public String getData() {
@@ -567,6 +680,7 @@ public class MbcdrepAction extends BaseAction {
 	 */
 	public String toSalesList() throws Exception {
 		try {
+			int plant =(Integer)this.getSession().getAttribute("plant");
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 			if(mbcdrep!=null){	
 				System.out.println("mbcdrep.getStartDate()="+mbcdrep.getCda3cd());
@@ -577,7 +691,8 @@ public class MbcdrepAction extends BaseAction {
 				if(mbcdrep.getEndDate()!=null && !mbcdrep.getEndDate().trim().equals("")){
 					mbcdrep.setEndDateB(BigDecimal.valueOf(Long.valueOf("1"+Utils.formateDate(sdf.parse(mbcdrep.getEndDate()), "yyMMdd"))));
 				}
-				
+				mbcdrep.setCdaenb(plant+"");
+				mbcdrep.setCddccd("1");
 				results = this.xadataService.queryMbcdrep(mbcdrep);
 
 			}else{
@@ -699,6 +814,147 @@ public class MbcdrepAction extends BaseAction {
 		}
 		return "toCreateNotice";
 	}
+	public String createNotice()throws Exception {
+		try {
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			int plant =(Integer)this.getSession().getAttribute("plant");
+			String stid = (String)this.getSession().getAttribute("stid");
+			if(ordernos!=null && ordernos.length()>0){
+				List<ZIPHDRVO> plist = new ArrayList<ZIPHDRVO>();
+				String[] ordernostrs=ordernos.split("-");
+				String[] qtysstrs=qtys.split("-");
+				String[] ddlxsstr=ddlxs.split("-");
+				String[] ddhhsstr=ddhhs.split("-");
+				String[] wlhsstr=wlhs.split("-");
+				String[] housesstr=houses.split("-");
+				String[] kcdwsstr=kcdws.split("-");
+				String[] ponumsstr=ponums.split("-");
+				String now1 = Utils.formateDate(null, "yyMMdd");
+				String now2 = Utils.formateDate(null, "HHmmss");
+				String userDept = "";
+				String username = (String)this.getSession().getAttribute("username");
+				List<ZBMSU02VO> dps = this.auserService.queryDeptByUserName(username);
+				if(dps!=null && dps.size()>0){
+					for(int i=0;i<dps.size();i++){
+						ZBMSU02VO dp = dps.get(i);
+						if(dp.getDflt()!=null && "1".equals(dp.getDflt().trim())){
+							//							vo.setPlant(dp.getPlant());
+							//							vo.setTwdp1(dp.getDept());
+							userDept = dp.getDept();
+						}
+					}
+				}
+
+				int count = this.zplhdrService.getCoutsByDt(BigDecimal.valueOf(Long.valueOf("1"+now1)));
+				String idx = "000"+(count+1);
+				String hdrno = "PL"+now1+idx.substring(idx.length()-4);
+//				ZPLHDRVO vo = new ZPLHDRVO();
+				this.zplhdr.setPldno(hdrno);
+				this.zplhdr.setPlant(""+plant);
+				this.zplhdr.setOstat("05");
+				this.zplhdr.setInvno(hdrno);
+				this.zplhdr.setEtdate(Long.valueOf("1"+Utils.formateDate(sdf.parse(this.startDate), "yyMMdd")));
+				this.zplhdr.setPlus1(username);
+				this.zplhdr.setPldp1(userDept);
+				this.zplhdr.setPldt1(BigDecimal.valueOf(Long.valueOf("1"+Utils.formateDate(new Date(), "yyMMdd"))));
+				this.zplhdr.setPltm1(BigDecimal.valueOf(Long.valueOf(Utils.formateDate(new Date(), "HHmmss"))));
+				this.zplhdr.setCmmt("");
+				List<ZPLDTLVO> zpldtls = new ArrayList<ZPLDTLVO>();
+				List<ZPLBOXVO> zplboxs = new ArrayList<ZPLBOXVO>();
+				int index = 1;
+				for(int j=0;j<ordernostrs.length;j++){
+					String ordnot=ordernostrs[j];
+					if(!ordnot.trim().equals("")){
+						ZPLDTLVO vo = new ZPLDTLVO();
+						ZPLBOXVO boxvo = new ZPLBOXVO();
+						vo.setPldno(hdrno);
+						vo.setPldln(BigDecimal.valueOf(Long.valueOf(index)));
+						vo.setC6aenb(plant+"");
+						vo.setC6dccd(ddlxsstr[j]);
+						vo.setC6cvnb(ordnot);
+						vo.setPonum(ponumsstr[j]);
+						vo.setHouse(housesstr[j]);
+						vo.setCdfcnb(BigDecimal.valueOf(Long.valueOf(ddhhsstr[j])));
+						Map mbadrep = new HashMap();
+						mbadrep.put("cono", plant+"");
+						mbadrep.put("ortp", ddlxsstr[j].trim());
+						mbadrep.put("ordnc", ordnot.trim());
+						mbadrep.put("itmsq", Long.valueOf(ddhhsstr[j]));
+						String mbadrepstr = this.xadataService.queryMBADREPM(mbadrep);
+						if(mbadrepstr!=null && mbadrepstr.trim().length()>0){
+							String[] mbadreps = mbadrepstr.split("-");
+							vo.setAddrnb(BigDecimal.valueOf(Long.valueOf(mbadreps[0])));
+							vo.setAdaasz(BigDecimal.valueOf(Long.valueOf(mbadreps[1])));
+						}else{
+							vo.setAddrnb(BigDecimal.valueOf(Long.valueOf(0)));
+							vo.setAdaasz(BigDecimal.valueOf(Long.valueOf(0)));
+						}
+						vo.setItnbr(wlhsstr[j]);
+						vo.setUnmsr(kcdwsstr[j]);
+						vo.setPlqty(BigDecimal.valueOf(Double.valueOf(qtysstrs[j])));
+						vo.setFpost("0");
+						ZITEMBXVO pvo = new ZITEMBXVO();
+						pvo.setItnbr(wlhsstr[j].trim());
+						pvo.setHouse(housesstr[j].trim());						
+						List<ZITEMBXVO> zitembxs = zitmbxService.queryItemBx(pvo);
+						if(zitembxs!=null && zitembxs.size()>0){
+							vo.setPlsub(zitembxs.get(0).getWhsub2());
+							vo.setPlloc(zitembxs.get(0).getLlocn2());
+						}
+						ITMSITVO itmsitvo = new ITMSITVO();
+						itmsitvo.setHouse(stid);
+						itmsitvo.setItnot9(wlhsstr[j].trim());
+						String itrvt = "";
+						List<String> itrvts = this.xadataService.queryItrvt(itmsitvo);
+						if(itrvts!=null && itrvts.size()>0){
+							itrvt=itrvts.get(0);
+						}
+						ITMRVAVO itmrVo = new ITMRVAVO();
+						itmrVo.setItnbr(wlhsstr[j].trim());
+						itmrVo.setHouse(stid);
+						itmrVo.setItrv(itrvt);
+						List<ITMRVAVO> itmrLists = this.xadataService.queryItmrva(itmrVo);
+						if(itmrLists!=null && itmrLists.size()>0){
+							ITMRVAVO itmvo = itmrLists.get(0);
+							vo.setWght1(itmvo.getWeght().multiply(BigDecimal.valueOf(Double.valueOf(qtysstrs[j]))));
+							vo.setWtum1(itmvo.getB2cqcd());
+							vo.setWght2(BigDecimal.valueOf(Double.valueOf(qtysstrs[j])).divide((itmvo.getB2z95t()==null || itmvo.getB2z95t().floatValue()==0)?BigDecimal.valueOf(1):itmvo.getB2z95t()).multiply(itmvo.getB2aas3()));
+							vo.setWtum2(itmvo.getB2aapt());
+						}
+						zpldtls.add(vo);
+						//System.out.println("wlhsstr="+wlhsstr[j]);
+						//System.out.println("ponumsstr="+ponumsstr[j]);
+						
+						
+						if(this.zxdhs!=null && this.zxdhs.trim().length()>0){
+							String[] zxdhstrs = zxdhs.split("-");
+							String[] xsstrs = xss.split("-");
+							boxvo.setPldno(hdrno);
+							boxvo.setPldln(BigDecimal.valueOf(Long.valueOf(index)));
+							boxvo.setBoxln(BigDecimal.valueOf(Long.valueOf(1)));
+							boxvo.setBoxnm(zxdhstrs[j]);
+							boxvo.setBoxes(BigDecimal.valueOf(Long.valueOf(xsstrs[j])));
+							zplboxs.add(boxvo);
+						}
+						index++;
+					}
+
+				}
+				
+				this.zplhdrService.insertZplhdrA(zplhdr, zpldtls,zplboxs);
+				System.out.println("this.zplhdr="+this.zplhdr.getCusno());
+//				if(plist!=null && plist.size()>0){
+//					this.ziphdrService.insertZiphdrM(plist);
+//				}
+				data="success";
+			}
+		}catch (Exception e) {e.printStackTrace();
+		log.error("Go to admin resource operation grant page occured error.", e);
+		data="fail";
+		return toCreateNotice();
+		}
+		return toCreateNotice();
+	}
 	public String getAddByCus()throws Exception {
 		JSONObject jo = new JSONObject();
 		try {
@@ -762,37 +1018,55 @@ public class MbcdrepAction extends BaseAction {
 //			if(this.cusno!=null && !this.cusno.trim().equals("")){
 
 			StringBuffer strbuf = new StringBuffer();
+			strbuf.append("<table width='100%' border='1' cellpadding='3px' style='border-collapse: collapse;'>");
+			strbuf.append("<tbody><tr><th><input type='checkbox' name='cba' onclick='selectall(this)' /></th>");
+			strbuf.append("<th>客户名称</th><th>订单号</th><th>客户PO</th><th>行号</th><th>产品</th><th>客户项目编码</th><th>订货量</th><th>已出货量</th><th>库存量</th><th>未出货量</th><th>交货量</th><th>装箱单号</th><th>箱数</th></tr>");
 				if(mbcdrep.getStartDate()!=null && !mbcdrep.getStartDate().trim().equals("")){
 					mbcdrep.setStartDateB(BigDecimal.valueOf(Long.valueOf("1"+Utils.formateDate(sdf.parse(mbcdrep.getStartDate()), "yyMMdd"))));
 				}
 				if(mbcdrep.getEndDate()!=null && !mbcdrep.getEndDate().trim().equals("")){
 					mbcdrep.setEndDateB(BigDecimal.valueOf(Long.valueOf("1"+Utils.formateDate(sdf.parse(mbcdrep.getEndDate()), "yyMMdd"))));
 				}
-				
+				mbcdrep.setCdaenb(plant+"");
+				mbcdrep.setCddccd("1");
 				results = this.xadataService.queryMbcdrep(mbcdrep);
 				if(results!=null && results.size()>0){
 					
 					for(int i=0;i<results.size();i++){
 						MBCDREPVO temp = results.get(i);
+						ZPLDTLVO pvo = new ZPLDTLVO();
+						pvo.setC6cvnb(temp.getCdcvnb());
+						pvo.setC6dccd("1");
+						pvo.setCdfcnb(BigDecimal.valueOf(Long.valueOf(temp.getCdfcnb())) );
+						pvo.setC6aenb(plant+"");
+						Double sumqty = this.zplhdrService.queryDtlQty(pvo);
 						if(i%2==0){
 							strbuf.append("<tr class='td_bgcolor' >");
 						}else{
 							strbuf.append("<tr class='td_bgcolor2' >");
 						}
-						strbuf.append("<td><input name='chk' type='checkbox' value='"+temp.getCdcvnb()+"'> /></td>");
+						strbuf.append("<td><input name='chk' type='checkbox' value='"+temp.getCdcvnb()+"' /> <input name='wlhs"+i+"' type='hidden' value='"+(temp.getCdaitx())+"' /><input name='houses"+i+"' type='hidden' value='"+(temp.getCda3cd())+"' />" +
+								"<input name='kcdw"+i+"' type='hidden' value='"+(temp.getCddhcd())+"' />"+
+								"<input name='ponum"+i+"' type='hidden' value='"+(temp.getPonum())+"' /><input name='ddwc"+i+"' type='hidden' value='"+(temp.getCdfxva().add(temp.getCdz901().negate()).doubleValue()-sumqty)+"' />" +
+										"<input name='hh"+i+"' type='hidden' value='"+temp.getCdfcnb()+"' /><input name='ddlx"+i+"' type='hidden' value='"+temp.getCddccd()+"' /></td>");
 						strbuf.append("<td>"+temp.getCdaayyn()+"</td>");
 						strbuf.append("<td>"+temp.getCdcvnb()+"</td>");
 						strbuf.append("<td>"+temp.getPonum()+"</td>");
 						strbuf.append("<td>"+temp.getCdfcnb()+"</td>");
 						strbuf.append("<td>"+temp.getCdaitx()+"</td>");
-						strbuf.append("<td>"+temp.getCdaltx()+"</td>");
+						//strbuf.append("<td>"+temp.getCdaltx()+"</td>");
+						strbuf.append("<td>"+((temp.getBihjtx()==null || temp.getBihjtx().trim().equals("null"))?"":temp.getBihjtx())+"</td>");
 						strbuf.append("<td>"+temp.getCdacqty()+"</td>");
 						strbuf.append("<td>"+temp.getCdz901()+"</td>");
 						strbuf.append("<td>"+temp.getCdfxva()+"</td>");
-						strbuf.append("<td></td>");
+						strbuf.append("<td>"+(temp.getCdfxva().add(temp.getCdz901().negate()).doubleValue()-sumqty)+"</td>");						
+						strbuf.append("<td><input type='text' name='jh"+i+"' style='width:50px' value='"+(temp.getCdfxva().add(temp.getCdz901().negate()).doubleValue()-sumqty)+"' /></td>");
+						strbuf.append("<td><input type='text' name='zxdhs"+i+"' style='width:70px' value='' /></td>");
+						strbuf.append("<td><input type='text' name='xss"+i+"' style='width:50px' value='' /></td>");
 						strbuf.append("</tr>");
 					}
 				}
+				strbuf.append("</tbody></table>");
 				jo.put("retStr", strbuf.toString());
 				jo.put("result", "success");
 				data=jo.toString();

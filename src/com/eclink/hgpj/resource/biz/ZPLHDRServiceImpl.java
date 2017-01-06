@@ -96,6 +96,49 @@ public class ZPLHDRServiceImpl implements ZPLHDRService {
 		zplhdrDao.updateZplitm(VO);
 	}
 
+	@Override
+	public void insertZplhdrA(ZPLHDRVO vo, List<ZPLDTLVO> vos, List<ZPLBOXVO> bvos) throws Exception {
+		if(vo!=null){
+			zplhdrDao.insertZplhdr(vo);
+			if(vos!=null && vos.size()>0){
+				for(int i=0;i<vos.size();i++){
+					zplhdrDao.insertZpldtl(vos.get(i));
+				}
+			}
+			if(bvos!=null && bvos.size()>0){
+				for(int i=0;i<bvos.size();i++){
+					zplhdrDao.insertZplbox(bvos.get(i));
+				}
+			}
+		}
+		
+	}
+
+	@Override
+	public List<ZPLHDRVO> queryZplhdrByPar(Map vo) throws Exception {
+		return zplhdrDao.queryZplhdrByPar(vo);
+	}
+
+	@Override
+	public void deleteZplhdr(String pldno) throws Exception {
+		zplhdrDao.deleteZplhdr(pldno);
+	}
+
+	@Override
+	public void updateZplboxByPar(ZPLBOXVO vo) throws Exception {
+		zplhdrDao.updateZplboxByPar(vo);
+	}
+
+	@Override
+	public void updateZpldtlByPar(ZPLDTLVO vo) throws Exception {
+		zplhdrDao.updateZpldtlByPar(vo);
+	}
+
+	@Override
+	public void updateZplhdrByPar(ZPLHDRVO vo) throws Exception {
+		zplhdrDao.updateZplhdrByPar(vo);
+	}
+
 
 
 }

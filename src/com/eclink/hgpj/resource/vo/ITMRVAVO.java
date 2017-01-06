@@ -46,7 +46,11 @@ public class ITMRVAVO extends BaseVO{
 	private String b2z93r;
 	
 	private BigDecimal b2z95t;
+	
+	private BigDecimal b2aas3;
 
+	private String b2aapt;
+	
 	private String blcf;
 
 
@@ -144,6 +148,22 @@ public class ITMRVAVO extends BaseVO{
 
 	public void setBlcf(String blcf) {
 		this.blcf = blcf;
+	}
+
+	public BigDecimal getB2aas3() {
+		return b2aas3;
+	}
+
+	public void setB2aas3(BigDecimal b2aas3) {
+		this.b2aas3 = b2aas3;
+	}
+
+	public String getB2aapt() {
+		return b2aapt;
+	}
+
+	public void setB2aapt(String b2aapt) {
+		this.b2aapt = b2aapt;
 	}
 
 }

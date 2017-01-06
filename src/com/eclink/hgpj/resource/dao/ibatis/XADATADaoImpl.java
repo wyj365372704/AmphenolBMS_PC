@@ -222,4 +222,9 @@ public class XADATADaoImpl extends SqlMapClientDaoSupport implements XADATADao {
 		return this.getSqlMapClientTemplate().queryForList("XADATA.queryCusnms",map);
 	}
 
+	@Override
+	public List<String> queryMBADREPM(Map map) throws Exception {
+		return this.getSqlMapClientTemplate().queryForList("XADATA.queryMBADREPM",map);
+	}
+
 }

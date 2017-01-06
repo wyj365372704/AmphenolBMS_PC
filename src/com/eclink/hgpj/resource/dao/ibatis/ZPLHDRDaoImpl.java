@@ -71,7 +71,7 @@ public class ZPLHDRDaoImpl extends SqlMapClientDaoSupport implements ZPLHDRDao {
 	public double queryDtlQty(ZPLDTLVO vo) throws Exception {
 		List temp = this.getSqlMapClientTemplate().queryForList("ZPLHDR.queryDtlQty", vo);
 		if(temp!=null){
-			return (Integer)temp.get(0);
+			return temp.get(0)==null?0:((Double)temp.get(0));
 		}
 		return 0;
 	}
@@ -94,6 +94,32 @@ public class ZPLHDRDaoImpl extends SqlMapClientDaoSupport implements ZPLHDRDao {
 	@Override
 	public void updateZplitm(ZPLDTLVO VO) throws Exception {
 		this.getSqlMapClientTemplate().update("ZPLHDR.updateZplitm", VO);
+	}
+
+	@Override
+	public List<ZPLHDRVO> queryZplhdrByPar(Map vo) throws Exception {
+		return this.getSqlMapClientTemplate().queryForList("ZPLHDR.queryZplhdrByPar", vo);
+	}
+
+	@Override
+	public void deleteZplhdr(String pldno) throws Exception {
+		this.getSqlMapClientTemplate().update("ZPLHDR.deleteZplhdr", pldno);
+	}
+
+	@Override
+	public void updateZplboxByPar(ZPLBOXVO vo) throws Exception {
+		this.getSqlMapClientTemplate().update("ZPLHDR.updateZplboxByPar", vo);
+	}
+
+	@Override
+	public void updateZpldtlByPar(ZPLDTLVO vo) throws Exception {
+		this.getSqlMapClientTemplate().update("ZPLHDR.updateZpldtlByPar", vo);
+	}
+
+	@Override
+	public void updateZplhdrByPar(ZPLHDRVO vo) throws Exception {
+
+		this.getSqlMapClientTemplate().update("ZPLHDR.updateZplhdrByPar", vo);
 	}
 
 }
