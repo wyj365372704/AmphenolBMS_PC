@@ -38,5 +38,9 @@ public class ZBMSCTLDaoImpl extends SqlMapClientDaoSupport implements ZBMSCTLDao
 	public List<ZBMSCTLVO> queryZbmsctl(ZBMSCTLVO vo) throws Exception {
 		return this.getSqlMapClientTemplate().queryForList("ZBMSCTL.queryZbmsctl",vo);
 	}
+	
+	public void updateZbmsctl(ZBMSCTLVO vo) throws Exception{
+		getSqlMapClientTemplate().update("ZBMSCTL.updateZbmsctl",vo);
+	}
 
 }

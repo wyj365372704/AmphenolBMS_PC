@@ -16,4 +16,5 @@ import com.eclink.hgpj.resource.vo.ZBMSCTLVO;
 public interface ZBMSCTLDao {
 	
 	public List<ZBMSCTLVO> queryZbmsctl(ZBMSCTLVO vo) throws Exception;
+	public void updateZbmsctl(ZBMSCTLVO vo) throws Exception;
 }

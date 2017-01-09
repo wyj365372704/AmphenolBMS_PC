@@ -22,4 +22,5 @@ import com.eclink.hgpj.resource.vo.ZSHPHDRVO;
  */
 public interface ZBMSCTLService {
 	public List<ZBMSCTLVO> queryZbmsctl(ZBMSCTLVO vo) throws Exception;
+	public void updateZbmsctl(ZBMSCTLVO vo) throws Exception;
 }
