@@ -8,13 +8,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.log4j.Logger;
+import org.apache.struts2.ServletActionContext;
 
 import com.eclink.dfcm.paginator.common.PaginatorUtil;
 import com.eclink.dfcm.paginator.tag.PageVO;
 import com.eclink.hgpj.base.BaseAction;
 import com.eclink.hgpj.common.HGPJConstant;
 import com.eclink.hgpj.resource.biz.XADATAService;
+import com.eclink.hgpj.resource.biz.ZBMSCTLService;
+import com.eclink.hgpj.resource.biz.ZCUSCNSService;
 import com.eclink.hgpj.resource.biz.ZIPHDRService;
 import com.eclink.hgpj.resource.biz.ZITMBXService;
 import com.eclink.hgpj.resource.biz.ZMBD1REPService;
@@ -22,16 +27,15 @@ import com.eclink.hgpj.resource.biz.ZPLHDRService;
 import com.eclink.hgpj.resource.vo.ITMRVAVO;
 import com.eclink.hgpj.resource.vo.ITMSITVO;
 import com.eclink.hgpj.resource.vo.MBCDREPVO;
-import com.eclink.hgpj.resource.vo.MODATAVO;
-import com.eclink.hgpj.resource.vo.MOMASTVO;
+import com.eclink.hgpj.resource.vo.ZBMSCTLVO;
 import com.eclink.hgpj.resource.vo.ZBMSRSNVO;
-import com.eclink.hgpj.resource.vo.ZBMSU02VO;
+import com.eclink.hgpj.resource.vo.ZCUSMRKVO;
 import com.eclink.hgpj.resource.vo.ZIPDTLVO;
-import com.eclink.hgpj.resource.vo.ZIPHDRVO;
-import com.eclink.hgpj.resource.vo.ZITEMBXVO;
-import com.eclink.hgpj.resource.vo.ZMBD1REPVO;
+import com.eclink.hgpj.resource.vo.ZPLBOXVO;
+import com.eclink.hgpj.resource.vo.ZPLDTLVO;
 import com.eclink.hgpj.resource.vo.ZPLHDRVO;
 import com.eclink.hgpj.user.biz.AUserService;
+import com.eclink.hgpj.util.QRcoderUtil;
 import com.eclink.hgpj.util.Utils;
 
 /**
@@ -59,6 +63,10 @@ public class ZplhdrAction extends BaseAction {
 	private XADATAService xadataService;
 	
 	private ZMBD1REPService zmbd1repService;
+	
+	private ZCUSCNSService zcuscnsService;
+	
+	private ZBMSCTLService zbmsctlService;
 
 	private ZPLHDRVO zplhdr;
 	
@@ -70,9 +78,9 @@ public class ZplhdrAction extends BaseAction {
 	
 	private String iptyp;
 	
-	private String ipdno;
+	private String pldno;
 	
-	private String ipdln;
+	private String pldln;
 	
 	private String cmmt;
 	
@@ -92,11 +100,47 @@ public class ZplhdrAction extends BaseAction {
 	
 	private String endDate;
 	
+	private String qrcodeurl;
+	
+	private String incots;
+	
+	private Float sqty = Float.valueOf(0);
+	
+	private Float sje= Float.valueOf(0);
+	
+	private Float sjz= Float.valueOf(0);
+	
+	private Float smz= Float.valueOf(0);
+	
+	private Float sxs= Float.valueOf(0);
+	
+	private String fmark1;
+	
+	private String fmark2;
+	
+	private String fmark3;
+	
+	private String fmark4;
+	
+	private String fmark5;
+	
+	private String smark1;
+	
+	private String smark2;
+	
+	private String smark3;
+	
+	private String smark4;
+	
+	private String smark5;
+	
+	private String companyn;
+	
 	private List<ZPLHDRVO> results;
 	
 	private List<ZIPDTLVO> dresults;
 	
-	private List<MODATAVO> mresults;
+	private List<Map> mresults;
 	
 	public ZITMBXService getZitmbxService() {
 		return zitmbxService;
@@ -112,6 +156,30 @@ public class ZplhdrAction extends BaseAction {
 
 	public void setZiphdrService(ZIPHDRService ziphdrService) {
 		this.ziphdrService = ziphdrService;
+	}
+
+	public ZCUSCNSService getZcuscnsService() {
+		return zcuscnsService;
+	}
+
+	public void setZcuscnsService(ZCUSCNSService zcuscnsService) {
+		this.zcuscnsService = zcuscnsService;
+	}
+
+	public ZBMSCTLService getZbmsctlService() {
+		return zbmsctlService;
+	}
+
+	public void setZbmsctlService(ZBMSCTLService zbmsctlService) {
+		this.zbmsctlService = zbmsctlService;
+	}
+
+	public String getCompanyn() {
+		return companyn;
+	}
+
+	public void setCompanyn(String companyn) {
+		this.companyn = companyn;
 	}
 
 	public String getOrdno() {
@@ -144,13 +212,6 @@ public class ZplhdrAction extends BaseAction {
 	}
 
 
-	public String getIpdln() {
-		return ipdln;
-	}
-
-	public void setIpdln(String ipdln) {
-		this.ipdln = ipdln;
-	}
 
 	public String getCmmt() {
 		return cmmt;
@@ -166,14 +227,6 @@ public class ZplhdrAction extends BaseAction {
 
 	public void setZipdtlvo(ZIPDTLVO zipdtlvo) {
 		this.zipdtlvo = zipdtlvo;
-	}
-
-	public String getIpdno() {
-		return ipdno;
-	}
-
-	public void setIpdno(String ipdno) {
-		this.ipdno = ipdno;
 	}
 
 
@@ -234,6 +287,158 @@ public class ZplhdrAction extends BaseAction {
 		this.reason = reason;
 	}
 
+	public String getPldno() {
+		return pldno;
+	}
+
+	public void setPldno(String pldno) {
+		this.pldno = pldno;
+	}
+
+	public String getPldln() {
+		return pldln;
+	}
+
+	public void setPldln(String pldln) {
+		this.pldln = pldln;
+	}
+
+	public String getQrcodeurl() {
+		return qrcodeurl;
+	}
+
+	public void setQrcodeurl(String qrcodeurl) {
+		this.qrcodeurl = qrcodeurl;
+	}
+
+	public String getIncots() {
+		return incots;
+	}
+
+	public void setIncots(String incots) {
+		this.incots = incots;
+	}
+
+	public String getFmark1() {
+		return fmark1;
+	}
+
+	public void setFmark1(String fmark1) {
+		this.fmark1 = fmark1;
+	}
+
+	public String getFmark2() {
+		return fmark2;
+	}
+
+	public void setFmark2(String fmark2) {
+		this.fmark2 = fmark2;
+	}
+
+	public String getFmark3() {
+		return fmark3;
+	}
+
+	public void setFmark3(String fmark3) {
+		this.fmark3 = fmark3;
+	}
+
+	public String getFmark4() {
+		return fmark4;
+	}
+
+	public void setFmark4(String fmark4) {
+		this.fmark4 = fmark4;
+	}
+
+	public String getFmark5() {
+		return fmark5;
+	}
+
+	public void setFmark5(String fmark5) {
+		this.fmark5 = fmark5;
+	}
+
+	public String getSmark1() {
+		return smark1;
+	}
+
+	public void setSmark1(String smark1) {
+		this.smark1 = smark1;
+	}
+
+	public String getSmark2() {
+		return smark2;
+	}
+
+	public void setSmark2(String smark2) {
+		this.smark2 = smark2;
+	}
+
+	public String getSmark3() {
+		return smark3;
+	}
+
+	public void setSmark3(String smark3) {
+		this.smark3 = smark3;
+	}
+
+	public String getSmark4() {
+		return smark4;
+	}
+
+	public void setSmark4(String smark4) {
+		this.smark4 = smark4;
+	}
+
+	public String getSmark5() {
+		return smark5;
+	}
+
+	public void setSmark5(String smark5) {
+		this.smark5 = smark5;
+	}
+
+	public Float getSqty() {
+		return sqty;
+	}
+
+	public void setSqty(Float sqty) {
+		this.sqty = sqty;
+	}
+
+	public Float getSje() {
+		return sje;
+	}
+
+	public void setSje(Float sje) {
+		this.sje = sje;
+	}
+
+	public Float getSjz() {
+		return sjz;
+	}
+
+	public void setSjz(Float sjz) {
+		this.sjz = sjz;
+	}
+
+	public Float getSmz() {
+		return smz;
+	}
+
+	public void setSmz(Float smz) {
+		this.smz = smz;
+	}
+
+	public Float getSxs() {
+		return sxs;
+	}
+
+	public void setSxs(Float sxs) {
+		this.sxs = sxs;
+	}
+
 	public List<ZPLHDRVO> getResults() {
 		return results;
 	}
@@ -250,11 +455,11 @@ public class ZplhdrAction extends BaseAction {
 		this.dresults = dresults;
 	}
 
-	public List<MODATAVO> getMresults() {
+	public List<Map> getMresults() {
 		return mresults;
 	}
 
-	public void setMresults(List<MODATAVO> mresults) {
+	public void setMresults(List<Map> mresults) {
 		this.mresults = mresults;
 	}
 
@@ -323,10 +528,10 @@ public class ZplhdrAction extends BaseAction {
 	 */
 	public String toDelete() throws Exception {
 		try {
-			ZIPDTLVO pvo = new ZIPDTLVO();
-			pvo.setIpdno(ipdno);
-			pvo.setIpdln(BigDecimal.valueOf(Double.valueOf(ipdln).longValue()));
-			this.ziphdrService.deleteZipdtl(pvo);
+//			ZIPDTLVO pvo = new ZIPDTLVO();
+//			pvo.setIpdno(ipdno);
+//			pvo.setIpdln(BigDecimal.valueOf(Double.valueOf(ipdln).longValue()));
+//			this.ziphdrService.deleteZipdtl(pvo);
 			data="success";
 		} catch (Exception e) {e.printStackTrace();
 			log.error("Go to admin resource operation grant page occured error.", e);
@@ -340,16 +545,18 @@ public class ZplhdrAction extends BaseAction {
 	 * @return
 	 * @throws Exception
 	 */
-	public String toDeleteZiphdr() throws Exception {
+	public String toDeleteZplhdr() throws Exception {
 		try {
 //			ZIPDTLVO pvo = new ZIPDTLVO();
 //			pvo.setIpdno(ipdno);
 //			pvo.setIpdln(BigDecimal.valueOf(Double.valueOf(ipdln).longValue()));
 //			this.ziphdrService.deleteZipdtl(pvo);
-			ZIPHDRVO pvo = new ZIPHDRVO();
-			pvo.setIpdno(ipdno);
-			if(ipdno!=null && ipdno.trim().length()>0){
-				this.ziphdrService.deleteZiphdr(pvo);
+//			ZIPHDRVO pvo = new ZIPHDRVO();
+//			pvo.setIpdno(ipdno);
+			System.out.println("pldno="+pldno);
+			if(pldno!=null && pldno.trim().length()>0){
+//				this.ziphdrService.deleteZiphdr(pvo);
+				this.zplhdrService.deleteZplhdr(pldno);
 				data="success";
 			}else{
 				data="fail";
@@ -427,77 +634,145 @@ public class ZplhdrAction extends BaseAction {
 		}
 		return "toZplhdr";
 	}
+	
+	public String toPrintOne() throws Exception {
+		try {
+			int plant =(Integer)this.getSession().getAttribute("plant");
+			String stid = (String)this.getSession().getAttribute("stid");
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			ZBMSCTLVO zbmsctl = new ZBMSCTLVO();
+			zbmsctl.setSite(stid);
+			List<ZBMSCTLVO> bmsctlList = this.zbmsctlService.queryZbmsctl(zbmsctl);
+			if(bmsctlList!=null && bmsctlList.size()>0){
+				zbmsctl = bmsctlList.get(0);
+				this.companyn=zbmsctl.getNmchs();
+			}
+			if(this.pldno!=null && pldno.trim().length()>0){
+				this.pldno=pldno.trim();
+				ZPLHDRVO pvo = new ZPLHDRVO();
+				pvo.setPldno(pldno);
+				List<ZPLHDRVO> zplhdrs  = this.zplhdrService.queryZplhdr(pvo);
+				if(zplhdrs!=null && zplhdrs.size()>0){
+					this.zplhdr = zplhdrs.get(0);
+					String qrMessage = "*V"+zplhdr.getPldno();
+					String encoderQRCoder = QRcoderUtil.encoderQRCoder(qrMessage, ServletActionContext.getContext().getSession().get("username").toString(),getSession().getServletContext().getRealPath("/"));
+					HttpServletRequest request = ServletActionContext.getRequest();
+					String path = request.getContextPath(); 
+					String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+					qrcodeurl = basePath+"/"+encoderQRCoder;
+					Map pmap = new HashMap();
+					pmap.put("c8bhst", zplhdr.getIncot());
+					List<String> templist2 = this.xadataService.queryTransport(pmap);
+					if(templist2!=null && templist2.size()>0){
+						String transsport = templist2.get(0);
+						this.incots = transsport.split("-")[1];
+					}
+					
+					startDate = (zplhdr.getEtdate()+19000000)+"" ;
+					ZPLDTLVO dpvo = new ZPLDTLVO();
+					dpvo.setPldno(pldno);
+					List<ZPLDTLVO> zpldtls = this.zplhdrService.queryReceipt(dpvo);
+					ZPLBOXVO bpvo = new ZPLBOXVO();
+					bpvo.setPldno(pldno);
+					List<ZPLBOXVO> zplboxes = this.zplhdrService.queryBch(bpvo);
+					
+					if(zpldtls!=null && zpldtls.size()>0){
+						this.mresults = new ArrayList<Map>();
+						for(int i=0;i<zpldtls.size();i++){
+							ZPLDTLVO tvo = zpldtls.get(i);
+							Map reusltmap = new HashMap();
+							reusltmap.put("idx", i+1);
+							reusltmap.put("cusodrno", tvo.getC6aenb()+(tvo.getC6dccd().trim().equals("1")?"CO":"CM")+"-"+tvo.getC6cvnb());
+							reusltmap.put("cusln", tvo.getCdfcnb());
+							reusltmap.put("ponum", tvo.getPonum());
+							reusltmap.put("plqty", tvo.getPlqty());
+							if(zplboxes!=null && zplboxes.size()>0){
+								ZPLBOXVO bvo = zplboxes.get(i);
+								reusltmap.put("xhxs", bvo.getBoxnm()+"/"+(bvo.getBoxes()==null?0:bvo.getBoxes().floatValue()));
+								this.sxs=sxs+(bvo.getBoxes()==null?0:bvo.getBoxes().floatValue());
+							}
+							MBCDREPVO mbcdrep = new MBCDREPVO();
+							mbcdrep.setCdaenb(plant+"");
+							mbcdrep.setCddccd("1");
+							mbcdrep.setCdcvnb(tvo.getC6cvnb());
+							mbcdrep.setCdfcnb(tvo.getCdfcnb()+"");
+							List<MBCDREPVO> tresults = this.xadataService.queryMbcdrep(mbcdrep);
+							if(tresults!=null && tresults.size()>0){
+								MBCDREPVO tresult = tresults.get(0);
+								ZPLDTLVO pvo2 = new ZPLDTLVO();
+								pvo2.setC6cvnb(tvo.getC6cvnb());
+								pvo2.setC6dccd("1");
+								pvo2.setCdfcnb(tvo.getCdfcnb());
+								pvo2.setC6aenb(plant+"");
+								Double sumqty = this.zplhdrService.queryDtlQty(pvo2);
+								
+								reusltmap.put("plqtyno", (tresult.getCdfxva().add(tresult.getCdz901().negate()).doubleValue()-sumqty));
+							}else{
+								reusltmap.put("plqtyno", 0);
+							}
+							ITMSITVO itmsitvo = new ITMSITVO();
+							itmsitvo.setHouse(stid);
+							itmsitvo.setItnot9(tvo.getItnbr().trim());
+							String itrvt = "";
+							List<String> itrvts = this.xadataService.queryItrvt(itmsitvo);
+							if(itrvts!=null && itrvts.size()>0){
+								itrvt=itrvts.get(0);
+							}
+							ITMRVAVO itmrVo = new ITMRVAVO();
+							itmrVo.setItnbr(tvo.getItnbr().trim());
+							itmrVo.setHouse(stid);
+							itmrVo.setItrv(itrvt);
+							List<ITMRVAVO> itmrLists = this.xadataService.queryItmrva(itmrVo);
+							if(itmrLists!=null && itmrLists.size()>0){
+								ITMRVAVO itmvo = itmrLists.get(0);
+//								vo.setWght1(itmvo.getWeght().multiply(BigDecimal.valueOf(Double.valueOf(qtysstrs[j]))));
+//								vo.setWtum1(itmvo.getB2cqcd());
+//								vo.setWght2(BigDecimal.valueOf(Double.valueOf(qtysstrs[j])).divide((itmvo.getB2z95t()==null || itmvo.getB2z95t().floatValue()==0)?BigDecimal.valueOf(1):itmvo.getB2z95t()).multiply(itmvo.getB2aas3()));
+//								vo.setWtum2(itmvo.getB2aapt());
+								reusltmap.put("b2z95t", itmvo.getB2z95t());
+
+								reusltmap.put("jzsl", itmvo.getWeght()+"/"+itmvo.getB2aas3());
+							}
+							reusltmap.put("plsub", tvo.getPlsub());
+							reusltmap.put("plloc", tvo.getPlloc());
+							mresults.add(reusltmap);
+							this.sqty=sqty+tvo.getPlqty().floatValue();
+							this.sjz=sjz+tvo.getWght1().floatValue();
+							this.smz=smz+tvo.getWght2().floatValue();
+							
+//							reusltmap.put("xhxs", tvo.get)
+						}
+					}
+					ZCUSMRKVO mvo = new ZCUSMRKVO();
+					mvo.setComno(Integer.valueOf(zplhdr.getPlant()));
+					mvo.setCusnm(zplhdr.getCusno().intValue());
+					List<ZCUSMRKVO> mrkresults = this.zcuscnsService.queryZcusmrk(mvo);
+					if(mrkresults!=null && mrkresults.size()>0){
+						ZCUSMRKVO mrkresult = mrkresults.get(0);
+						this.fmark1= mrkresult.getFmark1();
+						this.fmark2= mrkresult.getFmark2();
+						this.fmark3= mrkresult.getFmark3();
+						this.fmark4= mrkresult.getFmark4();
+						this.fmark5= mrkresult.getFmark5();
+						
+						this.smark1=mrkresult.getSmark1();
+						this.smark2=mrkresult.getSmark2();
+						this.smark3=mrkresult.getSmark3();
+						this.smark4=mrkresult.getSmark4();
+						this.smark5=mrkresult.getSmark5();
+					}
+					
+				}
+			}
+		} catch (Exception e) {e.printStackTrace();
+		log.error("Go to admin resource operation grant page occured error.", e);
+		return ERROR;
+		}
+		return "toPrintOne";
+	}
+	
 	public String toZiphdrList() throws Exception {
 		try {
-			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-			if("1".equals(flag)){
-				this.startDate=Utils.formateDate(null, "yyyy-MM-dd");
-				this.endDate=Utils.formateDate(null, "yyyy-MM-dd");
-
-			}else{
-				
-				Map map = new HashMap();
-				if(ordno!=null && ordno.length()>0){
-					String[] ordnos = ordno.split(";");
-					String temp0="";
-					if(ordnos!=null && ordnos.length>0){
-						for(int j=0;j<ordnos.length;j++){
-							temp0=temp0+"'"+ordnos[j]+"',";
-						}
-						temp0=temp0+"''";
-						map.put("ordno", temp0);
-					}
-				}
-				
-				if(ipdno!=null && ipdno.length()>0){
-					String[] ipdnos = ipdno.split(";");
-					String temp0="";
-					if(ipdnos!=null && ipdnos.length>0){
-						for(int j=0;j<ipdnos.length;j++){
-							temp0=temp0+"'"+ipdnos[j]+"',";
-						}
-						temp0=temp0+"''";
-						map.put("ipdno", temp0);
-					}
-				}
-				if(startDate!=null && startDate.length()>0){
-					map.put("startDate", BigDecimal.valueOf(Long.valueOf("1"+Utils.formateDate(sdf.parse(startDate), "yyMMdd"))));
-				}
-				
-				if(endDate!=null && endDate.length()>0){
-					map.put("endDate", BigDecimal.valueOf(Long.valueOf("1"+Utils.formateDate(sdf.parse(endDate), "yyMMdd"))));
-				}
-				
-	//			vo.setOrdno(ordno==null?"":ordno);
-//				results= this.ziphdrService.queryHdrsByPar(map);
-//				if(results!=null && results.size()>0){
-//					for(int i=0;i<results.size();i++){
-//						String d= (results.get(i).getIpdt1()==null || results.get(i).getIpdt1().doubleValue()==0.0)?"":results.get(i).getIpdt1().add(BigDecimal.valueOf(19000000)).toString().trim();
-//						String d2 = (results.get(i).getAprdt()==null || results.get(i).getAprdt().doubleValue()==0.0)?"":results.get(i).getAprdt().add(BigDecimal.valueOf(19000000)).toString().trim();
-//						results.get(i).setSipdt1(d.length()<8?d: (d.substring(0, 4)+"-"+d.substring(4, 6)+"-"+d.substring(6, 8)+" "));
-//						results.get(i).setSaprdt(d2.length()<8?d2: (d2.substring(0, 4)+"-"+d2.substring(4, 6)+"-"+d2.substring(6, 8)+" "));
-//						String t = results.get(i).getAprtm()==null?"":results.get(i).getAprtm().toString().trim();
-//						if(t.length()<6){
-//							t="0"+t;
-//						}
-//						results.get(i).setSaprtm(t.length()<6?t:(t.substring(0, 2)+":"+t.substring(2, 4)+":"+t.substring(4, t.length())));
-//					}
-//				}
-			}
-			PageVO page = PaginatorUtil.getPaginator(getRequest());
-//			setPagination(role,page);
-			
-			// 查询总记录数
-			if (page.isQueryTotal()) {
-				page.setTotalRecord(0);
-			}
-			
-			// 调用业务方法查询列表
-//			roleList = roleService.queryRoleList(role);
-			
-			// 分页对象保存至request
-			getRequest().setAttribute(HGPJConstant.PAGE_KEY, page);
-			
 		} catch (Exception e) {e.printStackTrace();
 			log.error("Go to admin resource operation grant page occured error.", e);
 			return ERROR;
@@ -523,10 +798,10 @@ public class ZplhdrAction extends BaseAction {
 	 */
 	public String toZipdtl() throws Exception {
 		try {
-			ZIPDTLVO vo = new ZIPDTLVO();
-			vo.setIpdno(ipdno);
-			vo.setLstat("05,10");
-			dresults= this.ziphdrService.queryItems(vo);
+//			ZIPDTLVO vo = new ZIPDTLVO();
+//			vo.setIpdno(ipdno);
+//			vo.setLstat("05,10");
+//			dresults= this.ziphdrService.queryItems(vo);
 		} catch (Exception e) {e.printStackTrace();
 			log.error("Go to admin resource operation grant page occured error.", e);
 			return ERROR;
@@ -536,14 +811,14 @@ public class ZplhdrAction extends BaseAction {
 	
 	public String toEditZipdtl() throws Exception {
 		try {
-			ZIPDTLVO vo = new ZIPDTLVO();
-			vo.setIpdno(ipdno);
-			vo.setIpdln(BigDecimal.valueOf(Double.valueOf(ipdln).longValue()));
-			vo.setLstat("05,10");
-			dresults= this.ziphdrService.queryItems(vo);
-			if(dresults!=null && dresults.size()>0){
-				zipdtlvo=dresults.get(0);
-			}
+//			ZIPDTLVO vo = new ZIPDTLVO();
+//			vo.setIpdno(ipdno);
+//			vo.setIpdln(BigDecimal.valueOf(Double.valueOf(ipdln).longValue()));
+//			vo.setLstat("05,10");
+//			dresults= this.ziphdrService.queryItems(vo);
+//			if(dresults!=null && dresults.size()>0){
+//				zipdtlvo=dresults.get(0);
+//			}
 		} catch (Exception e) {e.printStackTrace();
 			log.error("Go to admin resource operation grant page occured error.", e);
 			return ERROR;
@@ -605,10 +880,10 @@ public class ZplhdrAction extends BaseAction {
 	
 	public String toAddZipdtl() throws Exception {
 		try {
-			MODATAVO vo = new MODATAVO();
-			vo.setOrdno(ordno);
-			vo.setCitwh(house);
-			mresults=this.xadataService.queryModatas(vo);
+//			MODATAVO vo = new MODATAVO();
+//			vo.setOrdno(ordno);
+//			vo.setCitwh(house);
+//			mresults=this.xadataService.queryModatas(vo);
 		} catch (Exception e) {e.printStackTrace();
 			log.error("Go to admin resource operation grant page occured error.", e);
 			return ERROR;
@@ -618,30 +893,30 @@ public class ZplhdrAction extends BaseAction {
 	
 	public String toApproval() throws Exception{
 		try {
-			String userDept = "";
-			String username = (String)this.getSession().getAttribute("username");
-			List<ZBMSU02VO> dps = this.auserService.queryDeptByUserName(username);
-			if(dps!=null && dps.size()>0){
-				for(int i=0;i<dps.size();i++){
-					ZBMSU02VO dp = dps.get(i);
-					if(dp.getDflt()!=null && "1".equals(dp.getDflt().trim())){
-//						vo.setPlant(dp.getPlant());
-//						vo.setTwdp1(dp.getDept());
-						userDept = dp.getDept();
-					}
-				}
-			}
-			
-			String now1 = Utils.formateDate(null, "yyMMdd");
-			String now2 = Utils.formateDate(null, "HHmmss");
-			
-			ZIPHDRVO ziphdrvo = new ZIPHDRVO();
-			ziphdrvo.setIpdno(ipdno);
-			ziphdrvo.setAprus(username);
-			ziphdrvo.setAprdp(userDept);
-			ziphdrvo.setAprdt(BigDecimal.valueOf(Long.valueOf("1"+now1)));
-			ziphdrvo.setAprtm(BigDecimal.valueOf(Long.valueOf(now2)));
-			ziphdrService.updateZiphdrForApproval(ziphdrvo);
+//			String userDept = "";
+//			String username = (String)this.getSession().getAttribute("username");
+//			List<ZBMSU02VO> dps = this.auserService.queryDeptByUserName(username);
+//			if(dps!=null && dps.size()>0){
+//				for(int i=0;i<dps.size();i++){
+//					ZBMSU02VO dp = dps.get(i);
+//					if(dp.getDflt()!=null && "1".equals(dp.getDflt().trim())){
+////						vo.setPlant(dp.getPlant());
+////						vo.setTwdp1(dp.getDept());
+//						userDept = dp.getDept();
+//					}
+//				}
+//			}
+//			
+//			String now1 = Utils.formateDate(null, "yyMMdd");
+//			String now2 = Utils.formateDate(null, "HHmmss");
+//			
+//			ZIPHDRVO ziphdrvo = new ZIPHDRVO();
+//			ziphdrvo.setIpdno(ipdno);
+//			ziphdrvo.setAprus(username);
+//			ziphdrvo.setAprdp(userDept);
+//			ziphdrvo.setAprdt(BigDecimal.valueOf(Long.valueOf("1"+now1)));
+//			ziphdrvo.setAprtm(BigDecimal.valueOf(Long.valueOf(now2)));
+//			ziphdrService.updateZiphdrForApproval(ziphdrvo);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return ERROR;

@@ -226,7 +226,7 @@
 				a.CDFCNB = #cdfcnb#
 			</isNotEmpty>
 			<isNotEmpty prepend="AND" property="cdcvnb">
-				b.CDCVNB like ('%'||#cdcvnb#||'%' )
+				a.CDCVNB like ('%'||#cdcvnb#||'%' )
 			</isNotEmpty>
 			<isNotEmpty prepend="AND" property="ponum">
 				c.BMCBTX like ('%'||#ponum#||'%' )
@@ -632,8 +632,13 @@
 	</select>
 	
 	<select id="queryTransport" resultClass="String" parameterClass="Map">
-		<![CDATA[ Select a.C8BHST ||'-'|| a.C8HYTX from MBC8REP a 
+		<![CDATA[ Select a.C8BHST ||'-'|| a.C8HYTX from MBC8REP a where 1=1 
 		]]>
+		<dynamic>
+			<isNotEmpty prepend="AND" property="c8bhst">
+               <![CDATA[ (a.C8BHST=#c8bhst# )  ]]>
+			</isNotEmpty>
+		</dynamic>
 	</select>
 	
 	<select id="queryShipTo" resultClass="MBS2REPVO" parameterClass="Map">

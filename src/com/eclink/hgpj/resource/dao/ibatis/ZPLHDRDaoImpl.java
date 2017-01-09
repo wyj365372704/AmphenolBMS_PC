@@ -24,6 +24,10 @@ import com.eclink.hgpj.resource.vo.ZIPHSTVO;
 import com.eclink.hgpj.resource.vo.ZPLBOXVO;
 import com.eclink.hgpj.resource.vo.ZPLDTLVO;
 import com.eclink.hgpj.resource.vo.ZPLHDRVO;
+import com.eclink.hgpj.resource.vo.ZSABCHVO;
+import com.eclink.hgpj.resource.vo.ZSABOXVO;
+import com.eclink.hgpj.resource.vo.ZSADTLVO;
+import com.eclink.hgpj.resource.vo.ZSAHDRVO;
 import com.eclink.hgpj.resource.vo.ZSHPHDRVO;
 import com.ibatis.sqlmap.client.SqlMapExecutor;
 
@@ -120,6 +124,26 @@ public class ZPLHDRDaoImpl extends SqlMapClientDaoSupport implements ZPLHDRDao {
 	public void updateZplhdrByPar(ZPLHDRVO vo) throws Exception {
 
 		this.getSqlMapClientTemplate().update("ZPLHDR.updateZplhdrByPar", vo);
+	}
+
+	@Override
+	public void insertZsabch(ZSABCHVO vo) throws Exception {
+		this.getSqlMapClientTemplate().insert("ZPLHDR.insertZsabch", vo);
+	}
+
+	@Override
+	public void insertZsabox(ZSABOXVO vo) throws Exception {
+		this.getSqlMapClientTemplate().insert("ZPLHDR.insertZsabox", vo);
+	}
+
+	@Override
+	public void insertZsadtl(ZSADTLVO vo) throws Exception {
+		this.getSqlMapClientTemplate().insert("ZPLHDR.insertZsadtl", vo);
+	}
+
+	@Override
+	public void insertZsahdr(ZSAHDRVO vo) throws Exception {
+		this.getSqlMapClientTemplate().insert("ZPLHDR.insertZsahdr", vo);
 	}
 
 }

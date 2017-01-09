@@ -12,6 +12,10 @@ import com.eclink.hgpj.resource.vo.ZBMSCTLVO;
 import com.eclink.hgpj.resource.vo.ZPLBOXVO;
 import com.eclink.hgpj.resource.vo.ZPLDTLVO;
 import com.eclink.hgpj.resource.vo.ZPLHDRVO;
+import com.eclink.hgpj.resource.vo.ZSABCHVO;
+import com.eclink.hgpj.resource.vo.ZSABOXVO;
+import com.eclink.hgpj.resource.vo.ZSADTLVO;
+import com.eclink.hgpj.resource.vo.ZSAHDRVO;
 import com.eclink.hgpj.resource.vo.ZSHPBCHVO;
 import com.eclink.hgpj.resource.vo.ZSHPHDRVO;
 import com.eclink.hgpj.resource.vo.ZWHSUBVO;
@@ -58,4 +62,14 @@ public interface ZPLHDRService {
 	public void updateZplboxByPar(ZPLBOXVO vo) throws Exception;
 
 	public void deleteZplhdr(String pldno) throws Exception;
+	
+	public void insertZsahdr(ZSAHDRVO vo) throws Exception;
+
+	public void insertZsadtl(ZSADTLVO vo) throws Exception;
+
+	public void insertZsabch(ZSABCHVO vo) throws Exception;
+
+	public void insertZsabox(ZSABOXVO vo) throws Exception;
+
+	public void insertZsahdrs(Map map) throws Exception;
 }

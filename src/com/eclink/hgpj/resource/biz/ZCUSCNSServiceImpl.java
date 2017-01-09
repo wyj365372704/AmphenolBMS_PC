@@ -13,6 +13,7 @@ import com.eclink.hgpj.resource.vo.ITMRVAVO;
 import com.eclink.hgpj.resource.vo.ITMSITVO;
 import com.eclink.hgpj.resource.vo.ZBMSCTLVO;
 import com.eclink.hgpj.resource.vo.ZCUSCNSVO;
+import com.eclink.hgpj.resource.vo.ZCUSMRKVO;
 import com.eclink.hgpj.resource.vo.ZGRNBCHVO;
 import com.eclink.hgpj.resource.vo.ZGRNHDRVO;
 import com.eclink.hgpj.resource.vo.ZGRNITMVO;
@@ -43,6 +44,11 @@ public class ZCUSCNSServiceImpl implements ZCUSCNSService {
 	@Override
 	public List<ZCUSCNSVO> queryZcuscns(ZCUSCNSVO vo) throws Exception {
 		return zcuscnsDao.queryZcuscns(vo);
+	}
+
+	@Override
+	public List<ZCUSMRKVO> queryZcusmrk(ZCUSMRKVO vo) throws Exception {
+		return zcuscnsDao.queryZcusmrk(vo);
 	}
 
 

@@ -8,6 +8,7 @@ import com.eclink.hgpj.resource.vo.ITMSITVO;
 import com.eclink.hgpj.resource.vo.MenuVO;
 import com.eclink.hgpj.resource.vo.ZBMSCTLVO;
 import com.eclink.hgpj.resource.vo.ZCUSCNSVO;
+import com.eclink.hgpj.resource.vo.ZCUSMRKVO;
 import com.eclink.hgpj.resource.vo.ZSHPBCHVO;
 import com.eclink.hgpj.resource.vo.ZSHPHDRVO;
 
@@ -23,4 +24,7 @@ import com.eclink.hgpj.resource.vo.ZSHPHDRVO;
  */
 public interface ZCUSCNSService {
 	public List<ZCUSCNSVO> queryZcuscns(ZCUSCNSVO vo) throws Exception;
+
+	
+	public List<ZCUSMRKVO> queryZcusmrk(ZCUSMRKVO vo) throws Exception;
 }

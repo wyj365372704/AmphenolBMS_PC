@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.eclink.hgpj.resource.vo.ZBMSCTLVO;
 import com.eclink.hgpj.resource.vo.ZCUSCNSVO;
+import com.eclink.hgpj.resource.vo.ZCUSMRKVO;
 
 /**
  * MenuDao.java
@@ -17,4 +18,6 @@ import com.eclink.hgpj.resource.vo.ZCUSCNSVO;
 public interface ZCUSCNSDao {
 	
 	public List<ZCUSCNSVO> queryZcuscns(ZCUSCNSVO vo) throws Exception;
+	
+	public List<ZCUSMRKVO> queryZcusmrk(ZCUSMRKVO vo) throws Exception;
 }

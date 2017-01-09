@@ -5,6 +5,11 @@
 	<typeAlias alias="ZPLHDRVO" type="com.eclink.hgpj.resource.vo.ZPLHDRVO"/>
 	<typeAlias alias="ZPLDTLVO" type="com.eclink.hgpj.resource.vo.ZPLDTLVO"/>
 	<typeAlias alias="ZPLBOXVO" type="com.eclink.hgpj.resource.vo.ZPLBOXVO"/>
+	
+	<typeAlias alias="ZSAHDRVO" type="com.eclink.hgpj.resource.vo.ZSAHDRVO"/>
+	<typeAlias alias="ZSADTLVO" type="com.eclink.hgpj.resource.vo.ZSADTLVO"/>
+	<typeAlias alias="ZSABCHVO" type="com.eclink.hgpj.resource.vo.ZSABCHVO"/>
+	<typeAlias alias="ZSABOXVO" type="com.eclink.hgpj.resource.vo.ZSABOXVO"/>
 	 	
 	<select id="queryZplhdr" resultClass="ZPLHDRVO" parameterClass="ZPLHDRVO">
 		select  dr.*   
@@ -323,6 +328,226 @@
 			BOXES
 			)	
 	       VALUES (
+	       		#pldno#,
+	            #pldln#,
+		        #boxln#,
+		        #boxnm#,
+		        #boxes#)
+		]]>
+	</insert>
+	
+	
+	<insert id="insertZsahdr" parameterClass="ZSAHDRVO">
+		<![CDATA[
+		INSERT  INTO ZSAHDR(
+			SADNO,
+			PLDNO,
+			PLANT,
+			CUSNO,
+			CUSNM,
+			HOUSE,
+			SCAC,
+			INCOT,
+			OSTAT,
+			INVNO,
+			STNAM,
+			STADD1,
+			STADD2,
+			STCITY,		
+			STCTR,
+			
+			STZIP,
+			SFNAM,
+			SFADD1,
+			SFADD2,
+			SFCITY,
+			SFCTR,
+			
+			SFZIP,
+			SCNAM,
+			SCADD1,
+			SCADD2,
+			SCCITY,
+			SCCTR,
+			
+			SCZIP,
+			SAUS1,
+			SADP1,
+			SADT1,
+			SATM1,
+			CMMT
+			)	
+	       VALUES (
+	       		#sadno#,
+	       		#pldno#,
+	            #plant#,
+		        #cusno#,
+		        #cusnm#,
+		        #house#,		        
+		        #scac#,
+		        
+		        #incot#,
+	            #ostat#,
+		        #invno#,
+		        #stnam#,		        
+		        #stadd1#,
+		        
+		        #stadd2#,
+	            #stcity#,
+		        #stctr#,		        
+		        #stzip#,		        
+		        #sfnam#,		        
+		        #sfadd1#,		        
+		        #sfadd2#,		        
+		        #sfcity#,		        
+		        #sfctr#,		        
+		        #sfzip#,		        
+		        #scnam#,		        
+		        #scadd1#,		        
+		        #scadd2#,		        
+		        #sccity#,		        
+		        #scctr#,		        
+		        #sczip#,		        
+		        #saus1#,		        
+		        #sadp1#,		        
+		        #sadt1#,		        
+		        #satm1#,		        
+		        #cmmt#)
+		]]>
+	</insert>
+	
+	<insert id="insertZsadtl" parameterClass="ZSADTLVO">
+		<![CDATA[
+		INSERT  INTO ZSADTL(
+			SADNO,
+			SADLN,
+			PLDNO,
+			PLDLN,
+			C6AENB,
+			C6DCCD,
+			C6CVNB,
+			PONUM,
+			HOUSE,
+			CDFCNB,
+			ADDRNB,
+			ADAASZ,
+			ITNBR,
+			UNMSR,
+			SASUB1,		
+			SALOC1,
+			
+			SAQTY1,
+			SQQTY2,
+			WGHT1,
+			WTUM1,
+			WGHT2,
+			WTUM2,
+			SAUS2,
+			SADP2,
+			SADT2,
+			SATM2
+			)	
+	       VALUES (
+	       		#sadno#,
+	            #sadln#,
+	       		#pldno#,
+	            #pldln#,
+		        #c6aenb#,
+		        #c6dccd#,
+		        #c6cvnb#,		        
+		        #ponum#,
+		        
+		        #house#,
+	            #cdfcnb#,
+		        #addrnb#,
+		        #adaasz#,		        
+		        #itnbr#,
+		        
+		        #unmsr#,
+	            #sasub1#,
+		        #saloc1#,		        
+		        #saqty1#,		        
+		        #sqqty2#,		        
+		        #wght1#,		        
+		        #wtum1#,		        
+		        #wght2#,		        
+		        #wtum2#,		        
+		        #saus2#,		        
+		        #sadp2#,		        
+		        #sadt2#,		        
+		        #satm2# )
+		]]>
+	</insert>
+	
+	<insert id="insertZsabch" parameterClass="ZSABCHVO">
+		<![CDATA[
+		INSERT  INTO ZSABCH (
+			SADNO,
+			SADLN,
+			SADBN,
+			PLDNO,
+			PLDLN,
+			C6AENB,
+			C6DCCD,
+			C6CVNB,
+			HOUSE,
+			CDFCNB,
+			ADDRNB,
+			ADAASZ,
+			ITNBR,
+			UNMSR,
+			SABCH2,	
+			SASUB2,		
+			SALOC2,
+			
+			SAQTY2,
+			SAUS2,
+			SADP2,
+			SADT2,
+			SATM2
+			)	
+	       VALUES (
+	       		#sadno#,
+	            #sadln#,
+	       		#sadbn#,
+	       		#pldno#,
+	            #pldln#,
+		        #c6aenb#,
+		        #c6dccd#,
+		        #c6cvnb#,	
+		        
+		        #house#,
+	            #cdfcnb#,
+		        #addrnb#,
+		        #adaasz#,		        
+		        #itnbr#,
+		        
+		        #unmsr#,
+	            #sabch2#,
+	            #sasub2#,
+		        #saloc2#,		        
+		        #saqty2#,	        
+		        #saus2#,		        
+		        #sadp2#,		        
+		        #sadt2#,		        
+		        #satm2#)
+		]]>
+	</insert>
+	
+	<insert id="insertZsabox" parameterClass="ZSABOXVO">
+		<![CDATA[
+		INSERT  INTO ZSABOX(
+			SADNO,
+			SADLN,
+			PLDNO,
+			PLDLN,
+			BOXLN,
+			BOXNM,
+			BOXES
+			)	
+	       VALUES (
+	       		#sadno#,
+	       		#sadln#,
 	       		#pldno#,
 	            #pldln#,
 		        #boxln#,

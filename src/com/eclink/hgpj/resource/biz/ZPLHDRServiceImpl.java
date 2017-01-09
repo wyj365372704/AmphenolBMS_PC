@@ -20,6 +20,10 @@ import com.eclink.hgpj.resource.vo.ZGRNITMVO;
 import com.eclink.hgpj.resource.vo.ZPLBOXVO;
 import com.eclink.hgpj.resource.vo.ZPLDTLVO;
 import com.eclink.hgpj.resource.vo.ZPLHDRVO;
+import com.eclink.hgpj.resource.vo.ZSABCHVO;
+import com.eclink.hgpj.resource.vo.ZSABOXVO;
+import com.eclink.hgpj.resource.vo.ZSADTLVO;
+import com.eclink.hgpj.resource.vo.ZSAHDRVO;
 
 /**
  * MenuServiceImpl.java
@@ -137,6 +141,59 @@ public class ZPLHDRServiceImpl implements ZPLHDRService {
 	@Override
 	public void updateZplhdrByPar(ZPLHDRVO vo) throws Exception {
 		zplhdrDao.updateZplhdrByPar(vo);
+	}
+
+	@Override
+	public void insertZsabch(ZSABCHVO vo) throws Exception {
+		zplhdrDao.insertZsabch(vo);
+	}
+
+	@Override
+	public void insertZsabox(ZSABOXVO vo) throws Exception {
+		zplhdrDao.insertZsabox(vo);
+	}
+
+	@Override
+	public void insertZsadtl(ZSADTLVO vo) throws Exception {
+		zplhdrDao.insertZsadtl(vo);
+	}
+
+	@Override
+	public void insertZsahdr(ZSAHDRVO vo) throws Exception {
+		zplhdrDao.insertZsahdr(vo);
+	}
+
+	@Override
+	public void insertZsahdrs(Map map) throws Exception {
+		if(map!=null){
+			if(map.get("zsahdr")!=null){
+				zplhdrDao.insertZsahdr((ZSAHDRVO)map.get("zsahdr"));
+			}
+			if(map.get("zsadtls")!=null){
+				List<ZSADTLVO> zsadtls = (List<ZSADTLVO>)map.get("zsadtls");
+				if(zsadtls.size()>0){
+					for(int i=0;i<zsadtls.size();i++){
+						zplhdrDao.insertZsadtl(zsadtls.get(i));
+					}
+				}
+			}
+			if(map.get("zsabchs")!=null){
+				List<ZSABCHVO> zsabchs = (List<ZSABCHVO>)map.get("zsabchs");
+				if(zsabchs.size()>0){
+					for(int i=0;i<zsabchs.size();i++){
+						zplhdrDao.insertZsabch(zsabchs.get(i));
+					}
+				}
+			}
+			if(map.get("zsabboxes")!=null){
+				List<ZSABOXVO> zsabboxes = (List<ZSABOXVO>)map.get("zsabboxes");
+				if(zsabboxes.size()>0){
+					for(int i=0;i<zsabboxes.size();i++){
+						zplhdrDao.insertZsabox(zsabboxes.get(i));
+					}
+				}
+			}
+		}
 	}
 
 

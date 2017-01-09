@@ -142,6 +142,7 @@
 		</action>
 		<action name="zplhdrs" class="com.eclink.hgpj.resource.action.ZplhdrAction">
 			<result name="toZplhdr">/resource/sales_notice.jsp</result>
+			<result name="toPrintOne">/resource/notice_print.jsp</result>
 			<result name="todata">/commons/data.jsp</result>
 		</action>
 

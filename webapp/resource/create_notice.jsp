@@ -26,6 +26,26 @@
 </style>
 </head>
 <script type="text/javascript">
+   var retdata = "<s:property value='data'/>";
+   var itnbr = "<s:property value='cnote'/>";
+   if(retdata=="" || retdata==null || retdata=="null"){
+   	
+   }else{
+   		if(retdata=="success"){
+   			alert("创建通知单成功！");
+   			window.close();
+   			//window.location.href="zplhdrs!toZplhdr.action";
+   		}else{
+   			if(retdata=="nol"){
+   				alert("物料"+itnbr+"子库或库位信息为空，请完善");
+   			}else if(retdata=="noh"){
+   				alert("物料"+itnbr+"没有子库或库位信息，请完善");
+   			}else{
+   				alert("创建通知单失败");
+   			}
+   			window.history.back();
+   		}
+   }
 	function getAddByCus(){
 		var cusno=document.getElementsByName("zplhdr.cusno")[0].value;
 		document.getElementsByName("zplhdr.cusnm")[0].value=$("#cusno").find("option:selected").text();

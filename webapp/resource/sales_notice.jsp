@@ -132,7 +132,7 @@
 			  				
 			  				</s:if>
 			  				<s:else>
-			  					<input type="button" id="printbtn" value="打印" class="gray_button" onclick=""/>
+			  					<input type="button" id="printbtn" value="打印" class="gray_button" onclick="goPrint('<s:property value="pldno"/>');"/>
 			  				</s:else>
 						</td>
 							
@@ -187,37 +187,35 @@
 		window.open("sales!toCreateNotice.action",'newwindow','height=900, width=1044, top=0, left=0, toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no');
 	
 	}
+	function godelete(pldno){
+		//alert(pldno);
+		$.ajax( {  
+		       url:'zplhdrs!toDeleteZplhdr.action',// 跳转到 action  
+		       data:{  
+		                pldno : pldno
+		       },  
+		      type:'post',  
+		      cache:false,  
+		      success:function(data) { 
+		      	//var json = $.parseJSON(data);
+		        //alert(data); 
+		       // document.getElementById("info").innerHTML=json.retStr;
+		       //	if(data=="success"){
+		       		alert("删除通知单成功");
+		       		document.forms[0].submit();
+		       //	}else{
+		       	//	alert("删除通知单失败！");  
+		       	//}
+		       },  
+		       error : function() {  
+		            // view("异常！");  
+		            alert("删除通知单失败！");  
+		       }  
+		  });
+	}
 	// 打印
-	function myPrint(){
-		// 检查是否选中记录
-		var cbs = document.getElementsByName("cb");
-		if( !cbs ){
-			alert("未选中记录！");
-			return;
-		}
-		
-		var gno = new Array();
-		var count = 0;
-		cbs.forEach(function(p) {
-			if( !p.checked){
-				bool = false;
-			} else {
-				count ++;
-				var str = p.value.substring(0,p.value.indexOf('-'));
-				gno.push($.trim(str));
-			}
-		})
-		
-		if( count <= 0 ){
-			alert("未选中记录！");
-			return;
-		}
-
-		var grnnos = JSON.stringify({
-			grnnos: gno
-		});
-		
-		window.open('allotted!toPrintAllotted.action?grnno='+ grnnos,'newwindow','height=600,width=800,top=60,left=200,toolbar=no,menubar=no,scrollbars=no, resizable=no,location=no, status=no');
+	function goPrint(pldno){alert(pldno);
+		window.open("zplhdrs!toPrintOne.action?pldno="+ pldno,"newwindow","height=600,width=1024,top=60,left=200,toolbar=no,menubar=no,scrollbars=no, resizable=no,location=no, status=no");
 	}
 </script>
 </html>

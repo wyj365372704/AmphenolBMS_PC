@@ -19,6 +19,7 @@ import com.eclink.hgpj.resource.vo.ITMSITVO;
 import com.eclink.hgpj.resource.vo.MenuVO;
 import com.eclink.hgpj.resource.vo.ZBMSCTLVO;
 import com.eclink.hgpj.resource.vo.ZCUSCNSVO;
+import com.eclink.hgpj.resource.vo.ZCUSMRKVO;
 import com.eclink.hgpj.resource.vo.ZGRNBCHVO;
 import com.eclink.hgpj.resource.vo.ZGRNHDRVO;
 import com.eclink.hgpj.resource.vo.ZGRNITMVO;
@@ -39,6 +40,11 @@ public class ZCUSCNSDaoImpl extends SqlMapClientDaoSupport implements ZCUSCNSDao
 	@Override
 	public List<ZCUSCNSVO> queryZcuscns(ZCUSCNSVO vo) throws Exception {
 		return this.getSqlMapClientTemplate().queryForList("ZCUSCNS.queryZcuscns",vo);
+	}
+
+	@Override
+	public List<ZCUSMRKVO> queryZcusmrk(ZCUSMRKVO vo) throws Exception {
+		return this.getSqlMapClientTemplate().queryForList("ZCUSCNS.queryZcusmrk",vo);
 	}
 
 

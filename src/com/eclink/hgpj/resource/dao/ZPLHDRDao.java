@@ -4,13 +4,13 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
-import com.eclink.hgpj.resource.vo.ZBMSRSNVO;
-import com.eclink.hgpj.resource.vo.ZIPDTLVO;
-import com.eclink.hgpj.resource.vo.ZIPHDRVO;
-import com.eclink.hgpj.resource.vo.ZIPHSTVO;
 import com.eclink.hgpj.resource.vo.ZPLBOXVO;
 import com.eclink.hgpj.resource.vo.ZPLDTLVO;
 import com.eclink.hgpj.resource.vo.ZPLHDRVO;
+import com.eclink.hgpj.resource.vo.ZSABCHVO;
+import com.eclink.hgpj.resource.vo.ZSABOXVO;
+import com.eclink.hgpj.resource.vo.ZSADTLVO;
+import com.eclink.hgpj.resource.vo.ZSAHDRVO;
 
 /**
  * MenuDao.java
@@ -54,5 +54,13 @@ public interface ZPLHDRDao {
 
 	public void deleteZplhdr(String pldno) throws Exception;
 	
+	
+	public void insertZsahdr(ZSAHDRVO vo) throws Exception;
+
+	public void insertZsadtl(ZSADTLVO vo) throws Exception;
+
+	public void insertZsabch(ZSABCHVO vo) throws Exception;
+
+	public void insertZsabox(ZSABOXVO vo) throws Exception;
 	
 }

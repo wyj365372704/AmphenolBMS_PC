@@ -900,6 +900,16 @@ public class MbcdrepAction extends BaseAction {
 						if(zitembxs!=null && zitembxs.size()>0){
 							vo.setPlsub(zitembxs.get(0).getWhsub2());
 							vo.setPlloc(zitembxs.get(0).getLlocn2());
+							if(zitembxs.get(0).getWhsub2()==null || zitembxs.get(0).getWhsub2().trim().equals("")
+									|| zitembxs.get(0).getLlocn2()==null || zitembxs.get(0).getLlocn2().trim().equals("")){
+								data="nol";
+								this.cnote=wlhsstr[j].trim();
+								return toCreateNotice();
+							}
+						}else{
+							data="noh";
+							this.cnote=wlhsstr[j].trim();
+							return toCreateNotice();
 						}
 						ITMSITVO itmsitvo = new ITMSITVO();
 						itmsitvo.setHouse(stid);
