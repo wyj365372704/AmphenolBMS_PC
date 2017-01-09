@@ -62,6 +62,8 @@ public class ZBMSCTLVO extends BaseVO{
 	private String sfctr;
 	
 	private String sfzip;
+	
+	private BigDecimal  prslmt;
 
 	public String getSite() {
 		return site;
@@ -69,6 +71,14 @@ public class ZBMSCTLVO extends BaseVO{
 
 	public void setSite(String site) {
 		this.site = site;
+	}
+
+	public BigDecimal getPrslmt() {
+		return prslmt;
+	}
+
+	public void setPrslmt(BigDecimal prslmt) {
+		this.prslmt = prslmt;
 	}
 
 	public String getRprsn() {

@@ -145,6 +145,10 @@
 			<result name="toPrintOne">/resource/notice_print.jsp</result>
 			<result name="todata">/commons/data.jsp</result>
 		</action>
+		<action name="sysOperation" class="com.eclink.hgpj.resource.action.SysOperationAction">
+			<result name="toPrslmt">/resource/sysOperation_prslmt.jsp</result>
+			<result name="todata">/commons/data.jsp</result>
+		</action>
 
 	</package>
 

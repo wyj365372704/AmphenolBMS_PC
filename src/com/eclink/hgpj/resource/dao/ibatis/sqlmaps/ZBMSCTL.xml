@@ -24,11 +24,16 @@
 	    <result column="SFCITY" property="sfcity" />
 	    <result column="SFCTR" property="sfctr" />
 	    <result column="SFZIP" property="sfzip" />
+	    <result column="PRSLMT" property="prslmt" />
 	    
 	  </resultMap>
 	<select id="queryZbmsctl" resultMap="ZBMSCTLVOMap" parameterClass="ZBMSCTLVO">
 		<![CDATA[ select  *  from  ZBMSCTL where SITE=#site#  
 		]]>
 	</select>
+	
+	<update id="updateZbmsctl" parameterClass="ZBMSCTLVO">
+		<![CDATA[ UPDATE ZBMSCTL SET PRSLMT = #prslmt# WHERE SITE = #site#  ]]>
+	</update>
 
 </sqlMap>

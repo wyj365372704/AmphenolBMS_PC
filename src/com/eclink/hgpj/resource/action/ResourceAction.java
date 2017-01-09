@@ -4543,6 +4543,19 @@ public class ResourceAction extends BaseAction {
 				if(results!=null && results.size()>0){
 					MOMASTVO vo = results.get(0);
 					if("10, 40, 50".indexOf(vo.getOstat())>=0){
+						double rax = 1;
+						if(bmsctlList.size()>0){
+							rax +=bmsctlList.get(0).getPrslmt().doubleValue()*0.01f;
+						}
+						if(vo.getMoqty().multiply(new BigDecimal(Double.valueOf(rax))).compareTo(vo.getQtyrc().add(new BigDecimal(Double.parseDouble(quantity))))<0){
+							jo.put("code", 7);
+							jo.put("desc", "入库数量超过上限");
+							jo.put("max_remain", vo.getMoqty().multiply(new BigDecimal(Double.valueOf(rax))).subtract(vo.getQtyrc()).doubleValue());
+							data=jo.toString();
+							return "todata";
+						}
+						
+						
 						Map map0 = new HashMap();
 						map0.put("warehouse", warehouse);
 						map0.put("shard", shard);

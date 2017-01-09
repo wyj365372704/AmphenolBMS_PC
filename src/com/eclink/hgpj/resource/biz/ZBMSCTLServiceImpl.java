@@ -43,6 +43,8 @@ public class ZBMSCTLServiceImpl implements ZBMSCTLService {
 		return zbmsctlDao.queryZbmsctl(vo);
 	}
 	
-	
+	public void updateZbmsctl(ZBMSCTLVO vo) throws Exception{
+		zbmsctlDao.updateZbmsctl(vo);
+	}
 
 }
