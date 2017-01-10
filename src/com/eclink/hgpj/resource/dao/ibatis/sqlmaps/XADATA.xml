@@ -515,7 +515,7 @@
 		<dynamic>
 			<isNotEmpty prepend="AND" property="ordno">
 				(a.ORDNO IN ($ordno$)
-				or a.ORDNO like ('%'||$ordnoF$||'%'))
+				or a.ORDNO like ('%'||$ordno$||'%'))
 			</isNotEmpty>
 		</dynamic>
 		<dynamic>
