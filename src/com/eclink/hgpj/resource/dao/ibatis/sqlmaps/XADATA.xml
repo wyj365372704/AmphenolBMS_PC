@@ -388,7 +388,7 @@
 		<dynamic>
 			<isNotEmpty prepend="AND" property="ordnoF">
 				(a.ORDNO IN ($ordnoF$)
-				or a.ORDNO like ('%'||#ordnoF#||'%'))
+				or a.ORDNO like ('%'||$ordnoF$||'%'))
 			</isNotEmpty>
 		</dynamic>
 		<dynamic>
@@ -405,13 +405,13 @@
 
 		<dynamic>
 			<isNotEmpty prepend="AND" property="startDateB">
-				(a.ASTDT >=
+				(a.SSTDT >=
 				#startDateB#)
 			</isNotEmpty>
 		</dynamic>
 		<dynamic>
 			<isNotEmpty prepend="AND" property="endDateB">
-               <![CDATA[ (a.ASTDT <= #endDateB#)  ]]>
+               <![CDATA[ (a.SSTDT <= #endDateB#)  ]]>
 			</isNotEmpty>
 		</dynamic>
 		<![CDATA[ order by a.ASTDT desc 
@@ -515,7 +515,7 @@
 		<dynamic>
 			<isNotEmpty prepend="AND" property="ordno">
 				(a.ORDNO IN ($ordno$)
-				or a.ORDNO like ('%'||#ordno#||'%'))
+				or a.ORDNO like ('%'||$ordnoF$||'%'))
 			</isNotEmpty>
 		</dynamic>
 		<dynamic>

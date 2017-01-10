@@ -289,6 +289,7 @@ public class PickListAction extends BaseAction {
 						resultMap.put("ordno", hdrs.get(0).getOrdno());
 						resultMap.put("dept", hdrs.get(0).getDept());
 						resultMap.put("fitem", hdrs.get(0).getFitem());
+						resultMap.put("iptyp", hdrs.get(0).getIptyp().trim());
 						MOMASTVO momastvo = new MOMASTVO();
 						momastvo.setOrdno(hdrs.get(0).getOrdno());
 						List<MOMASTVO> momasts = xadataService.queryMomastByordno(momastvo);

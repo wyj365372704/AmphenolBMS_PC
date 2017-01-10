@@ -148,7 +148,7 @@
 						cssClass="input_w" /></li>
 				<li><div class="w_s">部门：</div> <s:textfield name="momast.dptno"
 						cssClass="input_w" /></li>
-				<li><div class="w_s">开工日：</div> <s:textfield id="startDate"
+				<li><div class="w_s">计划开始日期：</div> <s:textfield id="startDate"
 						name="momast.startDate" cssClass="time_input"
 						onclick="WdatePicker()" autocomplete="on" />- <s:textfield
 						id="endDate" name="momast.endDate" cssClass="time_input"
@@ -181,8 +181,8 @@
 						<th>数量</th>
 						<th>单位</th>
 						<th>部门</th>
-						<th>开始日期</th>
-						<th>完工日期</th>
+						<th>计划开始日期</th>
+						<th>计划完工日期</th>
 						<th>状态</th>
 						<th>已打印</th>
 						<th>已完工</th>

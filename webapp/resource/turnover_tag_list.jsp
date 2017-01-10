@@ -25,7 +25,7 @@
 <body class="right_body">
 
 	<s:form action="turnover!toTurnoverList.action" method="post" name="queryform">
-		<div class="path">您现在的位置： 首页 &gt; 生产 &gt; 打印周转标签</div>
+		<div class="path">您现在的位置： 首页 &gt; 生产 &gt; 打印物料识别卡</div>
 		<div class="search">
 			<h2>
 				<span class="fl">周转查询</span> 
