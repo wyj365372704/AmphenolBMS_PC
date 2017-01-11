@@ -1106,7 +1106,7 @@ public class Utils {
 						String insertsql="insert into TRDATA(ACREC,APCOD,BADGE,CRWYN,CTLID,ENSTN,HDEPT,IPLOC,ITNBR,LBHNO,LLOCN,"
 								+"LPLID,LPQC1,ORDNO,PARNT,QUEUE,REASN,REFNO,SEQNM,SHFTC,TDATE,TRFMT,TRNNO,TRQTY,TSTAT,TTIME,WSID,USRSQ,TURNA,TURNN,TURNC"
 								+") values('Y','I','"+(map.get("badge"))+"','N','*','0','"+((String)map.get("hdept"))+"','"+((String)map.get("iploc"))+"','"+((String)map.get("itnbr"))+"','" +
-								((String)map.get("lbhno"))+"','"+((String)map.get("lloc"))+"','D',0,'"+((String)map.get("ordno"))+"',0,1,'"+((String)map.get("reasn"))+"','',"+((BigDecimal)map.get("seqnm")).intValue()+","
+								((String)map.get("lbhno"))+"','"+((String)map.get("lloc"))+"','D',0,'"+((String)map.get("ordno"))+"',0,1,'"+((String)map.get("reasn"))+"','"+((String)map.get("refno"))+"',"+((BigDecimal)map.get("seqnm")).intValue()+","
 								+"1,"+((BigDecimal)map.get("tdate")).longValue()+",'IP',"+(idx)+","+((BigDecimal)map.get("trqty")).longValue()+",2,"+((BigDecimal)map.get("ttime")).longValue()+","
 								+"'"+((String)map.get("wsid"))+"','"+((String)map.get("usrsq"))+"',"+((BigDecimal)map.get("turna")).longValue()+","+((BigDecimal)map.get("turnn")).longValue()+","+((BigDecimal)map.get("turnc")).longValue()+")";
 						System.out.println("insertsql="+insertsql);

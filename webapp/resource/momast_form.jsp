@@ -30,7 +30,7 @@
 <body>
 
 	<s:iterator value="results" var="resultMap">
-		<table cellpadding="5px" width="100%" class="tb">
+		<table cellpadding="5px" width="100%" class="tb" style='page-break-after: always;'>
 			<tbody>
 				<tr>
 					<td>

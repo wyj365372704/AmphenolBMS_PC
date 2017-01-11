@@ -30,7 +30,7 @@
 <body>
 	<!-- 分装标签 -->
 	<s:iterator value="results" var="result">
-	<table cellpadding="5px" width="400" class="tb">
+	<table cellpadding="5px" width="400" class="tb"  style='page-break-after: always;'>
 		<tbody>
 			<tr>
 				<td>

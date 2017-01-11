@@ -4108,7 +4108,8 @@ public class ResourceAction extends BaseAction {
 								map.put("turna", vo.getTurna());
 								map.put("turnn", vo.getTurnn());
 								map.put("turnc", vo.getTurnc());
-
+								map.put("refno", vo.getIpdno().trim().substring(2,vo.getIpdno().length()));
+								
 								ZIPHSTVO hvo = new ZIPHSTVO();
 								hvo.setIpdno(pick_number);
 								hvo.setIpdln(BigDecimal.valueOf(Long.valueOf(pick_line)));
@@ -4310,6 +4311,7 @@ public class ResourceAction extends BaseAction {
 						map.put("turna", vo.getTurna());
 						map.put("turnn", vo.getTurnn());
 						map.put("turnc", vo.getTurnc());
+						map.put("refno", vo.getIpdno().trim().substring(2,vo.getIpdno().length()));
 
 						ZIPHSTVO hvo = new ZIPHSTVO();
 						hvo.setIpdno(pick_number);

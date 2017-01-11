@@ -9,7 +9,7 @@
 <title>Amphenol</title>
 <OBJECT ID="jatoolsPrinter"
 	CLASSID="CLSID:B43D3361-D075-4BE2-87FE-057188254255"
-	codebase="jatoolsPrinter.cab#version=8,6,0,0"></OBJECT>
+	codebase="jatoolsPrinter.cab#version=8,6,0,0"  height="0" width="0"></OBJECT>
 <link href="../css/global.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="../js/My97DatePicker/WdatePicker.js"></script>
 <script type="text/javascript" src="../js/jquery-1.4.2.min.js"></script>
@@ -28,12 +28,10 @@
 }
 </style>
 </head>
-
 <body>
-	<div id="page1">
 		<!-- 领料单 -->
 		<s:iterator value="results" var="resultMap">
-			<table cellpadding="5px" width="100%" class="tb">
+			 <table cellpadding='5px'width='100%' class='tb' style='page-break-after: always;'>
 				<tbody>
 					<tr>
 						<td>
@@ -128,9 +126,7 @@
 					</tr>
 				<tbody>
 			</table>
-
 		</s:iterator>
-	</div>
 </body>
 <script language="javascript">
 	window.onload = function() {
