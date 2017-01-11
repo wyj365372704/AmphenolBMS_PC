@@ -63,20 +63,41 @@
 		      success:function(data) {// alert(data); 
 		      	var json = $.parseJSON(data); 
 		      	if(json.result=='success'){
-		      		//   
-		      		document.getElementsByName("zplhdr.stnam")[0].value=json.stnam;
-		      		document.getElementsByName("zplhdr.stadd1")[0].value=json.stadd1;
-		      		document.getElementsByName("zplhdr.stadd2")[0].value=json.stadd2;
-		      		document.getElementsByName("zplhdr.stcity")[0].value=json.stcity;
-		      		document.getElementsByName("zplhdr.stctr")[0].value=json.stctr;
-		      		document.getElementsByName("zplhdr.stzip")[0].value=json.stzip;
+		      		//$("#stnam").empty(); 
+		      		document.getElementsByName("stnam")[0].options.length=0;
+		      		document.getElementsByName("scnam")[0].options.length=0;
+		      		var shiptos = (eval(json.shiptos));
+		      		var zcuscns = (eval(json.zcuscns));
+		      		var shiptoopts="";
+		      		 document.getElementsByName("stnam")[0].options.add(new Option("",""));
+		      		 document.getElementsByName("scnam")[0].options.add(new Option("",""));
+		      		//$("#select_id").append("<option value='Value'>Text</option>"); 
+		      		for(var i=0;i<shiptos.length;i++){
+		      			//shiptoopts=shiptoopts+("<option value='"+(shiptos[i].s2cmtx+"-"+shiptos[i].s2cntx+"-"+shiptos[i].s2cptx+"-"+shiptos[i].s2cocd+"-"+shiptos[i].s2cvcd)+"'>"+shiptos[i].s2cltx+"</option>"); 
+		      			 document.getElementsByName("stnam")[0].options.add(new Option(shiptos[i].s2cltx,(shiptos[i].s2cmtx+"-"+shiptos[i].s2cntx+"-"+shiptos[i].s2cptx+"-"+shiptos[i].s2cocd+"-"+shiptos[i].s2cvcd)));
+		      			
+		      		}
+		      		//alert(zcuscns.length);
+		      		for(var i=0;i<zcuscns.length;i++){
+		      			//shiptoopts=shiptoopts+("<option value='"+(shiptos[i].s2cmtx+"-"+shiptos[i].s2cntx+"-"+shiptos[i].s2cptx+"-"+shiptos[i].s2cocd+"-"+shiptos[i].s2cvcd)+"'>"+shiptos[i].s2cltx+"</option>"); 
+		      			 document.getElementsByName("scnam")[0].options.add(new Option(zcuscns[i].cname,(zcuscns[i].caddr1+"-"+zcuscns[i].caddr2+"-"+zcuscns[i].ccity+"-"+zcuscns[i].ccntr+"-"+zcuscns[i].czip)));
+		      			
+		      		}
+		      		//alert(shiptoopts);
+		      		//document.getElementsByName("zplhdr.stnam")[0].innerHTML="<option value='2'>dd</option>";
+		      		//document.getElementsByName("zplhdr.stnam")[0].value=json.stnam;
+		      		//document.getElementsByName("zplhdr.stadd1")[0].value=json.stadd1;
+		      		//document.getElementsByName("zplhdr.stadd2")[0].value=json.stadd2;
+		      		//document.getElementsByName("zplhdr.stcity")[0].value=json.stcity;
+		      		//document.getElementsByName("zplhdr.stctr")[0].value=json.stctr;
+		      		//document.getElementsByName("zplhdr.stzip")[0].value=json.stzip;
 		      		
-		      		document.getElementsByName("zplhdr.scnam")[0].value=json.scnam;
-		      		document.getElementsByName("zplhdr.scadd1")[0].value=json.scadd1;
-		      		document.getElementsByName("zplhdr.scadd2")[0].value=json.scadd2;
-		      		document.getElementsByName("zplhdr.sccity")[0].value=json.sccity;
-		      		document.getElementsByName("zplhdr.scctr")[0].value=json.scctr;
-		      		document.getElementsByName("zplhdr.sczip")[0].value=json.sczip;
+		      		//document.getElementsByName("zplhdr.scnam")[0].value=json.scnam;
+		      		//document.getElementsByName("zplhdr.scadd1")[0].value=json.scadd1;
+		      		//document.getElementsByName("zplhdr.scadd2")[0].value=json.scadd2;
+		      		//document.getElementsByName("zplhdr.sccity")[0].value=json.sccity;
+		      		//document.getElementsByName("zplhdr.scctr")[0].value=json.scctr;
+		      		//document.getElementsByName("zplhdr.sczip")[0].value=json.sczip;
 		      		 //alert("批量创建领料单成功");
 		      	}else if(json.result=='fail'){
 		      		 //alert("批量创建领料单失败");
@@ -130,6 +151,9 @@
 		var incot=document.getElementsByName("zplhdr.incot")[0].value;
 		var chd="",qtys="",ddlxs="",ddhhs="",wlhs="",houses="",kcdws="",ponums="",zxdhs="",xss="";
 		var sfctr=document.getElementsByName("zplhdr.sfctr")[0].value;
+		var scnam=document.getElementsByName("zplhdr.scnam")[0].value;
+		var stnam=document.getElementsByName("zplhdr.stnam")[0].value;
+		var sfnam=document.getElementsByName("zplhdr.sfnam")[0].value;
 		if(cusno==''){
 			alert("请选择客户！");
 			return;
@@ -140,6 +164,18 @@
 		}
 		if(incot==''){
 			alert("请选择国际条款！");
+			return;
+		}
+		if(scnam==''){
+			alert("请选择收货地！");
+			return;
+		}
+		if(stnam==''){
+			alert("请选择运达地！");
+			return;
+		}
+		if(sfnam==''){
+			alert("请选择发运地！");
 			return;
 		}
 		var chds = document.getElementsByName("chk");
@@ -190,6 +226,40 @@
 		document.getElementsByName("xss")[0].value=xss;
 		document.getElementsByName("queryform")[0].submit();
 	}
+	function selectadd1(){
+		var val = $("#stanmid").val();
+		var txt=$("#stanmid").find("option:selected").text();
+		document.getElementsByName("zplhdr.stadd1")[0].value=val.split("-")[0];
+		document.getElementsByName("zplhdr.stadd2")[0].value=val.split("-")[1];
+		document.getElementsByName("zplhdr.stcity")[0].value=val.split("-")[2];
+		document.getElementsByName("zplhdr.stctr")[0].value=val.split("-")[3];
+		document.getElementsByName("zplhdr.stzip")[0].value=val.split("-")[4];
+		document.getElementsByName("zplhdr.stnam")[0].value=txt;
+		//alert(val.split("-"));
+		//alert(txt);
+	}
+	function selectadd2(){
+		var val = $("#scanmid").val();
+		var txt=$("#scanmid").find("option:selected").text();
+		document.getElementsByName("zplhdr.scadd1")[0].value=val.split("-")[0];
+		document.getElementsByName("zplhdr.scadd2")[0].value=val.split("-")[1];
+		document.getElementsByName("zplhdr.sccity")[0].value=val.split("-")[2];
+		document.getElementsByName("zplhdr.scctr")[0].value=val.split("-")[3];
+		document.getElementsByName("zplhdr.sczip")[0].value=val.split("-")[4];
+		document.getElementsByName("zplhdr.scnam")[0].value=txt;
+	}
+	
+	//zplhdr.sfnam
+	function selectadd3(){
+		var val = $("#sfanmid").val();
+		var txt=$("#sfanmid").find("option:selected").text();
+		document.getElementsByName("zplhdr.sfadd1")[0].value=val.split("-")[0];
+		document.getElementsByName("zplhdr.sfadd2")[0].value=val.split("-")[1];
+		document.getElementsByName("zplhdr.sfcity")[0].value=val.split("-")[2];
+		document.getElementsByName("zplhdr.sfctr")[0].value=val.split("-")[3];
+		document.getElementsByName("zplhdr.sfzip")[0].value=val.split("-")[4];
+		//alert(val);
+	}
 </script>
 <body>
 	<table cellpadding="5px" width="100%" class="tb">
@@ -206,6 +276,8 @@
 			<input name="ponums" type="hidden" value="" />
 			<input name="zxdhs" type="hidden" value="" />
 			<input name="xss" type="hidden" value="" />
+			<input name="zplhdr.stnam" type="hidden" value="" />
+			<input name="zplhdr.scnam" type="hidden" value="" />
 			
 			<tr>
 				<td> 
@@ -232,7 +304,9 @@
 						
 							</tr>
 							<tr>
-								<td colspan="3"><span style="color:red">运达地</span>: <s:textfield name="zplhdr.stnam" cssClass="input_s_1"/></td>
+								<td colspan="3"><span style="color:red">运达地</span>: 
+								 <select name="stnam" id="stanmid" class="select_s_2" style="width:60%" onchange="selectadd1();"></select>					
+								</td>
 							</tr>
 							<tr>
 								<td colspan="2">地址1: <s:textfield name="zplhdr.stadd1" cssClass="input_s_1"/></td>
@@ -244,7 +318,11 @@
 								<td>邮编: <s:textfield name="zplhdr.stzip" cssClass="input_w" maxlength="20"/></td>
 							</tr>
 							<tr>
-								<td colspan="3"><span style="color:red">发运地</span>: <s:textfield name="zplhdr.sfnam" cssClass="input_s_1"/></td>
+								<td colspan="3"><span style="color:red">发运地</span>: 
+								<s:select name="zplhdr.sfnam" id="sfanmid" 
+									list="%{sfnams}" listKey="svalue" listValue="sname"
+									cssClass="select_s_2" style="width:60%" onchange="selectadd3();"></s:select>	
+								</td>
 							</tr>
 							<tr>
 								<td colspan="2">地址1: <s:textfield name="zplhdr.sfadd1" cssClass="input_s_1"/></td>
@@ -256,7 +334,9 @@
 								<td>邮编: <s:textfield name="zplhdr.sfzip" cssClass="input_w" maxlength="20"/></td>
 							</tr>
 							<tr>
-								<td colspan="3"><span style="color:red">收货地</span>: <s:textfield name="zplhdr.scnam" cssClass="input_s_1"/></td>
+								<td colspan="3"><span style="color:red">收货地</span>: 
+								 <select name="scnam" id="scnamid" class="select_s_2" style="width:60%" onchange="selectadd2();"></select>	
+								</td>
 							</tr>
 							<tr>
 								<td colspan="2">地址1: <s:textfield name="zplhdr.scadd1" cssClass="input_s_1"/></td>
