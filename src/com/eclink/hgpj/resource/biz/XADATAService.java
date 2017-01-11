@@ -83,6 +83,7 @@ public interface XADATAService {
 	public List<String> queryCarrier(Map map) throws Exception;
 	public List<String> queryTransport(Map map) throws Exception;
 	public List<MBS2REPVO> queryShipTo(Map map) throws Exception;
+	public List<String> queryMbbirep(Map map) throws Exception;
 	
 	public String queryBMCBTX(Map map) throws Exception;
 	public String queryMBCDREP(Map map) throws Exception;

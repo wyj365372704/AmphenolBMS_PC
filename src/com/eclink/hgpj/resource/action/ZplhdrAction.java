@@ -686,6 +686,16 @@ public class ZplhdrAction extends BaseAction {
 							reusltmap.put("cusln", tvo.getCdfcnb());
 							reusltmap.put("ponum", tvo.getPonum());
 							reusltmap.put("plqty", tvo.getPlqty());
+							reusltmap.put("plqty", tvo.getPlqty());
+							Map bpmap = new HashMap();
+							bpmap.put("biaitx", tvo.getItnbr());
+							bpmap.put("bicanb", zplhdr.getCusno().longValue());
+							List<String> bicresults = this.xadataService.queryMbbirep(bpmap);
+							String cusitnr = "";
+							if(bicresults!=null && bicresults.size()>0){
+								cusitnr = bicresults.get(0);
+							}
+							
 							if(zplboxes!=null && zplboxes.size()>0){
 								ZPLBOXVO bvo = zplboxes.get(i);
 								reusltmap.put("xhxs", bvo.getBoxnm()+"/"+(bvo.getBoxes()==null?0:bvo.getBoxes().floatValue()));
@@ -731,6 +741,7 @@ public class ZplhdrAction extends BaseAction {
 //								vo.setWtum2(itmvo.getB2aapt());
 								reusltmap.put("b2z95t", itmvo.getB2z95t());
 
+								reusltmap.put("cwlms", cusitnr+"/"+itmvo.getItdsc());
 								reusltmap.put("jzsl", itmvo.getWeght()+"/"+itmvo.getB2aas3());
 							}
 							reusltmap.put("plsub", tvo.getPlsub());
