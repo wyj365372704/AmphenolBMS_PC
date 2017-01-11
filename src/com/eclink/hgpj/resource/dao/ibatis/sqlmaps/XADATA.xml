@@ -250,6 +250,19 @@
 
 	</select>
 
+	<select id="queryMbbirep" resultClass="String" parameterClass="Map">
+		<![CDATA[ select  BIHLTX from  MBBIREP 
+		]]>
+		<dynamic prepend="where">
+			<isNotEmpty prepend="AND" property="biaitx">
+				biaitx=#biaitx#
+			</isNotEmpty>
+			<isNotEmpty prepend="AND" property="bicanb">
+				bicanb = #bicanb#
+			</isNotEmpty>
+		</dynamic>
+	</select>
+	
 	<select id="queryItrvt" resultClass="String" parameterClass="ITMSITVO">
 		<![CDATA[ select  ITRVT9  from  ITMSIT where STIDT9=#house# and ITNOT9=#itnot9#
 		]]>

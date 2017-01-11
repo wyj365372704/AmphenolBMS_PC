@@ -122,6 +122,8 @@ public class MbcdrepAction extends BaseAction {
 	private List<Map> salestts;
 	
 	private List<Map> customers;
+	
+	private List<Map> sfnams;
 
 	private String grnno;
 
@@ -352,6 +354,14 @@ public class MbcdrepAction extends BaseAction {
 
 	public void setXss(String xss) {
 		this.xss = xss;
+	}
+
+	public List<Map> getSfnams() {
+		return sfnams;
+	}
+
+	public void setSfnams(List<Map> sfnams) {
+		this.sfnams = sfnams;
 	}
 
 	public String getData() {
@@ -792,13 +802,25 @@ public class MbcdrepAction extends BaseAction {
 			pvo.setSite(stid);
 			List<ZBMSCTLVO> zbmsctls = this.zbmsctlService.queryZbmsctl(pvo);
 			if(zbmsctls!=null && zbmsctls.size()>0){
-				ZBMSCTLVO rvo = zbmsctls.get(0);
-				zplhdr.setSfnam(rvo.getSfnam());
-				zplhdr.setSfadd1(rvo.getSfadd1());
-				zplhdr.setSfadd2(rvo.getSfadd2());
-				zplhdr.setSfcity(rvo.getSfcity());
-				zplhdr.setSfctr(rvo.getSfctr());
-				zplhdr.setSfzip(rvo.getSfzip());
+				sfnams = new ArrayList<Map>();
+				Map mapt = new HashMap();
+				mapt.put("sname", "");
+				mapt.put("svalue", "");
+				sfnams.add(mapt);
+				for(int i=0;i<zbmsctls.size();i++){
+					ZBMSCTLVO rvo = zbmsctls.get(0);
+					Map map = new HashMap();
+					map.put("sname", rvo.getSfnam());
+					map.put("svalue", rvo.getSfadd1()+"-"+rvo.getSfadd2()+"-"+rvo.getSfcity()+"-"+rvo.getSfctr()+"-"+rvo.getSfzip());
+					sfnams.add(map);
+				}
+//				ZBMSCTLVO rvo = zbmsctls.get(0);
+//				zplhdr.setSfnam(rvo.getSfnam());
+//				zplhdr.setSfadd1(rvo.getSfadd1());
+//				zplhdr.setSfadd2(rvo.getSfadd2());
+//				zplhdr.setSfcity(rvo.getSfcity());
+//				zplhdr.setSfctr(rvo.getSfctr());
+//				zplhdr.setSfzip(rvo.getSfzip());
 			}
 			
 			// 查询总记录数
@@ -982,6 +1004,7 @@ public class MbcdrepAction extends BaseAction {
 					jo.put("stcity", shipto.get(0).getS2cptx());
 					jo.put("stctr", shipto.get(0).getS2cocd());
 					jo.put("stzip", shipto.get(0).getS2cvcd());
+					jo.put("shiptos", shipto);
 				}else{
 					jo.put("stnam", "");
 					jo.put("stadd1", "");
@@ -989,6 +1012,7 @@ public class MbcdrepAction extends BaseAction {
 					jo.put("stcity", "");
 					jo.put("stctr", "");
 					jo.put("stzip", "");
+					jo.put("shiptos", new ArrayList<MBS2REPVO>());
 				}
 				ZCUSCNSVO pvo = new ZCUSCNSVO();
 				pvo.setComno(BigDecimal.valueOf(plant) );
@@ -1002,6 +1026,7 @@ public class MbcdrepAction extends BaseAction {
 					jo.put("sccity", zcuscns.get(0).getCcity());
 					jo.put("scctr", zcuscns.get(0).getCcntr());
 					jo.put("sczip", zcuscns.get(0).getCzip());
+					jo.put("zcuscns", zcuscns);
 				}else{
 					jo.put("scnam", "");
 					jo.put("scadd1", "");
@@ -1009,6 +1034,7 @@ public class MbcdrepAction extends BaseAction {
 					jo.put("sccity", "");
 					jo.put("scctr", "");
 					jo.put("sczip", "");
+					jo.put("zcuscns", new ArrayList<ZCUSCNSVO>());
 				}
 				jo.put("result", "success");
 				data=jo.toString();

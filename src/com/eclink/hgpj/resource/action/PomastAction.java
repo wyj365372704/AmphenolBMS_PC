@@ -1189,7 +1189,7 @@ public class PomastAction extends BaseAction {
 			JSONArray jsonArray = JSONObject.fromObject(grnno).getJSONArray("grnnos");
 			for(int i = 0;i<jsonArray.size();i++){
 				Map parMap = new HashMap();
-				parMap.put("vrdno", jsonArray.get(i));
+				parMap.put("vrdno", "'"+jsonArray.get(i)+"'");
 				List<ZVRHDRVO> queryZvrhdr = zvrhdrService.queryZvrhdr(parMap);
 				for(ZVRHDRVO zvrhdrvo:queryZvrhdr){
 					Map zvrhdrMap = new HashMap();
@@ -1207,8 +1207,9 @@ public class PomastAction extends BaseAction {
 
 					List<Map> zvritmList = new ArrayList<Map>();
 					zvrhdrMap.put("zvritmList", zvritmList);
-
-					List<ZVRITMVO> queryZvritm = zvrhdrService.queryZvritm(parMap);
+					Map parMap2 = new HashMap();
+					parMap2.put("vrdno", jsonArray.get(i));
+					List<ZVRITMVO> queryZvritm = zvrhdrService.queryZvritm(parMap2);
 					for(ZVRITMVO zvritmvo:queryZvritm){
 						Map zvritmMap = new HashMap();
 						zvritmMap.put("ordno_poisq", zvritmvo.getOrdno()+"-"+zvritmvo.getPoisq());

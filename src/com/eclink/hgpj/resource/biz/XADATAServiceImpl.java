@@ -313,4 +313,10 @@ public class XADATAServiceImpl implements XADATAService {
 		return "";
 	}
 
+
+	@Override
+	public List<String> queryMbbirep(Map map) throws Exception {
+		return xadataDao.queryMbbirep(map);
+	}
+
 }

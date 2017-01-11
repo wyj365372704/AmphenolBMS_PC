@@ -99,7 +99,7 @@
 											<td align="center"><s:property value="#it.cusodrno" /></td>
 											<td align="center"><fmt:formatNumber value="${it.cusln}" pattern="#0" /></td>
 											<td align="center"><s:property value="#it.ponum" /></td>
-											<td align="center"></td>
+											<td align="center"><s:property value="#it.cwlms" /></td>
 											<td align="center"><s:property value="#it.plqtyno" /></td>
 											<td align="center"><s:property value="#it.plqty" /></td>
 											<td align="center"><s:property value="#it.b2z95t" /></td>
@@ -119,27 +119,27 @@
 							<tr>
 								<td>合计：<s:property value="sqty" /></td>
 								<td> <s:property value="fmark1" /></td>
-								<td>PART&nbsp;NUMBER</td>
+								<td><s:property value="smark1" /></td>
 							</tr>
 							<tr>
 								<td>合计：<s:property value="sjz" /></td>
 								<td> <s:property value="fmark2" /></td>
-								<td>QUANTITY&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PCS</td>
+								<td><s:property value="smark2" /></td>
 							</tr>
 							<tr>
 								<td>合计：<s:property value="smz" /></td>
 								<td> <s:property value="fmark3" /></td>
-								<td>NW&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;KGS</td>
+								<td><s:property value="smark3" /></td>
 							</tr>
 							<tr>
 								<td>合计：<s:property value="sxs" /></td>
 								<td> <s:property value="fmark4" /></td>
-								<td>GW &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;KGS</td>
+								<td><s:property value="smark4" /></td>
 							</tr>
 							<tr>
 								<td> </td>
 								<td> <s:property value="fmark5" /></td>
-								<td>C/NO</td>
+								<td><s:property value="smark5" /></td>
 							</tr>
 						</table>
 					</td>
