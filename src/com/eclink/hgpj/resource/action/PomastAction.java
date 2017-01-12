@@ -58,6 +58,7 @@ import com.eclink.hgpj.user.biz.AUserService;
 import com.eclink.hgpj.util.QRcoderUtil;
 import com.eclink.hgpj.util.Utils;
 import com.opensymphony.xwork2.ActionContext;
+import com.sun.org.apache.bcel.internal.generic.NEW;
 
 /**
  * GrantAction.java
@@ -933,26 +934,25 @@ public class PomastAction extends BaseAction {
 							String temp="";
 							for(int i=0;i<ordnos.length;i++){
 								if(!ordnos[i].trim().equals("")){
-									temp=temp+"'"+ordnos[i].trim()+"',";
+									temp=temp+ordnos[i].trim()+",";
 								}
 							}
 							temp=temp.substring(0, temp.length()-1);
-							//						pomast.setOrdnoF(temp);
-							map.put("ordno", temp);
+							map.put("ordno", ordnos);
 						}else if(pomast.getOrdno().indexOf(HGPJConstant.SPLIT_1)>=0){
 							String[] ordnos = pomast.getOrdno().split(HGPJConstant.SPLIT_1);
 							String temp="";
 							for(int i=0;i<ordnos.length;i++){
 								if(!ordnos[i].trim().equals("")){
-									temp=temp+"'"+ordnos[i].trim()+"',";
+									temp=temp+ordnos[i].trim()+",";
 								}
 							}
 							temp=temp.substring(0, temp.length()-1);
 							//						pomast.setOrdnoF(temp);
-							map.put("ordno", temp);
+							map.put("ordno", ordnos);
 						}else{
 							//						pomast.setOrdnoF(pomast.getOrdno());
-							map.put("ordno", "'"+pomast.getOrdno()+"'");
+							map.put("ordno",new String[]{pomast.getOrdno()});
 						}
 					}
 					//				Date d = sdf.parse(pomast.getStartDate());
@@ -1024,30 +1024,28 @@ public class PomastAction extends BaseAction {
 					if(zvrhdr.getVrdno()!=null && !zvrhdr.getVrdno().trim().equals("")){
 						if(zvrhdr.getVrdno().indexOf(HGPJConstant.SPLIT_0)>=0){
 							String[] vrdnos = zvrhdr.getVrdno().split(HGPJConstant.SPLIT_0);
-							String temp="";
-							for(int i=0;i<vrdnos.length;i++){
-								if(!vrdnos[i].trim().equals("")){
-									temp=temp+"'"+vrdnos[i].trim()+"',";
-								}
-							}
-							//						pomast.setOrdnoF(temp);
-							map.put("vrdno", temp);
+							map.put("vrdno", vrdnos);
 						}else if(zvrhdr.getVrdno().indexOf(HGPJConstant.SPLIT_1)>=0){
 							String[] vrdnos = zvrhdr.getVrdno().split(HGPJConstant.SPLIT_1);
-							String temp="";
-							for(int i=0;i<vrdnos.length;i++){
-								if(!vrdnos[i].trim().equals("")){
-									temp=temp+"'"+vrdnos[i].trim()+"',";
-								}
-							}
-							//						pomast.setOrdnoF(temp);
-							map.put("vrdno", temp);
+							map.put("vrdno", vrdnos);
 						}else{
 							//						pomast.setOrdnoF(pomast.getOrdno());
-							map.put("vrdno", zvrhdr.getVrdno());
+							map.put("vrdno", new String[]{zvrhdr.getVrdno()});
 						}
 					}
-
+					if(zvrhdr.getVndnr()!=null && !zvrhdr.getVndnr().trim().equals("")){
+						if(zvrhdr.getVndnr().indexOf(HGPJConstant.SPLIT_0)>=0){
+							String[] vndnrs = zvrhdr.getVndnr().split(HGPJConstant.SPLIT_0);
+							map.put("vndnr", vndnrs);
+						}else if(zvrhdr.getVndnr().indexOf(HGPJConstant.SPLIT_1)>=0){
+							String[] vndnrs = zvrhdr.getVndnr().split(HGPJConstant.SPLIT_1);
+							map.put("vndnr", vndnrs);
+						}else{
+							//						pomast.setOrdnoF(pomast.getOrdno());
+							map.put("vndnr", new String[]{zvrhdr.getVndnr()});
+						}
+					}
+					
 					if(zvrhdr.getStartDate()!=null && !zvrhdr.getStartDate().trim().equals("")){
 						//					momast.setStartDateB(BigDecimal.valueOf(Long.valueOf("1"+Utils.formateDate(sdf.parse(momast.getStartDate()), "yyMMdd"))));
 						map.put("startDate", BigDecimal.valueOf(Long.valueOf("1"+Utils.formateDate(sdf.parse(zvrhdr.getStartDate()), "yyMMdd"))));

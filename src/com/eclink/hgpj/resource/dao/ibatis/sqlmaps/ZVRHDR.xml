@@ -10,11 +10,17 @@
 		]]>
 		<dynamic prepend="WHERE">
 			<isNotEmpty prepend="AND" property="vrdno">
-				VRDNO IN ($vrdno$)
+				<iterate property="vrdno" conjunction="or" open="(" close=")">
+					VRDNO LIKE ('%'||#vrdno[]#||'%')
+				</iterate>
 			</isNotEmpty>
+		
 			<isNotEmpty prepend="AND" property="vndnr">
-				VNDNR IN ($vndnr$)
+				<iterate property="vndnr" conjunction="or" open="(" close=")">
+					VNDNR LIKE ('%'||#vndnr[]#||'%')
+				</iterate>
 			</isNotEmpty>
+
 			<isNotEmpty prepend="AND" property="ostat">
 				OSTAT IN ($ostat$)
 			</isNotEmpty>

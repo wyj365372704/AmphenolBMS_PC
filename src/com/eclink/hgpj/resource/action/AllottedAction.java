@@ -197,22 +197,22 @@ public class AllottedAction extends BaseAction {
 	public String toAllotted() throws Exception {
 		try {
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-			if("1".equals(flag)){
+			if(!"1".equals(flag)){
 				this.startDate=Utils.formateDate(null, "yyyy-MM-dd");
 				this.endDate=Utils.formateDate(null, "yyyy-MM-dd");
 
 			}else{
 				Map parMap = new HashMap();
-				
-				if(twdno!=null && twdno.length()>0){
-					String[] ipdnos = twdno.split(";");
-					String temp0="";
-					if(ipdnos!=null && ipdnos.length>0){
-						for(int j=0;j<ipdnos.length;j++){
-							temp0=temp0+"'"+ipdnos[j]+"',";
-						}
-						temp0=temp0+"''";
-						parMap.put("twdno", temp0);
+				if(twdno!=null && !twdno.trim().equals("")){
+					if(twdno.indexOf(HGPJConstant.SPLIT_2)>=0){
+					}else if(twdno.indexOf(HGPJConstant.SPLIT_0)>=0){
+						String[] ordnos = twdno.split(HGPJConstant.SPLIT_0);
+						parMap.put("twdno", ordnos);
+					}else if(twdno.indexOf(HGPJConstant.SPLIT_1)>=0){
+						String[] ordnos = twdno.split(HGPJConstant.SPLIT_1);
+						parMap.put("twdno", ordnos);
+					}else{
+						parMap.put("twdno",new String[]{twdno});
 					}
 				}
 		

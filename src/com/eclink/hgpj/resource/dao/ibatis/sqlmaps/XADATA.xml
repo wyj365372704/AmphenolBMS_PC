@@ -17,14 +17,14 @@
 	<typeAlias alias="MODESCVO" type="com.eclink.hgpj.resource.vo.MODESCVO" />
 	<typeAlias alias="SCHRCPVO" type="com.eclink.hgpj.resource.vo.SCHRCPVO" />
 	<typeAlias alias="VENNAMVO" type="com.eclink.hgpj.resource.vo.VENNAMVO" />
-	
+
 	<typeAlias alias="MBC6REPVO" type="com.eclink.hgpj.resource.vo.MBC6REPVO" />
 	<typeAlias alias="MBCDREPVO" type="com.eclink.hgpj.resource.vo.MBCDREPVO" />
 	<typeAlias alias="MBADREPVO" type="com.eclink.hgpj.resource.vo.MBADREPVO" />
 	<typeAlias alias="MBS2REPVO" type="com.eclink.hgpj.resource.vo.MBS2REPVO" />
 	<typeAlias alias="MBALREPVO" type="com.eclink.hgpj.resource.vo.MBALREPVO" />
-	
-	
+
+
 	<resultMap id="MBC6REPVOMap" class="MBC6REPVO">
 		<result property="c6aenb" column="C6AENB" />
 		<result property="c6dccd" column="C6DCCD" />
@@ -35,7 +35,7 @@
 		<result property="c6b9cd" column="C6B9CD" />
 		<result property="c6f1cd" column="C6F1CD" />
 	</resultMap>
-	
+
 	<resultMap id="MBCDREPVOMap" class="MBCDREPVO">
 		<result property="cdaenb" column="CDAENB" />
 		<result property="cddccd" column="CDDCCD" />
@@ -60,7 +60,7 @@
 		<result property="bihjtx" column="bihjtx" />
 		<result property="bihltx" column="bihltx" />
 	</resultMap>
-	
+
 	<resultMap id="MBADREPVOMap" class="MBADREPVO">
 		<result property="adaenb" column="ADAENB" />
 		<result property="addccd" column="ADDCCD" />
@@ -73,7 +73,7 @@
 		<result property="adbjdt" column="ADBJDT" />
 		<result property="adajdt" column="ADAJDT" />
 	</resultMap>
-	
+
 	<resultMap id="MODATAVOMap" class="MODATAVO">
 		<result property="ordno" column="ORDNO" />
 		<result property="citem" column="CITEM" />
@@ -121,7 +121,7 @@
 		<result property="b2z95t" column="B2Z95T" />
 		<result property="b2aas3" column="B2AAS3" />
 		<result property="b2aapt" column="B2AAPT" />
-		
+
 	</resultMap>
 	<resultMap id="SLQNTYVOMap" class="SLQNTYVO">
 		<result column="ITNBR" property="itnbr" />
@@ -197,7 +197,7 @@
 		<![CDATA[ order by a.SEQNM ]]>
 
 	</select>
-	
+
 	<select id="queryMbcdrep" resultMap="MBCDREPVOMap"
 		parameterClass="MBCDREPVO">
 		<![CDATA[ select a.*, b.CUSNM as CDAAYYN, c.BMCBTX , d.bihjtx ,d.BIHLTX as bihltx                        
@@ -226,11 +226,13 @@
 				a.CDFCNB = #cdfcnb#
 			</isNotEmpty>
 			<isNotEmpty prepend="AND" property="cdcvnb">
-				a.CDCVNB like ('%'||#cdcvnb#||'%' )
+				a.CDCVNB like
+				('%'||#cdcvnb#||'%' )
 			</isNotEmpty>
 			<isNotEmpty prepend="AND" property="ponum">
-				c.BMCBTX like ('%'||#ponum#||'%' )
-			</isNotEmpty>	
+				c.BMCBTX like
+				('%'||#ponum#||'%' )
+			</isNotEmpty>
 			<isNotEmpty prepend="AND" property="startDateB">
 				<![CDATA[a.CDFCNB in ( select ADFCNB from MBADREP where ADBIDT>=#startDateB# ]]>
 				<isNotEmpty prepend="AND" property="endDateB">
@@ -239,12 +241,12 @@
 				)
 			</isNotEmpty>
 			<isEmpty prepend="AND" property="startDateB">
-				
+
 				<isNotEmpty prepend="AND" property="endDateB">
 					<![CDATA[a.CDFCNB in ( select ADFCNB from MBADREP where ADBIDT<=#endDateB# )]]>
 				</isNotEmpty>
-				
-			</isEmpty>		
+
+			</isEmpty>
 		</dynamic>
 		<![CDATA[ order by a.CDCVNB,CDFCNB ]]>
 
@@ -262,7 +264,7 @@
 			</isNotEmpty>
 		</dynamic>
 	</select>
-	
+
 	<select id="queryItrvt" resultClass="String" parameterClass="ITMSITVO">
 		<![CDATA[ select  ITRVT9  from  ITMSIT where STIDT9=#house# and ITNOT9=#itnot9#
 		]]>
@@ -398,10 +400,12 @@
 				('%'||#fitem#||'%' )
 			</isNotEmpty>
 		</dynamic>
+		
 		<dynamic>
 			<isNotEmpty prepend="AND" property="ordnoF">
-				(a.ORDNO IN ($ordnoF$)
-				or a.ORDNO like ('%'||$ordnoF$||'%'))
+				<iterate property="ordnoF" conjunction="or" open="(" close=")">
+					a.ORDNO LIKE ('%'||#ordnoF[]#||'%')
+				</iterate>
 			</isNotEmpty>
 		</dynamic>
 		<dynamic>
@@ -515,11 +519,10 @@
 		 		where a.pstts in ('10', '20' , '30', '35', '40') 
 		 	
 		]]>
-		<!-- <![CDATA[ select  a.*,c.vn35,c.vcont,c.txsuf from  pomast   a  left outer join vennam  c on 
-		       c.vndnr  = a.vndnr 	        
-		 		where a.pstts in ('10', '20' , '30', '35', '40') 
-		 		and a.ORDNO NOT IN (select d.PONR from MOPORF d where d.MONR is not null AND d.MONR<>'')
-		]]> -->
+		<!-- <![CDATA[ select a.*,c.vn35,c.vcont,c.txsuf from pomast a left outer 
+			join vennam c on c.vndnr = a.vndnr where a.pstts in ('10', '20' , '30', '35', 
+			'40') and a.ORDNO NOT IN (select d.PONR from MOPORF d where d.MONR is not 
+			null AND d.MONR<>'') ]]> -->
 		<dynamic>
 			<isNotEmpty prepend="AND" property="ordnoO">
 				a.ORDNO =(#ordnoO#)
@@ -527,8 +530,12 @@
 		</dynamic>
 		<dynamic>
 			<isNotEmpty prepend="AND" property="ordno">
-				(a.ORDNO IN ($ordno$)
-				or a.ORDNO like ('%'||$ordno$||'%'))
+				<iterate property="ordno" conjunction="or" open="(" close=")">
+					a.ORDNO LIKE ('%'||#ordno[]#||'%')
+
+				</iterate>
+				<!-- (a.ORDNO IN ($ordno$)
+				or a.ORDNO like ('%'||#ordno#||'%')) -->
 			</isNotEmpty>
 		</dynamic>
 		<dynamic>
@@ -633,17 +640,17 @@
        where a.COMNO = #cono# and a.CUSNO = #c6bcanb# 
 		]]>
 	</select>
-	
+
 	<select id="queryCusnms" resultClass="String" parameterClass="Map">
 		<![CDATA[ Select a.CUSNO ||'-'|| a.CUSNM  from MBBFREP a where a.COMNO =#plant# 
 		]]>
 	</select>
-	
+
 	<select id="queryCarrier" resultClass="String" parameterClass="Map">
 		<![CDATA[ Select a.ATF1CD ||'-'|| a.ATGHTX from MBATREP a 
 		]]>
 	</select>
-	
+
 	<select id="queryTransport" resultClass="String" parameterClass="Map">
 		<![CDATA[ Select a.C8BHST ||'-'|| a.C8HYTX from MBC8REP a where 1=1 
 		]]>
@@ -653,7 +660,7 @@
 			</isNotEmpty>
 		</dynamic>
 	</select>
-	
+
 	<select id="queryShipTo" resultClass="MBS2REPVO" parameterClass="Map">
 		<![CDATA[ Select a.* from MBS2REP a
        where a.S2AENB = #cono# and a.S2CANB = #c6bcanb# and S2E2ST = '2' 
@@ -703,7 +710,7 @@
        and a.ADCVNB = #ordnc# and a.ADFCNB = #itmsq#
 		]]>
 	</select>
-	
+
 	<select id="queryMorout" resultClass="MOROUTVO" parameterClass="Map">
 		<![CDATA[ Select * from MOROUT 
 		]]>

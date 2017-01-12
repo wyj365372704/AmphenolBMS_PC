@@ -78,8 +78,10 @@
 			<isNotEmpty prepend="and" property="tosub">
 				item.TOSUB = #tosub#
 			</isNotEmpty>
-			<isNotEmpty prepend="and" property="twdno">
-				item.TWDNO in ($twdno$)
+			<isNotEmpty prepend="AND" property="twdno">
+				<iterate property="twdno" conjunction="or" open="(" close=")">
+					item.TWDNO LIKE ('%'||#twdno[]#||'%')
+				</iterate>
 			</isNotEmpty>
 			<isNotEmpty prepend="AND" property="startDate">
                <![CDATA[ z.TWDT1 >= #startDate#]]>

@@ -30,7 +30,7 @@ public class MOMASTVO extends BaseVO{
 
 	private String ktrl;
 	
-	private String ordnoF;
+	private String[] ordnoF;
 	
 	private String ordnoup;
 	
@@ -376,11 +376,11 @@ public class MOMASTVO extends BaseVO{
 		this.ordnodown = ordnodown;
 	}
 
-	public String getOrdnoF() {
+	public String[] getOrdnoF() {
 		return ordnoF;
 	}
 
-	public void setOrdnoF(String ordnoF) {
+	public void setOrdnoF(String[] ordnoF) {
 		this.ordnoF = ordnoF;
 	}
 
