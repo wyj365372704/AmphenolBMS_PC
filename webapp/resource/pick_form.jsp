@@ -140,6 +140,6 @@
 		document.getElementById("jatoolsPrinter").print(myDoc, false); // 直接打印，不弹出打印机设置对话框 
 		window.close();
 	};
-	window.opener.location.href = window.opener.location.href;
+	/* window.opener.location.href = window.opener.location.href; */
 </script>
 </html>

@@ -150,7 +150,7 @@
 						cssClass="input_w" /></li>
 				<li><div class="w_s">计划开始日期：</div> <s:textfield id="startDate"
 						name="momast.startDate" cssClass="time_input"
-						onclick="WdatePicker()" autocomplete="on" />- <s:textfield
+						onclick="WdatePicker()" autocomplete="on" /> - <s:textfield
 						id="endDate" name="momast.endDate" cssClass="time_input"
 						onclick="WdatePicker()" autocomplete="on" /></li>
 
