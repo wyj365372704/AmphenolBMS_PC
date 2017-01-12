@@ -126,7 +126,7 @@ public class ZGRNHDRDaoImpl extends SqlMapClientDaoSupport implements ZGRNHDRDao
 	}
 
 	@Override
-	public List<ZGRNHDRVO> queryReceiptList(ZGRNITMVO vo) throws Exception {
+	public List<ZGRNHDRVO> queryReceiptList(ZGRNHDRVO vo) throws Exception {
 		// TODO Auto-generated method stub
 		return this.getSqlMapClientTemplate().queryForList("ZGRNHDR.queryReceiptList", vo);
 	}

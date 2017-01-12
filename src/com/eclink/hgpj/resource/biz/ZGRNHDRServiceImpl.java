@@ -188,7 +188,7 @@ public class ZGRNHDRServiceImpl implements ZGRNHDRService {
 	}
 
 	@Override
-	public List<ZGRNHDRVO> queryReceiptList(ZGRNITMVO vo) throws Exception {
+	public List<ZGRNHDRVO> queryReceiptList(ZGRNHDRVO vo) throws Exception {
 		// TODO Auto-generated method stub
 		return zgrnhdrDao.queryReceiptList(vo);
 	}

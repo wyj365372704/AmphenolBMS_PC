@@ -465,10 +465,9 @@ public class ZiphdrAction extends BaseAction {
 	public String toZiphdrList() throws Exception {
 		try {
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-			if("1".equals(flag)){
+			if(!"1".equals(flag)){
 				this.startDate=Utils.formateDate(null, "yyyy-MM-dd");
 				this.endDate=Utils.formateDate(null, "yyyy-MM-dd");
-
 			}else{
 				
 				Map map = new HashMap();

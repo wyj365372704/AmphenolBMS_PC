@@ -20,7 +20,7 @@ import com.eclink.hgpj.resource.vo.ZGRNITMVO;
  */
 public interface ZGRNHDRService {
 	//收货单列表
-	public List<ZGRNHDRVO> queryReceiptList(ZGRNITMVO vo) throws Exception;
+	public List<ZGRNHDRVO> queryReceiptList(ZGRNHDRVO vo) throws Exception;
 	
 	//收货单信息
 	public List<ZGRNITMVO> queryReceiptItems(ZGRNITMVO vo) throws Exception;

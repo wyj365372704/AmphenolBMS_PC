@@ -166,7 +166,7 @@
 
 	<s:form action="pomast!toPomastReturn.action" method="post"
 		name="queryform">
-
+		<s:hidden name="flag" value="1"></s:hidden>
 		<div class="path">您现在的位置： 首页 &gt; 采购 &gt; 采购退料</div>
 
 		<div class="search">

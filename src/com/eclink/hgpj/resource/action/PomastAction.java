@@ -137,6 +137,8 @@ public class PomastAction extends BaseAction {
 
 	private String vrdln;
 
+	private String flag;
+
 	private String blksq;
 
 	private String returnType;
@@ -181,6 +183,14 @@ public class PomastAction extends BaseAction {
 
 	public ZITMEXTService getZitmextService() {
 		return zitmextService;
+	}
+
+	public String getFlag() {
+		return flag;
+	}
+
+	public void setFlag(String flag) {
+		this.flag = flag;
 	}
 
 	public void setZitmextService(ZITMEXTService zitmextService) {
@@ -889,71 +899,6 @@ public class PomastAction extends BaseAction {
 
 	public String toPomast() throws Exception {
 		try {
-			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-			if(pomast!=null){
-				Map map = new HashMap();
-				if(pomast.getOrdno()!=null && !pomast.getOrdno().trim().equals("")){
-					if(pomast.getOrdno().indexOf(HGPJConstant.SPLIT_2)>=0){
-						//						String[] ordnos = pomast.getOrdno().split(HGPJConstant.SPLIT_2);
-						//						pomast.setOrdnodown(ordnos[0]);
-						//						pomast.setOrdnoup(ordnos[1]);
-					}else if(pomast.getOrdno().indexOf(HGPJConstant.SPLIT_0)>=0){
-						String[] ordnos = pomast.getOrdno().split(HGPJConstant.SPLIT_0);
-						String temp="";
-						for(int i=0;i<ordnos.length;i++){
-							if(!ordnos[i].trim().equals("")){
-								temp=temp+"'"+ordnos[i].trim()+"',";
-							}
-						}
-						temp=temp.substring(0, temp.length()-1);
-						//						pomast.setOrdnoF(temp);
-						map.put("ordno", temp);
-					}else if(pomast.getOrdno().indexOf(HGPJConstant.SPLIT_1)>=0){
-						String[] ordnos = pomast.getOrdno().split(HGPJConstant.SPLIT_1);
-						String temp="";
-						for(int i=0;i<ordnos.length;i++){
-							if(!ordnos[i].trim().equals("")){
-								temp=temp+"'"+ordnos[i].trim()+"',";
-							}
-						}
-						temp=temp.substring(0, temp.length()-1);
-						//						pomast.setOrdnoF(temp);
-						map.put("ordno", temp);
-					}else{
-						//						pomast.setOrdnoF(pomast.getOrdno());
-						map.put("ordno", "'"+pomast.getOrdno()+"'");
-					}
-				}
-				//				Date d = sdf.parse(pomast.getStartDate());
-				//				if(pomast.getStartDate()!=null && !pomast.getStartDate().trim().equals("")){
-				//					pomast.setStartDateB(BigDecimal.valueOf(Long.valueOf("1"+Utils.formateDate(sdf.parse(pomast.getStartDate()), "yyMMdd"))));
-				//				}
-				//				if(pomast.getEndDate()!=null && !pomast.getEndDate().trim().equals("")){
-				//					pomast.setEndDateB(BigDecimal.valueOf(Long.valueOf("1"+Utils.formateDate(sdf.parse(pomast.getEndDate()), "yyMMdd"))));
-				//				}
-				map.put("house", pomast.getHouse());
-				map.put("vn35", pomast.getVn35());
-				map.put("buyno", pomast.getBuyno());
-				if(pomast.getStartDate()!=null && !pomast.getStartDate().trim().equals("")){
-					//					momast.setStartDateB(BigDecimal.valueOf(Long.valueOf("1"+Utils.formateDate(sdf.parse(momast.getStartDate()), "yyMMdd"))));
-					map.put("startDateB", BigDecimal.valueOf(Long.valueOf("1"+Utils.formateDate(sdf.parse(pomast.getStartDate()), "yyMMdd"))));
-				}
-				if(pomast.getEndDate()!=null && !pomast.getEndDate().trim().equals("")){
-					//					momast.setEndDateB(BigDecimal.valueOf(Long.valueOf("1"+Utils.formateDate(sdf.parse(momast.getEndDate()), "yyMMdd"))));
-					map.put("endDateB", BigDecimal.valueOf(Long.valueOf("1"+Utils.formateDate(sdf.parse(pomast.getEndDate()), "yyMMdd"))));
-				}
-
-				results = this.xadataService.queryPomast(map);
-
-				if(results!=null && results.size()>0){
-					for(int i=0;i<results.size();i++){
-						String d= (results.get(i).getActdt()==null || results.get(i).getActdt().doubleValue()==0.0)?"":results.get(i).getActdt().add(BigDecimal.valueOf(19000000)).toString().trim();
-						//					String d2 = (results.get(i).getOdudt()==null || results.get(i).getOdudt().doubleValue()==0.0)?"":results.get(i).getOdudt().add(BigDecimal.valueOf(19000000)).toString().trim();
-						results.get(i).setActdts(d.length()<8?d: (d.substring(0, 4)+"-"+d.substring(4, 6)+"-"+d.substring(6, 8)+" "));
-						//					results.get(i).setSodudt(d2.length()<8?d2: (d2.substring(0, 4)+"-"+d2.substring(4, 6)+"-"+d2.substring(6, 8)+" "));
-					}
-				}
-			}
 			//momast.setSsstdt(ssstdt);
 			// 获取分页信息
 			PageVO page = PaginatorUtil.getPaginator(getRequest());
@@ -969,6 +914,79 @@ public class PomastAction extends BaseAction {
 
 			// 分页对象保存至request
 			getRequest().setAttribute(HGPJConstant.PAGE_KEY, page);
+
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			if(!"1".equals(flag)){
+				pomast = new POMASTVO();
+				this.pomast.setStartDate(Utils.formateDate(null, "yyyy-MM-dd"));
+				this.pomast.setEndDate(Utils.formateDate(null, "yyyy-MM-dd"));
+			}else{
+				if(pomast!=null){
+					Map map = new HashMap();
+					if(pomast.getOrdno()!=null && !pomast.getOrdno().trim().equals("")){
+						if(pomast.getOrdno().indexOf(HGPJConstant.SPLIT_2)>=0){
+							//						String[] ordnos = pomast.getOrdno().split(HGPJConstant.SPLIT_2);
+							//						pomast.setOrdnodown(ordnos[0]);
+							//						pomast.setOrdnoup(ordnos[1]);
+						}else if(pomast.getOrdno().indexOf(HGPJConstant.SPLIT_0)>=0){
+							String[] ordnos = pomast.getOrdno().split(HGPJConstant.SPLIT_0);
+							String temp="";
+							for(int i=0;i<ordnos.length;i++){
+								if(!ordnos[i].trim().equals("")){
+									temp=temp+"'"+ordnos[i].trim()+"',";
+								}
+							}
+							temp=temp.substring(0, temp.length()-1);
+							//						pomast.setOrdnoF(temp);
+							map.put("ordno", temp);
+						}else if(pomast.getOrdno().indexOf(HGPJConstant.SPLIT_1)>=0){
+							String[] ordnos = pomast.getOrdno().split(HGPJConstant.SPLIT_1);
+							String temp="";
+							for(int i=0;i<ordnos.length;i++){
+								if(!ordnos[i].trim().equals("")){
+									temp=temp+"'"+ordnos[i].trim()+"',";
+								}
+							}
+							temp=temp.substring(0, temp.length()-1);
+							//						pomast.setOrdnoF(temp);
+							map.put("ordno", temp);
+						}else{
+							//						pomast.setOrdnoF(pomast.getOrdno());
+							map.put("ordno", "'"+pomast.getOrdno()+"'");
+						}
+					}
+					//				Date d = sdf.parse(pomast.getStartDate());
+					//				if(pomast.getStartDate()!=null && !pomast.getStartDate().trim().equals("")){
+					//					pomast.setStartDateB(BigDecimal.valueOf(Long.valueOf("1"+Utils.formateDate(sdf.parse(pomast.getStartDate()), "yyMMdd"))));
+					//				}
+					//				if(pomast.getEndDate()!=null && !pomast.getEndDate().trim().equals("")){
+					//					pomast.setEndDateB(BigDecimal.valueOf(Long.valueOf("1"+Utils.formateDate(sdf.parse(pomast.getEndDate()), "yyMMdd"))));
+					//				}
+					map.put("house", pomast.getHouse());
+					map.put("vn35", pomast.getVn35());
+					map.put("buyno", pomast.getBuyno());
+					if(pomast.getStartDate()!=null && !pomast.getStartDate().trim().equals("")){
+						//					momast.setStartDateB(BigDecimal.valueOf(Long.valueOf("1"+Utils.formateDate(sdf.parse(momast.getStartDate()), "yyMMdd"))));
+						map.put("startDateB", BigDecimal.valueOf(Long.valueOf("1"+Utils.formateDate(sdf.parse(pomast.getStartDate()), "yyMMdd"))));
+					}
+					if(pomast.getEndDate()!=null && !pomast.getEndDate().trim().equals("")){
+						//					momast.setEndDateB(BigDecimal.valueOf(Long.valueOf("1"+Utils.formateDate(sdf.parse(momast.getEndDate()), "yyMMdd"))));
+						map.put("endDateB", BigDecimal.valueOf(Long.valueOf("1"+Utils.formateDate(sdf.parse(pomast.getEndDate()), "yyMMdd"))));
+					}
+
+					results = this.xadataService.queryPomast(map);
+
+					if(results!=null && results.size()>0){
+						for(int i=0;i<results.size();i++){
+							String d= (results.get(i).getActdt()==null || results.get(i).getActdt().doubleValue()==0.0)?"":results.get(i).getActdt().add(BigDecimal.valueOf(19000000)).toString().trim();
+							//					String d2 = (results.get(i).getOdudt()==null || results.get(i).getOdudt().doubleValue()==0.0)?"":results.get(i).getOdudt().add(BigDecimal.valueOf(19000000)).toString().trim();
+							results.get(i).setActdts(d.length()<8?d: (d.substring(0, 4)+"-"+d.substring(4, 6)+"-"+d.substring(6, 8)+" "));
+							//					results.get(i).setSodudt(d2.length()<8?d2: (d2.substring(0, 4)+"-"+d2.substring(4, 6)+"-"+d2.substring(6, 8)+" "));
+						}
+					}
+				}
+			}
+
 
 		} catch (Exception e) {e.printStackTrace();
 		log.error("Go to admin resource operation grant page occured error.", e);
@@ -980,47 +998,6 @@ public class PomastAction extends BaseAction {
 	public String toPomastReturn() throws Exception {
 		try {
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-			if(zvrhdr!=null){
-				Map map = new HashMap();
-				if(zvrhdr.getVrdno()!=null && !zvrhdr.getVrdno().trim().equals("")){
-					if(zvrhdr.getVrdno().indexOf(HGPJConstant.SPLIT_0)>=0){
-						String[] vrdnos = zvrhdr.getVrdno().split(HGPJConstant.SPLIT_0);
-						String temp="";
-						for(int i=0;i<vrdnos.length;i++){
-							if(!vrdnos[i].trim().equals("")){
-								temp=temp+"'"+vrdnos[i].trim()+"',";
-							}
-						}
-						//						pomast.setOrdnoF(temp);
-						map.put("vrdno", temp);
-					}else if(zvrhdr.getVrdno().indexOf(HGPJConstant.SPLIT_1)>=0){
-						String[] vrdnos = zvrhdr.getVrdno().split(HGPJConstant.SPLIT_1);
-						String temp="";
-						for(int i=0;i<vrdnos.length;i++){
-							if(!vrdnos[i].trim().equals("")){
-								temp=temp+"'"+vrdnos[i].trim()+"',";
-							}
-						}
-						//						pomast.setOrdnoF(temp);
-						map.put("vrdno", temp);
-					}else{
-						//						pomast.setOrdnoF(pomast.getOrdno());
-						map.put("vrdno", zvrhdr.getVrdno());
-					}
-				}
-
-				if(zvrhdr.getStartDate()!=null && !zvrhdr.getStartDate().trim().equals("")){
-					//					momast.setStartDateB(BigDecimal.valueOf(Long.valueOf("1"+Utils.formateDate(sdf.parse(momast.getStartDate()), "yyMMdd"))));
-					map.put("startDate", BigDecimal.valueOf(Long.valueOf("1"+Utils.formateDate(sdf.parse(zvrhdr.getStartDate()), "yyMMdd"))));
-				}
-				if(zvrhdr.getEndDate()!=null && !zvrhdr.getEndDate().trim().equals("")){
-					//					momast.setEndDateB(BigDecimal.valueOf(Long.valueOf("1"+Utils.formateDate(sdf.parse(momast.getEndDate()), "yyMMdd"))));
-					map.put("endDate", BigDecimal.valueOf(Long.valueOf("1"+Utils.formateDate(sdf.parse(zvrhdr.getEndDate()), "yyMMdd"))));
-				}
-
-				map.put("ostat", ostat);
-				zvrhdrList = zvrhdrService.queryZvrhdr(map);
-			}
 			//momast.setSsstdt(ssstdt);
 			// 获取分页信息
 			PageVO page = PaginatorUtil.getPaginator(getRequest());
@@ -1036,6 +1013,55 @@ public class PomastAction extends BaseAction {
 
 			// 分页对象保存至request
 			getRequest().setAttribute(HGPJConstant.PAGE_KEY, page);
+
+			if(!"1".equals(flag)){
+				zvrhdr = new ZVRHDRVO();
+				this.zvrhdr.setStartDate(Utils.formateDate(null, "yyyy-MM-dd"));
+				this.zvrhdr.setEndDate(Utils.formateDate(null, "yyyy-MM-dd"));
+			}else{
+				if(zvrhdr!=null){
+					Map map = new HashMap();
+					if(zvrhdr.getVrdno()!=null && !zvrhdr.getVrdno().trim().equals("")){
+						if(zvrhdr.getVrdno().indexOf(HGPJConstant.SPLIT_0)>=0){
+							String[] vrdnos = zvrhdr.getVrdno().split(HGPJConstant.SPLIT_0);
+							String temp="";
+							for(int i=0;i<vrdnos.length;i++){
+								if(!vrdnos[i].trim().equals("")){
+									temp=temp+"'"+vrdnos[i].trim()+"',";
+								}
+							}
+							//						pomast.setOrdnoF(temp);
+							map.put("vrdno", temp);
+						}else if(zvrhdr.getVrdno().indexOf(HGPJConstant.SPLIT_1)>=0){
+							String[] vrdnos = zvrhdr.getVrdno().split(HGPJConstant.SPLIT_1);
+							String temp="";
+							for(int i=0;i<vrdnos.length;i++){
+								if(!vrdnos[i].trim().equals("")){
+									temp=temp+"'"+vrdnos[i].trim()+"',";
+								}
+							}
+							//						pomast.setOrdnoF(temp);
+							map.put("vrdno", temp);
+						}else{
+							//						pomast.setOrdnoF(pomast.getOrdno());
+							map.put("vrdno", zvrhdr.getVrdno());
+						}
+					}
+
+					if(zvrhdr.getStartDate()!=null && !zvrhdr.getStartDate().trim().equals("")){
+						//					momast.setStartDateB(BigDecimal.valueOf(Long.valueOf("1"+Utils.formateDate(sdf.parse(momast.getStartDate()), "yyMMdd"))));
+						map.put("startDate", BigDecimal.valueOf(Long.valueOf("1"+Utils.formateDate(sdf.parse(zvrhdr.getStartDate()), "yyMMdd"))));
+					}
+					if(zvrhdr.getEndDate()!=null && !zvrhdr.getEndDate().trim().equals("")){
+						//					momast.setEndDateB(BigDecimal.valueOf(Long.valueOf("1"+Utils.formateDate(sdf.parse(momast.getEndDate()), "yyMMdd"))));
+						map.put("endDate", BigDecimal.valueOf(Long.valueOf("1"+Utils.formateDate(sdf.parse(zvrhdr.getEndDate()), "yyMMdd"))));
+					}
+
+					map.put("ostat", ostat);
+					zvrhdrList = zvrhdrService.queryZvrhdr(map);
+				}
+			}
+
 
 		} catch (Exception e) {e.printStackTrace();
 		log.error("Go to admin resource operation grant page occured error.", e);
@@ -1264,37 +1290,57 @@ public class PomastAction extends BaseAction {
 
 	public String toEnsureList() throws Exception{
 		try {
-			List<Map> results = new ArrayList();
+			//momast.setSsstdt(ssstdt);
+			// 获取分页信息
+			PageVO page = PaginatorUtil.getPaginator(getRequest());
+			//			setPagination(role,page);
 
-			Map map = new HashMap();
-			map.put("ordrji", ordrji);
-			map.put("whidji", whidji);
-			map.put("staus", "10");
-			List<ZDELIDAVO> queryZdelida = zdelidaService.queryZdelida(map);
-			for(ZDELIDAVO zdelidavo:queryZdelida){
-				SCHRCPVO schrcpvo = new SCHRCPVO();
-				schrcpvo.setOrdrji(zdelidavo.getOrdrji());
-				schrcpvo.setPisqji(zdelidavo.getPisqji());
-				schrcpvo.setBksqji(zdelidavo.getBksqji());
-				List<SCHRCPVO> querySchrcp = xadataService.querySchrcp(schrcpvo);
-				if(querySchrcp.size()>0){
-					schrcpvo = querySchrcp.get(0);
-					Map item = new HashMap();
-					item.put("whidji", schrcpvo.getWhidji());
-					item.put("ordrji", schrcpvo.getOrdrji());
-					item.put("pisqji", schrcpvo.getPisqji().intValue());
-					item.put("bksqji", schrcpvo.getBksqji().intValue());
-					item.put("itnoji", schrcpvo.getItnoji());
-					item.put("ds40ji", schrcpvo.getDs40ji());
-					item.put("orumji", schrcpvo.getOrumji());
-					item.put("ucoqji", schrcpvo.getUcoqji());
-					item.put("qtyoji", schrcpvo.getQtyoji());
-					item.put("wkdtji", zdelidavo.getWkdtji().add(new BigDecimal(19000000)).intValue());
-					item.put("dkdtji", schrcpvo.getDkdtji().add(new BigDecimal(19000000)).intValue());
-					results.add(item);
-				}
+			// 查询总记录数
+			if (page.isQueryTotal()) {
+				page.setTotalRecord(0);
 			}
-			ActionContext.getContext().getValueStack().set("results", results);
+
+			// 调用业务方法查询列表
+			//			roleList = roleService.queryRoleList(role);
+
+			// 分页对象保存至request
+			getRequest().setAttribute(HGPJConstant.PAGE_KEY, page);
+
+			if(!"1".equals(flag)){
+				
+			}else{
+
+				List<Map> results = new ArrayList();
+				Map map = new HashMap();
+				map.put("ordrji", ordrji);
+				map.put("whidji", whidji);
+				map.put("staus", "10");
+				List<ZDELIDAVO> queryZdelida = zdelidaService.queryZdelida(map);
+				for(ZDELIDAVO zdelidavo:queryZdelida){
+					SCHRCPVO schrcpvo = new SCHRCPVO();
+					schrcpvo.setOrdrji(zdelidavo.getOrdrji());
+					schrcpvo.setPisqji(zdelidavo.getPisqji());
+					schrcpvo.setBksqji(zdelidavo.getBksqji());
+					List<SCHRCPVO> querySchrcp = xadataService.querySchrcp(schrcpvo);
+					if(querySchrcp.size()>0){
+						schrcpvo = querySchrcp.get(0);
+						Map item = new HashMap();
+						item.put("whidji", schrcpvo.getWhidji());
+						item.put("ordrji", schrcpvo.getOrdrji());
+						item.put("pisqji", schrcpvo.getPisqji().intValue());
+						item.put("bksqji", schrcpvo.getBksqji().intValue());
+						item.put("itnoji", schrcpvo.getItnoji());
+						item.put("ds40ji", schrcpvo.getDs40ji());
+						item.put("orumji", schrcpvo.getOrumji());
+						item.put("ucoqji", schrcpvo.getUcoqji());
+						item.put("qtyoji", schrcpvo.getQtyoji());
+						item.put("wkdtji", zdelidavo.getWkdtji().add(new BigDecimal(19000000)).intValue());
+						item.put("dkdtji", schrcpvo.getDkdtji().add(new BigDecimal(19000000)).intValue());
+						results.add(item);
+					}
+				}
+				ActionContext.getContext().getValueStack().set("results", results);
+			}
 			return "toEnsureList";
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -1323,7 +1369,7 @@ public class PomastAction extends BaseAction {
 			}
 			System.out.println("wyj11");
 			data = zdelidaService.auditZdelida(parames);
-			
+
 		} catch (Throwable e) {e.printStackTrace();
 		log.error("Go to admin resource operation grant page occured error.", e);
 		data = "fail";

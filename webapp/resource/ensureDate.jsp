@@ -80,6 +80,7 @@
 	<div class="path">您现在的位置： 首页 &gt; 采购 &gt; 审核交期</div>
 	<s:form action="pomast!toEnsureList.action" method="post"
 		name="queryform">
+		<s:hidden name="flag" value="1"></s:hidden>
 		<div class="search">
 			<h2>
 				<span class="fl">待审核采购订单查询</span> <span class="fr"><input
@@ -150,9 +151,9 @@
 				</div>
 			</div>
 		</div>
-	<%-- 	<div class="page">
+		<div class="page">
 			<page:paginator formName="queryform" nameInRequest="paginator" />
-		</div> --%>
+		</div>
 	</s:form>
 </body>
 
