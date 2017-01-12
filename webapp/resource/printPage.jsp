@@ -36,7 +36,7 @@
 		<!-- 为外协订单 -->
 		<s:iterator value="resultMap.item" var="son1" status="st">
 			<table width="100%" cellpadding="5px" border="1"
-				style="border-collapse: collapse;">
+				style="border-collapse: collapse; page-break-after: always;">
 				<tr>
 					<td>
 						<table width="100%" border="0">

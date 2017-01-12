@@ -713,7 +713,7 @@ public class PomastAction extends BaseAction {
 							son11.put("dokdts", poblkt.getDokdts());
 							son11.put("relqt", poblkt.getRelqt());
 
-							if(isOutSource){//如果是外协订单,配置上生产信息
+							if(isOutSource){//如果是外协订单,配置上生产信息(根据苏老师解答,委外订单不会出现总括!!!!)
 								Map son2=  new HashMap();
 								son11.put("son2", son2);
 
@@ -732,7 +732,7 @@ public class PomastAction extends BaseAction {
 
 									//取momast
 									MOMASTVO momast = new MOMASTVO();
-									momast.setOrdno(moporf2.getMonr());
+									momast.setOrdnoF(new String[]{moporf2.getMonr()});
 									List<MOMASTVO> momastList = xadataService.queryMomast(momast);
 									System.out.println("momastList size is "+momastList.size());
 									if(momastList!=null && momastList.size()>0){

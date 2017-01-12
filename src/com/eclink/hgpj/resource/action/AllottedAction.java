@@ -20,7 +20,6 @@ import com.eclink.hgpj.resource.biz.XADATAService;
 import com.eclink.hgpj.resource.biz.ZBMSCTLService;
 import com.eclink.hgpj.resource.biz.ZTWHDRService;
 import com.eclink.hgpj.resource.vo.ITMRVAVO;
-import com.eclink.hgpj.resource.vo.ITMSITVO;
 import com.eclink.hgpj.resource.vo.ZBMSCTLVO;
 import com.eclink.hgpj.resource.vo.ZTWDTLVO;
 import com.eclink.hgpj.resource.vo.ZTWHDRVO;
