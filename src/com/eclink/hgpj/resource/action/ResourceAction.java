@@ -7255,7 +7255,48 @@ public class ResourceAction extends BaseAction {
 		data=jo.toString();
 		return "todata";
 	}
-	
+	public String sale_shipment_cancel()  throws Exception {
+		JSONObject jo = new JSONObject();
+		try {
+
+			if(username==null || username.trim().equals("")){
+				jo.put("code", 2);
+				jo.put("desc", "not have username");
+			}else if(env==null || env.trim().equals("")){
+
+				jo.put("code", 3);
+				jo.put("desc", "env is needed");
+			}else{
+				int idx = (Integer)this.getSession().getServletContext().getAttribute(env);
+				String dbconfigurl=(String)this.getSession().getServletContext().getAttribute("dbconfigurl");
+				if(dbconfigurl==null || dbconfigurl.trim().equals("")){
+					dbconfigurl=this.getSession().getServletContext().getRealPath("/WEB-INF")+ "/classes/com/eclink/hgpj/util/dbconfig.properties";
+					this.getSession().getServletContext().setAttribute("dbconfigurl",dbconfigurl);
+				}
+				DataSourceUtil.setDataSource(dbconfigurl, idx);
+				String stid =Utils.getDataSourceS(dbconfigurl, "STID"+idx);
+
+				
+				ZPLDTLVO zpldtl = new ZPLDTLVO();
+				zpldtl.setPldno(pldno);
+				zpldtl.setPldln(BigDecimal.valueOf(Long.valueOf(pldln)) );
+				zpldtl.setFpost("9");
+				zplhdrService.updateZpldtlByPar(zpldtl);
+				jo.put("code", 1);
+				jo.put("desc", "ok");
+
+			}
+		}catch (Exception e) {e.printStackTrace();
+		jo.put("code", 400);
+		jo.put("desc", "other exception");
+		data = jo.toString();
+		log.error("get env error.",e);
+		return "todata";
+		}finally{
+		}
+		data=jo.toString();
+		return "todata";
+	}
 	public String sale_shipment_commit()  throws Exception {
 		JSONObject jo = new JSONObject();
 		try {

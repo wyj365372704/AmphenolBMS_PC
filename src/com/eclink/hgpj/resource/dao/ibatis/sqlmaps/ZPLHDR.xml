@@ -206,9 +206,6 @@
   <update id="updateZpldtlByPar" parameterClass="ZPLDTLVO">
   	UPDATE ZPLDTL  
   	<dynamic prepend="set" >
-	  	<isNotEmpty prepend="," property="ostat" >
-        	OSTAT = #ostat#
-      	</isNotEmpty>
       	<isNotEmpty prepend="," property="plsub" >
         	PLSUB = #plsub#
       	</isNotEmpty>
@@ -237,7 +234,7 @@
   	 WHERE  PLDNO=#pldno# and PLDLN=#pldln#   
   </update>
   <update id="updateZplboxByPar" parameterClass="ZPLBOXVO">
-  	UPDATE ZPLDTL  
+  	UPDATE ZPLBOX  
   	<dynamic prepend="set" >
 	  	<isNotEmpty prepend="," property="boxnm" >
         	BOXNM = #boxnm#
