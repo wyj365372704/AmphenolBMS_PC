@@ -50,7 +50,7 @@
 		</td>
 		<td><s:property value="buyrji" /></td>
 		<td><s:property value="planji" /></td>
-		<td><s:if test="rcpsji==40">
+		<td><s:if test="rcpsji==40||rcpsji==35">
 				<input type="button" id="editbtn" value="退货" class="gray_button"
 					onclick="goreturn('<s:property value="sctkji"/>');" />
 			</s:if>

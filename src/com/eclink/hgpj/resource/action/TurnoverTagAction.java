@@ -184,24 +184,12 @@ public class TurnoverTagAction extends BaseAction {
 						momast.setOrdnoup(ordnos[1]);
 					}else if(momast.getOrdno().indexOf(HGPJConstant.SPLIT_0)>=0){
 						String[] ordnos = momast.getOrdno().split(HGPJConstant.SPLIT_0);
-						String temp="";
-						for(int i=0;i<ordnos.length;i++){
-							if(!ordnos[i].trim().equals("")){
-								temp=temp+"'"+ordnos[i].trim()+"',";
-							}
-						}
-						momast.setOrdnoF(temp);
+						momast.setOrdnoF(ordnos);
 					}else if(momast.getOrdno().indexOf(HGPJConstant.SPLIT_1)>=0){
 						String[] ordnos = momast.getOrdno().split(HGPJConstant.SPLIT_1);
-						String temp="";
-						for(int i=0;i<ordnos.length;i++){
-							if(!ordnos[i].trim().equals("")){
-								temp=temp+"'"+ordnos[i].trim()+"',";
-							}
-						}
-						momast.setOrdnoF(temp);
+						momast.setOrdnoF(ordnos);
 					}else{
-						momast.setOrdnoF("'"+momast.getOrdno()+"'");
+						momast.setOrdnoF(new String[]{momast.getOrdno()});
 					}
 				}
 //				Date d = sdf.parse(momast.getStartDate());

@@ -114,9 +114,9 @@
 
 	<!-- 查询收货单 -->
 	<select id="queryReceiptList" resultMap="ZGRNHDR2VOMap"
-		parameterClass="ZGRNITMVO">
+		parameterClass="ZGRNHDRVO">
 		<![CDATA[select  *
-		from  ZGRNHDR where   GRNNO like ('%'||#grnno#||'%')
+		from  ZGRNHDR where   SHPNO like ('%'||#shpno#||'%') ORDER BY CRDT DESC ,CRTM DESC
 		]]>
 		<!-- <![CDATA[select * from ZGRNHDR where OSTAT='10' ]]> <dynamic> <isNotEmpty 
 			prepend="AND" property="grnno"> GRNNO like ('%'||#grnno#||'%') </isNotEmpty> 

@@ -181,12 +181,16 @@
 		]]>
 		<dynamic>
 			<isNotEmpty prepend="AND" property="ordno">
-				a.ORDNO in ($ordno$)
+				<iterate property="ordno" conjunction="or" open="(" close=")">
+					a.ORDNO LIKE ('%'||#ordno[]#||'%')
+				</iterate>
 			</isNotEmpty>
 		</dynamic>
 		<dynamic>
 			<isNotEmpty prepend="AND" property="ipdno">
-				a.IPDNO in ($ipdno$)
+				<iterate property="ipdno" conjunction="or" open="(" close=")">
+					a.IPDNO LIKE ('%'||#ipdno[]#||'%')
+				</iterate>
 			</isNotEmpty>
 		</dynamic>
 		<dynamic>

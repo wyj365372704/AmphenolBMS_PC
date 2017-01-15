@@ -44,9 +44,9 @@ public class GrnAction extends BaseAction {
 	
 	private ZITMBXService zitmbxService;
 	
-	private ZGRNITMVO grnvo;
-	
 	private VENNAMVO vennamvo;
+	
+	private ZGRNHDRVO zgrnhdr;
 	
 	private String grnno;
 	
@@ -58,6 +58,7 @@ public class GrnAction extends BaseAction {
 	
 	private String mydate;
 	
+	private int query = 0;
 
 	public ZGRNHDRService getZgrnhdrService() {
 		return zgrnhdrService;
@@ -67,12 +68,21 @@ public class GrnAction extends BaseAction {
 		this.zgrnhdrService = zgrnhdrService;
 	}
 
-	public ZGRNITMVO getGrnvo() {
-		return grnvo;
+
+	public int getQuery() {
+		return query;
 	}
 
-	public void setGrnvo(ZGRNITMVO grnvo) {
-		this.grnvo = grnvo;
+	public void setQuery(int query) {
+		this.query = query;
+	}
+
+	public ZGRNHDRVO getZgrnhdr() {
+		return zgrnhdr;
+	}
+
+	public void setZgrnhdr(ZGRNHDRVO zgrnhdr) {
+		this.zgrnhdr = zgrnhdr;
 	}
 
 	public List<ZGRNHDRVO> getResults() {
@@ -149,46 +159,12 @@ public class GrnAction extends BaseAction {
 	}
 
 	/**
-	 * 收货单
+	 * 查询收货单
 	 * @return
 	 * @throws Exception
 	 */
 	public String toGrn() throws Exception {
 		try {
-			// 获取分页信息
-			PageVO page = PaginatorUtil.getPaginator(getRequest());
-			// setPagination(role,page);
-			
-			// 查询总记录数
-			if (page.isQueryTotal()) {
-				page.setTotalRecord(0);
-			}
-			
-			// 调用业务方法查询列表
-			// roleList = roleService.queryRoleList(role);
-			
-			// 分页对象保存至request
-			getRequest().setAttribute(HGPJConstant.PAGE_KEY, page);
-		} catch (Exception e) {e.printStackTrace();
-			log.error("Go to admin resource operation grant page occured error.", e);
-			return ERROR;
-		}
-		return "toGrn";
-	}
-	
-	/**
-	 * 查询收货单
-	 * @return
-	 * @throws Exception
-	 */
-	public String tofindGrn() throws Exception {
-		try {
-			results = this.zgrnhdrService.queryReceiptList(grnvo);
-			
-			for(ZGRNHDRVO zgrnhdrvo:results){
-				String d= (zgrnhdrvo.getCrdt()==null || zgrnhdrvo.getCrdt().doubleValue()==0.0)?"":zgrnhdrvo.getCrdt().add(BigDecimal.valueOf(19000000)).toString().trim();
-				zgrnhdrvo.setScrdt(d.length()<8?d: (d.substring(0, 4)+"-"+d.substring(4, 6)+"-"+d.substring(6, 8)));
-			}
 			
 			// 获取分页信息
 			PageVO page = PaginatorUtil.getPaginator(getRequest());
@@ -204,6 +180,17 @@ public class GrnAction extends BaseAction {
 			
 			// 分页对象保存至request
 			getRequest().setAttribute(HGPJConstant.PAGE_KEY, page);
+			
+			if(query==0){
+				return "toGrn";
+			}
+			results = this.zgrnhdrService.queryReceiptList(zgrnhdr);
+			
+			for(ZGRNHDRVO zgrnhdrvo:results){
+				String d= (zgrnhdrvo.getCrdt()==null || zgrnhdrvo.getCrdt().doubleValue()==0.0)?"":zgrnhdrvo.getCrdt().add(BigDecimal.valueOf(19000000)).toString().trim();
+				zgrnhdrvo.setScrdt(d.length()<8?d: (d.substring(0, 4)+"-"+d.substring(4, 6)+"-"+d.substring(6, 8)));
+			}
+			
 			
 		} catch (Exception e) {e.printStackTrace();
 			log.error("收货单查询失败", e);

@@ -194,7 +194,7 @@
 
 	<s:form action="ziphdr!toZiphdrList.action" method="post"
 		name="queryform">
-
+		<s:hidden name="flag" value="1"></s:hidden>
 		<div class="path">您现在的位置： 首页 &gt; 生产 &gt; 领料单</div>
 
 		<div class="search">

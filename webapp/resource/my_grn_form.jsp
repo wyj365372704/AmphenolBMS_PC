@@ -29,7 +29,7 @@
 
 <body>
 	<s:iterator value="items" id="rs" status="st">
-		<table cellpadding="5px" width="100%" class="tb">
+		<table cellpadding="5px" width="100%" class="tb" style="page-break-after: always;">
 			<tbody>
 				<tr>
 					<td>

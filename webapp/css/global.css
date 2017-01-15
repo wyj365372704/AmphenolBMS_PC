@@ -41,7 +41,7 @@ img{border:none;}
 .search h2 span.fr input{margin:0px 0px 0px 5px; vertical-align:top;}
 .search ul{background-color:#F3F3F3; border:1px solid #c9d7e2; border-top:none; padding:10px; height:100%; overflow:hidden;}
 .search ul li{float:left; display:inline; width:340px; height:28px; margin:3px 0px; color:#565656;}
-.search ul li div.w_s{width:80px; float:left; text-align:right; line-height:22px;}
+.search ul li div.w_s{width:100px; float:left; text-align:right; line-height:22px;}
 
 .data_list{margin:0px 10px 10px 10px;}
 .data_list h2{background:url(../images/title_c_bg.png) left top repeat-x; height:28px; overflow:hidden;}

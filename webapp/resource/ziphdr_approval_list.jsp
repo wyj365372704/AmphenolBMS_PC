@@ -62,7 +62,6 @@
 <body class="right_body">
 
 	<s:form action="ziphdr!toApproval.action" method="post" name="queryform">
-
 		<div class="path">您现在的位置： 首页 &gt; 生产 &gt; 领料单审批</div>
 
 

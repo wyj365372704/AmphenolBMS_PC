@@ -465,36 +465,37 @@ public class ZiphdrAction extends BaseAction {
 	public String toZiphdrList() throws Exception {
 		try {
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-			if("1".equals(flag)){
+			if(!"1".equals(flag)){
 				this.startDate=Utils.formateDate(null, "yyyy-MM-dd");
 				this.endDate=Utils.formateDate(null, "yyyy-MM-dd");
-
 			}else{
 				
 				Map map = new HashMap();
-				if(ordno!=null && ordno.length()>0){
-					String[] ordnos = ordno.split(";");
-					String temp0="";
-					if(ordnos!=null && ordnos.length>0){
-						for(int j=0;j<ordnos.length;j++){
-							temp0=temp0+"'"+ordnos[j]+"',";
-						}
-						temp0=temp0+"''";
-						map.put("ordno", temp0);
+				if(ordno!=null && !ordno.trim().equals("")){
+					if(ordno.indexOf(HGPJConstant.SPLIT_2)>=0){
+					}else if(ordno.indexOf(HGPJConstant.SPLIT_0)>=0){
+						String[] ordnos = ordno.split(HGPJConstant.SPLIT_0);
+						map.put("ordno", ordnos);
+					}else if(ordno.indexOf(HGPJConstant.SPLIT_1)>=0){
+						String[] ordnos = ordno.split(HGPJConstant.SPLIT_1);
+						map.put("ordno", ordnos);
+					}else{
+						map.put("ordno",new String[]{ordno});
 					}
 				}
-				
-				if(ipdno!=null && ipdno.length()>0){
-					String[] ipdnos = ipdno.split(";");
-					String temp0="";
-					if(ipdnos!=null && ipdnos.length>0){
-						for(int j=0;j<ipdnos.length;j++){
-							temp0=temp0+"'"+ipdnos[j]+"',";
-						}
-						temp0=temp0+"''";
-						map.put("ipdno", temp0);
+				if(ipdno!=null && !ipdno.trim().equals("")){
+					if(ipdno.indexOf(HGPJConstant.SPLIT_2)>=0){
+					}else if(ipdno.indexOf(HGPJConstant.SPLIT_0)>=0){
+						String[] ipdnos = ipdno.split(HGPJConstant.SPLIT_0);
+						map.put("ipdno", ipdnos);
+					}else if(ipdno.indexOf(HGPJConstant.SPLIT_1)>=0){
+						String[] ipdnos = ipdno.split(HGPJConstant.SPLIT_1);
+						map.put("ipdno", ipdnos);
+					}else{
+						map.put("ipdno",new String[]{ipdno});
 					}
 				}
+		
 				if(startDate!=null && startDate.length()>0){
 					map.put("startDate", BigDecimal.valueOf(Long.valueOf("1"+Utils.formateDate(sdf.parse(startDate), "yyMMdd"))));
 				}
