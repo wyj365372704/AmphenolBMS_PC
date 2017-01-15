@@ -1148,6 +1148,87 @@ public class Utils {
 		}
 		return count>0;
 	}
+	
+
+public  boolean insertOffShip(String lib,String env,List<Map> lists,String lib1) throws Exception{
+	Connection conn = null;
+	InputStream is =null;
+	Statement stmt = null;
+	OutputStream os = null;
+	ResultSet rs = null;
+	int count = 0;
+	long idx = 1000000;
+	try{
+		is = new BufferedInputStream(new FileInputStream(this.getClass().getResource("").getPath()+ "/config.properties"));
+		Properties properties = new Properties();
+		properties.load(is);
+		//			Class.forName("");
+		Class.forName(properties.getProperty("DRIVER_NAME"));
+		java.sql.DriverManager.registerDriver (new com.ibm.as400.access.AS400JDBCDriver ()); 
+		//			Class.forName("com.ibm.as400.access.AS400JDBCDriver");	
+		//			conn=DriverManager.getConnection("jdbc:mysql://localhost:3306/QGPL", "", "");
+		String dburl=properties.getProperty("DBURL");
+		String dbip=dburl.split("/")[2];
+		conn=DriverManager.getConnection("jdbc:as400://"+dbip+"/"+lib+";translate binary=true", properties.getProperty("DBUSER"), properties.getProperty("DBPASSWORD"));
+		String sql="SELECT MAX(MXNWCD) as trnno FROM  OSAAREP";
+		if(conn!=null){
+			conn.setAutoCommit(false);
+			//System.out.println("insertsql="+insertsql);
+			stmt = (Statement) conn.createStatement();
+			rs = stmt.executeQuery(sql);
+			if(rs.next()){
+				idx=rs.getLong("trnno");
+			}
+
+//			if(lists!=null && lists.size()>0){
+//				for(int i=0;i<lists.size();i++){
+//					idx++;
+//					Map map=lists.get(i);
+//					String insertsql="insert into TRDATA(ACREC,APCOD,BADGE,CRWYN,CTLID,ENSTN,HDEPT,IPLOC,ITNBR,LBHNO,LLOCN,"
+//							+"LPLID,LPQC1,ORDNO,PARNT,QUEUE,REASN,REFNO,SEQNM,SHFTC,TDATE,TRFMT,TRNNO,TRQTY,TSTAT,TTIME,WSID,USRSQ,TURNA,TURNN,TURNC"
+//							+") values('Y','I','"+(map.get("badge"))+"','N','*','0','"+((String)map.get("hdept"))+"','"+((String)map.get("iploc"))+"','"+((String)map.get("itnbr"))+"','" +
+//							((String)map.get("lbhno"))+"','"+((String)map.get("lloc"))+"','D',0,'"+((String)map.get("ordno"))+"',0,1,'"+((String)map.get("reasn"))+"','',"+((BigDecimal)map.get("seqnm")).intValue()+","
+//							+"1,"+((BigDecimal)map.get("tdate")).longValue()+",'IP',"+(idx)+","+((BigDecimal)map.get("trqty")).longValue()+",2,"+((BigDecimal)map.get("ttime")).longValue()+","
+//							+"'"+((String)map.get("wsid"))+"','"+((String)map.get("usrsq"))+"',"+((BigDecimal)map.get("turna")).longValue()+","+((BigDecimal)map.get("turnn")).longValue()+","+((BigDecimal)map.get("turnc")).longValue()+")";
+//					System.out.println("insertsql="+insertsql);
+//					count=count+stmt.executeUpdate(insertsql);
+//				}
+//			}
+
+			conn.commit();
+			conn.setAutoCommit(true);
+		}
+		this.CallTamjuc(dbip, properties.getProperty("DBUSER"), properties.getProperty("DBPASSWORD"), lib1);
+	}catch(Exception e){
+		if(conn!=null){
+			try {
+				conn.rollback();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+		}
+		count=0;
+		throw e;
+		//			e.printStackTrace();
+		//			return false;
+	}finally{
+		try{
+			if(os!=null){
+				os.close();
+			}
+			if(is!=null){
+				is.close();
+			}
+			if(conn!=null){
+				conn.close();
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+
+	}
+	return count>0;
+}
 
 	public  void createShpdsk(String lib,String env,String lib1) throws Exception{
 		Connection conn = null;

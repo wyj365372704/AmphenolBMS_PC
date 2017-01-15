@@ -146,4 +146,27 @@ public class ZPLHDRDaoImpl extends SqlMapClientDaoSupport implements ZPLHDRDao {
 		this.getSqlMapClientTemplate().insert("ZPLHDR.insertZsahdr", vo);
 	}
 
+	@Override
+	public int getZsaCoutsByDt(BigDecimal gtdte) throws Exception {
+		List temp = this.getSqlMapClientTemplate().queryForList("ZPLHDR.getZsaCoutsByDt", gtdte);
+		if(temp!=null){
+			return (Integer)temp.get(0);
+		}
+		return 0;
+	}
+
+	@Override
+	public List<ZSAHDRVO> queryZsahdrByPar(ZSAHDRVO vo) throws Exception {
+		return this.getSqlMapClientTemplate().queryForList("ZPLHDR.queryZsahdrByPar", vo);
+	}
+
+	@Override
+	public int getZsadtlCouts(ZSADTLVO vo) throws Exception {
+		List temp = this.getSqlMapClientTemplate().queryForList("ZPLHDR.getZsadtlCouts", vo);
+		if(temp!=null){
+			return (Integer)temp.get(0);
+		}
+		return 0;
+	}
+
 }

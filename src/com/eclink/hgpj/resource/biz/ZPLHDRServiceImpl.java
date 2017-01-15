@@ -196,6 +196,21 @@ public class ZPLHDRServiceImpl implements ZPLHDRService {
 		}
 	}
 
+	@Override
+	public int getZsaCoutsByDt(BigDecimal gtdte) throws Exception {
+		return zplhdrDao.getZsaCoutsByDt(gtdte);
+	}
+
+	@Override
+	public List<ZSAHDRVO> queryZsahdrByPar(ZSAHDRVO vo) throws Exception {
+		return zplhdrDao.queryZsahdrByPar(vo);
+	}
+
+	@Override
+	public int getZsadtlCouts(ZSADTLVO vo) throws Exception {
+		return zplhdrDao.getZsadtlCouts(vo);
+	}
+
 
 
 }

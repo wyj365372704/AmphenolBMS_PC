@@ -14,17 +14,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
-import javax.management.RuntimeErrorException;
-
-import javassist.expr.NewArray;
-
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
-import com.alibaba.fastjson.JSON;
 import com.eclink.hgpj.base.BaseAction;
 import com.eclink.hgpj.common.HGPJBizException;
 import com.eclink.hgpj.resource.biz.MenuService;
@@ -32,7 +27,6 @@ import com.eclink.hgpj.resource.biz.SHPDSKService;
 import com.eclink.hgpj.resource.biz.XADATAService;
 import com.eclink.hgpj.resource.biz.ZBMSCTLService;
 import com.eclink.hgpj.resource.biz.ZBMSU01Service;
-import com.eclink.hgpj.resource.biz.ZBMSU01ServiceImpl;
 import com.eclink.hgpj.resource.biz.ZDEPTService;
 import com.eclink.hgpj.resource.biz.ZEMPMSTService;
 import com.eclink.hgpj.resource.biz.ZGRNHDRService;
@@ -44,6 +38,7 @@ import com.eclink.hgpj.resource.biz.ZJOBEMPService;
 import com.eclink.hgpj.resource.biz.ZJOBMCHService;
 import com.eclink.hgpj.resource.biz.ZMCHMSTService;
 import com.eclink.hgpj.resource.biz.ZMOJOBService;
+import com.eclink.hgpj.resource.biz.ZPLHDRService;
 import com.eclink.hgpj.resource.biz.ZPLNMSTService;
 import com.eclink.hgpj.resource.biz.ZRMHSTService;
 import com.eclink.hgpj.resource.biz.ZSHPHDRService;
@@ -60,7 +55,6 @@ import com.eclink.hgpj.resource.vo.MOROUTVO;
 import com.eclink.hgpj.resource.vo.MenuVO;
 import com.eclink.hgpj.resource.vo.POITEMVO;
 import com.eclink.hgpj.resource.vo.POMASTVO;
-import com.eclink.hgpj.resource.vo.SHPDSKVO;
 import com.eclink.hgpj.resource.vo.SLDATAVO;
 import com.eclink.hgpj.resource.vo.SLQNTYVO;
 import com.eclink.hgpj.resource.vo.VENNAMVO;
@@ -82,8 +76,15 @@ import com.eclink.hgpj.resource.vo.ZJOBEMPVO;
 import com.eclink.hgpj.resource.vo.ZJOBMCHVO;
 import com.eclink.hgpj.resource.vo.ZMCHMSTVO;
 import com.eclink.hgpj.resource.vo.ZMOJOBVO;
+import com.eclink.hgpj.resource.vo.ZPLBOXVO;
+import com.eclink.hgpj.resource.vo.ZPLDTLVO;
+import com.eclink.hgpj.resource.vo.ZPLHDRVO;
 import com.eclink.hgpj.resource.vo.ZPLNMSTVO;
 import com.eclink.hgpj.resource.vo.ZRMHSTVO;
+import com.eclink.hgpj.resource.vo.ZSABCHVO;
+import com.eclink.hgpj.resource.vo.ZSABOXVO;
+import com.eclink.hgpj.resource.vo.ZSADTLVO;
+import com.eclink.hgpj.resource.vo.ZSAHDRVO;
 import com.eclink.hgpj.resource.vo.ZSHPBCHVO;
 import com.eclink.hgpj.resource.vo.ZSHPHDRVO;
 import com.eclink.hgpj.resource.vo.ZSHPITMVO;
@@ -99,8 +100,6 @@ import com.eclink.hgpj.user.biz.AUserService;
 import com.eclink.hgpj.user.vo.AUserVO;
 import com.eclink.hgpj.util.DataSourceUtil;
 import com.eclink.hgpj.util.Utils;
-import com.sun.org.apache.bcel.internal.generic.NEW;
-import com.sun.xml.internal.bind.v2.TODO;
 
 /**
  * ResourceAction.java
@@ -170,6 +169,8 @@ public class ResourceAction extends BaseAction {
 	private ZJOBMCHService zjobmchService;
 
 	private ZJBTRNService zjbtrnService;
+	
+	private ZPLHDRService zplhdrService;
 
 	private String data;
 
@@ -204,6 +205,8 @@ public class ResourceAction extends BaseAction {
 	private String mate;
 
 	private String mater;
+	
+	private String pldln;
 
 	private String branch;
 
@@ -254,6 +257,13 @@ public class ResourceAction extends BaseAction {
 	private String job_number;
 
 	private String ia_quantity;
+	
+	private String pldno;
+	
+	private String boxnm;
+	
+	private String boxes;
+	
 	/**
 	 * 菜单资源树
 	 */
@@ -333,6 +343,14 @@ public class ResourceAction extends BaseAction {
 		this.ia_quantity = ia_quantity;
 	}
 
+	public String getPldln() {
+		return pldln;
+	}
+
+	public void setPldln(String pldln) {
+		this.pldln = pldln;
+	}
+
 	public String getStep_quantity() {
 		return step_quantity;
 	}
@@ -347,6 +365,22 @@ public class ResourceAction extends BaseAction {
 
 	public void setShpdskService(SHPDSKService shpdskService) {
 		this.shpdskService = shpdskService;
+	}
+
+	public ZPLHDRService getZplhdrService() {
+		return zplhdrService;
+	}
+
+	public void setZplhdrService(ZPLHDRService zplhdrService) {
+		this.zplhdrService = zplhdrService;
+	}
+
+	public String getPldno() {
+		return pldno;
+	}
+
+	public void setPldno(String pldno) {
+		this.pldno = pldno;
 	}
 
 	public AUserService getAuserService() {
@@ -491,6 +525,22 @@ public class ResourceAction extends BaseAction {
 	}
 
 
+
+	public String getBoxnm() {
+		return boxnm;
+	}
+
+	public void setBoxnm(String boxnm) {
+		this.boxnm = boxnm;
+	}
+
+	public String getBoxes() {
+		return boxes;
+	}
+
+	public void setBoxes(String boxes) {
+		this.boxes = boxes;
+	}
 
 	public String getWork_order() {
 		return work_order;
@@ -6974,7 +7024,462 @@ public class ResourceAction extends BaseAction {
 		data=jo.toString();
 		return "todata";
 	}
+	public String sale_shipment_query_header()  throws Exception {
+		JSONObject jo = new JSONObject();
+		try {
 
+			if(username==null || username.trim().equals("")){
+				jo.put("code", 2);
+				jo.put("desc", "not have username");
+			}else if(env==null || env.trim().equals("")){
+
+				jo.put("code", 3);
+				jo.put("desc", "env is needed");
+			}else{
+				int idx = (Integer)this.getSession().getServletContext().getAttribute(env);
+				String dbconfigurl=(String)this.getSession().getServletContext().getAttribute("dbconfigurl");
+				if(dbconfigurl==null || dbconfigurl.trim().equals("")){
+					dbconfigurl=this.getSession().getServletContext().getRealPath("/WEB-INF")+ "/classes/com/eclink/hgpj/util/dbconfig.properties";
+					this.getSession().getServletContext().setAttribute("dbconfigurl",dbconfigurl);
+				}
+				DataSourceUtil.setDataSource(dbconfigurl, idx);
+				String stid =Utils.getDataSourceS(dbconfigurl, "STID"+idx);
+
+				ZPLHDRVO zplhdr = new ZPLHDRVO();
+				zplhdr.setHouse(warehouse);
+				zplhdr.setPldno(pldno);
+				List<ZPLHDRVO> results = this.zplhdrService.queryZplhdr(zplhdr);
+				
+				if(results!=null && results.size()>0){
+					ZPLHDRVO vo = results.get(0);
+					if(vo.getOstat()!=null && vo.getOstat().trim().equals("10")){
+						jo.put("client_number", vo.getCusno().longValue());
+						jo.put("client_name", vo.getCusnm());
+						jo.put("department", vo.getPldp1());
+						String etdate=(vo.getEtdate()+19000000)+"";
+						jo.put("expected_data", etdate.substring(0, 4)+"-"+etdate.substring(4, 6)+"-"+etdate.substring(6, 8)+" ");
+						
+						ZPLDTLVO zpldtl = new ZPLDTLVO();
+						zpldtl.setPldno(pldno);
+						List<ZPLDTLVO> dataList = this.zplhdrService.queryReceipt(zpldtl);
+						if(dataList!=null && dataList.size()>0){
+							List<Map> retList = new ArrayList<Map>();
+							for(int i=0;i<dataList.size();i++){
+								ZPLDTLVO tdata = dataList.get(i);
+								Map datam = new HashMap();
+								datam.put("pldln", tdata.getPldln().longValue());
+								datam.put("c6cvnb ", tdata.getC6cvnb());
+								datam.put("cdfcnb ", tdata.getCdfcnb()==null?0:tdata.getCdfcnb().longValue());
+								datam.put("mater", tdata.getItnbr());
+								datam.put("shard", tdata.getPlsub());
+								datam.put("location", tdata.getPlloc());
+								datam.put("plan_quantity", tdata.getPlqty());
+								datam.put("plan_quantity_unit", tdata.getUnmsr());
+								ITMSITVO itmsitvo = new ITMSITVO();
+								itmsitvo.setHouse(stid);
+								itmsitvo.setItnot9(tdata.getItnbr());
+								String itrvt = "";
+								List<String> itrvts = this.xadataService.queryItrvt(itmsitvo);
+								if(itrvts!=null && itrvts.size()>0){
+									itrvt=itrvts.get(0);
+								}
+								ZITMEXTVO extVo = new ZITMEXTVO();
+								extVo.setItnbr(tdata.getItnbr());
+								extVo.setStid(stid);
+								extVo.setItrv(itrvt);
+								List<ZITMEXTVO> extLists = this.zitmextService.queryItemExt(extVo);
+								String ldesc = "";
+								if(extLists!=null && extLists.size()>0 && extLists.get(0).getLdesc().trim().length()>0){
+									ldesc=extLists.get(0).getLdesc();
+									datam.put("mater_dese", ldesc);
+									datam.put("mater_format", extLists.get(0).getSdesc());
+								}else{
+									ITMRVAVO itmrVo = new ITMRVAVO();
+									itmrVo.setItnbr(tdata.getItnbr());
+									itmrVo.setHouse(stid);
+									itmrVo.setItrv(itrvt);
+									List<ITMRVAVO> itmrLists = this.xadataService.queryItmrva(itmrVo);
+									if(itmrLists!=null && itmrLists.size()>0){
+										ldesc=itmrLists.get(0).getItdsc();
+										datam.put("mater_dese", ldesc);
+										datam.put("mater_format", "");
+									}else{
+										datam.put("mater_dese", "");
+										datam.put("mater_format", "");
+									}
+
+								}
+
+								retList.add(datam);
+							}
+							jo.put("zpldtl_list", retList);
+						}
+					}else{
+						jo.put("code", 5);
+						jo.put("desc", "该出货通知单不存在");
+					}
+					
+
+					
+					jo.put("code", 1);
+					jo.put("desc", "ok");
+				}else{
+					jo.put("code", 5);
+					jo.put("desc", "该出货通知单不存在");
+				}
+
+
+			}
+		}catch (Exception e) {e.printStackTrace();
+		jo.put("code", 400);
+		jo.put("desc", "other exception");
+		data = jo.toString();
+		log.error("get env error.",e);
+		return "todata";
+		}finally{
+		}
+		data=jo.toString();
+		return "todata";
+	}
+	
+	public String sale_shipment_query_item()  throws Exception {
+		JSONObject jo = new JSONObject();
+		try {
+
+			if(username==null || username.trim().equals("")){
+				jo.put("code", 2);
+				jo.put("desc", "not have username");
+			}else if(env==null || env.trim().equals("")){
+
+				jo.put("code", 3);
+				jo.put("desc", "env is needed");
+			}else{
+				int idx = (Integer)this.getSession().getServletContext().getAttribute(env);
+				String dbconfigurl=(String)this.getSession().getServletContext().getAttribute("dbconfigurl");
+				if(dbconfigurl==null || dbconfigurl.trim().equals("")){
+					dbconfigurl=this.getSession().getServletContext().getRealPath("/WEB-INF")+ "/classes/com/eclink/hgpj/util/dbconfig.properties";
+					this.getSession().getServletContext().setAttribute("dbconfigurl",dbconfigurl);
+				}
+				DataSourceUtil.setDataSource(dbconfigurl, idx);
+				String stid =Utils.getDataSourceS(dbconfigurl, "STID"+idx);
+
+				
+				ZPLDTLVO zpldtl = new ZPLDTLVO();
+				zpldtl.setPldno(pldno);
+				zpldtl.setPldln(BigDecimal.valueOf(Long.valueOf(pldln)) );
+				zpldtl.setFpost("0");
+				List<ZPLDTLVO> results = this.zplhdrService.queryReceipt(zpldtl);
+				if(results!=null && results.size()>0){
+					ZPLDTLVO vo = results.get(0);
+					ZPLBOXVO zplbox = new ZPLBOXVO();
+					zplbox.setPldno(pldno);
+					zplbox.setPldln(BigDecimal.valueOf(Long.valueOf(pldln)) );
+					List<ZPLBOXVO> resultbs = this.zplhdrService.queryBch(zplbox);
+					if(resultbs!=null && resultbs.size()>0){
+						ZPLBOXVO boxvo = resultbs.get(0);
+						jo.put("boxln", boxvo.getBoxln()==null?0:boxvo.getBoxln().longValue());
+						jo.put("boxnm", boxvo.getBoxnm());
+						jo.put("boxes", boxvo.getBoxes()==null?0:boxvo.getBoxes().longValue());
+//						Map map = new HashMap();
+//						map.put("warehouse", warehouse);
+//						map.put("stid", stid);
+////						map.put("itnbr", mater);
+//						List<SLQNTYVO> resultsls = this.xadataService.querySlqnty(map);
+//						if(resultsls!=null && ){
+//							
+//						}
+						ZWHSUBVO subvo = new ZWHSUBVO();
+						subvo.setHouse(warehouse);
+						List<ZWHSUBVO> zwhsubList = this.zwhsubService.queryZwhsub(subvo);
+						if(zwhsubList!=null && zwhsubList.size()>0){
+							List<Map> map = new ArrayList<Map>();
+
+							for(int i=0;i<zwhsubList.size();i++){
+								ZWHSUBVO temp = zwhsubList.get(i);
+								Map tm = new HashMap();
+								tm.put("shard", temp.getWhsub());
+
+								map.add(tm);
+							}
+							jo.put("shard_list", map);
+						
+						}
+						Map map = new HashMap();
+						map.put("warehouse", warehouse);
+						map.put("stid", stid);
+						map.put("shard", shard);
+						map.put("location", location);
+//						map.put("lbhno", branch);
+						map.put("itnbr", mater );
+						List<SLQNTYVO> slqntyList = this.xadataService.querySlqnty(map);
+						if(slqntyList!=null && slqntyList.size()>0){
+							List<Map> slqntyrets = new ArrayList<Map>();
+							for(int i=0;i<slqntyList.size();i++){
+								SLQNTYVO tvo = slqntyList.get(i);
+								Map rmap = new HashMap();
+								rmap.put("branch", tvo.getLbhno());
+								rmap.put("shard", tvo.getUucalm());
+								rmap.put("location", tvo.getLlocn());
+								rmap.put("quantity", tvo.getLqnty());
+								rmap.put("unit", tvo.getUnpurum());
+								rmap.put("fifo_date", tvo.getFdate());
+								slqntyrets.add(rmap);
+							}
+							jo.put("mater_list", slqntyrets);
+						}
+						
+					}else{
+						jo.put("code", 5);
+						jo.put("desc", "该出货通知单明细不存在");
+					}
+					
+					jo.put("code", 1);
+					jo.put("desc", "ok");
+				}else{
+					jo.put("code", 5);
+					jo.put("desc", "该出货通知单不存在");
+				}
+
+
+			}
+		}catch (Exception e) {e.printStackTrace();
+		jo.put("code", 400);
+		jo.put("desc", "other exception");
+		data = jo.toString();
+		log.error("get env error.",e);
+		return "todata";
+		}finally{
+		}
+		data=jo.toString();
+		return "todata";
+	}
+	
+	public String sale_shipment_commit()  throws Exception {
+		JSONObject jo = new JSONObject();
+		try {
+
+			if(username==null || username.trim().equals("")){
+				jo.put("code", 2);
+				jo.put("desc", "not have username");
+			}else if(env==null || env.trim().equals("")){
+
+				jo.put("code", 3);
+				jo.put("desc", "env is needed");
+			}else{
+				int idx = (Integer)this.getSession().getServletContext().getAttribute(env);
+				String dbconfigurl=(String)this.getSession().getServletContext().getAttribute("dbconfigurl");
+				if(dbconfigurl==null || dbconfigurl.trim().equals("")){
+					dbconfigurl=this.getSession().getServletContext().getRealPath("/WEB-INF")+ "/classes/com/eclink/hgpj/util/dbconfig.properties";
+					this.getSession().getServletContext().setAttribute("dbconfigurl",dbconfigurl);
+				}
+				DataSourceUtil.setDataSource(dbconfigurl, idx);
+				String stid =Utils.getDataSourceS(dbconfigurl, "STID"+idx);
+				String lib = Utils.getDataSourceS(dbconfigurl, "AMTLIB"+idx);
+				String lib1 = Utils.getDataSourceS(dbconfigurl, "AMPHLIB"+idx);
+				String userDept="";
+				List<ZBMSU02VO> dps = this.auserService.queryDeptByUserName(username);
+				if(dps!=null && dps.size()>0){
+					for(ZBMSU02VO dp:dps){
+						if(dp.getDflt()!=null && "1".equals(dp.getDflt().trim())){
+							//							vo.setPlant(dp.getPlant());
+							userDept = (dp.getDept());
+						}
+					}
+				} 
+				ZPLHDRVO zplhdr = new ZPLHDRVO();
+				zplhdr.setPldno(pldno);
+				List<ZPLHDRVO> zplhdrrets = this.zplhdrService.queryZplhdr(zplhdr);
+				ZPLHDRVO zplhdrret= zplhdrrets.get(0);
+				String now1 = Utils.formateDate(null, "yyMMdd");
+				String now2 = Utils.formateDate(null, "HHmmss");
+				
+				String hdrno = "";
+				ZSAHDRVO zsahdr = new ZSAHDRVO();
+				zsahdr.setPldno(pldno);
+				zsahdr.setCusno(zplhdrret.getCusno());
+				List<ZSAHDRVO> zsahdrrets = this.zplhdrService.queryZsahdrByPar(zsahdr);
+				ZSAHDRVO zsahdrvo = null;
+				if(zsahdrrets==null || zsahdrrets.size()==0){
+					int count = this.zplhdrService.getZsaCoutsByDt(BigDecimal.valueOf(Long.valueOf("1"+now1)));
+					String idex = "000"+(count+1);
+					hdrno = "SA"+now1+idex.substring(idex.length()-4);
+					zsahdrvo = new ZSAHDRVO();
+					zsahdrvo.setSadno(hdrno);
+					zsahdrvo.setPldno(pldno);
+					zsahdrvo.setPlant(zplhdrret.getPlant());
+					zsahdrvo.setCusno(zplhdrret.getCusno());
+					zsahdrvo.setCusnm(zplhdrret.getCusnm());
+					zsahdrvo.setHouse(zplhdrret.getHouse());
+					zsahdrvo.setScac(zplhdrret.getScac());
+					zsahdrvo.setIncot(zplhdrret.getIncot());
+					zsahdrvo.setOstat("10");
+					zsahdrvo.setInvno(zplhdrret.getInvno());
+					zsahdrvo.setStnam(zplhdrret.getStnam());
+					zsahdrvo.setStadd1(zplhdrret.getStadd1());
+					zsahdrvo.setStadd2(zplhdrret.getStadd2());
+					zsahdrvo.setStcity(zplhdrret.getStcity());
+					zsahdrvo.setStctr(zplhdrret.getStctr());
+					zsahdrvo.setStzip(zplhdrret.getStzip());
+					zsahdrvo.setSfnam(zplhdrret.getSfnam());
+					zsahdrvo.setSfadd1(zplhdrret.getSfadd1());
+					zsahdrvo.setSfadd2(zplhdrret.getSfadd2());
+					zsahdrvo.setSfcity(zplhdrret.getSfcity());
+					zsahdrvo.setSfctr(zplhdrret.getSfctr());
+					zsahdrvo.setSfzip(zplhdrret.getSfzip());
+					zsahdrvo.setScnam(zplhdrret.getScnam());
+					zsahdrvo.setScadd1(zplhdrret.getScadd1());
+					zsahdrvo.setScadd2(zplhdrret.getScadd2());
+					zsahdrvo.setSccity(zplhdrret.getSccity());
+					zsahdrvo.setScctr(zplhdrret.getScctr());
+					zsahdrvo.setSczip(zplhdrret.getSczip());
+					zsahdrvo.setSaus1(username);
+					zsahdrvo.setSadp1(userDept);
+					zsahdrvo.setSadt1(BigDecimal.valueOf(Long.valueOf("1"+now1)));
+					zsahdrvo.setSatm1(BigDecimal.valueOf(Long.valueOf(now2)));
+					zsahdrvo.setCmmt("");
+				}else{
+					hdrno=zsahdrrets.get(0).getSadno();
+				}
+				
+
+				Map zsadtlMap = new HashMap();
+				zsadtlMap.put("zsahdr", zsahdrvo);
+				ZPLDTLVO zpldtl = new ZPLDTLVO();
+				zpldtl.setPldno(pldno);
+				zpldtl.setPldln(BigDecimal.valueOf(Long.valueOf(pldln)) );
+				zpldtl.setFpost("0");
+				List<ZPLDTLVO> results = this.zplhdrService.queryReceipt(zpldtl);
+				if(results!=null && results.size()>0){
+					ZPLDTLVO vo = results.get(0);
+					ZSADTLVO zsadtlvo = new  ZSADTLVO();
+					zsadtlvo.setSadno(hdrno);
+					zsadtlvo.setPldno(pldno);
+					int countsa = this.zplhdrService.getZsadtlCouts(zsadtlvo);
+					zsadtlvo.setSadln(BigDecimal.valueOf(countsa+1));
+					zsadtlvo.setPldln(vo.getPldln());
+					zsadtlvo.setC6aenb(vo.getC6aenb());
+					zsadtlvo.setC6dccd(vo.getC6dccd());
+					zsadtlvo.setC6cvnb(vo.getC6cvnb());
+					zsadtlvo.setPonum(vo.getPonum());
+					zsadtlvo.setHouse(vo.getHouse());
+					zsadtlvo.setCdfcnb(vo.getCdfcnb());
+					zsadtlvo.setAddrnb(vo.getAddrnb());
+					zsadtlvo.setAdaasz(vo.getAdaasz());
+					zsadtlvo.setItnbr(vo.getItnbr());
+					zsadtlvo.setUnmsr(vo.getUnmsr());
+					zsadtlvo.setSasub1(vo.getPlsub());
+					zsadtlvo.setSaloc1(vo.getPlloc());
+					zsadtlvo.setSaqty1(vo.getPlqty());
+					zsadtlvo.setSqqty2(BigDecimal.valueOf(Double.valueOf(this.actual_quantity)) );
+					ITMSITVO itmsitvo = new ITMSITVO();
+					itmsitvo.setHouse(stid);
+					itmsitvo.setItnot9(vo.getItnbr().trim());
+					String itrvt = "";
+					List<String> itrvts = this.xadataService.queryItrvt(itmsitvo);
+					if(itrvts!=null && itrvts.size()>0){
+						itrvt=itrvts.get(0);
+					}
+					ITMRVAVO itmrVo = new ITMRVAVO();
+					itmrVo.setItnbr(vo.getItnbr().trim());
+					itmrVo.setHouse(stid);
+					itmrVo.setItrv(itrvt);
+					List<ITMRVAVO> itmrLists = this.xadataService.queryItmrva(itmrVo);
+					if(itmrLists!=null && itmrLists.size()>0){
+						ITMRVAVO itmvo = itmrLists.get(0);
+						zsadtlvo.setWght1(itmvo.getWeght().multiply(BigDecimal.valueOf(Double.valueOf(this.actual_quantity))));
+						zsadtlvo.setWtum1(itmvo.getB2cqcd());
+						zsadtlvo.setWght2(BigDecimal.valueOf(Double.valueOf(this.actual_quantity)).divide((itmvo.getB2z95t()==null || itmvo.getB2z95t().floatValue()==0)?BigDecimal.valueOf(1):itmvo.getB2z95t()).multiply(itmvo.getB2aas3()));
+						zsadtlvo.setWtum2(itmvo.getB2aapt());
+					}
+					zsadtlvo.setSaus2(this.username);
+					zsadtlvo.setSadp2(userDept);
+					zsadtlvo.setSadt2(BigDecimal.valueOf(Long.valueOf("1"+now1)));
+					zsadtlvo.setSatm2(BigDecimal.valueOf(Long.valueOf(now2)));
+					List zsadtlvos = new ArrayList();
+					zsadtlvos.add(zsadtlvo);
+
+					zsadtlMap.put("zsadtls", zsadtlvos);
+					
+					ZPLBOXVO zplbox = new ZPLBOXVO();
+					zplbox.setPldno(pldno);
+					zplbox.setPldln(BigDecimal.valueOf(Long.valueOf(pldln)) );
+					List<ZPLBOXVO> resultbs = this.zplhdrService.queryBch(zplbox);
+					if(resultbs!=null && resultbs.size()>0){
+						ZPLBOXVO boxvo = resultbs.get(0);
+						jo.put("boxln", boxvo.getBoxln()==null?0:boxvo.getBoxln().longValue());
+						jo.put("boxnm", boxvo.getBoxnm());
+						jo.put("boxes", boxvo.getBoxes()==null?0:boxvo.getBoxes().longValue());
+						ZSABOXVO zsaboxvo = new ZSABOXVO();
+						zsaboxvo.setSadno(hdrno);
+						zsaboxvo.setSadln(BigDecimal.valueOf(countsa+1));
+						zsaboxvo.setPldno(pldno);
+						zsaboxvo.setPldln(boxvo.getPldln());
+						zsaboxvo.setBoxln(boxvo.getBoxln());
+						zsaboxvo.setBoxnm(boxnm);
+						zsaboxvo.setBoxes(BigDecimal.valueOf(Double.valueOf(boxes)));
+						List zsaboxvos = new ArrayList();
+						zsaboxvos.add(zsaboxvo);
+						zsadtlMap.put("zsabboxes", zsaboxvos);
+					}
+					if(mater_list!=null && mater_list.trim().length()>0){
+						JSONObject json = JSONObject.fromObject(mater_list);
+						JSONArray jsonArr = JSONArray.fromObject(json.get("mater_list"));
+						if(jsonArr!=null && jsonArr.size()>0){
+							List zsabchvos = new ArrayList();
+							for(int i = 0;i<jsonArr.size();i++){
+								JSONObject branchJsonObject = jsonArr.getJSONObject(i);
+								ZSABCHVO zsabchvo = new ZSABCHVO();
+								zsabchvo.setSadno(hdrno);
+								zsabchvo.setSadln(BigDecimal.valueOf(countsa+1));
+								zsabchvo.setSadbn(BigDecimal.valueOf(Long.valueOf(i+1)));
+								zsabchvo.setPldno(pldno);
+								zsabchvo.setPldln(BigDecimal.valueOf(Long.valueOf(pldln)) );
+								zsabchvo.setC6aenb(zsadtlvo.getC6aenb());
+								zsabchvo.setC6dccd(zsadtlvo.getC6dccd());
+								zsabchvo.setC6cvnb(zsadtlvo.getC6cvnb());
+								zsabchvo.setHouse(zsadtlvo.getHouse());
+								zsabchvo.setCdfcnb(zsadtlvo.getCdfcnb());
+								zsabchvo.setAddrnb(zsadtlvo.getAddrnb());
+								zsabchvo.setAdaasz(zsadtlvo.getAdaasz());
+								zsabchvo.setItnbr(zsadtlvo.getItnbr());
+								zsabchvo.setUnmsr(zsadtlvo.getUnmsr());
+								zsabchvo.setSabch2(branchJsonObject.optString("branch"));
+								zsabchvo.setSasub2(branchJsonObject.optString("shard"));
+								zsabchvo.setSaloc2(branchJsonObject.optString("location"));
+								zsabchvo.setSaqty2(BigDecimal.valueOf(Double.valueOf(branchJsonObject.optString("quantity"))));
+								zsabchvo.setSaus2(this.username);
+								zsabchvo.setSadp2(userDept);
+								zsabchvo.setSadt2(BigDecimal.valueOf(Long.valueOf("1"+now1)));
+								zsabchvo.setSatm2(BigDecimal.valueOf(Long.valueOf(now2)));
+								zsabchvos.add(zsabchvo);
+							}
+							zsadtlMap.put("zsabchs", zsabchvos);
+						}
+					}
+					this.zplhdrService.insertZsahdrs(zsadtlMap);
+					//XA过账部分
+					
+					jo.put("code", 1);
+					jo.put("desc", "ok");
+				}else{
+					jo.put("code", 5);
+					jo.put("desc", "该出货通知单不存在");
+				}
+
+
+			}
+		}catch (Exception e) {e.printStackTrace();
+		jo.put("code", 400);
+		jo.put("desc", "other exception");
+		data = jo.toString();
+		log.error("get env error.",e);
+		return "todata";
+		}finally{
+		}
+		data=jo.toString();
+		return "todata";
+	}
+	
 	/**
 	 * 菜单资源排序页面
 	 * @return

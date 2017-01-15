@@ -46,15 +46,58 @@
 
 	</select>
 	
+	<select id="queryZsahdrByPar" resultClass="ZSAHDRVO"
+		parameterClass="Map">
+		<![CDATA[ select  a.*   
+		from  ZSAHDR as a  
+		]]>
+		<dynamic prepend="where">
+			<isNotEmpty prepend="AND" property="pldno">
+				a.PLDNO =#pldno#  
+			</isNotEmpty>
+			<isNotEmpty prepend="AND" property="sadno">
+				a.SADNO =#sadno#  
+			</isNotEmpty>
+			<isNotEmpty prepend="AND" property="house">
+				a.HOUSE = #house#
+			</isNotEmpty>
+			<isNotEmpty prepend="AND" property="ostat">
+				a.OSTAT != #ostat#
+			</isNotEmpty>
+			<isNotEmpty prepend="AND" property="cusnm">
+				a.CUSNM  like ('%'||#cusnm#||'%' ) 
+			</isNotEmpty>
+			<isNotEmpty prepend="AND" property="cusno">
+				a.CUSNO = #cusno# 
+			</isNotEmpty>
+			
+		</dynamic>
+		<![CDATA[ order by a.SADNO ]]>
+
+	</select>
+	
 	<select id="queryReceipt" resultClass="ZPLDTLVO" parameterClass="ZPLDTLVO">
 		select  item.*   
-		from  ZPLDTL as item  where item.PLDNO=#pldno# order by item.PLDNO,item.PLDLN
+		from  ZPLDTL as item  where item.PLDNO=#pldno# 
+		
+		<isNotEmpty prepend="AND" property="pldln">
+				item.PLDLN =#pldln# 
+		</isNotEmpty> 
+		<isNotEmpty prepend="AND" property="fpost">
+				item.FPOST =#fpost# 
+		</isNotEmpty> 
+		
+		order by item.PLDNO,item.PLDLN
 		
 	</select>
 	
 	<select id="queryBch" resultClass="ZPLBOXVO" parameterClass="ZPLBOXVO">
 		select  bch.*  
-		from  ZPLBOX as bch where bch.PLDNO=#pldno# order by bch.PLDNO,bch.PLDLN
+		from  ZPLBOX as bch where bch.PLDNO=#pldno# 
+		<isNotEmpty prepend="AND" property="pldln">
+				bch.PLDLN =#pldln# 
+		</isNotEmpty> 
+		 order by bch.PLDNO,bch.PLDLN
 		
 	</select>
 	
@@ -67,6 +110,23 @@
 		<![CDATA[ select  count(*) as ct   
 		from  ZPLHDR where PLDT1=#grdte#  
 		]]>
+	</select>
+	
+	<select id="getZsaCoutsByDt" resultClass="Integer" parameterClass="java.math.BigDecimal">
+		<![CDATA[ select  count(*) as ct   
+		from  ZSAHDR where SADT1=#grdte#  
+		
+		]]>
+	</select>
+	
+	<select id="getZsadtlCouts" resultClass="Integer" parameterClass="ZSADTLVO">
+		<![CDATA[ select  count(*) as ct   
+		from  ZSADTL where SADNO=#sadno#  
+		
+		]]>
+		<isNotEmpty prepend="," property="pldno" >
+        	PLDNO = #pldno#
+      	</isNotEmpty>
 	</select>
 	  <!-- 更新资源操作 -->
   <update id="updateZplhdr" parameterClass="String">

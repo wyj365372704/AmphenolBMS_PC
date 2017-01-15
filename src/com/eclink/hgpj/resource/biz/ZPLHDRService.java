@@ -32,10 +32,16 @@ import com.eclink.hgpj.resource.vo.ZWHSUBVO;
  */
 public interface ZPLHDRService {
 	public int getCoutsByDt(BigDecimal gtdte) throws Exception;
-
+	
+	public int getZsaCoutsByDt(BigDecimal gtdte) throws Exception;
+	
 	public double queryDtlQty(ZPLDTLVO vo) throws Exception;
 
 	public List<ZPLHDRVO> queryZplhdr(ZPLHDRVO vo) throws Exception;
+
+	public int getZsadtlCouts(ZSADTLVO vo) throws Exception;
+
+	public List<ZSAHDRVO> queryZsahdrByPar(ZSAHDRVO vo) throws Exception;
 	
 	public List<ZPLHDRVO> queryZplhdrByPar(Map vo) throws Exception;
 
