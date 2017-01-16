@@ -23,6 +23,7 @@ import com.eclink.hgpj.resource.vo.ITMRVAVO;
 import com.eclink.hgpj.resource.vo.ITMSITVO;
 import com.eclink.hgpj.resource.vo.ZITMEXTVO;
 import com.eclink.hgpj.util.QRcoderUtil;
+import com.eclink.hgpj.util.Utils;
 import com.mysql.fabric.Response;
 import com.opensymphony.xwork2.ActionContext;
 
@@ -47,13 +48,13 @@ public class MaterialTagAction extends BaseAction {
 	private String umstt9 = "";//库存单位
 	private String fblcft9 = "";//批号
 	private String fweight = "";//净重
-	private String fTotalweight = "";//毛重
+	private String outer_weight = "";//包材重
 	private String fdate = "";//日期
 	private String fproducter = "";//厂商
-	private String fTotalweight_unit = "kg";//毛重单位
+	private String outer_weight_unit = "kg";//包材重单位
 	private String fweight_unit = "g";//单重单位
 
-	
+
 	public XADATAService getXadataService() {
 		return xadataService;
 	}
@@ -77,8 +78,8 @@ public class MaterialTagAction extends BaseAction {
 	public void setItnot9(String itnot9) {
 		this.itnot9 = itnot9;
 	}
-	
-	
+
+
 	public String getFordrji() {
 		return fordrji;
 	}
@@ -137,12 +138,22 @@ public class MaterialTagAction extends BaseAction {
 		this.fweight = fweight;
 	}
 
-	public String getFTotalweight() {
-		return fTotalweight;
+
+
+	public String getOuter_weight() {
+		return outer_weight;
 	}
 
-	public void setFTotalweight(String fTotalweight) {
-		this.fTotalweight = fTotalweight;
+	public void setOuter_weight(String outer_weight) {
+		this.outer_weight = outer_weight;
+	}
+
+	public String getOuter_weight_unit() {
+		return outer_weight_unit;
+	}
+
+	public void setOuter_weight_unit(String outer_weight_unit) {
+		this.outer_weight_unit = outer_weight_unit;
 	}
 
 	public String getFdate() {
@@ -161,13 +172,6 @@ public class MaterialTagAction extends BaseAction {
 		this.fproducter = fproducter;
 	}
 
-	public String getfTotalweight_unit() {
-		return fTotalweight_unit;
-	}
-
-	public void setfTotalweight_unit(String fTotalweight_unit) {
-		this.fTotalweight_unit = fTotalweight_unit;
-	}
 
 	public String getFweight_unit() {
 		return fweight_unit;
@@ -188,21 +192,21 @@ public class MaterialTagAction extends BaseAction {
 		itmsitvo.setItnot9(itnot9);
 		List<ITMSITVO> itmsitList = this.xadataService.queryItmsitByItnot9Like(itmsitvo);
 		ActionContext.getContext().getValueStack().set("itmsitList", itmsitList);
-		
+		fdate = Utils.formateDate(null, "yyyy-MM-dd");
 		return "toMaterialTag";
 	}
-	
+
 	public String searchMaterialTag() throws Exception {
 		ITMSITVO itmsitvo = new ITMSITVO();
 		itmsitvo.setHouse((String) getSession().getAttribute("stid"));
 		itmsitvo.setItnot9(itnot9);
 		List<ITMSITVO> itmsitList = this.xadataService.queryItmsitByItnot9Like(itmsitvo);
 		ActionContext.getContext().getValueStack().set("itmsitList", itmsitList);
-		
+
 		return "searchMaterialTag";
 	}
-	
-	
+
+
 	/**
 	 * 打印物料标签
 	 * @return
@@ -210,71 +214,43 @@ public class MaterialTagAction extends BaseAction {
 	 */
 	public String toPrintMaterialTag() throws Exception {
 		try{
-			fordrji = 	new String(fordrji.getBytes(
-					"ISO8859-1"), "utf-8");
-			fds40ji = 	new String(fds40ji.getBytes(
-					"ISO8859-1"), "utf-8");
-			sdesc = 	new String(sdesc.getBytes(
-					"ISO8859-1"), "utf-8");
-			fcout = new String(fcout.getBytes(
-					"ISO8859-1"), "utf-8");
-			umstt9 =  new String(umstt9.getBytes(
-					"ISO8859-1"), "utf-8");
-			fblcft9 = new String(fblcft9.getBytes(
-					"ISO8859-1"), "utf-8");
-			fweight = new String(fweight.getBytes(
-					"ISO8859-1"), "utf-8");
-			fTotalweight = new String(fTotalweight.getBytes(
-					"ISO8859-1"), "utf-8");
-			fdate = new String(fdate.getBytes(
-					"ISO8859-1"), "utf-8");
-			fproducter = new String(fproducter.getBytes(
-					"ISO8859-1"), "utf-8");
-			fweight_unit = new String(fweight_unit.getBytes(
-					"ISO8859-1"), "utf-8");
-			fTotalweight_unit = new String(fTotalweight_unit.getBytes(
-					"ISO8859-1"), "utf-8");
-			
 			String result = "*M"+fordrji;
 			result += "*B"+fblcft9;
 			result+="*Q"+fcout;
-			
+
 			String encoderQRCoder = QRcoderUtil.encoderQRCoder(result, ServletActionContext.getContext().getSession().get("username").toString(),getSession().getServletContext().getRealPath("/"));
 			System.out.println("encoderQRCoder is "+encoderQRCoder);
-			
-			
+
+
 			HttpServletRequest request = ServletActionContext.getRequest();
 			String path = request.getContextPath(); 
 			String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 
-
-			ServletActionContext.getRequest().setAttribute("fordrji", fordrji);
-			ServletActionContext.getRequest().setAttribute("fds40ji", fds40ji);
-			ServletActionContext.getRequest().setAttribute("sdesc", sdesc);
-			ServletActionContext.getRequest().setAttribute("fcout", fcout);
-			ServletActionContext.getRequest().setAttribute("umstt9", umstt9);
-			ServletActionContext.getRequest().setAttribute("fblcft9", fblcft9);
-			ServletActionContext.getRequest().setAttribute("fweight", fweight);
-			ServletActionContext.getRequest().setAttribute("fTotalweight", fTotalweight);
-			ServletActionContext.getRequest().setAttribute("fdate", fdate);
-			ServletActionContext.getRequest().setAttribute("fproducter", fproducter);
 			ServletActionContext.getRequest().setAttribute("qrcodeurl", basePath+"/"+encoderQRCoder);
-			ServletActionContext.getRequest().setAttribute("fTotalweight_unit", fTotalweight_unit);
-			ServletActionContext.getRequest().setAttribute("fweight_unit", fweight_unit);
+			double totalweight = Double.parseDouble(fweight)*Double.parseDouble(fcout);
+			if(!"g".equals(fweight_unit)){//单重单位
+				totalweight *=1000;
+			}
+			if(!"g".equals(outer_weight_unit)){//包材单位
+				totalweight +=Double.parseDouble(outer_weight)*1000;
+			}else{
+				totalweight +=Double.parseDouble(outer_weight);
+			}
+			ServletActionContext.getRequest().setAttribute("totalweight", totalweight);
 			return "toPrintMaterialTag";
 		}catch (Throwable e) {
 			e.printStackTrace();
 			return ERROR;
 		}
-		
+
 	}
 
 	public void getDetail() throws Exception{
 		try {
 			if(itnot9 == null|| itnot9.equals("")){
-				
+
 			}else{
-//				{"ldesc":"<%=ldesc.trim() %>","guige":"<%=guige.trim() %>","kcdw":"<%=kcdw.trim() %>","blcft9":"<%=BLCFT9.trim() %>"}
+				//				{"ldesc":"<%=ldesc.trim() %>","guige":"<%=guige.trim() %>","kcdw":"<%=kcdw.trim() %>","blcft9":"<%=BLCFT9.trim() %>"}
 				JSONObject jo = new JSONObject();
 				ITMSITVO itmsitvo = new ITMSITVO();
 				itmsitvo.setHouse((String) getSession().getAttribute("stid"));
@@ -285,12 +261,11 @@ public class MaterialTagAction extends BaseAction {
 					ZITMEXTVO extVo = new ZITMEXTVO();
 					ITMSITVO itmsitvot = itrvts.get(0);
 					jo.put("blcft9", itmsitvot.getBlcft9().trim());//批次控制标识
-					jo.put("umstt9", itmsitvot.getUmstt9().trim());
+					jo.put("umstt9", itmsitvot.getUmstt9().trim());//库存单位
 					extVo.setItnbr(itnot9);
 					extVo.setStid((String) getSession().getAttribute("stid"));
 					extVo.setItrv(itmsitvot.getItrvt9().trim());
 					List<ZITMEXTVO> extLists = this.zitmextService.queryItemExt(extVo);
-					String ldesc = "";
 					ITMRVAVO itmrVo = new ITMRVAVO();
 					itmrVo.setItnbr(itnot9);
 					itmrVo.setHouse((String) getSession().getAttribute("stid"));
@@ -298,24 +273,22 @@ public class MaterialTagAction extends BaseAction {
 					List<ITMRVAVO> itmrLists = this.xadataService.queryItmrva(itmrVo);
 					if(itmrLists!=null && itmrLists.size()>0){
 						ITMRVAVO itmrvavo = itmrLists.get(0);
-						jo.put("single", itmrvavo.getWeght());
-						jo.put("single_unit", itmrvavo.getB2cqcd().trim());
-					}
-					if(extLists!=null && extLists.size()>0 && extLists.get(0).getLdesc().trim().length()>0){
-						ldesc=extLists.get(0).getLdesc();
-						jo.put("ldesc", ldesc.trim());
-						jo.put("sdesc", extLists.get(0).getSdesc().trim());
-					}else{
+						jo.put("single", itmrvavo.getWeght());//单重
 
-						if(itmrLists!=null && itmrLists.size()>0){
-							ldesc=itmrLists.get(0).getItdsc();
-							jo.put("ldesc", ldesc.trim());
-							jo.put("sdesc", "");
+						String B2CQCD = itmrvavo.getB2cqcd().trim();
+						if("KG".equals(B2CQCD)||"kg".equals(B2CQCD)){
+							B2CQCD = "kg";
 						}else{
-							jo.put("ldesc", "");
-							jo.put("sdesc", "");
+							B2CQCD = "g";
 						}
-
+						jo.put("single_unit", B2CQCD);//单重单位
+					}
+					if(extLists!=null && extLists.size()>0){
+						jo.put("ldesc", extLists.get(0).getLdesc().trim());
+						jo.put("sdesc", extLists.get(0).getSdesc().trim());
+					}
+					if(itmrLists!=null && itmrLists.size()>0 && jo.getString("ldesc").trim().equals("")){
+						jo.put("ldesc", itmrLists.get(0).getItdsc().trim());
 					}
 				}
 				HttpServletResponse response = getResponse();

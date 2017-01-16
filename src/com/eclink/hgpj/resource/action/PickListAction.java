@@ -14,6 +14,7 @@ import net.sf.json.JSON;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
+import org.apache.batik.bridge.TextUtilities;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
 
@@ -206,7 +207,7 @@ public class PickListAction extends BaseAction {
 						map.put("ipdno",new String[]{ipdno});
 					}
 				}
-				
+
 				if(startDate!=null && startDate.length()>0){
 					map.put("startDate", BigDecimal.valueOf(Long.valueOf("1"+Utils.formateDate(sdf.parse(startDate), "yyMMdd"))));
 				}
@@ -308,7 +309,7 @@ public class PickListAction extends BaseAction {
 						String path = request.getContextPath(); 
 						String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 						resultMap.put("qrcodeurl", basePath+"/"+encoderQRCoder);
-						
+
 						resultMap.put("printDate", Utils.formateDate(null, "yyyy/MM/dd"));
 
 						ZBMSCTLVO zbmsctl = new ZBMSCTLVO();
@@ -317,19 +318,19 @@ public class PickListAction extends BaseAction {
 						if(bmsctlList!=null && bmsctlList.size()>0){
 							resultMap.put("nmchs", bmsctlList.get(0).getNmchs());
 						}
-						
+
 						List<ZIPDTLVO> zipdtlvos;
 						if("1".equals(input2)){//分仓打印
 							ZIPDTLVO zipdtlPar = new ZIPDTLVO();
 							zipdtlPar.setIpdno(jsonArray.getString(i));
 							zipdtlvos = ziphdrService.queryItemsWsubOrder(zipdtlPar);
-							
+
 						}else{
 							ZIPDTLVO zipdtlPar = new ZIPDTLVO();
 							zipdtlPar.setIpdno(jsonArray.getString(i));
 							zipdtlvos = ziphdrService.queryItems(zipdtlPar);
 						}
-						
+
 						List<Map<String, String>> items = new ArrayList<Map<String,String>>();
 						for(ZIPDTLVO zipdtl:zipdtlvos){
 							Map<String, String> map = new HashMap<String, String>();
@@ -361,12 +362,17 @@ public class PickListAction extends BaseAction {
 								map.put("lbhno", slqntyvo.getLbhno());
 								map.put("lqnty", slqntyvo.getLqnty().doubleValue()+"");
 							}
-							
+
 
 							items.add(map);
 						}
 						resultMap.put("items", items);
 						results.add(resultMap);
+						if("1".equals(input2)){
+							System.out.println(results.hashCode());
+							results = secProc(results);
+							System.out.println(results.hashCode());
+						}
 					}
 				}else{//打印分仓标签
 
@@ -410,4 +416,72 @@ public class PickListAction extends BaseAction {
 		}
 		return result;
 	}
+
+	/**
+	 * 打印领料单进行分仓处理
+	 * @param results   表单集合
+	 */
+	private List<Map<String, Object>> secProc(List<Map<String, Object>> results) {
+		List<Map<String, Object>> outResults = new ArrayList<Map<String,Object>>();//输出表单集合
+
+		for(Map<String, Object> result:results){//表单
+
+			boolean newPage = true;
+			
+			Map<String, Object> outresult = new HashMap<String, Object>();//输出表单
+
+			List<Map<String, String>> items = (List<Map<String, String>>) result.get("items");//物料集合
+
+			List<Map<String, String>> outItems = new ArrayList<Map<String,String>>();//输出物料集合
+
+			for(Map<String, String> item:items){//物料
+
+				Map<String, String> outItem = new HashMap<String, String>();//输出物料
+				outItem.put("seqnm", item.get("seqnm"));
+				outItem.put("citem", item.get("citem"));
+				outItem.put("uugam2", item.get("uugam2"));
+				outItem.put("cdesc", item.get("cdesc"));
+				outItem.put("shqty", item.get("shqty"));
+				outItem.put("whsub", item.get("whsub"));
+				outItem.put("llocn", item.get("llocn"));
+				outItem.put("lbhno", item.get("lbhno"));
+				outItem.put("lqnty", item.get("lqnty"));
+
+				String whsub = item.get("whsub").trim();
+				if(newPage || outResults.size() == 0 || !whsub.equals(((List<Map<String, String>>)outresult.get("items")).get(0).get("whsub").trim())){
+					newPage = false;
+
+					outItems = new  ArrayList<Map<String,String>>();
+
+					outresult = new HashMap<String, Object>();
+					outresult.put("ipdno", result.get("ipdno"));
+					outresult.put("ordno", result.get("ordno"));
+					outresult.put("dept", result.get("dept"));
+					outresult.put("fitem", result.get("fitem"));
+					outresult.put("iptyp", result.get("iptyp"));
+					outresult.put("productQuantity", result.get("productQuantity"));
+					outresult.put("fdesc", result.get("fdesc"));
+					outresult.put("qrcodeurl", result.get("qrcodeurl"));
+					outresult.put("printDate", result.get("printDate"));
+					outresult.put("nmchs",result.get("nmchs"));
+					outresult.put("items", outItems);
+					outResults.add(outresult);
+				}
+				outItems.add(outItem);
+			}
+		}
+		return outResults;
+	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
