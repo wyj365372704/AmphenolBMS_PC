@@ -29,6 +29,8 @@ public interface ZTWHDRService {
 	public void insertZtwhdr(ZTWHDRVO vo) throws Exception;
 	
 	public ZTWHDRVO queryZtwhdr(ZTWHDRVO vo) throws Exception;
+
+	public ZTWHDRVO queryZtwhdr(ZTWHDRVO vo,String ztwdtlLstat) throws Exception;
 	
 	public List<ZTWDTLVO> queryZtwdtl(ZTWDTLVO vo) throws Exception;
 	

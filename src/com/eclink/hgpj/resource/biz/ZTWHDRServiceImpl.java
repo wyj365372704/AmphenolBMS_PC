@@ -75,12 +75,41 @@ public class ZTWHDRServiceImpl implements ZTWHDRService {
 			ZTWHDRVO retvo = lists.get(0);
 			ZTWDTLVO pvo = new ZTWDTLVO();
 			pvo.setTwdno(vo.getTwdno());
-			List<ZTWDTLVO> itemList = this.ztwhdrDao.queryZtwdtl(pvo);
+			List<ZTWDTLVO> itemList = queryZtwdtl(pvo);
 			if(itemList!=null && itemList.size()>0){
 				for(int i=0;i<itemList.size();i++){
 					ZTWDTLVO item = itemList.get(i);
-					
 					ZTWBCHVO bvo = new ZTWBCHVO();
+					
+					bvo.setTwdno(vo.getTwdno());
+					bvo.setTwdln(item.getTwdln());
+					bvo.setTwdbn(BigDecimal.valueOf(1));
+					List<ZTWBCHVO> subItemList = this.ztwhdrDao.queryZtwbch(bvo);
+					if(subItemList!=null && subItemList.size()>0){
+						item.setItemList(subItemList);
+					}
+				}
+				retvo.setItemList(itemList);
+			}
+			return retvo;
+		}
+		return null;
+	}
+	
+	@Override
+	public ZTWHDRVO queryZtwhdr(ZTWHDRVO vo,String ztwdtlLstat) throws Exception {
+		List<ZTWHDRVO> lists = this.ztwhdrDao.queryZtwhdr(vo);
+		if(lists!=null && lists.size()>0){
+			ZTWHDRVO retvo = lists.get(0);
+			ZTWDTLVO pvo = new ZTWDTLVO();
+			pvo.setTwdno(vo.getTwdno());
+			pvo.setLstat(ztwdtlLstat);
+			List<ZTWDTLVO> itemList = queryZtwdtl(pvo);
+			if(itemList!=null && itemList.size()>0){
+				for(int i=0;i<itemList.size();i++){
+					ZTWDTLVO item = itemList.get(i);
+					ZTWBCHVO bvo = new ZTWBCHVO();
+
 					bvo.setTwdno(vo.getTwdno());
 					bvo.setTwdln(item.getTwdln());
 					bvo.setTwdbn(BigDecimal.valueOf(1));

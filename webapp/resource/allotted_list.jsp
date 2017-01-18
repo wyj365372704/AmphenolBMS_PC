@@ -95,7 +95,7 @@
 						<th>调拨单号-项次</th>
 						<th>物料</th>
 						<th>描述</th>
-						<th>数量</th>
+						<th>计划数量</th>
 						<th>状态</th>
 						<th>是否打印</th>
 						<th>单位</th>
@@ -119,7 +119,7 @@
 							<td><s:property value="#it.twdno" /></td>
 							<td><s:property value="#it.itnbr" /></td>
 							<td><s:property value="#it.itdsc" /></td>
-							<td><s:property value="#it.actqt" /></td>
+							<td><s:property value="#it.plnqt" /></td>
 							<td><s:if test="#it.lstat == '10'">已创建</s:if> <s:elseif
 									test="#it.lstat == '50'">已完成</s:elseif> <s:elseif
 									test="#it.lstat == '60'">已关闭</s:elseif></td>

@@ -108,12 +108,18 @@
 	</select>
 
 	<select id="queryZtwdtl" resultClass="ZTWDTLVO" parameterClass="ZTWDTLVO">
-		<![CDATA[ select * from ZTWDTL   where TWDNO=#twdno#  AND LSTAT='10' 
+		<![CDATA[ select * from ZTWDTL   where TWDNO=#twdno#
 		]]>
 		<dynamic>
 			<isNotEmpty prepend="AND" property="twdln">
 				TWDLN = #twdln#
 			</isNotEmpty>
+			<isNotEmpty prepend="AND" property="lstat">
+				LSTAT in ($lstat$)
+			</isNotEmpty>
+			<isEmpty>
+				LSTAT = '10'
+			</isEmpty>
 		</dynamic>
 	</select>
 

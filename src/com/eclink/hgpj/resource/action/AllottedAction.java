@@ -282,7 +282,7 @@ public class AllottedAction extends BaseAction {
 	public String toPrintAllotted() throws Exception {
 		try {
 			if(ztw!=null){
-				ztw = ztwhdrService.queryZtwhdr(ztw);
+				ztw = ztwhdrService.queryZtwhdr(ztw,"10,50,60");
 
 				for(ZTWDTLVO ztwdtlvo:ztw.getItemList()){
 					ITMRVAVO itmrVo = new ITMRVAVO();
