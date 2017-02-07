@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -169,7 +170,7 @@ public class ResourceAction extends BaseAction {
 	private ZJOBMCHService zjobmchService;
 
 	private ZJBTRNService zjbtrnService;
-	
+
 	private ZPLHDRService zplhdrService;
 
 	private String data;
@@ -205,7 +206,7 @@ public class ResourceAction extends BaseAction {
 	private String mate;
 
 	private String mater;
-	
+
 	private String pldln;
 
 	private String branch;
@@ -257,13 +258,13 @@ public class ResourceAction extends BaseAction {
 	private String job_number;
 
 	private String ia_quantity;
-	
+
 	private String pldno;
-	
+
 	private String boxnm;
-	
+
 	private String boxes;
-	
+
 	/**
 	 * 菜单资源树
 	 */
@@ -1514,7 +1515,7 @@ public class ResourceAction extends BaseAction {
 				DataSourceUtil.setDataSource(dbconfigurl, idx);
 
 				List<Map> list = new ArrayList<Map>();
-				
+
 				Map map = new HashMap();
 				map.put("grnno", delive_code);
 				map.put("lstat", "40");
@@ -1562,11 +1563,11 @@ public class ResourceAction extends BaseAction {
 
 			}
 			data=jo.toString();
-			
+
 		}catch (Exception e) {e.printStackTrace();
 		jo.put("code", 4);
 		jo.put("desc", "other exception");
-		
+
 		log.error("get env error.",e);
 		return "todata";
 		}finally{
@@ -1784,8 +1785,8 @@ public class ResourceAction extends BaseAction {
 					}
 					jo.put("mate_desc", ldesc);
 					jo.put("location", itmVo.getGrloc());
-					
-					
+
+
 					/*ZITEMBXVO bxVO = new ZITEMBXVO();
 					bxVO.setHouse(itmVo.getHouse().trim());
 					bxVO.setItnbr(itmVo.getItnbr().trim());
@@ -1807,8 +1808,8 @@ public class ResourceAction extends BaseAction {
 						}
 
 					}*/
-					
-					
+
+
 					if(itmVo.getBlcf()!=null && "1".equals(itmVo.getBlcf())){
 						ZGRNBCHVO bchvo = new ZGRNBCHVO();
 						bchvo.setShpno(itmVo.getShpno());
@@ -4158,8 +4159,8 @@ public class ResourceAction extends BaseAction {
 								map.put("turna", vo.getTurna());
 								map.put("turnn", vo.getTurnn());
 								map.put("turnc", vo.getTurnc());
-								map.put("refno", vo.getIpdno().trim().substring(2,vo.getIpdno().length()));
-								
+								map.put("refno", vo.getIpdno().trim().substring(2,vo.getIpdno().trim().length()));
+
 								ZIPHSTVO hvo = new ZIPHSTVO();
 								hvo.setIpdno(pick_number);
 								hvo.setIpdln(BigDecimal.valueOf(Long.valueOf(pick_line)));
@@ -4361,7 +4362,7 @@ public class ResourceAction extends BaseAction {
 						map.put("turna", vo.getTurna());
 						map.put("turnn", vo.getTurnn());
 						map.put("turnc", vo.getTurnc());
-						map.put("refno", vo.getIpdno().trim().substring(2,vo.getIpdno().length()));
+						map.put("refno", vo.getIpdno().trim().substring(2,vo.getIpdno().trim().length()));
 
 						ZIPHSTVO hvo = new ZIPHSTVO();
 						hvo.setIpdno(pick_number);
@@ -4606,8 +4607,8 @@ public class ResourceAction extends BaseAction {
 							data=jo.toString();
 							return "todata";
 						}
-						
-						
+
+
 						Map map0 = new HashMap();
 						map0.put("warehouse", warehouse);
 						map0.put("shard", shard);
@@ -5703,12 +5704,12 @@ public class ResourceAction extends BaseAction {
 					}
 
 					//					原方案,ZDEPT.DEPT 关联查询出ZDEPT.DNAME
-					zdeptParMap.put("dept", zmojobvo.getDptno());
+					/*zdeptParMap.put("dept", zmojobvo.getDptno());
 					List<ZDEPTVO> zdeptList = zdeptService.queryZdeptByMap(zdeptParMap);
 					if(zdeptList.size()>0){
 						jo.put("department", zdeptList.get(0).getDname());
-					}
-					//						jo.put("department", zmojobvo.getDptno());
+					}*/
+					jo.put("department", zmojobvo.getDptno());
 
 					String createDate = "";
 					if(zmojobvo.getCrdt()!=null){
@@ -7051,7 +7052,7 @@ public class ResourceAction extends BaseAction {
 				zplhdr.setHouse(warehouse);
 				zplhdr.setPldno(pldno);
 				List<ZPLHDRVO> results = this.zplhdrService.queryZplhdr(zplhdr);
-				
+
 				if(results!=null && results.size()>0){
 					ZPLHDRVO vo = results.get(0);
 					if(vo.getOstat()!=null && vo.getOstat().trim().equals("10")){
@@ -7060,9 +7061,10 @@ public class ResourceAction extends BaseAction {
 						jo.put("department", vo.getPldp1());
 						String etdate=(vo.getEtdate()+19000000)+"";
 						jo.put("expected_data", etdate.substring(0, 4)+"-"+etdate.substring(4, 6)+"-"+etdate.substring(6, 8)+" ");
-						
+
 						ZPLDTLVO zpldtl = new ZPLDTLVO();
 						zpldtl.setPldno(pldno);
+						zpldtl.setFpost("0");
 						List<ZPLDTLVO> dataList = this.zplhdrService.queryReceipt(zpldtl);
 						if(dataList!=null && dataList.size()>0){
 							List<Map> retList = new ArrayList<Map>();
@@ -7070,8 +7072,8 @@ public class ResourceAction extends BaseAction {
 								ZPLDTLVO tdata = dataList.get(i);
 								Map datam = new HashMap();
 								datam.put("pldln", tdata.getPldln().longValue());
-								datam.put("c6cvnb ", tdata.getC6cvnb());
-								datam.put("cdfcnb ", tdata.getCdfcnb()==null?0:tdata.getCdfcnb().longValue());
+								datam.put("c6cvnb", tdata.getC6cvnb());
+								datam.put("cdfcnb", tdata.getCdfcnb()==null?0:tdata.getCdfcnb().longValue());
 								datam.put("mater", tdata.getItnbr());
 								datam.put("shard", tdata.getPlsub());
 								datam.put("location", tdata.getPlloc());
@@ -7120,9 +7122,9 @@ public class ResourceAction extends BaseAction {
 						jo.put("code", 5);
 						jo.put("desc", "该出货通知单不存在");
 					}
-					
 
-					
+
+
 					jo.put("code", 1);
 					jo.put("desc", "ok");
 				}else{
@@ -7143,7 +7145,7 @@ public class ResourceAction extends BaseAction {
 		data=jo.toString();
 		return "todata";
 	}
-	
+
 	public String sale_shipment_query_item()  throws Exception {
 		JSONObject jo = new JSONObject();
 		try {
@@ -7165,7 +7167,7 @@ public class ResourceAction extends BaseAction {
 				DataSourceUtil.setDataSource(dbconfigurl, idx);
 				String stid =Utils.getDataSourceS(dbconfigurl, "STID"+idx);
 
-				
+
 				ZPLDTLVO zpldtl = new ZPLDTLVO();
 				zpldtl.setPldno(pldno);
 				zpldtl.setPldln(BigDecimal.valueOf(Long.valueOf(pldln)) );
@@ -7182,14 +7184,14 @@ public class ResourceAction extends BaseAction {
 						jo.put("boxln", boxvo.getBoxln()==null?0:boxvo.getBoxln().longValue());
 						jo.put("boxnm", boxvo.getBoxnm());
 						jo.put("boxes", boxvo.getBoxes()==null?0:boxvo.getBoxes().longValue());
-//						Map map = new HashMap();
-//						map.put("warehouse", warehouse);
-//						map.put("stid", stid);
-////						map.put("itnbr", mater);
-//						List<SLQNTYVO> resultsls = this.xadataService.querySlqnty(map);
-//						if(resultsls!=null && ){
-//							
-//						}
+						//						Map map = new HashMap();
+						//						map.put("warehouse", warehouse);
+						//						map.put("stid", stid);
+						////						map.put("itnbr", mater);
+						//						List<SLQNTYVO> resultsls = this.xadataService.querySlqnty(map);
+						//						if(resultsls!=null && ){
+						//							
+						//						}
 						ZWHSUBVO subvo = new ZWHSUBVO();
 						subvo.setHouse(warehouse);
 						List<ZWHSUBVO> zwhsubList = this.zwhsubService.queryZwhsub(subvo);
@@ -7204,14 +7206,14 @@ public class ResourceAction extends BaseAction {
 								map.add(tm);
 							}
 							jo.put("shard_list", map);
-						
+
 						}
 						Map map = new HashMap();
 						map.put("warehouse", warehouse);
 						map.put("stid", stid);
 						map.put("shard", shard);
 						map.put("location", location);
-//						map.put("lbhno", branch);
+						//						map.put("lbhno", branch);
 						map.put("itnbr", mater );
 						List<SLQNTYVO> slqntyList = this.xadataService.querySlqnty(map);
 						if(slqntyList!=null && slqntyList.size()>0){
@@ -7229,12 +7231,12 @@ public class ResourceAction extends BaseAction {
 							}
 							jo.put("mater_list", slqntyrets);
 						}
-						
+
 					}else{
 						jo.put("code", 5);
 						jo.put("desc", "该出货通知单明细不存在");
 					}
-					
+
 					jo.put("code", 1);
 					jo.put("desc", "ok");
 				}else{
@@ -7276,7 +7278,7 @@ public class ResourceAction extends BaseAction {
 				DataSourceUtil.setDataSource(dbconfigurl, idx);
 				String stid =Utils.getDataSourceS(dbconfigurl, "STID"+idx);
 
-				
+
 				ZPLDTLVO zpldtl = new ZPLDTLVO();
 				zpldtl.setPldno(pldno);
 				zpldtl.setPldln(BigDecimal.valueOf(Long.valueOf(pldln)) );
@@ -7297,7 +7299,7 @@ public class ResourceAction extends BaseAction {
 		data=jo.toString();
 		return "todata";
 	}
-	public String sale_shipment_commit()  throws Exception {
+	public String sale_shipment_ensure()  throws Exception {
 		JSONObject jo = new JSONObject();
 		try {
 
@@ -7335,7 +7337,7 @@ public class ResourceAction extends BaseAction {
 				ZPLHDRVO zplhdrret= zplhdrrets.get(0);
 				String now1 = Utils.formateDate(null, "yyMMdd");
 				String now2 = Utils.formateDate(null, "HHmmss");
-				
+
 				String hdrno = "";
 				ZSAHDRVO zsahdr = new ZSAHDRVO();
 				zsahdr.setPldno(pldno);
@@ -7383,7 +7385,7 @@ public class ResourceAction extends BaseAction {
 				}else{
 					hdrno=zsahdrrets.get(0).getSadno();
 				}
-				
+
 
 				Map zsadtlMap = new HashMap();
 				zsadtlMap.put("zsahdr", zsahdrvo);
@@ -7442,7 +7444,7 @@ public class ResourceAction extends BaseAction {
 					zsadtlvos.add(zsadtlvo);
 
 					zsadtlMap.put("zsadtls", zsadtlvos);
-					
+
 					ZPLBOXVO zplbox = new ZPLBOXVO();
 					zplbox.setPldno(pldno);
 					zplbox.setPldln(BigDecimal.valueOf(Long.valueOf(pldln)) );
@@ -7501,7 +7503,7 @@ public class ResourceAction extends BaseAction {
 					}
 					this.zplhdrService.insertZsahdrs(zsadtlMap);
 					//XA过账部分
-					
+
 					jo.put("code", 1);
 					jo.put("desc", "ok");
 				}else{
@@ -7522,7 +7524,162 @@ public class ResourceAction extends BaseAction {
 		data=jo.toString();
 		return "todata";
 	}
+
 	
+	public String sale_shipment_commit()  throws Exception {
+		JSONObject jo = new JSONObject();
+		try {
+
+			if(username==null || username.trim().equals("")){
+				jo.put("code", 2);
+				jo.put("desc", "not have username");
+			}else if(env==null || env.trim().equals("")){
+
+				jo.put("code", 3);
+				jo.put("desc", "env is needed");
+			}else{
+				int idx = (Integer)this.getSession().getServletContext().getAttribute(env);
+				String dbconfigurl=(String)this.getSession().getServletContext().getAttribute("dbconfigurl");
+				if(dbconfigurl==null || dbconfigurl.trim().equals("")){
+					dbconfigurl=this.getSession().getServletContext().getRealPath("/WEB-INF")+ "/classes/com/eclink/hgpj/util/dbconfig.properties";
+					this.getSession().getServletContext().setAttribute("dbconfigurl",dbconfigurl);
+				}
+				DataSourceUtil.setDataSource(dbconfigurl, idx);
+				String stid =Utils.getDataSourceS(dbconfigurl, "STID"+idx);
+				String lib = Utils.getDataSourceS(dbconfigurl, "AMTLIB"+idx);
+				String lib1 = Utils.getDataSourceS(dbconfigurl, "AMPHLIB"+idx);
+//				String userDept="";
+//				List<ZBMSU02VO> dps = this.auserService.queryDeptByUserName(username);
+//				if(dps!=null && dps.size()>0){
+//					for(ZBMSU02VO dp:dps){
+//						if(dp.getDflt()!=null && "1".equals(dp.getDflt().trim())){
+//							//							vo.setPlant(dp.getPlant());
+//							userDept = (dp.getDept());
+//						}
+//					}
+//				} 
+				ZPLHDRVO zplhdr = new ZPLHDRVO();
+				zplhdr.setPldno(pldno);
+				
+				List<ZPLHDRVO> zplhdrrets = this.zplhdrService.queryZplhdr(zplhdr);
+				ZPLHDRVO zplhdrret= zplhdrrets.get(0);
+				String now1 = Utils.formateDate(null, "yyMMdd");
+				String now2 = Utils.formateDate(null, "HHmmss");
+				
+				
+				ZPLDTLVO zpldtl = new ZPLDTLVO();
+				zpldtl.setPldno(pldno);
+				zpldtl.setFpost("8");
+				List<String> zplhdrretss = this.zplhdrService.queryC6cvnb(zpldtl);
+				if(zplhdrretss!=null && zplhdrretss.size()>0){//每个销售订单做一个Ship Number,同一个GROUP ID
+					List<Map> plist = new ArrayList<Map>();
+					for(int j=0;j<zplhdrretss.size();j++){
+						String c6cvnb = zplhdrretss.get(j);
+						Map pmap = new HashMap();
+						Map osaarep = new HashMap();
+						osaarep.put("company", Long.valueOf(zplhdrret.getPlant()));
+						osaarep.put("house", zplhdrret.getHouse());
+						osaarep.put("orderno",c6cvnb);
+						pmap.put("osaarep", osaarep);
+						zpldtl.setC6cvnb(c6cvnb);
+						List<ZPLDTLVO> results = this.zplhdrService.queryReceipt(zpldtl);
+						if(results!=null && results.size()>0){
+							List<Map> osabccp = new ArrayList<Map>();
+							for(int i=0;i<results.size();i++){
+								ZPLDTLVO vo = results.get(i);
+								ZSADTLVO zsapvo = new ZSADTLVO();
+								
+								zsapvo.setPldno(vo.getPldno());
+								zsapvo.setPldln(vo.getPldln());
+								List<ZSADTLVO> zsadtlrets = this.zplhdrService.queryZsadtls(zsapvo);
+								if(zsadtlrets!=null && zsadtlrets.size()>0){
+									ZSADTLVO zsadtlret = zsadtlrets.get(0); 
+									Map zsapmap = new HashMap();
+									zsapmap.put("myx2nb", i+1);
+									zsapmap.put("mycvnb", zsadtlret.getC6cvnb());
+									zsapmap.put("myfcnb", zsadtlret.getCdfcnb());
+									zsapmap.put("mydrnb", zsadtlret.getAddrnb());
+									zsapmap.put("myaitx", zsadtlret.getItnbr());
+									zsapmap.put("myaayn", "1");
+									zsapmap.put("myarqt", zsadtlret.getSqqty2());
+									Map mbadrep = new HashMap();
+									mbadrep.put("cono", vo.getC6aenb()+"");
+									mbadrep.put("ortp", vo.getC6dccd());
+									mbadrep.put("ordnc", vo.getC6cvnb());
+									mbadrep.put("itmsq", vo.getCdfcnb().longValue());
+									String mbadrepstr = this.xadataService.queryMBADREPM(mbadrep);
+									if(mbadrepstr!=null && mbadrepstr.trim().length()>0){
+										String[] mbadreps = mbadrepstr.split("-");
+										zsapmap.put("myaafx", Float.valueOf(mbadreps[3]));
+									}else{
+										zsapmap.put("myaafx", 0);
+									}
+									
+									ZSABCHVO zsabch = new ZSABCHVO();
+									zsabch.setPldno(vo.getPldno());
+									zsabch.setPldln(vo.getPldln());
+									zsabch.setSadno(zsadtlret.getSadno());
+									zsabch.setSadln(zsabch.getSadln());
+									List<ZSABCHVO> zsabchrets = this.zplhdrService.queryZsabchs(zsabch);
+									if(zsabchrets!=null && zsabchrets.size()>0){
+										List<Map> zsabchs = new ArrayList<Map>();
+										for(int k=0;k<zsabchrets.size();k++){
+											ZSABCHVO zsabcht = zsabchrets.get(k);
+											Map zsabchmap = new HashMap();
+											zsabchmap.put("aaaasz", zsabcht.getAdaasz());
+											zsabchmap.put("aadqnb", k+1);
+											zsabchmap.put("aadccd", "1");
+											zsabchmap.put("aacvnb", zsabcht.getC6cvnb());
+											zsabchmap.put("aafcnb", zsabcht.getCdfcnb());
+											zsabchmap.put("aadrnb", zsabcht.getAddrnb());
+											zsabchmap.put("aacktx", zsabcht.getSaloc2());
+											zsabchmap.put("aacrcd", zsabcht.getSabch2());
+											zsabchmap.put("aaf3va", zsabcht.getSaqty2());
+											
+											zsabchs.add(zsabchmap);
+										}
+										zsapmap.put("osaccpp", zsabchs);
+									}
+									
+									osabccp.add(zsapmap);
+								}
+								
+							}
+							pmap.put("osabccp", osabccp);
+							plist.add(pmap);
+							
+						}else{
+							jo.put("code", 5);
+							jo.put("desc", "该出货通知单不存在");
+							data=jo.toString();
+							return "todata";
+						}
+					}
+					//XA过账部分
+					try {
+						new Utils().insertOffShip(lib, env, plist, lib1);
+					} catch (Exception e) {
+						e.printStackTrace();
+						throw new Exception("过账失败");
+					}
+					jo.put("code", 1);
+					jo.put("desc", "ok");
+				}
+				
+			}
+		}catch (Exception e) {e.printStackTrace();
+		jo.put("code", 400);
+		jo.put("desc", "other exception");
+		data = jo.toString();
+		log.error("get env error.",e);
+		return "todata";
+		}finally{
+		}
+		data=jo.toString();
+		return "todata";
+	}
+	
+
 	/**
 	 * 菜单资源排序页面
 	 * @return
