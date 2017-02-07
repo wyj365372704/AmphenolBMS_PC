@@ -41,6 +41,12 @@ public interface ZPLHDRDao {
 	public List<ZPLDTLVO> queryReceipt(ZPLDTLVO vo) throws Exception;
 
 	public List<ZPLBOXVO> queryBch(ZPLBOXVO vo) throws Exception;
+	
+	public List<ZSADTLVO> queryZsadtls(ZSADTLVO vo) throws Exception;
+	
+	public List<ZSABCHVO> queryZsabchs(ZSABCHVO vo)  throws Exception;
+	
+	public List<String> queryC6cvnb(ZPLDTLVO vo)   throws Exception;
 
 	public void insertZplhdr(ZPLHDRVO vo) throws Exception;
 

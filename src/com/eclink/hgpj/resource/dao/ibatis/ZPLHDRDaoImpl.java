@@ -169,4 +169,19 @@ public class ZPLHDRDaoImpl extends SqlMapClientDaoSupport implements ZPLHDRDao {
 		return 0;
 	}
 
+	@Override
+	public List<String> queryC6cvnb(ZPLDTLVO vo) throws Exception {
+		return getSqlMapClientTemplate().queryForList("ZPLHDR.queryC6cvnb", vo);
+	}
+
+	@Override
+	public List<ZSABCHVO> queryZsabchs(ZSABCHVO vo) throws Exception {
+		return getSqlMapClientTemplate().queryForList("ZPLHDR.queryZsabchs", vo);
+	}
+
+	@Override
+	public List<ZSADTLVO> queryZsadtls(ZSADTLVO vo) throws Exception {
+		return getSqlMapClientTemplate().queryForList("ZPLHDR.queryZsadtls", vo);
+	}
+
 }

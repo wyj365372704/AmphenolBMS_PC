@@ -211,6 +211,21 @@ public class ZPLHDRServiceImpl implements ZPLHDRService {
 		return zplhdrDao.getZsadtlCouts(vo);
 	}
 
+	@Override
+	public List<String> queryC6cvnb(ZPLDTLVO vo) throws Exception {
+		return zplhdrDao.queryC6cvnb(vo);
+	}
+
+	@Override
+	public List<ZSABCHVO> queryZsabchs(ZSABCHVO vo) throws Exception {
+		return zplhdrDao.queryZsabchs(vo);
+	}
+
+	@Override
+	public List<ZSADTLVO> queryZsadtls(ZSADTLVO vo) throws Exception {
+		return zplhdrDao.queryZsadtls(vo);
+	}
+
 
 
 }

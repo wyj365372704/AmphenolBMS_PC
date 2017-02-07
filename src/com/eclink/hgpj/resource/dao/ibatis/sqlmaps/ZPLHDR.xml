@@ -47,7 +47,7 @@
 	</select>
 	
 	<select id="queryZsahdrByPar" resultClass="ZSAHDRVO"
-		parameterClass="Map">
+		parameterClass="ZSAHDRVO">
 		<![CDATA[ select  a.*   
 		from  ZSAHDR as a  
 		]]>
@@ -86,6 +86,60 @@
 		<isNotEmpty prepend="AND" property="fpost">
 				item.FPOST =#fpost# 
 		</isNotEmpty> 
+		<isNotEmpty prepend="AND" property="c6cvnb">
+				item.C6CVNB =#c6cvnb# 
+		</isNotEmpty> 
+		
+		order by item.PLDNO,item.PLDLN
+		
+	</select>
+	
+	<select id="queryC6cvnb" resultClass="ZPLDTLVO" parameterClass="ZPLDTLVO">
+		select  distinct item.C6CVNB    
+		from  ZPLDTL as item  where item.PLDNO=#pldno# 
+		
+		<isNotEmpty prepend="AND" property="pldln">
+				item.PLDLN =#pldln# 
+		</isNotEmpty> 
+		<isNotEmpty prepend="AND" property="fpost">
+				item.FPOST =#fpost# 
+		</isNotEmpty> 
+		
+		order by item.PLDNO,item.PLDLN
+		
+	</select>
+	
+	<select id="queryZsadtls" resultClass="ZSADTLVO" parameterClass="ZSADTLVO">
+		select  item.*     
+		from  ZSADTL as item  where item.PLDNO=#pldno# 
+		
+		<isNotEmpty prepend="AND" property="pldln">
+				item.PLDLN =#pldln# 
+		</isNotEmpty> 
+		<isNotEmpty prepend="AND" property="sadno">
+				item.SADNO =#sadno# 
+		</isNotEmpty> 
+		<isNotEmpty prepend="AND" property="sadln">
+				item.SADLN =#sadln# 
+		</isNotEmpty> 
+		
+		order by item.PLDNO,item.PLDLN
+		
+	</select>
+	
+	<select id="queryZsabchs" resultClass="ZSABCHVO" parameterClass="ZSABCHVO">
+		select  item.*     
+		from  ZSABCH as item  where item.SADNO=#sadno# 
+		
+		<isNotEmpty prepend="AND" property="sadln">
+				item.SADLN =#sadln# 
+		</isNotEmpty> 
+		<isNotEmpty prepend="AND" property="pldln">
+				item.PLDLN =#pldln# 
+		</isNotEmpty>
+		<isNotEmpty prepend="AND" property="pldno">
+				item.PLDNO =#pldno# 
+		</isNotEmpty>
 		
 		order by item.PLDNO,item.PLDLN
 		
@@ -124,7 +178,7 @@
 		from  ZSADTL where SADNO=#sadno#  
 		
 		]]>
-		<isNotEmpty prepend="," property="pldno" >
+		<isNotEmpty prepend="AND" property="pldno" >
         	PLDNO = #pldno#
       	</isNotEmpty>
 	</select>
