@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -169,7 +170,7 @@ public class ResourceAction extends BaseAction {
 	private ZJOBMCHService zjobmchService;
 
 	private ZJBTRNService zjbtrnService;
-	
+
 	private ZPLHDRService zplhdrService;
 
 	private String data;
@@ -205,7 +206,7 @@ public class ResourceAction extends BaseAction {
 	private String mate;
 
 	private String mater;
-	
+
 	private String pldln;
 
 	private String branch;
@@ -257,13 +258,13 @@ public class ResourceAction extends BaseAction {
 	private String job_number;
 
 	private String ia_quantity;
-	
+
 	private String pldno;
-	
+
 	private String boxnm;
-	
+
 	private String boxes;
-	
+
 	/**
 	 * 菜单资源树
 	 */
@@ -1514,7 +1515,7 @@ public class ResourceAction extends BaseAction {
 				DataSourceUtil.setDataSource(dbconfigurl, idx);
 
 				List<Map> list = new ArrayList<Map>();
-				
+
 				Map map = new HashMap();
 				map.put("grnno", delive_code);
 				map.put("lstat", "40");
@@ -1562,11 +1563,11 @@ public class ResourceAction extends BaseAction {
 
 			}
 			data=jo.toString();
-			
+
 		}catch (Exception e) {e.printStackTrace();
 		jo.put("code", 4);
 		jo.put("desc", "other exception");
-		
+
 		log.error("get env error.",e);
 		return "todata";
 		}finally{
@@ -1784,8 +1785,8 @@ public class ResourceAction extends BaseAction {
 					}
 					jo.put("mate_desc", ldesc);
 					jo.put("location", itmVo.getGrloc());
-					
-					
+
+
 					/*ZITEMBXVO bxVO = new ZITEMBXVO();
 					bxVO.setHouse(itmVo.getHouse().trim());
 					bxVO.setItnbr(itmVo.getItnbr().trim());
@@ -1807,8 +1808,8 @@ public class ResourceAction extends BaseAction {
 						}
 
 					}*/
-					
-					
+
+
 					if(itmVo.getBlcf()!=null && "1".equals(itmVo.getBlcf())){
 						ZGRNBCHVO bchvo = new ZGRNBCHVO();
 						bchvo.setShpno(itmVo.getShpno());
@@ -4159,7 +4160,7 @@ public class ResourceAction extends BaseAction {
 								map.put("turnn", vo.getTurnn());
 								map.put("turnc", vo.getTurnc());
 								map.put("refno", vo.getIpdno().trim().substring(2,vo.getIpdno().trim().length()));
-								
+
 								ZIPHSTVO hvo = new ZIPHSTVO();
 								hvo.setIpdno(pick_number);
 								hvo.setIpdln(BigDecimal.valueOf(Long.valueOf(pick_line)));
@@ -4606,8 +4607,8 @@ public class ResourceAction extends BaseAction {
 							data=jo.toString();
 							return "todata";
 						}
-						
-						
+
+
 						Map map0 = new HashMap();
 						map0.put("warehouse", warehouse);
 						map0.put("shard", shard);
@@ -5703,12 +5704,12 @@ public class ResourceAction extends BaseAction {
 					}
 
 					//					原方案,ZDEPT.DEPT 关联查询出ZDEPT.DNAME
-					zdeptParMap.put("dept", zmojobvo.getDptno());
+					/*zdeptParMap.put("dept", zmojobvo.getDptno());
 					List<ZDEPTVO> zdeptList = zdeptService.queryZdeptByMap(zdeptParMap);
 					if(zdeptList.size()>0){
 						jo.put("department", zdeptList.get(0).getDname());
-					}
-					//						jo.put("department", zmojobvo.getDptno());
+					}*/
+					jo.put("department", zmojobvo.getDptno());
 
 					String createDate = "";
 					if(zmojobvo.getCrdt()!=null){
@@ -7051,7 +7052,7 @@ public class ResourceAction extends BaseAction {
 				zplhdr.setHouse(warehouse);
 				zplhdr.setPldno(pldno);
 				List<ZPLHDRVO> results = this.zplhdrService.queryZplhdr(zplhdr);
-				
+
 				if(results!=null && results.size()>0){
 					ZPLHDRVO vo = results.get(0);
 					if(vo.getOstat()!=null && vo.getOstat().trim().equals("10")){
@@ -7060,7 +7061,7 @@ public class ResourceAction extends BaseAction {
 						jo.put("department", vo.getPldp1());
 						String etdate=(vo.getEtdate()+19000000)+"";
 						jo.put("expected_data", etdate.substring(0, 4)+"-"+etdate.substring(4, 6)+"-"+etdate.substring(6, 8)+" ");
-						
+
 						ZPLDTLVO zpldtl = new ZPLDTLVO();
 						zpldtl.setPldno(pldno);
 						List<ZPLDTLVO> dataList = this.zplhdrService.queryReceipt(zpldtl);
@@ -7120,9 +7121,9 @@ public class ResourceAction extends BaseAction {
 						jo.put("code", 5);
 						jo.put("desc", "该出货通知单不存在");
 					}
-					
 
-					
+
+
 					jo.put("code", 1);
 					jo.put("desc", "ok");
 				}else{
@@ -7143,7 +7144,7 @@ public class ResourceAction extends BaseAction {
 		data=jo.toString();
 		return "todata";
 	}
-	
+
 	public String sale_shipment_query_item()  throws Exception {
 		JSONObject jo = new JSONObject();
 		try {
@@ -7165,7 +7166,7 @@ public class ResourceAction extends BaseAction {
 				DataSourceUtil.setDataSource(dbconfigurl, idx);
 				String stid =Utils.getDataSourceS(dbconfigurl, "STID"+idx);
 
-				
+
 				ZPLDTLVO zpldtl = new ZPLDTLVO();
 				zpldtl.setPldno(pldno);
 				zpldtl.setPldln(BigDecimal.valueOf(Long.valueOf(pldln)) );
@@ -7182,14 +7183,14 @@ public class ResourceAction extends BaseAction {
 						jo.put("boxln", boxvo.getBoxln()==null?0:boxvo.getBoxln().longValue());
 						jo.put("boxnm", boxvo.getBoxnm());
 						jo.put("boxes", boxvo.getBoxes()==null?0:boxvo.getBoxes().longValue());
-//						Map map = new HashMap();
-//						map.put("warehouse", warehouse);
-//						map.put("stid", stid);
-////						map.put("itnbr", mater);
-//						List<SLQNTYVO> resultsls = this.xadataService.querySlqnty(map);
-//						if(resultsls!=null && ){
-//							
-//						}
+						//						Map map = new HashMap();
+						//						map.put("warehouse", warehouse);
+						//						map.put("stid", stid);
+						////						map.put("itnbr", mater);
+						//						List<SLQNTYVO> resultsls = this.xadataService.querySlqnty(map);
+						//						if(resultsls!=null && ){
+						//							
+						//						}
 						ZWHSUBVO subvo = new ZWHSUBVO();
 						subvo.setHouse(warehouse);
 						List<ZWHSUBVO> zwhsubList = this.zwhsubService.queryZwhsub(subvo);
@@ -7204,14 +7205,14 @@ public class ResourceAction extends BaseAction {
 								map.add(tm);
 							}
 							jo.put("shard_list", map);
-						
+
 						}
 						Map map = new HashMap();
 						map.put("warehouse", warehouse);
 						map.put("stid", stid);
 						map.put("shard", shard);
 						map.put("location", location);
-//						map.put("lbhno", branch);
+						//						map.put("lbhno", branch);
 						map.put("itnbr", mater );
 						List<SLQNTYVO> slqntyList = this.xadataService.querySlqnty(map);
 						if(slqntyList!=null && slqntyList.size()>0){
@@ -7229,12 +7230,12 @@ public class ResourceAction extends BaseAction {
 							}
 							jo.put("mater_list", slqntyrets);
 						}
-						
+
 					}else{
 						jo.put("code", 5);
 						jo.put("desc", "该出货通知单明细不存在");
 					}
-					
+
 					jo.put("code", 1);
 					jo.put("desc", "ok");
 				}else{
@@ -7276,7 +7277,7 @@ public class ResourceAction extends BaseAction {
 				DataSourceUtil.setDataSource(dbconfigurl, idx);
 				String stid =Utils.getDataSourceS(dbconfigurl, "STID"+idx);
 
-				
+
 				ZPLDTLVO zpldtl = new ZPLDTLVO();
 				zpldtl.setPldno(pldno);
 				zpldtl.setPldln(BigDecimal.valueOf(Long.valueOf(pldln)) );
@@ -7335,7 +7336,7 @@ public class ResourceAction extends BaseAction {
 				ZPLHDRVO zplhdrret= zplhdrrets.get(0);
 				String now1 = Utils.formateDate(null, "yyMMdd");
 				String now2 = Utils.formateDate(null, "HHmmss");
-				
+
 				String hdrno = "";
 				ZSAHDRVO zsahdr = new ZSAHDRVO();
 				zsahdr.setPldno(pldno);
@@ -7383,7 +7384,7 @@ public class ResourceAction extends BaseAction {
 				}else{
 					hdrno=zsahdrrets.get(0).getSadno();
 				}
-				
+
 
 				Map zsadtlMap = new HashMap();
 				zsadtlMap.put("zsahdr", zsahdrvo);
@@ -7442,7 +7443,7 @@ public class ResourceAction extends BaseAction {
 					zsadtlvos.add(zsadtlvo);
 
 					zsadtlMap.put("zsadtls", zsadtlvos);
-					
+
 					ZPLBOXVO zplbox = new ZPLBOXVO();
 					zplbox.setPldno(pldno);
 					zplbox.setPldln(BigDecimal.valueOf(Long.valueOf(pldln)) );
@@ -7501,7 +7502,7 @@ public class ResourceAction extends BaseAction {
 					}
 					this.zplhdrService.insertZsahdrs(zsadtlMap);
 					//XA过账部分
-					
+
 					jo.put("code", 1);
 					jo.put("desc", "ok");
 				}else{
@@ -7522,7 +7523,7 @@ public class ResourceAction extends BaseAction {
 		data=jo.toString();
 		return "todata";
 	}
-	
+
 	/**
 	 * 菜单资源排序页面
 	 * @return

@@ -1213,7 +1213,8 @@ public class PomastAction extends BaseAction {
 			JSONArray jsonArray = JSONObject.fromObject(grnno).getJSONArray("grnnos");
 			for(int i = 0;i<jsonArray.size();i++){
 				Map parMap = new HashMap();
-				parMap.put("vrdno", "'"+jsonArray.get(i)+"'");
+//				parMap.put("vrdno", "'"+jsonArray.get(i)+"'");
+				parMap.put("vrdno", new String[]{jsonArray.getString(i)});
 				List<ZVRHDRVO> queryZvrhdr = zvrhdrService.queryZvrhdr(parMap);
 				for(ZVRHDRVO zvrhdrvo:queryZvrhdr){
 					Map zvrhdrMap = new HashMap();
