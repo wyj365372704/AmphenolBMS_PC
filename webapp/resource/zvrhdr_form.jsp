@@ -109,6 +109,6 @@
 	</s:iterator>
 </body>
 <script language=javascript>
-	window.opener.location.href = window.opener.location.href;
+	/* window.opener.location.href = window.opener.location.href; */
 </script>
 </html>

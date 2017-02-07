@@ -288,14 +288,18 @@
 															</s:else>
 
 														</table></td>
-													<td><s:property value="#son1.ucorq" />
+													<td>
+													<fmt:formatNumber value="${son1.ucorq}"
+															pattern="#0.0" />
 													</td>
-													<td><s:property value="#son1.curpr" />
+													<td>
+													<fmt:formatNumber value="${son1.curpr}"
+															pattern="#0.0000" />
 													</td>
 													<s:set var="total" value="#total+#son1.ucorq"></s:set>
 													<s:set var="count" value="#count+#son1.ucorq*#son1.curpr"></s:set>
 													<td><fmt:formatNumber value="${son1.ucorq*son1.curpr}"
-															pattern="#0.0000" /></td>
+															pattern="#0.00" /></td>
 
 												</tr>
 											</s:else>
@@ -347,7 +351,7 @@
 											Quantity:
 										</s:else>
 												<fmt:formatNumber value="${son1.son2.orqty+son1.son2.qtdev}"
-													pattern="#0.0000" />,&nbsp;<s:if test="language == 0">
+													pattern="#0.0" />,&nbsp;<s:if test="language == 0">
 											单位:
 										</s:if> <s:else>
 											UOM:
@@ -404,7 +408,7 @@
 												<td><s:property value="#son22.cdesc" />
 												</td>
 												<td><fmt:formatNumber value="${son22.qtreq}"
-														pattern="#0.0000" />
+														pattern="#0.0" />
 												</td>
 												<td><s:property value="#son22.unmsr" />
 												</td>
@@ -422,25 +426,25 @@
 											数量合计:
 										</s:if> <s:else>
 											Quantity:
-										</s:else> <fmt:formatNumber value="${total }" pattern="#0.0000" /></td>
+										</s:else> <fmt:formatNumber value="${total }" pattern="#0.0" /></td>
 											<td><s:if test="language == 0">
 											采购金额:
 										</s:if> <s:else>
 											Purchase amount:
-										</s:else> <fmt:formatNumber value="${count }" pattern="#0.0000" /></td>
+										</s:else> <fmt:formatNumber value="${count }" pattern="#0.00" /></td>
 											<td><s:if test="language == 0">
 											税额:
 										</s:if> <s:else>
 											Tax amount:
 										</s:else> <fmt:formatNumber value="${count*resultMap.txsuf*0.01 }"
-													pattern="#0.0000" />
+													pattern="#0.00" />
 											</td>
 											<td><s:if test="language == 0">
 											税价合计:
 										</s:if> <s:else>
 											Amount total:
 										</s:else> <fmt:formatNumber value="${count+count*resultMap.txsuf*0.01 }"
-													pattern="#0.0000" /></td>
+													pattern="#0.00" /></td>
 										</tr>
 									</table>
 								</td>

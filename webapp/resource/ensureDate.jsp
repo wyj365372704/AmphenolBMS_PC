@@ -138,8 +138,7 @@
 							<td><s:property value="ucoqji" /></td>
 							<td><s:property value="qtyoji" /></td>
 							<td><s:property value="wkdtji" /></td>
-							<td><s:property value="dkdtji" />
-							</td>
+							<td><s:property value="dkdtji" /></td>
 							<td><input type="button" value="通过"
 								onclick="allow('${item.ordrji}','${item.pisqji}','${item.bksqji}','${item.wkdtji }');"/>
 								<input type="button" value="拒绝"
