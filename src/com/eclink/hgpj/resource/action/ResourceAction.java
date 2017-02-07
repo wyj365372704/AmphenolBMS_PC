@@ -4,6 +4,7 @@ import java.io.BufferedInputStream;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
@@ -4603,7 +4604,11 @@ public class ResourceAction extends BaseAction {
 						if(vo.getMoqty().multiply(new BigDecimal(Double.valueOf(rax))).compareTo(vo.getQtyrc().add(new BigDecimal(Double.parseDouble(quantity))))<0){
 							jo.put("code", 7);
 							jo.put("desc", "入库数量超过上限");
-							jo.put("max_remain", vo.getMoqty().multiply(new BigDecimal(Double.valueOf(rax))).subtract(vo.getQtyrc()).doubleValue());
+							NumberFormat  numberFormat = NumberFormat.getNumberInstance();
+							numberFormat.setMaximumFractionDigits(1);
+							numberFormat.setGroupingUsed(false);
+							numberFormat.setRoundingMode(RoundingMode.DOWN);
+							jo.put("max_remain", numberFormat.format(vo.getMoqty().multiply(new BigDecimal(Double.valueOf(rax))).subtract(vo.getQtyrc()).doubleValue()));
 							data=jo.toString();
 							return "todata";
 						}

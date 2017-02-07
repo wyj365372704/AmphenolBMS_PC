@@ -6,7 +6,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>周转标签</title>
+<title>物料识别卡</title>
 
 <link href="../css/global.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="../js/My97DatePicker/WdatePicker.js"></script>
@@ -29,12 +29,7 @@
 
 <body class="right_body">
 	<s:form action="#" method="post" name="makeMark">
-
-		<div class="path">您现在的位置： 首页 &gt; 仓库 &gt; 物料标签</div>
 		<div class="public_div">
-			<h2>
-				<br> <span class="fl"></span>
-			</h2>
 			<h2>
 				<span class="fl">标签信息</span> <span class="fr"></span>
 				<!--  span里无内容时，此span不能删除  -->
@@ -90,7 +85,7 @@
 						<td align="right">日期：</td>
 						<td>
 							<!-- <input type="text" id="mydate" class="input_w" value=""/> -->
-							<s:textfield id="mydate" cssClass="time_input"
+							<s:textfield id="mydate" name="mydate" cssClass="time_input"
 								onclick="WdatePicker()" autocomplete="on" />
 						</td>
 					</tr>

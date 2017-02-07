@@ -244,6 +244,8 @@ public class TurnoverTagAction extends BaseAction {
 	 */
 	public String toTurnoverTag() throws Exception {
 		try {
+			SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
+			ActionContext.getContext().getValueStack().set("mydate", sf.format(new Date()));
 			
 			fdesc = new String(fdesc.getBytes(
 					"ISO8859-1"), "utf-8");
@@ -285,6 +287,8 @@ public class TurnoverTagAction extends BaseAction {
 	 */
 	public String toPrintTurnoverTag() throws Exception {
 		try {
+			
+			
 			ZBMSCTLVO zbmsctlvo = new ZBMSCTLVO();
 			zbmsctlvo.setSite((String) getSession().getAttribute("stid"));
 			zbmsctlService.queryZbmsctl(zbmsctlvo);
