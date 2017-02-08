@@ -7546,7 +7546,7 @@ public class ResourceAction extends BaseAction {
 				}
 				DataSourceUtil.setDataSource(dbconfigurl, idx);
 				String stid =Utils.getDataSourceS(dbconfigurl, "STID"+idx);
-				String lib = Utils.getDataSourceS(dbconfigurl, "AMTLIB"+idx);
+				String lib = Utils.getDataSourceS(dbconfigurl, "AMFLIB"+idx);
 				String lib1 = Utils.getDataSourceS(dbconfigurl, "AMPHLIB"+idx);
 //				String userDept="";
 //				List<ZBMSU02VO> dps = this.auserService.queryDeptByUserName(username);
