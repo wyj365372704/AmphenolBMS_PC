@@ -4,6 +4,7 @@ import java.io.BufferedInputStream;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
@@ -4603,7 +4604,11 @@ public class ResourceAction extends BaseAction {
 						if(vo.getMoqty().multiply(new BigDecimal(Double.valueOf(rax))).compareTo(vo.getQtyrc().add(new BigDecimal(Double.parseDouble(quantity))))<0){
 							jo.put("code", 7);
 							jo.put("desc", "入库数量超过上限");
-							jo.put("max_remain", vo.getMoqty().multiply(new BigDecimal(Double.valueOf(rax))).subtract(vo.getQtyrc()).doubleValue());
+							NumberFormat  numberFormat = NumberFormat.getNumberInstance();
+							numberFormat.setMaximumFractionDigits(1);
+							numberFormat.setGroupingUsed(false);
+							numberFormat.setRoundingMode(RoundingMode.DOWN);
+							jo.put("max_remain", numberFormat.format(vo.getMoqty().multiply(new BigDecimal(Double.valueOf(rax))).subtract(vo.getQtyrc()).doubleValue()));
 							data=jo.toString();
 							return "todata";
 						}
@@ -6646,8 +6651,8 @@ public class ResourceAction extends BaseAction {
 				DataSourceUtil.setDataSource(dbconfigurl, idx);
 				String stid =Utils.getDataSourceS(dbconfigurl, "STID"+idx);
 
-				Map<String, String> parMap = new HashMap<String, String>();
-				parMap.put("vrdno", return_number);
+				Map parMap = new HashMap();
+				parMap.put("vrdno", new String[]{return_number});
 				parMap.put("house", warehouse);
 				parMap.put("ostat", "10,40,50");
 				List<ZVRHDRVO> zvrhdr = zvrhdrService.queryZvrhdr(parMap);
@@ -6655,6 +6660,7 @@ public class ResourceAction extends BaseAction {
 					jo.put("firm", zvrhdr.get(0).getVndnr());
 					jo.put("status_code", zvrhdr.get(0).getOstat());
 					parMap.put("lstat", "10");
+					parMap.put("vrdno", return_number);
 					List<ZVRITMVO> queryZvritm = zvrhdrService.queryZvritm(parMap);
 					JSONArray zvritmJsonArray = new JSONArray();
 					for(ZVRITMVO zvritmvo:queryZvritm){
