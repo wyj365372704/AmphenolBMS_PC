@@ -6651,8 +6651,8 @@ public class ResourceAction extends BaseAction {
 				DataSourceUtil.setDataSource(dbconfigurl, idx);
 				String stid =Utils.getDataSourceS(dbconfigurl, "STID"+idx);
 
-				Map<String, String> parMap = new HashMap<String, String>();
-				parMap.put("vrdno", return_number);
+				Map parMap = new HashMap();
+				parMap.put("vrdno", new String[]{return_number});
 				parMap.put("house", warehouse);
 				parMap.put("ostat", "10,40,50");
 				List<ZVRHDRVO> zvrhdr = zvrhdrService.queryZvrhdr(parMap);
@@ -6660,6 +6660,7 @@ public class ResourceAction extends BaseAction {
 					jo.put("firm", zvrhdr.get(0).getVndnr());
 					jo.put("status_code", zvrhdr.get(0).getOstat());
 					parMap.put("lstat", "10");
+					parMap.put("vrdno", return_number);
 					List<ZVRITMVO> queryZvritm = zvrhdrService.queryZvritm(parMap);
 					JSONArray zvritmJsonArray = new JSONArray();
 					for(ZVRITMVO zvritmvo:queryZvritm){

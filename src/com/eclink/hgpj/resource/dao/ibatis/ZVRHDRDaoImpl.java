@@ -55,6 +55,7 @@ public class ZVRHDRDaoImpl extends SqlMapClientDaoSupport implements ZVRHDRDao {
 	public String insertZvrhdr(ZVRHDRVO vo) throws Exception {
 		String result = "";
 		Map parMap = new HashMap();
+		parMap.put("ostat", "05,10,40,50,99");
 		parMap.put("startDate", BigDecimal.valueOf(Long.valueOf("1"+Utils.formateDate(null, "yyMMdd"))));
 		parMap.put("endDate", BigDecimal.valueOf(Long.valueOf("1"+Utils.formateDate(null, "yyMMdd"))));
 		List<ZVRHDRVO> queryForList = queryZvrhdr(parMap);

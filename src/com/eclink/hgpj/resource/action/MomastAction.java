@@ -35,6 +35,7 @@ import com.eclink.hgpj.resource.vo.MOMASTVO;
 import com.eclink.hgpj.resource.vo.MOPORFVO;
 import com.eclink.hgpj.resource.vo.MOROUTVO;
 import com.eclink.hgpj.resource.vo.POITEMVO;
+import com.eclink.hgpj.resource.vo.POMASTVO;
 import com.eclink.hgpj.resource.vo.VENNAMVO;
 import com.eclink.hgpj.resource.vo.ZBMSCTLVO;
 import com.eclink.hgpj.resource.vo.ZBMSRSNVO;
@@ -945,19 +946,26 @@ public class MomastAction extends BaseAction {
 							moporfvo.setOpsq(morout.getOpseq());
 							List<MOPORFVO> moporfList = xadataService.queryMoporfNormal(moporfvo);
 							if(moporfList.size()>0){
-								desc+=moporfList.get(0).getPonr().trim();
+								desc+=moporfList.get(0).getPonr().trim();//附加上委外订单号
 								if(moporfList.get(0).getPonr().trim().startsWith("P")){
 									desc+="<br/>";
 									desc+="委外供应商:";
-									desc+=moporfList.get(0).getVndr().trim();
-
+									
 									Map<String, String> parMap = new HashMap<String, String>();
-									parMap.put("vndnr", moporfList.get(0).getVndr());
-									List<VENNAMVO> vennamList = xadataService.queryVennam(parMap);
-									if(vennamList.size()>0){
-										desc+=" ";
-										desc+=vennamList.get(0).getVn35().trim();
+									parMap.put("ordnoO", moporfList.get(0).getPonr());
+									List<POMASTVO> queryPomast = xadataService.queryPomast(parMap);
+									if(queryPomast.size()>0){
+										desc+=queryPomast.get(0).getVndnr().trim();
+									
+										parMap.clear();
+										parMap.put("vndnr", queryPomast.get(0).getVndnr());
+										List<VENNAMVO> vennamList = xadataService.queryVennam(parMap);
+										if(vennamList.size()>0){
+											desc+=" ";
+											desc+=vennamList.get(0).getVn35().trim();
+										}
 									}
+									
 									parMap.clear();
 									parMap.put("ordno", moporfList.get(0).getPonr());
 									parMap.put("house", moporfList.get(0).getWhid());
