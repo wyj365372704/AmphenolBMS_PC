@@ -1,6 +1,8 @@
 package com.eclink.hgpj.resource.action;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -1057,6 +1059,19 @@ public class PomastAction extends BaseAction {
 
 					map.put("ostat", ostat);
 					zvrhdrList = zvrhdrService.queryZvrhdr(map);
+					List<Map> results = new ArrayList<Map>();
+					for(ZVRHDRVO zvrhdrvo:zvrhdrList){
+						Map result = new HashMap();
+						results.add(result);
+						result.put("vrdno", zvrhdrvo.getVrdno());
+						result.put("vndnr", zvrhdrvo.getVndnr());
+						result.put("ostat", zvrhdrvo.getOstat());
+						result.put("crus", zvrhdrvo.getCrus());
+						result.put("crdt", Utils.db2DateFormat(zvrhdrvo.getCrdt().add(new BigDecimal("19000000")).intValue()));
+						result.put("crtm", Utils.db2TimeFormat(zvrhdrvo.getCrtm().intValue()));
+						
+					}
+					ActionContext.getContext().getValueStack().set("results", results);
 				}
 			}
 
@@ -1288,6 +1303,10 @@ public class PomastAction extends BaseAction {
 	}
 
 	public String toEnsureList() throws Exception{
+		NumberFormat numberFormat = NumberFormat.getNumberInstance();
+		numberFormat.setGroupingUsed(false);
+		numberFormat.setRoundingMode(RoundingMode.UP);
+		
 		try {
 			//momast.setSsstdt(ssstdt);
 			// 获取分页信息
@@ -1331,10 +1350,12 @@ public class PomastAction extends BaseAction {
 						item.put("itnoji", schrcpvo.getItnoji());
 						item.put("ds40ji", schrcpvo.getDs40ji());
 						item.put("orumji", schrcpvo.getOrumji());
-						item.put("ucoqji", schrcpvo.getUcoqji());
-						item.put("qtyoji", schrcpvo.getQtyoji());
-						item.put("wkdtji", zdelidavo.getWkdtji().add(new BigDecimal(19000000)).intValue());
-						item.put("dkdtji", schrcpvo.getDkdtji().add(new BigDecimal(19000000)).intValue());
+						numberFormat.setMaximumFractionDigits(1);
+						numberFormat.setMinimumFractionDigits(1);
+						item.put("ucoqji",numberFormat.format( schrcpvo.getUcoqji()));
+						item.put("qtyoji", numberFormat.format(schrcpvo.getQtyoji()));
+						item.put("wkdtji",Utils.db2DateFormat(zdelidavo.getWkdtji().add(new BigDecimal(19000000)).intValue()));
+						item.put("dkdtji", Utils.db2DateFormat(schrcpvo.getDkdtji().add(new BigDecimal(19000000)).intValue()));
 						results.add(item);
 					}
 				}
@@ -1357,7 +1378,8 @@ public class PomastAction extends BaseAction {
 			parames.put("ordrji", ordrji);
 			parames.put("pisqji", pisqji);
 			parames.put("bksqji", bksqji);
-			parames.put("wkdtji", wkdtji);
+			SimpleDateFormat sf  = new SimpleDateFormat("yyyy-MM-dd");
+			parames.put("wkdtji", new SimpleDateFormat("yyyyMMdd").format(sf.parse(wkdtji)));
 			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
 			String currentDate = dateFormat.format(new Date());
 			parames.put("currentDate", currentDate);
@@ -1368,11 +1390,12 @@ public class PomastAction extends BaseAction {
 			}
 			System.out.println("wyj11");
 			data = zdelidaService.auditZdelida(parames);
-
+			return "todata";
 		} catch (Throwable e) {e.printStackTrace();
 		log.error("Go to admin resource operation grant page occured error.", e);
 		data = "fail";
+		return ERROR;
 		}
-		return "todata";
+	
 	}
 }

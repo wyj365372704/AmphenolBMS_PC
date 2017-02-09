@@ -220,7 +220,7 @@
 						<th>操作</th>
 						<!-- -->
 					</tr>
-					<s:iterator value="zvrhdrList" status="st">
+					<s:iterator value="results" status="st">
 						<s:if test="#st.Even">
 							<tr class="td_bgcolor"
 								onclick="selectrow('<s:property value="vrdno"/>');">

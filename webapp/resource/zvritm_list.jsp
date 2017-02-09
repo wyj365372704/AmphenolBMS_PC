@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=utf-8"
 	pageEncoding="UTF-8"%>
 <%@taglib uri="/struts-tags" prefix="s"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <link href="<%=request.getContextPath()%>/css/global.css"
 	rel="stylesheet" type="text/css" />
 <link href="<%=request.getContextPath()%>/js/alert/alerts.css"
@@ -31,11 +32,11 @@
 		</s:else>
 		<td><s:property value="vrdno" />
 		</td>
-		<td><s:property value="vrdln" />
+		<td><fmt:formatNumber value="${vrdln}" pattern="#0" />
 		</td>
 		<td><s:property value="ordno" />
 		</td>
-		<td><s:property value="poisq" />
+		<td><fmt:formatNumber value="${poisq}" pattern="#0" />
 		</td>
 		<td><s:property value="vndnr" />
 		</td>
@@ -51,7 +52,7 @@
 		</td>
 		<td><s:property value="stkum" />
 		</td>
-		<td><s:property value="plnvq" />
+		<td><fmt:formatNumber value="${plnvq}" pattern="#0.0" />
 		</td>
 		<td><s:if test="lstat==10">
 				<input type="button" id="editbtn" value="删除" class="gray_button"

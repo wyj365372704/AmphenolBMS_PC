@@ -89,7 +89,7 @@
 								</td>
 								<td align="center"><s:property value="itnbr"/> / <s:property value="itdsc"/></td>
 								<td align="center"><s:property value="unmsr"/></td>
-								<td align="center"><s:property value="plnqt"/></td>
+								<td align="center"><fmt:formatNumber value="${plnqt}" pattern="#0.0" /></td>
 								<td align="center"><s:property value="frwhs"/> / <s:property value="frsub"/> / <s:property value="frloc"/></td>
 								<td align="center"><s:property value="towhs"/> / <s:property value="tosub"/> / <s:property value="toloc"/></td>
 							</tr>

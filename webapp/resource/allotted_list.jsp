@@ -2,6 +2,7 @@
 <%@taglib uri="http://www.eclink.com.cn/dfcm/paginator" prefix="page"%>
 <%@taglib uri="/struts-tags" prefix="s"%>
 <%@taglib uri="http://www.eclink.com.cn/hgpj/permission" prefix="hgpj"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 4.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -119,7 +120,7 @@
 							<td><s:property value="#it.twdno" /></td>
 							<td><s:property value="#it.itnbr" /></td>
 							<td><s:property value="#it.itdsc" /></td>
-							<td><s:property value="#it.plnqt" /></td>
+							<td><fmt:formatNumber value="${it.plnqt}" pattern="#0.0" /></td>
 							<td><s:if test="#it.lstat == '10'">已创建</s:if> <s:elseif
 									test="#it.lstat == '50'">已完成</s:elseif> <s:elseif
 									test="#it.lstat == '60'">已关闭</s:elseif></td>

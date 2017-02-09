@@ -2,6 +2,7 @@
 <%@taglib uri="http://www.eclink.com.cn/dfcm/paginator" prefix="page"%>
 <%@taglib uri="/struts-tags" prefix="s"%>
 <%@taglib uri="http://www.eclink.com.cn/hgpj/permission" prefix="hgpj"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 4.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -205,7 +206,7 @@
 						</td>
 						<td><s:property value="fdesc" />
 						</td>
-						<td><s:property value="moqty" />
+						<td><fmt:formatNumber value="${moqty}" pattern="#0.0" />
 						</td>
 						<td><s:property value="unmsr" />
 						</td>
@@ -233,9 +234,9 @@
 	  				</s:if> <s:else>
 	  					未打印
 	  				</s:else> </td>
-						<td><s:property value="qtyrc" />
+						<td><fmt:formatNumber value="${qtyrc}" pattern="#0.0" />
 						</td>
-						<td><s:property value="mounqty" />
+						<td><fmt:formatNumber value="${mounqty}" pattern="#0.0" />
 						</td>
 						<td><s:if test='ostat=="10"||ostat=="40"||ostat=="50"'>
 								<input type="button" id="addOper" value="新增领料单"

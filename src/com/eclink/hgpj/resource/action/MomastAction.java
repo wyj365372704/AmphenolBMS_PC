@@ -1,6 +1,8 @@
 package com.eclink.hgpj.resource.action;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -794,6 +796,11 @@ public class MomastAction extends BaseAction {
 	}
 
 	public String toPrintMomast() throws Exception{
+		NumberFormat numberFormat = NumberFormat.getNumberInstance();
+		numberFormat.setGroupingUsed(false);
+		numberFormat.setRoundingMode(RoundingMode.UP);
+		numberFormat.setMaximumFractionDigits(1);
+		numberFormat.setMinimumFractionDigits(1);
 		try {
 			List<Map<String, Object>> results = new ArrayList<Map<String, Object>>();
 			JSONArray jsonArray = JSONObject.fromObject(grnno).getJSONArray("grnnos");
@@ -849,7 +856,7 @@ public class MomastAction extends BaseAction {
 				}
 
 				resultMap.put("dptno", momastList.get(0).getDptno());
-				resultMap.put("quantity", momastList.get(0).getOrqty().add(momastList.get(0).getQtdev()).floatValue());
+				resultMap.put("quantity", numberFormat.format(momastList.get(0).getOrqty().add(momastList.get(0).getQtdev()).floatValue()));
 
 				d= (momastList.get(0).getSstdt()==null || momastList.get(0).getSstdt().doubleValue()==0.0)?"":momastList.get(0).getSstdt().add(BigDecimal.valueOf(19000000)).toString().trim();
 				resultMap.put("sstdt", d.length()<8?d: (d.substring(0, 4)+"-"+d.substring(4, 6)+"-"+d.substring(6, 8)+" "));
@@ -883,7 +890,7 @@ public class MomastAction extends BaseAction {
 					modatavo.setOrdno(momastList.get(0).getOrdno());
 					List<MODATAVO> modataList = xadataService.queryModatas(modatavo);
 					for(MODATAVO modata:modataList){
-						Map<String, String> modataMap = new HashMap<String, String>();
+						Map modataMap = new HashMap();
 						modataMap.put("citem", modata.getCitem());
 						modataMap.put("cdesc", modata.getCdesc());
 
@@ -919,8 +926,8 @@ public class MomastAction extends BaseAction {
 
 
 						modataMap.put("unmsr", modata.getUnmsr());
-						modataMap.put("qtreq", modata.getQtreq().floatValue()+"");
-						modataMap.put("isqty", modata.getIsqty().floatValue()+"");
+						modataMap.put("qtreq", numberFormat.format(modata.getQtreq().floatValue()));
+						modataMap.put("isqty", numberFormat.format(modata.getIsqty().floatValue()));
 
 						modatas.add(modataMap);
 					}
@@ -977,9 +984,13 @@ public class MomastAction extends BaseAction {
 										desc+="采购价格:";
 										desc+=poitemList.get(0).getCurpr();
 										desc+=" ";
-										desc+=poitemList.get(0).getCurid().trim();
+										if(poitemList.get(0).getCurid().trim().isEmpty()){
+											desc+="CNY";
+										}else{
+											desc+=poitemList.get(0).getCurid().trim();
+										}
 									}
-									desc+=moporfList.get(0).getVndr().trim();
+//									desc+=moporfList.get(0).getVndr().trim();
 								}
 							}
 
@@ -988,43 +999,43 @@ public class MomastAction extends BaseAction {
 							BigDecimal orderQuantity = momastList.get(0).getOrqty().add(momastList.get(0).getQtdev());
 							desc+="<br/>";
 							desc+="标准人工时间:";
+							double time0 = 0;
 							if(morout.getTbcde() == null || morout.getTbcde().equals("")){
-								desc+=orderQuantity.multiply(morout.getSrlhu()).floatValue();
+								time0+=orderQuantity.multiply(morout.getSrlhu()).floatValue();
 							}else if(morout.getTbcde().equals("1")){
-								desc+=orderQuantity.multiply(morout.getSrlhu()).divide(BigDecimal.valueOf(10)).floatValue();
+								time0+=orderQuantity.multiply(morout.getSrlhu()).divide(BigDecimal.valueOf(10)).floatValue();
 							}else if(morout.getTbcde().equals("2")){
-								desc+=orderQuantity.multiply(morout.getSrlhu()).divide(BigDecimal.valueOf(100)).floatValue();
+								time0+=orderQuantity.multiply(morout.getSrlhu()).divide(BigDecimal.valueOf(100)).floatValue();
 							}else if(morout.getTbcde().equals("3")){
-								desc+=orderQuantity.multiply(morout.getSrlhu()).divide(BigDecimal.valueOf(1000)).floatValue();
+								time0+=orderQuantity.multiply(morout.getSrlhu()).divide(BigDecimal.valueOf(1000)).floatValue();
 							}else if(morout.getTbcde().equals("4")){
-								desc+=orderQuantity.multiply(morout.getSrlhu()).divide(BigDecimal.valueOf(10000)).floatValue();
+								time0+=orderQuantity.multiply(morout.getSrlhu()).divide(BigDecimal.valueOf(10000)).floatValue();
 							}else if(morout.getTbcde().equals("P")){
-								desc+=orderQuantity.divide(morout.getSrlhu()).floatValue();
+								time0+=orderQuantity.divide(morout.getSrlhu()).floatValue();
 							}else if(morout.getTbcde().equals("M")){
-								desc+=orderQuantity.multiply(morout.getSrlhu()).divide(BigDecimal.valueOf(60)).floatValue();
-							}else{
-								desc+="0.0";
+								time0+=orderQuantity.multiply(morout.getSrlhu()).divide(BigDecimal.valueOf(60)).floatValue();
 							}
+							desc+=numberFormat.format(time0);
 							desc+="小时";
 							desc+="<br/>";
 							desc+="标准机器时间:";
+							double time = 0.0;
 							if(morout.getTbcde() == null || morout.getTbcde().equals("")){
-								desc+=orderQuantity.multiply(morout.getSrmhu()).floatValue();
+								time+=orderQuantity.multiply(morout.getSrmhu()).floatValue();
 							}else if(morout.getTbcde().equals("1")){
-								desc+=orderQuantity.multiply(morout.getSrmhu()).divide(BigDecimal.valueOf(10)).floatValue();
+								time+=orderQuantity.multiply(morout.getSrmhu()).divide(BigDecimal.valueOf(10)).floatValue();
 							}else if(morout.getTbcde().equals("2")){
-								desc+=orderQuantity.multiply(morout.getSrmhu()).divide(BigDecimal.valueOf(100)).floatValue();
+								time+=orderQuantity.multiply(morout.getSrmhu()).divide(BigDecimal.valueOf(100)).floatValue();
 							}else if(morout.getTbcde().equals("3")){
-								desc+=orderQuantity.multiply(morout.getSrmhu()).divide(BigDecimal.valueOf(1000)).floatValue();
+								time+=orderQuantity.multiply(morout.getSrmhu()).divide(BigDecimal.valueOf(1000)).floatValue();
 							}else if(morout.getTbcde().equals("4")){
-								desc+=orderQuantity.multiply(morout.getSrmhu()).divide(BigDecimal.valueOf(10000)).floatValue();
+								time+=orderQuantity.multiply(morout.getSrmhu()).divide(BigDecimal.valueOf(10000)).floatValue();
 							}else if(morout.getTbcde().equals("P")){
-								desc+=orderQuantity.divide(morout.getSrmhu()).floatValue();
+								time+=orderQuantity.divide(morout.getSrmhu()).floatValue();
 							}else if(morout.getTbcde().equals("M")){
-								desc+=orderQuantity.multiply(morout.getSrmhu()).divide(BigDecimal.valueOf(60)).floatValue();
-							}else{
-								desc+="0.0";
-							}
+								time+=orderQuantity.multiply(morout.getSrmhu()).divide(BigDecimal.valueOf(60)).floatValue();
+							};
+							desc+=numberFormat.format(time);
 							desc+="小时";
 							desc+="<br/>";
 						}

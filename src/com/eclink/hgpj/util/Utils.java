@@ -37,6 +37,7 @@ import org.apache.log4j.Logger;
 
 import com.ibm.as400.access.AS400;
 import com.ibm.as400.access.ProgramCall;
+import com.sun.org.apache.bcel.internal.generic.NEW;
 
 /**
  * Utils.java
@@ -1401,6 +1402,32 @@ public  boolean insertOffShip(String lib,String env,List<Map> lists,String lib1)
 		} 
 	} 
 
+	public static String db2DateFormat(int db2Date){
+		try{
+			SimpleDateFormat sf = new SimpleDateFormat("yyyyMMdd");
+			Date parse = sf.parse(String.valueOf(db2Date));
+			sf = new SimpleDateFormat("yyyy-MM-dd");
+			return sf.format(parse);
+		}catch (Exception e) {
+			// TODO: handle exception
+			return "";
+		}
+	}
+	
+
+	public static String db2TimeFormat(int db2Time){
+		try{
+			SimpleDateFormat sf = new SimpleDateFormat("HHmmss");
+			Date parse = sf.parse(String.valueOf(db2Time));
+			sf = new SimpleDateFormat("HH:mm:ss");
+			return sf.format(parse);
+		}catch (Exception e) {
+			// TODO: handle exception
+			return "";
+		}
+	}
+	
+	
 	public static void main(String[] args) {
 		//		String password = toMd5("admin" + "888888");
 		System.out.println(round(BigDecimal.valueOf(1.36),1,"3"));

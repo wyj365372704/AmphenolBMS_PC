@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="UTF-8"%>
 <%@taglib uri="/struts-tags" prefix="s"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <link href="<%=request.getContextPath() %>/css/global.css" rel="stylesheet" type="text/css" />
 <link href="<%=request.getContextPath() %>/js/alert/alerts.css" rel="stylesheet" type="text/css" />
 
@@ -9,7 +10,6 @@
 				<th>工单</th>
 				<th>行号</th>
 				<th>物料</th>
-				<th>描述</th>
 				<th>数量</th>
 				<th>单位</th>
 				<th>默认仓库</th>
@@ -30,10 +30,9 @@
 		      	</s:else>
 	  				<td><s:property value="ipdno"/></td>
 	  				<td><s:property value="ordno"/></td>
-	  				<td><s:property value="ipdln"/></td>
+	  				<td><fmt:formatNumber value="${ipdln}" pattern="#0" /></td>
 	  				<td><s:property value="citem"/></td>
-	  				<td></td>
-	  				<td><s:property value="shqty"/></td>
+	  				<td><fmt:formatNumber value="${shqty}" pattern="#0.0" /></td>
 	  				<td><s:property value="cuom"/></td>
 	  				<td><s:property value="house"/></td>
 	  				<td><s:property value="whsub"/></td>
@@ -46,7 +45,7 @@
 	  					否
 	  				</s:else>
 	  				</td>
-	  				<td><s:property value="acqty"/></td>
+	  				<td><fmt:formatNumber value="${acqty}" pattern="#0.0" /></td>
 	  				<td>
 	  				<s:if test="lstat==05">
 	  					创建中

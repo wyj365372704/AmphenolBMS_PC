@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=utf-8"
 	pageEncoding="UTF-8"%>
 <%@taglib uri="/struts-tags" prefix="s"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <link href="<%=request.getContextPath() %>/css/global.css"
 	rel="stylesheet" type="text/css" />
 <link href="<%=request.getContextPath() %>/js/alert/alerts.css"
@@ -34,12 +35,12 @@
 		</s:else>
 		<td><s:property value="ordrji" /></td>
 		<td><s:property value="vndrji" /></td>
-		<td><s:property value="pisqji" /></td>
+		<td><fmt:formatNumber value="${pisqji}" pattern="#0" /></td>
 		<td><s:property value="itnoji" /></td>
 		<td><s:property value="ds40ji" /></td>
-		<td><s:property value="ucoqji" /></td>
-		<td><s:property value="qtyoji" /></td>
-		<td><s:property value="stkqji" /></td>
+		<td><fmt:formatNumber value="${ucoqji}" pattern="#0.0" /></td>
+		<td><fmt:formatNumber value="${qtyoji}" pattern="#0.0" /></td>
+		<td><fmt:formatNumber value="${stkqji}" pattern="#0.0" /></td>
 		<td><s:property value="orumji" /></td>
 		<td><s:property value="umstji" /></td>
 		<td><s:if test="rcpsji==05">供应商未确认</s:if>
@@ -49,7 +50,7 @@
 		<s:elseif test="rcpsji==99">已取消</s:elseif>
 		</td>
 		<td><s:property value="buyrji" /></td>
-		<td><s:property value="planji" /></td>
+		<td><fmt:formatNumber value="${planji}" pattern="#0" /></td>
 		<td><s:if test="rcpsji==40||rcpsji==35">
 				<input type="button" id="editbtn" value="退货" class="gray_button"
 					onclick="goreturn('<s:property value="sctkji"/>');" />

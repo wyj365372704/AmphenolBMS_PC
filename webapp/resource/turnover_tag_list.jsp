@@ -2,6 +2,7 @@
 <%@taglib uri="http://www.eclink.com.cn/dfcm/paginator" prefix="page"%>
 <%@taglib uri="/struts-tags" prefix="s"%>
 <%@taglib uri="http://www.eclink.com.cn/hgpj/permission" prefix="hgpj"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 4.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -92,7 +93,7 @@
 	  				<td><s:property value="ordno"/></td>
 	  				<td><s:property value="fitem"/></td>
 	  				<td><s:property value="fdesc"/></td>
-	  				<td><s:property value="moqty"/></td>
+	  				<td><fmt:formatNumber value="${moqty}" pattern="#0.0" /></td>
 	  				<td><s:property value="unmsr"/></td>
 	  				<td><s:property value="dptno"/></td>
 	  				<td><s:property value="ssstdt"/></td>
@@ -117,11 +118,11 @@
 	  					订单取消
 	  				</s:elseif>
 	  				</td>
-	  				<td><s:property value="qtyrc"/></td>
-	  				<td><s:property value="mounqty"/></td>
+	  				<td><fmt:formatNumber value="${qtyrc}" pattern="#0.0" /></td>
+	  				<td><fmt:formatNumber value="${mounqty}" pattern="#0.0" /></td>
 	  				<td><input type="button" Class="gray_button" value="打印"
 							onclick="print('<s:property value="ordno"/>','<s:property value="fitem"/>','<s:property value="fdesc"/>'
-							,'<s:property value="moqty"/>','<s:property value="unmsr"/>','<s:property value="weght"/>'
+							,'<fmt:formatNumber value="${moqty}" pattern="#0.0" />','<s:property value="unmsr"/>','<fmt:formatNumber value="${weght}" pattern="#0.0000" />'
 							,'<s:property value="b2cqcd"/>')"></td>
   			   </tr>
   			</s:iterator>
