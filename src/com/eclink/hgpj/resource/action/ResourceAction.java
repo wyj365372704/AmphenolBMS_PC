@@ -7552,7 +7552,7 @@ public class ResourceAction extends BaseAction {
 				}
 				DataSourceUtil.setDataSource(dbconfigurl, idx);
 				String stid =Utils.getDataSourceS(dbconfigurl, "STID"+idx);
-				String lib = Utils.getDataSourceS(dbconfigurl, "AMTLIB"+idx);
+				String lib = Utils.getDataSourceS(dbconfigurl, "AMFLIB"+idx);
 				String lib1 = Utils.getDataSourceS(dbconfigurl, "AMPHLIB"+idx);
 //				String userDept="";
 //				List<ZBMSU02VO> dps = this.auserService.queryDeptByUserName(username);
@@ -7603,11 +7603,11 @@ public class ResourceAction extends BaseAction {
 									Map zsapmap = new HashMap();
 									zsapmap.put("myx2nb", i+1);
 									zsapmap.put("mycvnb", zsadtlret.getC6cvnb());
-									zsapmap.put("myfcnb", zsadtlret.getCdfcnb());
-									zsapmap.put("mydrnb", zsadtlret.getAddrnb());
+									zsapmap.put("myfcnb", zsadtlret.getCdfcnb()==null?0L:zsadtlret.getCdfcnb().longValue());
+									zsapmap.put("mydrnb", zsadtlret.getAddrnb()==null?0L:zsadtlret.getAddrnb().longValue());
 									zsapmap.put("myaitx", zsadtlret.getItnbr());
 									zsapmap.put("myaayn", "1");
-									zsapmap.put("myarqt", zsadtlret.getSqqty2());
+									zsapmap.put("myarqt", zsadtlret.getSqqty2()==null?0L:zsadtlret.getSqqty2().longValue());
 									Map mbadrep = new HashMap();
 									mbadrep.put("cono", vo.getC6aenb()+"");
 									mbadrep.put("ortp", vo.getC6dccd());

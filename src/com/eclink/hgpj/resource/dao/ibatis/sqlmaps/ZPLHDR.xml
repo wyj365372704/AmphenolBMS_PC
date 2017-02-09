@@ -94,7 +94,7 @@
 		
 	</select>
 	
-	<select id="queryC6cvnb" resultClass="ZPLDTLVO" parameterClass="ZPLDTLVO">
+	<select id="queryC6cvnb" resultClass="String" parameterClass="ZPLDTLVO">
 		select  distinct item.C6CVNB    
 		from  ZPLDTL as item  where item.PLDNO=#pldno# 
 		
@@ -104,8 +104,7 @@
 		<isNotEmpty prepend="AND" property="fpost">
 				item.FPOST =#fpost# 
 		</isNotEmpty> 
-		
-		order by item.PLDNO,item.PLDLN
+		 
 		
 	</select>
 	
@@ -548,7 +547,7 @@
 			SALOC1,
 			
 			SAQTY1,
-			SQQTY2,
+			SAQTY2,
 			WGHT1,
 			WTUM1,
 			WGHT2,
