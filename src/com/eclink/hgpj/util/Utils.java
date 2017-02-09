@@ -1150,7 +1150,7 @@ public class Utils {
 	}
 	
 
-public  boolean insertOffShip(String lib,String env,List<Map> lists,String lib1) throws Exception{
+public  boolean insertOffShip(String lib, String env, List<Map> pmaps, String lib1) throws Exception{
 	Connection conn = null;
 	InputStream is =null;
 	Statement stmt = null;
@@ -1170,32 +1170,59 @@ public  boolean insertOffShip(String lib,String env,List<Map> lists,String lib1)
 		String dburl=properties.getProperty("DBURL");
 		String dbip=dburl.split("/")[2];
 		conn=DriverManager.getConnection("jdbc:as400://"+dbip+"/"+lib+";translate binary=true", properties.getProperty("DBUSER"), properties.getProperty("DBPASSWORD"));
-		String sql="SELECT MAX(MXNWCD) as trnno FROM  OSAAREP";
+		String sql = "SELECT count(*) as ct FROM  OSAAREP";
 		if(conn!=null){
 			conn.setAutoCommit(false);
 			//System.out.println("insertsql="+insertsql);
-			stmt = (Statement) conn.createStatement();
-			rs = stmt.executeQuery(sql);
-			if(rs.next()){
-				idx=rs.getLong("trnno");
-			}
-
-//			if(lists!=null && lists.size()>0){
-//				for(int i=0;i<lists.size();i++){
-//					idx++;
-//					Map map=lists.get(i);
-//					String insertsql="insert into TRDATA(ACREC,APCOD,BADGE,CRWYN,CTLID,ENSTN,HDEPT,IPLOC,ITNBR,LBHNO,LLOCN,"
-//							+"LPLID,LPQC1,ORDNO,PARNT,QUEUE,REASN,REFNO,SEQNM,SHFTC,TDATE,TRFMT,TRNNO,TRQTY,TSTAT,TTIME,WSID,USRSQ,TURNA,TURNN,TURNC"
-//							+") values('Y','I','"+(map.get("badge"))+"','N','*','0','"+((String)map.get("hdept"))+"','"+((String)map.get("iploc"))+"','"+((String)map.get("itnbr"))+"','" +
-//							((String)map.get("lbhno"))+"','"+((String)map.get("lloc"))+"','D',0,'"+((String)map.get("ordno"))+"',0,1,'"+((String)map.get("reasn"))+"','',"+((BigDecimal)map.get("seqnm")).intValue()+","
-//							+"1,"+((BigDecimal)map.get("tdate")).longValue()+",'IP',"+(idx)+","+((BigDecimal)map.get("trqty")).longValue()+",2,"+((BigDecimal)map.get("ttime")).longValue()+","
-//							+"'"+((String)map.get("wsid"))+"','"+((String)map.get("usrsq"))+"',"+((BigDecimal)map.get("turna")).longValue()+","+((BigDecimal)map.get("turnn")).longValue()+","+((BigDecimal)map.get("turnc")).longValue()+")";
-//					System.out.println("insertsql="+insertsql);
-//					count=count+stmt.executeUpdate(insertsql);
-//				}
-//			}
-
-			conn.commit();
+			stmt = conn.createStatement();
+	        rs = stmt.executeQuery(sql);
+	        if (rs.next()) {
+	          idx = rs.getLong("ct");
+	        }
+	        rs.close();
+	        if (pmaps != null) {
+	          for (int i = 0; i < pmaps.size(); i++)
+	          {
+	            Map pmap = (Map)pmaps.get(i);
+	            String shipNumber = (idx + i + 1L + "0000000").substring(0, 7);
+	            Object osaarep = pmap.get("osaarep");
+	            if (osaarep != null)
+	            {
+	              Map osaarepmap = (Map)osaarep;
+	              String insertsql = "insert into OSAAREP(MXNWCD,MXAJSS,MXNTCD,MXAENB,MXA3CD,MXDCCD,MXCVNB) values('" + (
+	                idx + 1L) + "','03','" + shipNumber + "'," + (Long)osaarepmap.get("company") + ",'" + (String)osaarepmap.get("house") + "','1','" + (String)osaarepmap.get("orderno") + "')";
+	              System.out.println("insertsql=" + insertsql);
+	              count += stmt.executeUpdate(insertsql);
+	            }
+	            Object osabccp = pmap.get("osabccp");
+	            if (osabccp != null)
+	            {
+	              List osabccplist = (List)osabccp;
+	              for (int j = 0; j < osabccplist.size(); j++)
+	              {
+	                Map osabccpmap = (Map)osabccplist.get(j);
+	                String insertsql2 = "insert into  OSABCPP (MYNWCD,MYAJSS,MYNTCD,MYX2NB,MYDCCD,MYCVNB,MYFCNB,MYDRNB,MYAITX,MYAAYN,MYARQT,MYAAFX) values('" + (
+	                  idx + 1L) + "','03','" + shipNumber + "'," + (Integer)osabccpmap.get("myx2nb") + ",'1','" + (String)osabccpmap.get("mycvnb") + "'," + (Long)osabccpmap.get("myfcnb") + ",'" + (Long)osabccpmap.get("mydrnb") + "','" + (String)osabccpmap.get("myaitx") + "','1'," + (Long)osabccpmap.get("myarqt") + "," + (Float)osabccpmap.get("myaafx") + ")";
+	                System.out.println("insertsql2=" + insertsql2);
+	                count += stmt.executeUpdate(insertsql2);
+	                Object osaccpp = osabccpmap.get("osaccpp");
+	                if (osaccpp != null)
+	                {
+	                  List osaccpplist = (List)osaccpp;
+	                  for (int k = 0; k < osaccpplist.size(); k++)
+	                  {
+	                    Map osaccpppmap = (Map)osaccpplist.get(k);
+	                    String insertsql3 = "insert into OSACCPP(AANWCD,AAAJSS,AANTCD,AAX2NB,AAAASZ,AADQNB,AADCCD,AACVNB,AAFCNB,AADRNB,AACKTX,AACRCD,AAF3VA) values('" + (
+	                      idx + 1L) + "','03','" + shipNumber + "'," + (Long)osabccpmap.get("myx2nb") + "," + (Long)osaccpppmap.get("aaaasz") + "," + (Long)osaccpppmap.get("aadqnb") + ",'1','" + (String)osaccpppmap.get("aacvnb") + "'," + (Long)osaccpppmap.get("aafcnb") + ",'" + (Long)osaccpppmap.get("aadrnb") + "','" + (String)osaccpppmap.get("aacktx") + "','" + (String)osaccpppmap.get("aacrcd") + "'," + (Float)osaccpppmap.get("aaf3va") + ")";
+	                    System.out.println("insertsql3=" + insertsql3);
+	                    count += stmt.executeUpdate(insertsql2);
+	                  }
+	                }
+	              }
+	            }
+	          }
+	        }
+	        conn.commit();
 			conn.setAutoCommit(true);
 		}
 		this.CallTamjuc(dbip, properties.getProperty("DBUSER"), properties.getProperty("DBPASSWORD"), lib1);
