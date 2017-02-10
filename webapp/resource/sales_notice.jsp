@@ -214,8 +214,12 @@
 		  });
 	}
 	// 打印
-	function goPrint(pldno){alert(pldno);
+	function goPrint(pldno){//alert(pldno);
 		window.open("zplhdrs!toPrintOne.action?pldno="+ pldno,"newwindow","height=600,width=1024,top=60,left=200,toolbar=no,menubar=no,scrollbars=no, resizable=no,location=no, status=no");
+	}
+	// 编辑
+	function goedit(pldno){//alert(pldno);
+		window.open("zplhdrs!toEditZplhdr.action?pldno="+ pldno,"newwindow","height=600,width=1024,top=60,left=200,toolbar=no,menubar=no,scrollbars=no, resizable=no,location=no, status=no");
 	}
 </script>
 </html>

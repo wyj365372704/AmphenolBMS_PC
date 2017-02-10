@@ -226,6 +226,24 @@ public class ZPLHDRServiceImpl implements ZPLHDRService {
 		return zplhdrDao.queryZsadtls(vo);
 	}
 
+	@Override
+	public void updateZplhdrA(ZPLHDRVO vo, List<ZPLDTLVO> vos,
+			List<ZPLBOXVO> bvos) throws Exception {
+		if(vo!=null){
+			zplhdrDao.updateZplhdrByPar(vo);
+			if(vos!=null && vos.size()>0){
+				for(int i=0;i<vos.size();i++){
+					zplhdrDao.updateZpldtlByPar(vos.get(i));
+				}
+			}
+			if(bvos!=null && bvos.size()>0){
+				for(int i=0;i<bvos.size();i++){
+					zplhdrDao.updateZplboxByPar(bvos.get(i));
+				}
+			}
+		}
+	}
+
 
 
 }

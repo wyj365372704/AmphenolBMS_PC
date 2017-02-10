@@ -7670,6 +7670,9 @@ public class ResourceAction extends BaseAction {
 					}
 					jo.put("code", 1);
 					jo.put("desc", "ok");
+				}else{
+					jo.put("code", 5);
+					jo.put("desc", "该出货通知单明细不存在或已经过账");
 				}
 				
 			}
