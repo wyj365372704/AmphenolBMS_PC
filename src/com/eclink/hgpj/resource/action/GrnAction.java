@@ -2,10 +2,14 @@ package com.eclink.hgpj.resource.action;
 
 import java.math.BigDecimal;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 
 import org.apache.log4j.Logger;
 
@@ -24,6 +28,7 @@ import com.eclink.hgpj.resource.vo.ZGRNITMVO;
 import com.eclink.hgpj.resource.vo.ZITEMBXVO;
 import com.eclink.hgpj.resource.vo.ZWHSUBVO;
 import com.eclink.hgpj.util.Utils;
+import com.opensymphony.xwork2.ActionContext;
 
 
 /**
@@ -37,27 +42,27 @@ public class GrnAction extends BaseAction {
 	 * 日志对象
 	 */
 	private static final Logger log = Logger.getLogger(GrnAction.class);
-	
+
 	private ZGRNHDRService zgrnhdrService;
-	
+
 	private XADATAService xadataService;
-	
+
 	private ZITMBXService zitmbxService;
-	
+
 	private VENNAMVO vennamvo;
-	
+
 	private ZGRNHDRVO zgrnhdr;
-	
+
 	private String grnno;
-	
+
 	private String grdte;
-	
+
 	private List<ZGRNHDRVO> results;
-	
+
 	private List<ZGRNITMVO> items;
-	
+
 	private String mydate;
-	
+
 	private int query = 0;
 
 	public ZGRNHDRService getZgrnhdrService() {
@@ -165,40 +170,40 @@ public class GrnAction extends BaseAction {
 	 */
 	public String toGrn() throws Exception {
 		try {
-			
+
 			// 获取分页信息
 			PageVO page = PaginatorUtil.getPaginator(getRequest());
-//			setPagination(role,page);
-			
+			//			setPagination(role,page);
+
 			// 查询总记录数
 			if (page.isQueryTotal()) {
 				page.setTotalRecord(0);
 			}
-			
+
 			// 调用业务方法查询列表
-//			roleList = roleService.queryRoleList(role);
-			
+			//			roleList = roleService.queryRoleList(role);
+
 			// 分页对象保存至request
 			getRequest().setAttribute(HGPJConstant.PAGE_KEY, page);
-			
+
 			if(query==0){
 				return "toGrn";
 			}
 			results = this.zgrnhdrService.queryReceiptList(zgrnhdr);
-			
+
 			for(ZGRNHDRVO zgrnhdrvo:results){
 				String d= (zgrnhdrvo.getCrdt()==null || zgrnhdrvo.getCrdt().doubleValue()==0.0)?"":zgrnhdrvo.getCrdt().add(BigDecimal.valueOf(19000000)).toString().trim();
 				zgrnhdrvo.setScrdt(d.length()<8?d: (d.substring(0, 4)+"-"+d.substring(4, 6)+"-"+d.substring(6, 8)));
 			}
-			
-			
+
+
 		} catch (Exception e) {e.printStackTrace();
-			log.error("收货单查询失败", e);
-			return ERROR;
+		log.error("收货单查询失败", e);
+		return ERROR;
 		}
 		return "toGrn";
 	}
-	
+
 	/**
 	 * 打印收货单信息
 	 * @return
@@ -206,40 +211,63 @@ public class GrnAction extends BaseAction {
 	 */
 	public String toPrintGrn() throws Exception { 
 		try {
-			ZGRNITMVO vo = new ZGRNITMVO();
-			vo.setGrnno(grnno);
-			items = this.zgrnhdrService.queryReceiptItems(vo);
-			for(ZGRNITMVO zgrnitmvo:items){
-				Map<String, String> vennamParMap = new HashMap<String, String>();
-				vennamParMap.put("vndnr", zgrnitmvo.getVndnr());
-				List<VENNAMVO> vennamList = xadataService.queryVennam(vennamParMap);
-				if(vennamList.size()>0){
-					zgrnitmvo.setVn35(vennamList.get(0).getVn35());
+			List<Map> results = new ArrayList<Map>();
+			JSONArray jsonArray = JSONObject.fromObject(grnno).getJSONArray("grnnos");
+			System.out.println("wyj_jsonarray's size"+jsonArray.size());
+			for(int i = 0;i<jsonArray.size();i++){
+				ZGRNITMVO vo = new ZGRNITMVO();
+				vo.setGrnno(jsonArray.getString(i));
+				items = this.zgrnhdrService.queryReceiptItems(vo);
+				System.out.println("wyj_grnno is "+vo.getGrnno()+" and items' size is "+items.size());
+				String grdte = "";
+				if(items.size()>0){
+					ZGRNHDRVO zgrnhdrvo = zgrnhdrService.queryZgrnByNo(vo.getGrnno());
+					if(zgrnhdrvo!=null){
+						grdte = Utils.db2DateFormat(zgrnhdrvo.getGrdte().intValue());
+						grdte+=Utils.db2TimeFormat(zgrnhdrvo.getGrdtm().intValue());
+					}
 				}
 				
-				ITMRVAVO itmrvavo = new ITMRVAVO();
-				itmrvavo.setHouse((String) getSession().getAttribute("stid"));
-				itmrvavo.setItnbr(zgrnitmvo.getItnbr());
-				List<ITMRVAVO> itmrvaList = xadataService.queryItmrva(itmrvavo);
-				if(itmrvaList.size()>0){
-					zgrnitmvo.setItdsc(itmrvaList.get(0).getItdsc());
+				for(ZGRNITMVO zgrnitmvo:items){
+					Map resultMap = new HashMap();
+					resultMap.put("zgrnitmvo", zgrnitmvo);
+					System.out.println("wyj_zgrnitmvo's blcf is "+zgrnitmvo.getBlcf()+" and itemlist's size is "+zgrnitmvo.getItemList().size());
+					resultMap.put("grdte", grdte);
+					
+					Map<String, String> vennamParMap = new HashMap<String, String>();
+					vennamParMap.put("vndnr", zgrnitmvo.getVndnr());
+					List<VENNAMVO> vennamList = xadataService.queryVennam(vennamParMap);
+					if(vennamList.size()>0){
+						zgrnitmvo.setVn35(vennamList.get(0).getVn35());
+					}
+
+					ITMRVAVO itmrvavo = new ITMRVAVO();
+					itmrvavo.setHouse((String) getSession().getAttribute("stid"));
+					itmrvavo.setItnbr(zgrnitmvo.getItnbr());
+					List<ITMRVAVO> itmrvaList = xadataService.queryItmrva(itmrvavo);
+					if(itmrvaList.size()>0){
+						zgrnitmvo.setItdsc(itmrvaList.get(0).getItdsc());
+					}
+
+					ZITEMBXVO bxVO = new ZITEMBXVO();
+					bxVO.setHouse((String) getSession().getAttribute("stid"));
+					bxVO.setItnbr(zgrnitmvo.getItnbr());
+					List<ZITEMBXVO> bxList = this.zitmbxService.queryItemBx(bxVO);
+					if(bxList!=null && bxList.size()>0){
+						zgrnitmvo.setWhsub2(bxList.get(0).getWhsub2());
+						zgrnitmvo.setLlocn2(bxList.get(0).getLlocn2());
+					}
+
+					results.add(resultMap);
 				}
-				
-				ZITEMBXVO bxVO = new ZITEMBXVO();
-				bxVO.setHouse((String) getSession().getAttribute("stid"));
-				bxVO.setItnbr(zgrnitmvo.getItnbr());
-				List<ZITEMBXVO> bxList = this.zitmbxService.queryItemBx(bxVO);
-				if(bxList!=null && bxList.size()>0){
-					zgrnitmvo.setWhsub2(bxList.get(0).getWhsub2());
-					zgrnitmvo.setLlocn2(bxList.get(0).getLlocn2());
-				}
-				
 			}
+			ActionContext.getContext().getValueStack().set("results", results);
+			System.out.println("wyj_results' size"+results.size());
 			Date dt = new Date();
 			mydate = Utils.formateDate(dt, "yyyy-MM-dd HH:mm:ss");
 		} catch (Exception e) {e.printStackTrace();
-			log.error("收货单查询失败", e);
-			return ERROR;
+		log.error("收货单查询失败", e);
+		return ERROR;
 		}
 		return "toPrintGrn";
 	}

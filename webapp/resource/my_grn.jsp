@@ -25,6 +25,47 @@
 	function print(grnno, grdte){
 		window.open('myGrn!toPrintGrn.action?grnno='+ grnno +'&grdte='+grdte,'newwindow','height=600,width=800,top=60,left=200,toolbar=no,menubar=no,scrollbars=no, resizable=no,location=no, status=no');
 	}
+	function selectall(){
+		var ischk = document.getElementsByName("chkall")[0].checked;
+		//if(ischk){
+			var chkall = document.getElementsByName("chk");
+			for(var i=0;i<chkall.length;i++){
+				chkall[i].checked=ischk;
+			}
+		//}
+		
+	}
+	// 打印
+	function toPrint() {
+		// 检查是否选中记录
+		var cbs = document.getElementsByName("chk");
+		if (!cbs) {
+			alert("未选中记录！");
+			return;
+		}
+
+		var gno = new Array();
+		var count = 0;
+		for(var i=0;i<cbs.length;i++){
+			if (!cbs[i].checked) {
+				bool = false;
+			} else {
+				count++;
+				gno.push($.trim(cbs[i].value));
+			}
+		}
+
+		if (count <= 0) {
+			alert("未选中记录！");
+			return;
+		}
+
+		var grnnos = JSON.stringify({
+			grnnos : gno
+		});
+
+		window.open('myGrn!toPrintGrn.action?grnno=' + grnnos, 'newwindow','height=600,width=800,top=60,left=200,toolbar=no,menubar=no,scrollbars=no, resizable=no,location=no, status=no');
+	}
 </script>
 <body class="right_body">
 
@@ -37,13 +78,14 @@
 				<span class="fl">到货单查询</span> <span class="fr"> <s:submit
 						id="queryId" value="" cssClass="search_button"
 						onclick="return dosubmit()"></s:submit> <s:reset value=""
-						cssClass="purge_button"></s:reset> </span>
+						cssClass="purge_button"></s:reset>  <input type="button"
+					onclick="toPrint()" value="打印"></span>
 				<!--  span里无内容时，此span不能删除  -->
 			</h2>
 
 			<ul>
 
-				<li><div class="w_s">送货单号码：</div> <s:textfield
+				<li><div class="w_s">送货单号：</div> <s:textfield
 						name="zgrnhdr.shpno" cssClass="input_w" /></li>
 
 			</ul>
@@ -59,9 +101,10 @@
 			<table width="100%" border="0" cellspacing="1" cellpadding="0"
 				class="list_table_s">
 				<tr>
-					<th>送货单号码</th>
-					<th>到货单号码</th>
-					<th>发票号码</th>
+					<th><input name="chkall" type="checkbox"
+							onclick="selectall();" /> 到货单号</th>
+					<th>送货单号</th>
+					<th>发票号</th>
 					<th>到货单状态</th>
 					<th>创建日期</th>
 					<th>操作</th>
@@ -73,8 +116,10 @@
 					<s:else>
 						<tr class="td_bgcolor2">
 					</s:else>
+					<td><input name="chk" type="checkbox"
+							value="<s:property value="grnno"/>" />
+					<s:property value="grnno" />
 					<td><s:property value="shpno" />
-					<td><s:property value="grnno" />
 					</td>
 					<td><s:property value="lgwno" />
 					</td>
