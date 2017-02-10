@@ -2189,10 +2189,14 @@ public class ResourceAction extends BaseAction {
 							}
 
 						}
-
 					}
 				}
-				ZGRNHDRVO hdrVo = this.zgrnhdrService.queryZgrnByNo(this.receipt_number);
+				String lgwno = "";
+				List<ZSHPHDRVO> zshphdrvos = zshphdrService.queryReceipt(receipt_number);
+				if(zshphdrvos.size()>0){
+					lgwno = zshphdrvos.get(0).getLgwno().trim();
+				}
+//				ZGRNHDRVO hdrVo = this.zgrnhdrService.queryZgrnByNo(this.receipt_number);
 				ZBMSCTLVO bmsctlVO = new ZBMSCTLVO();
 				bmsctlVO.setSite(stid);
 				List<ZBMSCTLVO> bmsctlList = this.zbmsctlService.queryZbmsctl(bmsctlVO);
@@ -2223,7 +2227,8 @@ public class ResourceAction extends BaseAction {
 								parames.put("transactionDate",Utils.formateDate(null, "yyyyMMdd"));
 								parames.put("receivedToStockFlag", "true");
 
-								parames.put("goodsReceivedNote",hdrVo.getLgwno().trim());
+//								parames.put("goodsReceivedNote",hdrVo.getLgwno().trim());
+								parames.put("goodsReceivedNote",lgwno);
 								//parames.put("setScheduledReceiptStatus", hdrVo.getLgwno().trim());
 
 								parames.put("receivedToStockQuantity",bchtemp.getGbqty());
@@ -2306,7 +2311,8 @@ public class ResourceAction extends BaseAction {
 						parames.put("transactionDate",Utils.formateDate(null, "yyyyMMdd"));
 						parames.put("receivedToStockFlag", "true");
 
-						parames.put("goodsReceivedNote",hdrVo.getLgwno().trim());
+//						parames.put("goodsReceivedNote",hdrVo.getLgwno().trim());
+						parames.put("goodsReceivedNote",lgwno);
 						//parames.put("setScheduledReceiptStatus", hdrVo.getLgwno().trim());
 
 						parames.put("receivedToStockQuantity",Float.valueOf(this.actual_quantity==null?"0":actual_quantity));

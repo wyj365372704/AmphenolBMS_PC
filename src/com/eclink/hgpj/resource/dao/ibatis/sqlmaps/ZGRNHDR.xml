@@ -126,7 +126,7 @@
 	<select id="queryReceiptItems" resultMap="ZGRNITMVOMap"
 		parameterClass="ZGRNITMVO">
 		<![CDATA[select  item.* 
-		from ZGRNITM as item where item.LSTAT='50' and item.Grnno=#grnno#
+		from ZGRNITM as item where  item.Grnno=#grnno#  and item.LSTAT='50'
 		]]>
 	</select>
 
@@ -168,7 +168,7 @@
 	<select id="queryZgrnByNo" resultMap="ZGRNHDRVOMapS"
 		parameterClass="String">
 		select bch.*
-		from ZGRNHDR as bch where bch.SHPNO=#shpno#
+		from ZGRNHDR as bch where bch.GRNNO=#grnno#
 
 	</select>
 

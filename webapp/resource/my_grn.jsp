@@ -22,9 +22,6 @@
 }
 </style>
 <script type="text/javascript">
-	function print(grnno, grdte){
-		window.open('myGrn!toPrintGrn.action?grnno='+ grnno +'&grdte='+grdte,'newwindow','height=600,width=800,top=60,left=200,toolbar=no,menubar=no,scrollbars=no, resizable=no,location=no, status=no');
-	}
 	function selectall(){
 		var ischk = document.getElementsByName("chkall")[0].checked;
 		//if(ischk){
@@ -107,7 +104,7 @@
 					<th>发票号</th>
 					<th>到货单状态</th>
 					<th>创建日期</th>
-					<th>操作</th>
+				
 				</tr>
 				<s:iterator value="results" id="rs" status="st">
 					<s:if test="#st.Even">
@@ -131,9 +128,6 @@
 					      		部分收货
 					      	</s:elseif></td>
 					<td><s:property value="scrdt" />
-					</td>
-					<td><input type="button" Class="gray_button" value="打印"
-						onclick="print('<s:property value="grnno"/>','<s:property value="grdte"/>')">
 					</td>
 					</tr>
 				</s:iterator>

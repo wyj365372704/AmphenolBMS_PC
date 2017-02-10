@@ -20,6 +20,7 @@ import com.eclink.hgpj.common.HGPJConstant;
 import com.eclink.hgpj.resource.biz.XADATAService;
 import com.eclink.hgpj.resource.biz.ZGRNHDRService;
 import com.eclink.hgpj.resource.biz.ZITMBXService;
+import com.eclink.hgpj.resource.dao.ibatis.ZITEMBXDaoImpl;
 import com.eclink.hgpj.resource.vo.ITMRVAVO;
 import com.eclink.hgpj.resource.vo.VENNAMVO;
 import com.eclink.hgpj.resource.vo.ZGRNBCHVO;
@@ -213,7 +214,6 @@ public class GrnAction extends BaseAction {
 		try {
 			List<Map> results = new ArrayList<Map>();
 			JSONArray jsonArray = JSONObject.fromObject(grnno).getJSONArray("grnnos");
-			System.out.println("wyj_jsonarray's size"+jsonArray.size());
 			for(int i = 0;i<jsonArray.size();i++){
 				ZGRNITMVO vo = new ZGRNITMVO();
 				vo.setGrnno(jsonArray.getString(i));
@@ -223,8 +223,9 @@ public class GrnAction extends BaseAction {
 				if(items.size()>0){
 					ZGRNHDRVO zgrnhdrvo = zgrnhdrService.queryZgrnByNo(vo.getGrnno());
 					if(zgrnhdrvo!=null){
-						grdte = Utils.db2DateFormat(zgrnhdrvo.getGrdte().intValue());
-						grdte+=Utils.db2TimeFormat(zgrnhdrvo.getGrdtm().intValue());
+						grdte = Utils.db2DateFormat(zgrnhdrvo.getGrdte().intValue()+19000000);
+//						grdte+=" ";
+//						grdte+=Utils.db2TimeFormat(zgrnhdrvo.getGrdtm().intValue());
 					}
 				}
 				
@@ -233,6 +234,16 @@ public class GrnAction extends BaseAction {
 					resultMap.put("zgrnitmvo", zgrnitmvo);
 					System.out.println("wyj_zgrnitmvo's blcf is "+zgrnitmvo.getBlcf()+" and itemlist's size is "+zgrnitmvo.getItemList().size());
 					resultMap.put("grdte", grdte);
+					
+					ZITEMBXVO zitembxvo = new ZITEMBXVO();
+					zitembxvo.setHouse(zgrnitmvo.getHouse());
+					zitembxvo.setItnbr(zgrnitmvo.getItnbr());
+					List<ZITEMBXVO> queryItemBx = zitmbxService.queryItemBx(zitembxvo);
+					if(queryItemBx.size()>0){
+						resultMap.put("whsub2", queryItemBx.get(0).getWhsub2());
+						resultMap.put("llocn2", queryItemBx.get(0).getLlocn2());
+					}
+					
 					
 					Map<String, String> vennamParMap = new HashMap<String, String>();
 					vennamParMap.put("vndnr", zgrnitmvo.getVndnr());
@@ -262,7 +273,6 @@ public class GrnAction extends BaseAction {
 				}
 			}
 			ActionContext.getContext().getValueStack().set("results", results);
-			System.out.println("wyj_results' size"+results.size());
 			Date dt = new Date();
 			mydate = Utils.formateDate(dt, "yyyy-MM-dd HH:mm:ss");
 		} catch (Exception e) {e.printStackTrace();
@@ -271,4 +281,5 @@ public class GrnAction extends BaseAction {
 		}
 		return "toPrintGrn";
 	}
+	
 }

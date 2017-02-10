@@ -39,7 +39,7 @@
 		</dynamic> 	
 		<dynamic>
 		   	<isNotEmpty prepend="AND" property="llocn2">
-                llocn2 = #llocn2#
+                LLOCN2 = #llocn2#
             </isNotEmpty>
 		</dynamic> 
 	</select>
