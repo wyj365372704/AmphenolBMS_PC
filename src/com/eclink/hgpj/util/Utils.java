@@ -1214,7 +1214,7 @@ public  boolean insertOffShip(String lib, String env, List<Map> pmaps, String li
 	                  {
 	                    Map osaccpppmap = (Map)osaccpplist.get(k);
 	                    String insertsql3 = "insert into OSACCPP(AANWCD,AAAJSS,AANTCD,AAX2NB,AAAASZ,AADQNB,AADCCD,AACVNB,AAFCNB,AADRNB,AACKTX,AACRCD,AAF3VA) values('" + (
-	                      idx + 1L) + "','03','" + shipNumber + "'," + (Long)osabccpmap.get("myx2nb") + "," + (Long)osaccpppmap.get("aaaasz") + "," + (Long)osaccpppmap.get("aadqnb") + ",'1','" + (String)osaccpppmap.get("aacvnb") + "'," + (Long)osaccpppmap.get("aafcnb") + ",'" + (Long)osaccpppmap.get("aadrnb") + "','" + (String)osaccpppmap.get("aacktx") + "','" + (String)osaccpppmap.get("aacrcd") + "'," + (Float)osaccpppmap.get("aaf3va") + ")";
+	                      idx + 1L) + "','03','" + shipNumber + "'," + (Integer)osabccpmap.get("myx2nb") + "," + (Long)osaccpppmap.get("aaaasz") + "," + (Long)osaccpppmap.get("aadqnb") + ",'1','" + (String)osaccpppmap.get("aacvnb") + "'," + (Long)osaccpppmap.get("aafcnb") + ",'" + (Long)osaccpppmap.get("aadrnb") + "','" + (String)osaccpppmap.get("aacktx") + "','" + (String)osaccpppmap.get("aacrcd") + "'," + (Float)osaccpppmap.get("aaf3va") + ")";
 	                    System.out.println("insertsql3=" + insertsql3);
 	                    count += stmt.executeUpdate(insertsql2);
 	                  }
