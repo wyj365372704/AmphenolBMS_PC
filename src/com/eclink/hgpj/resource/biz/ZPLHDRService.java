@@ -59,6 +59,8 @@ public List<ZSADTLVO> queryZsadtls(ZSADTLVO vo) throws Exception;
 
 	public void insertZplhdrA(ZPLHDRVO vo,List<ZPLDTLVO> vos, List<ZPLBOXVO> bvos) throws Exception;
 
+	public void updateZplhdrA(ZPLHDRVO vo,List<ZPLDTLVO> vos, List<ZPLBOXVO> bvos) throws Exception;
+
 	public void insertZpldtl(ZPLDTLVO vo) throws Exception;
 
 	public void insertZplbox(ZPLBOXVO vo) throws Exception;

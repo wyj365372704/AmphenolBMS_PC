@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@taglib uri="http://www.eclink.com.cn/dfcm/paginator" prefix="page"%>
 <%@taglib uri="/struts-tags" prefix="s"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@taglib uri="http://www.eclink.com.cn/hgpj/permission" prefix="hgpj"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 4.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -26,6 +27,20 @@
 </style>
 </head>
 <script type="text/javascript">
+ var retdata = "<s:property value='data'/>";
+ if(retdata=="" || retdata==null || retdata=="null"){
+   	
+   }else{
+   		if(retdata=="success"){
+   			alert("修改通知单成功！");
+   			window.close();
+   			//window.location.href="zplhdrs!toZplhdr.action";
+   		}else{
+   			alert("修改通知单失败！");
+   			window.history.back();
+   		}
+   }
+   
 	function getAddByCus(){
 		var cusno=document.getElementsByName("zplhdr.cusno")[0].value;
 		document.getElementsByName("zplhdr.cusnm")[0].value=$("#cusno").find("option:selected").text();
@@ -174,7 +189,7 @@
 <body>
 	<table cellpadding="5px" width="100%" class="tb">
 		<tbody>
-			<s:form action="sales!editNotice.action" method="post" name="queryform">
+			<s:form action="zplhdrs!editNotice.action" method="post" name="queryform">
 			<input name="ordernos" type="hidden" value="" />
 			<input name="qtys" type="hidden" value="" />
 			<input name="ddlxs" type="hidden" value="" />
@@ -185,18 +200,18 @@
 			<input name="kcdws" type="hidden" value="" />
 			<input name="ponums" type="hidden" value="" />
 			<input name="zxdhs" type="hidden" value="" />
-			<input name="xss" type="hidden" value="" />
-			
+			<input name="pldno" type="hidden" value="<s:property  value="zplhdr.pldno" />" />
+			 
 			<tr>
 				<td> 
 					<table width="100%" cellpadding="3px" border="1px" style="border-collapse: collapse;">
 						<tbody>
 							<tr>
 								<td colspan="2">出货日期: <s:property  value="zplhdr.etdate" /></td>
-									<td>仓库: <s:property  value="zplhdr.house" /></td>
+									<td>仓库: <s:property  value="zplhdr.house" /><s:hidden name="zplhdr.pldno"></s:hidden></td>
 									</tr>
 							<tr>
-								<td>客户: <s:property  value="zplhdr.cusnm" /></s:hidden>
+								<td>客户: <s:property  value="zplhdr.cusnm" />
 						</td>
 								<td>运输方式:<s:property  value="zplhdr.scac" /> </td>
 								<td>国际贸易条款:<s:property  value="zplhdr.incot" /> </td>
@@ -238,15 +253,11 @@
 								<td>国家: <s:textfield name="zplhdr.scctr" cssClass="input_w" maxlength="3"/></td>
 								<td>邮编: <s:textfield name="zplhdr.sczip" cssClass="input_w" maxlength="20"/></td>
 							</tr>
-							
-							<tr align="right">
-								<td colspan="3"><input type="button" cssClass="search_button"  onclick="searchDetail();" value="查询销售订单行明细"></td>
-							</tr>
+						
 						</tbody>
 					</table>
 				</td>
 			</tr>
-			</s:form>
 			<tr>
 				<td>
 					<div id="info" style="height:400px; overflow:auto">
@@ -254,33 +265,44 @@
 						<tbody>
 							
 							<tr>
-								<th><input type="checkbox" name="chk" onclick="selectall(this)" /></th>
+								<!--<th><input type="checkbox" name="chk" onclick="selectall(this)" /></th> -->
 								<!-- <th>客户编码</th>  -->
-								<th>客户名称</th>
+								<th>序号</th>
 								<th>订单号</th>
 								<th>客户PO</th>
 								<th>行号</th>	
-								<th>产品</th>
-								<th>客户项目编码</th>
-								<th>订货量</th>
-								<th>已出货量</th>
-								<th>库存量</th>
+								<th>客户料号 / 我方料号描述</th>
 								<th>未出货量</th>
 								<th>交货量</th>
 								<th>装箱单号</th>
 								<th>箱数</th>
 							</tr>
-							
+							<s:iterator value="mresults" id="it" status="st">
+										<tr>
+											<input type="hidden" name="pldln" value="<s:property value="#it.pldln" />" />
+											<td align="center"><s:property value="#it.idx" /></td>
+											<td align="center"><s:property value="#it.cusodrno" /></td>
+											<td align="center"><s:property value="#it.ponum" /></td>
+											<td align="center"><fmt:formatNumber value="${it.cusln}" pattern="#0" /></td>
+											<td align="center"><s:property value="#it.cwlms" /></td>
+											<td align="center"><s:property value="#it.plqtyno" /></td>
+											<td align="center"><input type="text" name="plqtys"  style="width:50px" value="<s:property value="#it.plqty"  />"> </td>
+											<td align="center"><input type="text" name="xhs"  style="width:50px" value="<s:property value="#it.xhs"  />"></td>
+											<td align="center"><input type="text" name="xss"  style="width:50px" value="<fmt:formatNumber value="${it.xss}" pattern="#0" />"></td></td>
+										</tr>
+									</s:iterator>		
 						</tbody>
 					</table>
 					</div>
 				</td>
 			</tr>	
+			</s:form>
 				<tr align="center">
 				<td> 
 					<table width="100%">
 						<tr align="center">
-							<td><input type="button" cssClass="search_button"  onclick="createNotice();" value="创建出货通知单"></td>
+							<td><input type="button" cssClass="search_button"  onclick="domodfiy();" value="保存"></td>
+							<td><input type="button" cssClass="search_button"  onclick="comfirmn();" value="确认通知单"></td>
 						</tr>
 					</table>
 				</td>
@@ -288,5 +310,36 @@
 		<tbody>
 	</table>
 </body>
-
+<script type="text/javascript">
+	function comfirmn(){
+		//document.getElementsByName("queryform")[0].action="sales!confirmNotice.action";
+		//document.getElementsByName("queryform")[0].submit();
+		var pldno = document.getElementsByName("pldno")[0].value;
+		$.ajax( {  
+		       url:'zplhdrs!toConfirm.action',// 跳转到 action  
+		       data:{  
+		                "ordno" : pldno
+		       },  
+		      type:'post',  
+		      cache:false,  
+		      success:function(data) {// alert(data);
+		      	//var json = $.parseJSON(data);
+		        //alert(json.retStr); 
+		        //document.getElementById("info").innerHTML=json.retStr;
+		        if($.trim(data)=="success"){
+		        	alert("确认成功！");  
+		        	window.close();
+		        }else{
+		        	alert("确认失败，请联系管理员！"); 
+		        }
+		       },  
+		       error : function() {  
+		            alert("确认失败，请联系管理员！"); 
+		       }  
+		  });
+	}
+	function domodfiy(){
+		document.getElementsByName("queryform")[0].submit();
+	}
+</script>
 </html>

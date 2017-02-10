@@ -508,8 +508,9 @@ public class ZplhdrAction extends BaseAction {
 	 * @return
 	 * @throws Exception
 	 */
-	public String addZipdtl() throws Exception {
+	public String addZplhdr() throws Exception {
 		try {
+			
 		} catch (Exception e) {e.printStackTrace();
 			log.error("Go to admin resource operation grant page occured error.", e);
 			data="fail";
@@ -517,7 +518,7 @@ public class ZplhdrAction extends BaseAction {
 			return "toAddZipdtl";
 		}
 		data="success";
-		return "toAddZipdtl";
+		return "todata";
 	}
 	
 
@@ -782,7 +783,7 @@ public class ZplhdrAction extends BaseAction {
 		return "toPrintOne";
 	}
 	
-	public String toZiphdrList() throws Exception {
+	public String confirmNotice() throws Exception {
 		try {
 		} catch (Exception e) {e.printStackTrace();
 			log.error("Go to admin resource operation grant page occured error.", e);
@@ -820,37 +821,170 @@ public class ZplhdrAction extends BaseAction {
 		return "toZipdtl";
 	}
 	
-	public String toEditZipdtl() throws Exception {
+	public String toEditZplhdr() throws Exception {
 		try {
-//			ZIPDTLVO vo = new ZIPDTLVO();
-//			vo.setIpdno(ipdno);
-//			vo.setIpdln(BigDecimal.valueOf(Double.valueOf(ipdln).longValue()));
-//			vo.setLstat("05,10");
-//			dresults= this.ziphdrService.queryItems(vo);
-//			if(dresults!=null && dresults.size()>0){
-//				zipdtlvo=dresults.get(0);
+			int plant =(Integer)this.getSession().getAttribute("plant");
+			String stid = (String)this.getSession().getAttribute("stid");
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+//			ZBMSCTLVO zbmsctl = new ZBMSCTLVO();
+//			zbmsctl.setSite(stid);
+//			List<ZBMSCTLVO> bmsctlList = this.zbmsctlService.queryZbmsctl(zbmsctl);
+//			if(bmsctlList!=null && bmsctlList.size()>0){
+//				zbmsctl = bmsctlList.get(0);
+//				this.companyn=zbmsctl.getNmchs();
 //			}
+			if(this.pldno!=null && pldno.trim().length()>0){
+				this.pldno=pldno.trim();
+				ZPLHDRVO pvo = new ZPLHDRVO();
+				pvo.setPldno(pldno);
+				List<ZPLHDRVO> zplhdrs  = this.zplhdrService.queryZplhdr(pvo);
+				if(zplhdrs!=null && zplhdrs.size()>0){
+					this.zplhdr = zplhdrs.get(0);
+//					String qrMessage = "*V"+zplhdr.getPldno();
+//					String encoderQRCoder = QRcoderUtil.encoderQRCoder(qrMessage, ServletActionContext.getContext().getSession().get("username").toString(),getSession().getServletContext().getRealPath("/"));
+//					HttpServletRequest request = ServletActionContext.getRequest();
+//					String path = request.getContextPath(); 
+//					String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+//					qrcodeurl = basePath+"/"+encoderQRCoder;
+					Map pmap = new HashMap();
+					pmap.put("c8bhst", zplhdr.getIncot());
+					List<String> templist2 = this.xadataService.queryTransport(pmap);
+					if(templist2!=null && templist2.size()>0){
+						String transsport = templist2.get(0);
+						this.incots = transsport.split("-")[1];
+					}
+					
+					startDate = (zplhdr.getEtdate()+19000000)+"" ;
+					ZPLDTLVO dpvo = new ZPLDTLVO();
+					dpvo.setPldno(pldno);
+					List<ZPLDTLVO> zpldtls = this.zplhdrService.queryReceipt(dpvo);
+					ZPLBOXVO bpvo = new ZPLBOXVO();
+					bpvo.setPldno(pldno);
+					List<ZPLBOXVO> zplboxes = this.zplhdrService.queryBch(bpvo);
+					
+					if(zpldtls!=null && zpldtls.size()>0){
+						this.mresults = new ArrayList<Map>();
+						for(int i=0;i<zpldtls.size();i++){
+							ZPLDTLVO tvo = zpldtls.get(i);
+							Map reusltmap = new HashMap();
+							reusltmap.put("idx", i+1);
+							reusltmap.put("cusodrno", tvo.getC6aenb()+(tvo.getC6dccd().trim().equals("1")?"CO":"CM")+"-"+tvo.getC6cvnb());
+							reusltmap.put("cusln", tvo.getCdfcnb());
+							reusltmap.put("ponum", tvo.getPonum());
+							reusltmap.put("plqty", tvo.getPlqty());
+							reusltmap.put("plqty", tvo.getPlqty());
+							reusltmap.put("pldln", tvo.getPldln()==null?0:tvo.getPldln().intValue());
+							Map bpmap = new HashMap();
+							bpmap.put("biaitx", tvo.getItnbr());
+							bpmap.put("bicanb", zplhdr.getCusno().longValue());
+							List<String> bicresults = this.xadataService.queryMbbirep(bpmap);
+							String cusitnr = "";
+							if(bicresults!=null && bicresults.size()>0){
+								cusitnr = bicresults.get(0);
+							}
+							
+							if(zplboxes!=null && zplboxes.size()>0){
+								ZPLBOXVO bvo = zplboxes.get(i);
+								reusltmap.put("xhs", bvo.getBoxnm());
+								reusltmap.put("xss",(bvo.getBoxes()==null?0:bvo.getBoxes().floatValue()));
+//								this.sxs=sxs+(bvo.getBoxes()==null?0:bvo.getBoxes().floatValue());
+							}
+							MBCDREPVO mbcdrep = new MBCDREPVO();
+							mbcdrep.setCdaenb(plant+"");
+							mbcdrep.setCddccd("1");
+							mbcdrep.setCdcvnb(tvo.getC6cvnb());
+							mbcdrep.setCdfcnb(tvo.getCdfcnb()+"");
+							List<MBCDREPVO> tresults = this.xadataService.queryMbcdrep(mbcdrep);
+							if(tresults!=null && tresults.size()>0){
+								MBCDREPVO tresult = tresults.get(0);
+								ZPLDTLVO pvo2 = new ZPLDTLVO();
+								pvo2.setC6cvnb(tvo.getC6cvnb());
+								pvo2.setC6dccd("1");
+								pvo2.setCdfcnb(tvo.getCdfcnb());
+								pvo2.setC6aenb(plant+"");
+								Double sumqty = this.zplhdrService.queryDtlQty(pvo2);
+								
+								reusltmap.put("plqtyno", (tresult.getCdfxva().add(tresult.getCdz901().negate()).doubleValue()-sumqty));
+							}else{
+								reusltmap.put("plqtyno", 0);
+							}
+							ITMSITVO itmsitvo = new ITMSITVO();
+							itmsitvo.setHouse(stid);
+							itmsitvo.setItnot9(tvo.getItnbr().trim());
+							String itrvt = "";
+							List<String> itrvts = this.xadataService.queryItrvt(itmsitvo);
+							if(itrvts!=null && itrvts.size()>0){
+								itrvt=itrvts.get(0);
+							}
+							ITMRVAVO itmrVo = new ITMRVAVO();
+							itmrVo.setItnbr(tvo.getItnbr().trim());
+							itmrVo.setHouse(stid);
+							itmrVo.setItrv(itrvt);
+							List<ITMRVAVO> itmrLists = this.xadataService.queryItmrva(itmrVo);
+							if(itmrLists!=null && itmrLists.size()>0){
+								ITMRVAVO itmvo = itmrLists.get(0);
+//								vo.setWght1(itmvo.getWeght().multiply(BigDecimal.valueOf(Double.valueOf(qtysstrs[j]))));
+//								vo.setWtum1(itmvo.getB2cqcd());
+//								vo.setWght2(BigDecimal.valueOf(Double.valueOf(qtysstrs[j])).divide((itmvo.getB2z95t()==null || itmvo.getB2z95t().floatValue()==0)?BigDecimal.valueOf(1):itmvo.getB2z95t()).multiply(itmvo.getB2aas3()));
+//								vo.setWtum2(itmvo.getB2aapt());
+								reusltmap.put("b2z95t", itmvo.getB2z95t());
+
+								reusltmap.put("cwlms", cusitnr+"/"+itmvo.getItdsc());
+								reusltmap.put("jzsl", itmvo.getWeght()+"/"+itmvo.getB2aas3());
+							}
+//							reusltmap.put("plsub", tvo.getPlsub());
+//							reusltmap.put("plloc", tvo.getPlloc());
+							mresults.add(reusltmap);
+							
+						}
+					}
+					
+					
+				}
+			}
 		} catch (Exception e) {e.printStackTrace();
 			log.error("Go to admin resource operation grant page occured error.", e);
 			return ERROR;
 		}
-		return "toEditZipdtl";
+		return "toEditZplhdr";
 	}
 	
-	public String editZipdtl() throws Exception {
+	public String editNotice() throws Exception {
 		try {
-			if("3".equals(iptyp)){
-				zipdtlvo.setShqty(zipdtlvo.getShqty().negate());
+			System.out.println("this.zplhdr.getPldno()"+pldno+"-"+this.zplhdr.getStnam());
+			String[] pldlns = this.getRequest().getParameterValues("pldln");
+			String[] plqtys = this.getRequest().getParameterValues("plqtys");
+			String[] xhs = this.getRequest().getParameterValues("xhs");
+			String[] xss = this.getRequest().getParameterValues("xss");
+			System.out.println(plqtys.length);
+			if(pldlns!=null && pldlns.length>0){
+				List<ZPLDTLVO> pzpldtls = new ArrayList<ZPLDTLVO>();
+				List<ZPLBOXVO> pzplboxs = new ArrayList<ZPLBOXVO>();
+ 				for(int i=0;i<pldlns.length;i++){System.out.println("pldlns"+i+"="+pldlns[i]+";"+xss[i]);
+ 					ZPLDTLVO tvo = new ZPLDTLVO();
+ 					tvo.setPldno(pldno);
+ 					tvo.setPldln(BigDecimal.valueOf(Long.valueOf(pldlns[i])));
+ 					tvo.setPlqty(BigDecimal.valueOf(Float.valueOf(plqtys[i])));
+ 					pzpldtls.add(tvo);
+ 					ZPLBOXVO xvo = new ZPLBOXVO();
+ 					xvo.setPldno(pldno);
+ 					xvo.setPldln(BigDecimal.valueOf(Long.valueOf(pldlns[i])));
+ 					xvo.setBoxln(BigDecimal.valueOf(Long.valueOf(1)));
+ 					xvo.setBoxes(BigDecimal.valueOf(Long.valueOf(xss[i])));
+ 					xvo.setBoxnm(xhs[i]);
+ 					pzplboxs.add(xvo);
+				}
+ 				this.zplhdrService.updateZplhdrA(zplhdr, pzpldtls, pzplboxs);
 			}
-			this.ziphdrService.updateZipitmQty(zipdtlvo);
+			//this.ziphdrService.updateZipitmQty(zipdtlvo);
 			data="success";
 		} catch (Exception e) {e.printStackTrace();
 			log.error("Go to admin resource operation grant page occured error.", e);
 			data="fail";
 			reason="修改数量异常";
-			return "toEditZipdtl";
+			return "toEditZplhdr";
 		}
-		return "toEditZipdtl";
+		return "toEditZplhdr";
 	}
 	public String getBmsReason() throws Exception {
 		try {
@@ -936,11 +1070,22 @@ public class ZplhdrAction extends BaseAction {
 	}
 	
 	public String toConfirm() throws Exception {
-		try {} catch (Exception e) {e.printStackTrace();
+		try {
+			if(this.ordno!=null && this.ordno.trim().length()>0){
+				ZPLHDRVO pvo = new ZPLHDRVO();
+				pvo.setPldno(this.ordno);
+				pvo.setOstat("10");
+				this.zplhdrService.updateZplhdrByPar(pvo);
+				data="success";
+			}else{
+				data="fail";
+			}
+			
+		} catch (Exception e) {e.printStackTrace();
 			log.error("Go to admin resource operation grant page occured error.", e);
 			return ERROR;
 		}
-		return "toZiphdr";
+		return "todata";
 	}
 	
 }

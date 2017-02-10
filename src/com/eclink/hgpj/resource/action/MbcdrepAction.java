@@ -783,8 +783,9 @@ public class MbcdrepAction extends BaseAction {
 			Map parMap = new HashMap();
 			parMap.put("plant", (Integer)this.getSession().getAttribute("plant"));
 			List<String> templist3 = this.xadataService.queryCusnms(parMap);
+			this.customers = new ArrayList<Map>();
 			if(templist3!=null && templist3.size()>0){
-				this.customers = new ArrayList<Map>();
+				
 				Map map0 = new HashMap();
 				map0.put("cusno", "");
 				map0.put("cusnm", "");
