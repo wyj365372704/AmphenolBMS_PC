@@ -18,11 +18,13 @@ import com.eclink.dfcm.paginator.tag.PageVO;
 import com.eclink.hgpj.base.BaseAction;
 import com.eclink.hgpj.common.HGPJConstant;
 import com.eclink.hgpj.resource.biz.XADATAService;
+import com.eclink.hgpj.resource.biz.ZBMSCTLService;
 import com.eclink.hgpj.resource.biz.ZGRNHDRService;
 import com.eclink.hgpj.resource.biz.ZITMBXService;
 import com.eclink.hgpj.resource.dao.ibatis.ZITEMBXDaoImpl;
 import com.eclink.hgpj.resource.vo.ITMRVAVO;
 import com.eclink.hgpj.resource.vo.VENNAMVO;
+import com.eclink.hgpj.resource.vo.ZBMSCTLVO;
 import com.eclink.hgpj.resource.vo.ZGRNBCHVO;
 import com.eclink.hgpj.resource.vo.ZGRNHDRVO;
 import com.eclink.hgpj.resource.vo.ZGRNITMVO;
@@ -49,6 +51,8 @@ public class GrnAction extends BaseAction {
 	private XADATAService xadataService;
 
 	private ZITMBXService zitmbxService;
+	
+	private ZBMSCTLService zbmsctlService;
 
 	private VENNAMVO vennamvo;
 
@@ -74,6 +78,13 @@ public class GrnAction extends BaseAction {
 		this.zgrnhdrService = zgrnhdrService;
 	}
 
+	public ZBMSCTLService getZbmsctlService() {
+		return zbmsctlService;
+	}
+
+	public void setZbmsctlService(ZBMSCTLService zbmsctlService) {
+		this.zbmsctlService = zbmsctlService;
+	}
 
 	public int getQuery() {
 		return query;
@@ -190,6 +201,7 @@ public class GrnAction extends BaseAction {
 			if(query==0){
 				return "toGrn";
 			}
+			zgrnhdr.setOstat("40,50");
 			results = this.zgrnhdrService.queryReceiptList(zgrnhdr);
 
 			for(ZGRNHDRVO zgrnhdrvo:results){
@@ -273,8 +285,16 @@ public class GrnAction extends BaseAction {
 				}
 			}
 			ActionContext.getContext().getValueStack().set("results", results);
+			
 			Date dt = new Date();
 			mydate = Utils.formateDate(dt, "yyyy-MM-dd HH:mm:ss");
+			
+			ZBMSCTLVO zbmsctl = new ZBMSCTLVO();
+			zbmsctl.setSite((String) getSession().getAttribute("stid"));
+			List<ZBMSCTLVO> bmsctlList = zbmsctlService.queryZbmsctl(zbmsctl);
+			if(bmsctlList!=null && bmsctlList.size()>0){
+				ActionContext.getContext().getValueStack().set("nmchs", bmsctlList.get(0).getNmchs());
+			}
 		} catch (Exception e) {e.printStackTrace();
 		log.error("收货单查询失败", e);
 		return ERROR;

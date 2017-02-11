@@ -116,7 +116,13 @@
 	<select id="queryReceiptList" resultMap="ZGRNHDR2VOMap"
 		parameterClass="ZGRNHDRVO">
 		<![CDATA[select  *
-		from  ZGRNHDR where   SHPNO like ('%'||#shpno#||'%') ORDER BY CRDT DESC ,CRTM DESC
+		from  ZGRNHDR where   SHPNO like ('%'||#shpno#||'%')
+		]]>
+		<isNotEmpty prepend="AND" property="ostat">
+			OSTAT IN ($ostat$)
+		</isNotEmpty>
+		<![CDATA[
+			ORDER BY CRDT DESC ,CRTM DESC
 		]]>
 		<!-- <![CDATA[select * from ZGRNHDR where OSTAT='10' ]]> <dynamic> <isNotEmpty 
 			prepend="AND" property="grnno"> GRNNO like ('%'||#grnno#||'%') </isNotEmpty> 
