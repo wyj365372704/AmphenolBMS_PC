@@ -35,7 +35,7 @@
 						<tbody>
 							<tr>
 								<td align="center" width="100%">
-									<span style="font-weight: bold;font-size:18px;">安费诺凯杰科技(深圳)有限公司</span>
+									<span style="font-weight: bold;font-size:18px;">${nmchs}</span>
 								</td>
 							</tr>
 							<tr>

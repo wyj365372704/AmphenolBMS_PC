@@ -317,6 +317,13 @@ public class TurnoverTagAction extends BaseAction {
 			
 			ServletActionContext.getRequest().setAttribute("qrcodeurl", basePath+"/"+encoderQRCoder);
 			
+			ZBMSCTLVO zbmsctl = new ZBMSCTLVO();
+			zbmsctl.setSite((String) getSession().getAttribute("stid"));
+			List<ZBMSCTLVO> bmsctlList = zbmsctlService.queryZbmsctl(zbmsctl);
+			if(bmsctlList!=null && bmsctlList.size()>0){
+				ServletActionContext.getRequest().setAttribute("nmchs", bmsctlList.get(0).getNmchs());
+			}
+			
 			// 获取分页信息
 			PageVO page = PaginatorUtil.getPaginator(getRequest());
 			// setPagination(role,page);

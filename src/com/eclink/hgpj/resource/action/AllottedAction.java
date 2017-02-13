@@ -317,7 +317,6 @@ public class AllottedAction extends BaseAction {
 				String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 				String qrcodeurl = basePath+"/"+encoderQRCoder;
 				ActionContext.getContext().getValueStack().set("qrcodeurl", qrcodeurl);
-				
 			}else{
 				return ERROR;
 			}
