@@ -40,7 +40,7 @@
 	
 	<select id="getMenuTreeListForUserN" resultClass="MenuVO" parameterClass="String">
 		SELECT c.MNUID AS menuId, c.MNUNM AS menuName, c.UPMNU AS parentMenu, c.MNUKEY AS menuKey,  c.MURL AS menuUrl, c.MNUODR AS menuOrder ,c.MTYPE AS menuType
-			FROM ZBMSMNU c WHERE c.MNUID IN ( SELECT b.MNUID FROM ZBMSU07 a,ZBMSU06 b where a.USRGRP=b.USRGRP and a.BMSUSR=#userName#) ORDER BY parentMenu,menuOrder 
+			FROM ZBMSMNU c WHERE c.MNUID IN ( SELECT b.MNUID FROM ZBMSU07 a,ZBMSU06 b where a.USRGRP=b.USRGRP and a.BMSUSR=#userName#) AND c.mnsys='BMS' ORDER BY parentMenu,menuOrder 
 	</select>
 	
 	<!-- 根据菜单ID获取菜单信息 -->
