@@ -53,6 +53,10 @@ public class PickListAction extends BaseAction {
 	private String grnno;
 
 	private String ipdno;
+	
+	private String iptyp;
+	
+	private String ostat;
 
 	private String startDate;
 
@@ -82,6 +86,22 @@ public class PickListAction extends BaseAction {
 
 	public String getIpdno() {
 		return ipdno;
+	}
+
+	public String getIptyp() {
+		return iptyp;
+	}
+
+	public void setIptyp(String iptyp) {
+		this.iptyp = iptyp;
+	}
+
+	public String getOstat() {
+		return ostat;
+	}
+
+	public void setOstat(String ostat) {
+		this.ostat = ostat;
 	}
 
 	public void setIpdno(String ipdno) {
@@ -215,6 +235,9 @@ public class PickListAction extends BaseAction {
 				if(endDate!=null && endDate.length()>0){
 					map.put("endDate", BigDecimal.valueOf(Long.valueOf("1"+Utils.formateDate(sdf.parse(endDate), "yyMMdd"))));
 				}
+				
+				map.put("iptyp", iptyp);
+				map.put("ostat", ostat);
 
 				//			vo.setOrdno(ordno==null?"":ordno);
 				results= this.ziphdrService.queryHdrsByPar(map);

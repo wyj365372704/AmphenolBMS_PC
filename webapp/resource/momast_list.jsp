@@ -157,8 +157,11 @@
 
 				<li><div class="w_s">工单：</div> <s:textarea name="momast.ordno"
 						cssClass="input_w" style="height:30px"></s:textarea></li>
+				<li><div class="w_s">工单状态：</div> 
+				<s:select list="#{'':'全部','10':'已下达','40':'已开始生产','45':'物料完成','50':'工序完成','55':'物料/工序完成','99':'订单取消'}" name="momast.ostat"
+				headerValue="momast.ostat" style="width:80px" cssClass="select_s_2" ></s:select>
+				</li>
 				<li><div class="w_s">打印状态：</div> 
-			
 				<s:select list="#{'':'全部','1':'已打印',' ':'未打印'}" name="momast.uusamy"
 				headerValue="momast.uusamy" style="width:80px" cssClass="select_s_2" ></s:select>
 				</li>

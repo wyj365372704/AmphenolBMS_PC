@@ -156,7 +156,6 @@
 		<![CDATA[ select a.*                                           
 					from ziphdr a                                     
 					where a.OSTAT in ('05', '10')
- 
 		]]>
 		<dynamic>
 			<isNotEmpty prepend="AND" property="ordno">
@@ -201,6 +200,16 @@
 		<dynamic>
 			<isNotEmpty prepend="AND" property="endDate">
                 <![CDATA[a.IPDT1 <= #endDate#]]>
+			</isNotEmpty>
+		</dynamic>
+		<dynamic>
+			<isNotEmpty prepend="AND" property="iptyp">
+                <![CDATA[a.IPTYP = #iptyp#]]>
+			</isNotEmpty>
+		</dynamic>
+		<dynamic>
+			<isNotEmpty prepend="AND" property="ostat">
+                <![CDATA[a.OSTAT = #ostat#]]>
 			</isNotEmpty>
 		</dynamic>
 		<![CDATA[ order by a.IPDNO desc 

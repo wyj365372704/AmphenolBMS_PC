@@ -61,6 +61,30 @@
 
 				<li><div class="w_s">创建日期：</div> <s:textfield  id="startDate" name="startDate" cssClass="time_input" onclick="WdatePicker()" autocomplete="on"/>-
             <s:textfield  id="endDate" name="endDate" cssClass="time_input" onclick="WdatePicker()" autocomplete="on"/></li>
+				<li><div class="w_s">类型：</div> 
+			
+				<s:select list="#{'':'全部','1':'正常','2':'超领','3':'退领'}" name="iptyp"
+				headerValue="iptyp" style="width:80px" cssClass="select_s_2" ></s:select>
+				</li>
+				<li><div class="w_s">状态：</div> 
+				<s:select list="#{'':'全部','05':'创建中','10':'已创建','50':'已完成','60':'已关闭'}" name="ostat"
+				headerValue="ostat" style="width:80px" cssClass="select_s_2" ></s:select>
+				</li>
+			
+			<s:if test="ostat==05">
+	  					创建中
+	  				</s:if>
+	  				<s:if test="ostat==10">
+	  					已创建
+	  				</s:if>
+	  				<s:if test="ostat==50">
+	  					已完成
+	  				</s:if>
+	  				<s:if test="ostat==60">
+	  					已关闭
+	  				</s:if>
+			
+			
 			</ul>
 		</div>
 

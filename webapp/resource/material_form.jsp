@@ -4,11 +4,22 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
+<link href="../css/global.css" rel="stylesheet" type="text/css" />
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>物料标签</title>
+<style type="text/css">
+.tb {
+	border: solid 1px;
+	margin-bottom: 50px;
+}
+
+.btabel tr td {
+	border: 1px solid;
+}
+</style>
 </head>
 <body>
-<table  border="0" cellpadding="2px" style="border-collapse: collapse;">
+<table cellpadding="5px" class="tb" style='page-break-after: always;border-collapse: collapse;'>
 <tr>
 <td rowspan="3" align="center" valign="middle"><img src="${qrcodeurl}" width="80px"/></td><td>物料:${fordrji}</td>
 </tr>

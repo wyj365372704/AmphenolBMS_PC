@@ -408,6 +408,11 @@
 				</iterate>
 			</isNotEmpty>
 		</dynamic>
+			<dynamic>
+			<isNotEmpty prepend="AND" property="ostat">
+				(a.OSTAT = #ostat#)
+			</isNotEmpty>
+		</dynamic>
 		<dynamic>
 			<isNotEmpty prepend="AND" property="ordnodown">
 				(a.ORDNO >=

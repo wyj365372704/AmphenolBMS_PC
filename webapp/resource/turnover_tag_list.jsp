@@ -137,7 +137,7 @@
 
 <script type="text/javascript">
 	function print(ordno, fitem,fdesc,moqty,unmsr,weght,b2cqcd) {
-		window.open('turnover!toTurnoverTag.action?ordno=' + ordno + '&fitem=' + fitem+ '&fdesc=' + fdesc+ '&moqty=' + moqty
+		window.open('turnover!toTurnoverTag.action?ordno=' + ordno + '&fitem=' + fitem+ '&fdesc=' + escape(fdesc)+ '&moqty=' + moqty
 		+ '&unmsr=' + unmsr + '&weght=' + weght+ '&b2cqcd=' + b2cqcd, 'newwindow', 'height=500,width=600,top=60,left=200,toolbar=no,menubar=no,scrollbars=no, resizable=no,location=no, status=no');
 	}
 </script>

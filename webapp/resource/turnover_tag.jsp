@@ -121,6 +121,7 @@
 		var ordno = document.getElementById("ordno").value; // 工单
 		var fitem = document.getElementById("fitem").value; // 产品
 		var fdesc = document.getElementById("fdesc").value; // 描述
+		fdesc = unescape(fdesc);
 		var moqty = document.getElementById("moqty").value; // 数量
 		var unmsr = document.getElementById("unmsr").value; // 数量单位
 		var weght = document.getElementById("weght").value; // 单重
@@ -161,7 +162,7 @@
 
 		window
 				.open(
-						'turnover!toPrintTurnoverTag.action?ordno=' + ordno + '&fitem=' + fitem +'&fdesc=' + fdesc + '&moqty=' + moqty + '&unmsr=' + unmsr + '&weght=' + weght + '&b2cqcd=' + b2cqcd + '&batch=' + batch + '&mydate=' + mydate + '&prounit=' + prounit,
+						'turnover!toPrintTurnoverTag.action?ordno=' + ordno + '&fitem=' + fitem +'&fdesc=' + encodeURI(fdesc) + '&moqty=' + moqty + '&unmsr=' + unmsr + '&weght=' + weght + '&b2cqcd=' + b2cqcd + '&batch=' + batch + '&mydate=' + mydate + '&prounit=' + prounit,
 						'newwindow',
 						'height=400,width=500,top=50,left=100,toolbar=no,menubar=no,scrollbars=no, resizable=no,location=no, status=no');
 	}
