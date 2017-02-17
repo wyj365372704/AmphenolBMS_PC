@@ -7707,6 +7707,7 @@ public class ResourceAction extends BaseAction {
 			//			for(int i=0;i<pars.length;i++ ){
 			//				System.out.println("pars "+ i+"="+pars[i]);
 			//			}
+			System.out.println("mlService......");
 			Enumeration paramNames = this.getRequest().getParameterNames();  
 			while (paramNames.hasMoreElements()) {  
 				String paramName = (String) paramNames.nextElement();  
