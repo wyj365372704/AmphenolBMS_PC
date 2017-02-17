@@ -655,7 +655,7 @@ public class ZplhdrAction extends BaseAction {
 				List<ZPLHDRVO> zplhdrs  = this.zplhdrService.queryZplhdr(pvo);
 				if(zplhdrs!=null && zplhdrs.size()>0){
 					this.zplhdr = zplhdrs.get(0);
-					String qrMessage = "*V"+zplhdr.getPldno();
+					String qrMessage = "*C"+zplhdr.getPldno();
 					String encoderQRCoder = QRcoderUtil.encoderQRCoder(qrMessage, ServletActionContext.getContext().getSession().get("username").toString(),getSession().getServletContext().getRealPath("/"));
 					HttpServletRequest request = ServletActionContext.getRequest();
 					String path = request.getContextPath(); 
