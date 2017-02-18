@@ -7696,7 +7696,7 @@ public class ResourceAction extends BaseAction {
 	
 
 	/**
-	 * 菜单资源排序页面
+	 * 三角贸易
 	 * @return
 	 * @throws Exception
 	 */
@@ -7707,12 +7707,54 @@ public class ResourceAction extends BaseAction {
 			//			for(int i=0;i<pars.length;i++ ){
 			//				System.out.println("pars "+ i+"="+pars[i]);
 			//			}
+			String dbconfigurl=(String)this.getSession().getServletContext().getAttribute("dbconfigurl");
+			if(dbconfigurl==null || dbconfigurl.trim().equals("")){
+				dbconfigurl=this.getSession().getServletContext().getRealPath("/WEB-INF")+ "/classes/com/eclink/hgpj/util/dbconfig.properties";
+				this.getSession().getServletContext().setAttribute("dbconfigurl",dbconfigurl);
+			}
+			InputStream configInStream = null;  
+			Properties properties = new Properties(); 
+			configInStream = new BufferedInputStream(new FileInputStream(dbconfigurl));
+
+			properties.load(configInStream);
+			
 			System.out.println("mlService......");
 			Enumeration paramNames = this.getRequest().getParameterNames();  
 			while (paramNames.hasMoreElements()) {  
 				String paramName = (String) paramNames.nextElement();  
 				System.out.println(paramName);
 				System.out.println(this.getRequest().getParameter(paramName));
+				if("C".equals(paramName)){
+					String systemlinkxml = this.getRequest().getParameter(paramName);
+					if(systemlinkxml!=null && systemlinkxml.trim().length()>0){
+						if(systemlinkxml.contains("<DataItem itemName='NotificationText'><![CDATA[")){
+							String jsondata = systemlinkxml.substring(systemlinkxml.indexOf("<DataItem itemName='NotificationText'><![CDATA[")+"<DataItem itemName='NotificationText'><![CDATA[".length(), systemlinkxml.indexOf("]]></DataItem>")+"]]></DataItem>".length());
+							JSONObject json = JSONObject.fromObject(jsondata);
+							String C6AENB=(String)json.get("C6AENB");
+							String C6DCCD=(String)json.get("C6DCCD");
+							String C6CVNB=(String)json.get("C6CVNB");
+							String renv=(String)json.get("env");
+							String mllib="";
+							if(renv!=null && renv.trim().length()>0){
+								while(properties.elements().hasMoreElements()){
+									String key=(String)properties.elements().nextElement();
+									if(renv.trim().equals(properties.getProperty(key))){
+										String idx = key.substring(key.indexOf("ENVID")+"ENVID".length());
+										mllib=properties.getProperty("MLLIB"+idx);
+										break;
+									}
+								}
+								
+							}
+							
+						}
+					}
+					
+				}else if("U".equals(paramName)){
+					
+				}else if("D".equals(paramName)){
+					
+				}
 			}  
 		} catch (Exception e) {e.printStackTrace();
 		log.error("Sort menu occured error.", e);
@@ -7720,7 +7762,39 @@ public class ResourceAction extends BaseAction {
 		}
 		return "info";
 	}
-
+	//三角贸易发票
+	public String mlInvService() throws Exception {
+		try {
+			//			Map mp = this.getRequest().getParameterMap();
+			//			String[] pars = (String[] )mp.keySet().toArray();
+			//			for(int i=0;i<pars.length;i++ ){
+			//				System.out.println("pars "+ i+"="+pars[i]);
+			//			}
+//			String dbconfigurl=(String)this.getSession().getServletContext().getAttribute("dbconfigurl");
+//			if(dbconfigurl==null || dbconfigurl.trim().equals("")){
+//				dbconfigurl=this.getSession().getServletContext().getRealPath("/WEB-INF")+ "/classes/com/eclink/hgpj/util/dbconfig.properties";
+//				this.getSession().getServletContext().setAttribute("dbconfigurl",dbconfigurl);
+//			}
+//			InputStream configInStream = null;  
+//			Properties properties = new Properties(); 
+//			configInStream = new BufferedInputStream(new FileInputStream(dbconfigurl));
+//
+//			properties.load(configInStream);
+			
+			System.out.println("mlInvService......");
+			Enumeration paramNames = this.getRequest().getParameterNames();  
+			while (paramNames.hasMoreElements()) {  
+				String paramName = (String) paramNames.nextElement();  
+				System.out.println(paramName);
+				System.out.println(this.getRequest().getParameter(paramName));
+				
+			}  
+		} catch (Exception e) {e.printStackTrace();
+		log.error("Sort menu occured error.", e);
+		return ERROR;
+		}
+		return "info";
+	}
 	/**
 	 * 进入菜单资源修改页面
 	 * @return
