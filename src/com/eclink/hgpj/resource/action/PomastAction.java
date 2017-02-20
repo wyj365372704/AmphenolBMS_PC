@@ -1339,6 +1339,10 @@ public class PomastAction extends BaseAction {
 					schrcpvo.setOrdrji(zdelidavo.getOrdrji());
 					schrcpvo.setPisqji(zdelidavo.getPisqji());
 					schrcpvo.setBksqji(zdelidavo.getBksqji());
+					/**
+					 * XA只允许对状态为05/10/40 的采购单进行交期修改
+					 */
+					schrcpvo.setRcpsji("05,10,35,40");
 					List<SCHRCPVO> querySchrcp = xadataService.querySchrcp(schrcpvo);
 					if(querySchrcp.size()>0){
 						schrcpvo = querySchrcp.get(0);
@@ -1378,13 +1382,14 @@ public class PomastAction extends BaseAction {
 			parames.put("ordrji", ordrji);
 			parames.put("pisqji", pisqji);
 			parames.put("bksqji", bksqji);
-			SimpleDateFormat sf  = new SimpleDateFormat("yyyy-MM-dd");
-			parames.put("wkdtji", new SimpleDateFormat("yyyyMMdd").format(sf.parse(wkdtji)));
+			
 			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
 			String currentDate = dateFormat.format(new Date());
 			parames.put("currentDate", currentDate);
 			if(allow.equals("1")){
 				parames.put("staus", "40");
+				SimpleDateFormat sf  = new SimpleDateFormat("yyyy-MM-dd");
+				parames.put("wkdtji", new SimpleDateFormat("yyyyMMdd").format(sf.parse(wkdtji)));
 			}else{
 				parames.put("staus", "50");
 			}

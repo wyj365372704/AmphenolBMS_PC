@@ -134,6 +134,11 @@ public class ZVRHDRServiceImpl implements ZVRHDRService {
 			zvrhdrvo.setVrdno(vo.getVrdno());
 			zvrhdrvo.setOstat("50");
 			zvrhdrDao.changeZvrhdrState(zvrhdrvo);
+		}else{
+			ZVRHDRVO zvrhdrvo = new ZVRHDRVO();
+			zvrhdrvo.setVrdno(vo.getVrdno());
+			zvrhdrvo.setOstat("40");
+			zvrhdrDao.changeZvrhdrState(zvrhdrvo);
 		}
 	}
 

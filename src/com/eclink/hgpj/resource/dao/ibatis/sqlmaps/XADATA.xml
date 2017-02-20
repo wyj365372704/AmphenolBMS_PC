@@ -759,6 +759,9 @@
 			<isNotNull prepend="AND" property="bksqji">
 				BKSQJI = #bksqji#
 			</isNotNull>
+			<isNotNull prepend="AND" property="rcpsji">
+				RCPSJI in ($rcpsji$)
+			</isNotNull>
 		</dynamic>
 	</select>
 

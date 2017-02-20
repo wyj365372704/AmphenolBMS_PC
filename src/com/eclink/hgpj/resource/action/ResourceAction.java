@@ -6879,13 +6879,14 @@ public class ResourceAction extends BaseAction {
 				String stid =Utils.getDataSourceS(dbconfigurl, "STID"+idx);
 
 				Map map = new HashMap();
-				map.put("vrdno", return_number);
+				map.put("vrdno", new String[]{return_number});
 				List<ZVRHDRVO> queryZvrhdr = zvrhdrService.queryZvrhdr(map);
 				if(queryZvrhdr.size()>0){
 					ZVRHDRVO zvrhdrvo = queryZvrhdr.get(0);
 					String ostat = zvrhdrvo.getOstat().trim();
 					if(ostat.equals("10")||ostat.equals("40")){
 						map.put("vrdln", return_line);
+						map.put("vrdno", return_number);
 						List<ZVRITMVO> queryZvritm = zvrhdrService.queryZvritm(map);
 						if(queryZvritm.size()>0){
 							ZVRITMVO zvritmvo = queryZvritm.get(0);
