@@ -2335,6 +2335,85 @@ public  boolean insertOffShip(String lib, String env, List<Map> pmaps, String li
 
 		}
 	}
+	
+	public  Map getMlCO(String lib,Map pmap) throws Exception{
+		Connection conn = null;
+		InputStream is =null;
+		Statement stmt = null;
+		OutputStream os = null;
+		try{
+			is = new BufferedInputStream(new FileInputStream(this.getClass().getResource("").getPath()+ "/config.properties"));
+			Properties properties = new Properties();
+			properties.load(is);
+			//			Class.forName("");
+			Class.forName(properties.getProperty("DRIVER_NAME"));
+			java.sql.DriverManager.registerDriver (new com.ibm.as400.access.AS400JDBCDriver ()); 
+			//			Class.forName("com.ibm.as400.access.AS400JDBCDriver");	
+			//			conn=DriverManager.getConnection("jdbc:mysql://localhost:3306/QGPL", "", "");
+			String dburl=properties.getProperty("DBURL");
+			String dbip=dburl.split("/")[2];
+			Map rmap = new HashMap();
+			conn=DriverManager.getConnection("jdbc:as400://"+dbip+"/"+lib+";translate binary=true", properties.getProperty("DBUSER"), properties.getProperty("DBPASSWORD"));
+			if(conn!=null){
+					String sql = "select c.*,d.ADBIDT from MBCDREP c inner join MBADREP d on c.CDAENB=d.ADAENB and c.CDDCCD=d.ADDCCD and c.CDCVNB=d.ADCVNB and c.CDFCNB=d.ADFCNB where 1=1 ";
+					if(pmap.get("CDAENB")!=null){
+						sql=sql+" and c.CDAENB="+(Integer)pmap.get("CDAENB");
+					}
+					if(pmap.get("CDDCCD")!=null){
+						sql=sql+" and c.CDDCCD='"+(String)pmap.get("CDDCCD")+"'";
+					}
+					if(pmap.get("CDCVNB")!=null){
+						sql=sql+" and c.CDCVNB='"+(String)pmap.get("CDCVNB")+"'";
+					}
+					if(pmap.get("CDFCNB")!=null){
+						sql=sql+" and c.CDFCNB="+(Integer)pmap.get("CDFCNB");
+					}
+					System.out.println("find is "+sql);
+					stmt = (Statement) conn.createStatement();
+					ResultSet executeQuery = stmt.executeQuery(sql);
+					if(executeQuery.next()){
+						rmap.put("CDFCNB", executeQuery.getInt("CDFCNB"));
+						rmap.put("CDKTNB", executeQuery.getString("CDKTNB"));
+						rmap.put("CDACQT", executeQuery.getFloat("CDACQT"));
+						rmap.put("CDH3ST", executeQuery.getString("CDH3ST"));
+						rmap.put("CDFXVA", executeQuery.getFloat("CDFXVA"));
+						rmap.put("CDAITX", executeQuery.getString("CDAITX"));
+						rmap.put("CDDHCD", executeQuery.getString("CDDHCD"));
+						rmap.put("CDA3CD", executeQuery.getString("CDA3CD"));
+						rmap.put("ADBIDT", executeQuery.getInt("ADBIDT"));
+						rmap.put("CDDOVA", executeQuery.getFloat("CDDOVA"));
+						
+					}
+
+				
+			}else{
+				throw new Exception("conn is null");	
+			}
+			return rmap;
+		}catch(Exception e){
+			e.printStackTrace();
+			return null;
+		}finally{
+			try{
+				if(os!=null){
+					os.close();
+				}
+				if(is!=null){
+					is.close();
+				}
+				if(stmt!=null){
+					stmt.close();
+				}
+				if(conn!=null){
+					conn.close();
+				}
+			}catch(Exception e){
+				e.printStackTrace();
+			}
+
+		}
+	}
+	
 	// 生产发料 PMC/TRDATA 触发更新
 	public  void CallTamjuc(String host,String userName,String password,String env) throws Exception{
 
