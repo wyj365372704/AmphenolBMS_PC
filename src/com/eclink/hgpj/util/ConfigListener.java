@@ -60,11 +60,12 @@ public class ConfigListener implements ServletContextListener {
 				while(rs.next()){ //当前记录指针移动到下一条记录上
 				    String str = rs.getString("ENVID");//得到当前记录的第一个字段(id)的值
 			 		String str2 = rs.getString("AMPHLIB");
-			 		String str3 = rs.getString("AMFLIB");	 		
+			 		String str3 = rs.getString("AMFLIB");
+			 		String str4 = rs.getString("MLLIB");		 		
 			 		String stid  = rs.getString("STID");
 			 		arg0.getServletContext().setAttribute(str, i);
 			 		arg0.getServletContext().setAttribute("STID", stid);
-			 		String out="ENVID"+i+"="+str+"\r\n"+"AMPHLIB"+i+"="+str2+"\r\n"+"AMFLIB"+i+"="+str3+"\r\n"+"STID"+i+"="+stid+"\r\n"+"AMTLIB"+i+"="+rs.getString("AMTLIB")+"\r\n";
+			 		String out="ENVID"+i+"="+str+"\r\n"+"AMPHLIB"+i+"="+str2+"\r\n"+"AMFLIB"+i+"="+str3+"\r\n"+"STID"+i+"="+stid+"\r\n"+"AMTLIB"+i+"="+rs.getString("AMTLIB")+"\r\n"+"MLLIB"+i+"="+str4+"\r\n";
 			 		os.write(out.getBytes());
 			 		System.out.println(out);
 			 		envStidMap.put(str, stid);

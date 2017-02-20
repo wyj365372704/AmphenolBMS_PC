@@ -24,6 +24,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -913,6 +914,734 @@ public class Utils {
 		return sbuff.toString();
 	}
 
+	public static String systemLinkMcc(Map map){
+		StringBuffer sbuff = new StringBuffer();
+		sbuff.append("<?xml version='1.0' encoding='UTF-8'?>");
+		sbuff.append("<!DOCTYPE System-Link SYSTEM 'SystemLinkRequest.dtd'>");
+		sbuff.append("<System-Link>");
+		sbuff.append("<Login userId='");
+		sbuff.append(map.get("sluserId"));
+		sbuff.append("' password='");
+		sbuff.append(map.get("slpassword"));
+		sbuff.append("' maxIdle='900000' properties='com.pjx.cas.domain.EnvironmentId=MC,com.pjx.cas.domain.SystemName=SZERP.MARKWINS.COM,com.pjx.cas.user.LanguageId=zh'/>");
+		sbuff.append("<Request sessionHandle='*current' workHandle='*new' broker='EJB' maxIdle='1000'>");
+		sbuff.append("<Create name = 'createCustomerOrder' domainClass='com.mapics.csm.CustomerOrder'>");
+		sbuff.append("<DomainEntity>            <Key>");
+		sbuff.append("<Property path='company'><Value><![CDATA[");
+		sbuff.append(map.get("company"));
+		sbuff.append("]]></Value>               </Property></Key>");
+
+		sbuff.append("<Property path='customer'><Value><![CDATA[");
+		sbuff.append(map.get("customer"));
+		sbuff.append("]]></Value>               </Property>");
+		
+		sbuff.append("<Property path='relatedCustomerOrderExtension.fdcust'><Value><![CDATA[");
+		sbuff.append(map.get("fdcust"));
+		sbuff.append("]]></Value>               </Property>");
+		
+			sbuff.append("<Property path='shipToInternal'>               <Value><![CDATA[");
+			sbuff.append(map.get("shipToInternal"));
+			sbuff.append("]]></Value>               </Property>");
+
+				sbuff.append("<Property path='relatedSalesOrderExtension.manufacturingDueDate'>               <Value><![CDATA[");
+				sbuff.append(map.get("manufacturingDueDate"));
+				sbuff.append("]]></Value>               </Property>");
+				
+				sbuff.append("<Property path='orderDate'>               <Value><![CDATA[");
+				sbuff.append(map.get("orderDate"));
+				sbuff.append("]]></Value>               </Property>");
+
+		sbuff.append("<Property path='warehouse'>               <Value><![CDATA[");
+		sbuff.append(map.get("warehouse"));
+		sbuff.append("]]></Value>               </Property>");
+
+		sbuff.append("<Property path='relatedSalesOrderExtension.purchaseOrder'>               <Value><![CDATA[");
+		sbuff.append(map.get("purchaseOrder"));
+		sbuff.append("]]></Value>               </Property>");
+
+		sbuff.append("<Property path='requestDate'>               <Value><![CDATA[");
+		sbuff.append(map.get("requestDate"));
+		sbuff.append("]]></Value>               </Property>");
+
+		sbuff.append("<Property path='salesrep'>               <Value><![CDATA[");
+		sbuff.append(map.get("salesrep"));
+		sbuff.append("]]></Value>               </Property>");
+
+		sbuff.append("<Property path='userFieldCodeA'>               <Value><![CDATA[");
+		sbuff.append(map.get("userFieldCodeA"));
+		sbuff.append("]]></Value>               </Property>");
+
+		sbuff.append("<Property path='orderReference'>               <Value><![CDATA[");
+		sbuff.append(map.get("orderReference"));
+		sbuff.append("]]></Value>               </Property>");
+
+		sbuff.append("</DomainEntity>      </Create>   </Request><Logout sessionHandle='*current'/></System-Link>");
+		//		map.put("systemLinkStr", sbuff.toString());
+		//		return postXMLRequest((String)map.get("slurl"), sbuff.toString());
+		String retStr = postXMLRequest((String)map.get("slurl"), sbuff.toString());
+		System.out.println( sbuff.toString());
+		map.put("systemLinkStr", retStr);
+		return sbuff.toString();
+	}
+	
+	public static String systemLinkMccd(Map map){
+		StringBuffer sbuff = new StringBuffer();
+		sbuff.append("<?xml version='1.0' encoding='UTF-8'?>");
+		sbuff.append("<!DOCTYPE System-Link SYSTEM 'SystemLinkRequest.dtd'>");
+		sbuff.append("<System-Link>");
+		sbuff.append("<Login userId='");
+		sbuff.append(map.get("sluserId"));
+		sbuff.append("' password='");
+		sbuff.append(map.get("slpassword"));
+		sbuff.append("' maxIdle='900000' properties='com.pjx.cas.domain.EnvironmentId=MC,com.pjx.cas.domain.SystemName=SZERP.MARKWINS.COM,com.pjx.cas.user.LanguageId=zh'/>");
+		sbuff.append("<Request sessionHandle='*current' workHandle='*new' broker='EJB' maxIdle='1000'>");
+		sbuff.append("<Create name = 'CoLineItem' domainClass='com.mapics.csm.CoLineItem'>");
+		sbuff.append("<DomainEntity>            <Key>");
+		sbuff.append("<Property path='company'><Value><![CDATA[");
+		sbuff.append(map.get("company"));
+		sbuff.append("]]></Value>               </Property>");
+		sbuff.append("<Property path='order'><Value><![CDATA[");
+		sbuff.append(map.get("order"));
+		sbuff.append("]]></Value>               </Property>");
+		
+		sbuff.append("</Key>");
+
+		sbuff.append("<Property path='entryCurrencyType'><Value><![CDATA[");
+		sbuff.append(map.get("entryCurrencyType"));
+		sbuff.append("]]></Value>               </Property>");
+		
+		sbuff.append("<Property path='internalItem'><Value><![CDATA[");
+		sbuff.append(map.get("internalItem"));
+		sbuff.append("]]></Value>               </Property>");
+		
+			sbuff.append("<Property path='warehouse'>               <Value><![CDATA[");
+			sbuff.append(map.get("warehouse"));
+			sbuff.append("]]></Value>               </Property>");
+
+				sbuff.append("<Property path='manufacturingDueDate'>               <Value><![CDATA[");
+				sbuff.append(map.get("manufacturingDueDate"));
+				sbuff.append("]]></Value>               </Property>");
+				
+				sbuff.append("<Property path='allocationType'>               <Value><![CDATA[");
+				sbuff.append(map.get("allocationType"));
+				sbuff.append("]]></Value>               </Property>");
+
+		sbuff.append("<Property path='orderUnitOfMeasure'>               <Value><![CDATA[");
+		sbuff.append(map.get("orderUnitOfMeasure"));
+		sbuff.append("]]></Value>               </Property>");
+
+		sbuff.append("<Property path='requestDate'>               <Value><![CDATA[");
+		sbuff.append(map.get("requestDate"));
+		sbuff.append("]]></Value>               </Property>");
+
+		sbuff.append("<Property path='promiseDate'>               <Value><![CDATA[");
+		sbuff.append(map.get("promiseDate"));
+		sbuff.append("]]></Value>               </Property>");
+
+		sbuff.append("<Property path='userEnteredSequenceNumber'>               <Value><![CDATA[");
+		sbuff.append(map.get("userEnteredSequenceNumber"));
+		sbuff.append("]]></Value>               </Property>");
+
+		sbuff.append("<Property path='sellingPrice'>               <Value><![CDATA[");
+		sbuff.append(map.get("sellingPrice"));
+		sbuff.append("]]></Value>               </Property>");
+
+		sbuff.append("<Property path='priceSource'>               <Value><![CDATA[");
+		sbuff.append(map.get("priceSource"));
+		sbuff.append("]]></Value>               </Property>");
+
+		sbuff.append("<Property path='orderQuantityInOrderUnitOfMeasure'>               <Value><![CDATA[");
+		sbuff.append(map.get("orderQuantityInOrderUnitOfMeasure"));
+		sbuff.append("]]></Value>               </Property>");
+		
+		sbuff.append("</DomainEntity>      </Create>   </Request><Logout sessionHandle='*current'/></System-Link>");
+		//		map.put("systemLinkStr", sbuff.toString());
+		//		return postXMLRequest((String)map.get("slurl"), sbuff.toString());
+		String retStr = postXMLRequest((String)map.get("slurl"), sbuff.toString());
+		System.out.println( sbuff.toString());
+		map.put("systemLinkStr", retStr);
+		return sbuff.toString();
+	}
+	
+	public static String systemLinkMcu(Map map){
+		StringBuffer sbuff = new StringBuffer();
+		sbuff.append("<?xml version='1.0' encoding='UTF-8'?>");
+		sbuff.append("<!DOCTYPE System-Link SYSTEM 'SystemLinkRequest.dtd'>");
+		sbuff.append("<System-Link>");
+		sbuff.append("<Login userId='");
+		sbuff.append(map.get("sluserId"));
+		sbuff.append("' password='");
+		sbuff.append(map.get("slpassword"));
+		sbuff.append("' maxIdle='900000' properties='com.pjx.cas.domain.EnvironmentId=MC,com.pjx.cas.domain.SystemName=SZERP.MARKWINS.COM,com.pjx.cas.user.LanguageId=zh'/>");
+		sbuff.append("<Request sessionHandle='*current' workHandle='*new' broker='EJB' maxIdle='1000'>");
+		sbuff.append("<Update name = 'updateObject_CustomerOrder' domainClass='com.mapics.csm.CustomerOrder'>");
+		sbuff.append("<DomainEntity>            <Key>");
+		sbuff.append("<Property path='company'><Value><![CDATA[");
+		sbuff.append(map.get("company"));
+		sbuff.append("]]></Value>               </Property>");
+		
+		sbuff.append("<Property path='orderType'><Value><![CDATA[");
+		sbuff.append(map.get("orderType"));
+		sbuff.append("]]></Value>               </Property>");
+		
+		sbuff.append("<Property path='order'><Value><![CDATA[");
+		sbuff.append(map.get("order"));
+		sbuff.append("]]></Value>               </Property>");
+		
+		sbuff.append("</Key>");
+
+		sbuff.append("<Property path='requestDate'><Value><![CDATA[");
+		sbuff.append(map.get("requestDate"));
+		sbuff.append("]]></Value>               </Property>");
+		
+		sbuff.append("<Property path='relatedSalesOrderExtension.manufacturingDueDate'><Value><![CDATA[");
+		sbuff.append(map.get("manufacturingDueDate"));
+		sbuff.append("]]></Value>               </Property>");
+		
+			sbuff.append("<Property path='relatedSalesOrderExtension.purchaseOrder'>               <Value><![CDATA[");
+			sbuff.append(map.get("purchaseOrder"));
+			sbuff.append("]]></Value>               </Property>");
+				
+				sbuff.append("<Property path='orderReference'>               <Value><![CDATA[");
+				sbuff.append(map.get("orderReference"));
+				sbuff.append("]]></Value>               </Property>");
+
+		sbuff.append("<Property path='relatedCustomerOrderExtension.fdcust'>               <Value><![CDATA[");
+		sbuff.append(map.get("fdcust"));
+		sbuff.append("]]></Value>               </Property>");
+		
+		sbuff.append("</DomainEntity>      </Update>   </Request><Logout sessionHandle='*current'/></System-Link>");
+		//		map.put("systemLinkStr", sbuff.toString());
+		//		return postXMLRequest((String)map.get("slurl"), sbuff.toString());
+		String retStr = postXMLRequest((String)map.get("slurl"), sbuff.toString());
+		System.out.println( sbuff.toString());
+		map.put("systemLinkStr", retStr);
+		return sbuff.toString();
+	}
+	
+	public static String systemLinkMcud(Map map){
+		StringBuffer sbuff = new StringBuffer();
+		sbuff.append("<?xml version='1.0' encoding='UTF-8'?>");
+		sbuff.append("<!DOCTYPE System-Link SYSTEM 'SystemLinkRequest.dtd'>");
+		sbuff.append("<System-Link>");
+		sbuff.append("<Login userId='");
+		sbuff.append(map.get("sluserId"));
+		sbuff.append("' password='");
+		sbuff.append(map.get("slpassword"));
+		sbuff.append("' maxIdle='900000' properties='com.pjx.cas.domain.EnvironmentId=MC,com.pjx.cas.domain.SystemName=SZERP.MARKWINS.COM,com.pjx.cas.user.LanguageId=zh'/>");
+		sbuff.append("<Request sessionHandle='*current' workHandle='*new' broker='EJB' maxIdle='1000'>");
+		sbuff.append("<Update name = 'updateObject_COLineItem' domainClass='com.mapics.csm.CoLineItem'>");
+		sbuff.append("<DomainEntity>            <Key>");
+		sbuff.append("<Property path='company'><Value><![CDATA[");
+		sbuff.append(map.get("company"));
+		sbuff.append("]]></Value>               </Property>");
+		sbuff.append("<Property path='orderType'><Value><![CDATA[");
+		sbuff.append(map.get("orderType"));
+		sbuff.append("]]></Value>               </Property>");
+		sbuff.append("<Property path='order'><Value><![CDATA[");
+		sbuff.append(map.get("order"));
+		sbuff.append("]]></Value>               </Property>");
+		sbuff.append("<Property path='lineItemSequence'><Value><![CDATA[");
+		sbuff.append(map.get("lineItemSequence"));
+		sbuff.append("]]></Value>               </Property>");
+		
+		sbuff.append("</Key>");
+
+		sbuff.append("<Property path='userEnteredSequenceNumber'><Value><![CDATA[");
+		sbuff.append(map.get("userEnteredSequenceNumber"));
+		sbuff.append("]]></Value>               </Property>");
+		
+		sbuff.append("<Property path='orderQuantityInOrderUnitOfMeasure'><Value><![CDATA[");
+		sbuff.append(map.get("orderQuantityInOrderUnitOfMeasure"));
+		sbuff.append("]]></Value>               </Property>");
+		
+			sbuff.append("<Property path='entryCurrencyType'>               <Value><![CDATA[");
+			sbuff.append(map.get("entryCurrencyType"));
+			sbuff.append("]]></Value>               </Property>");
+
+				sbuff.append("<Property path='priceSource'>               <Value><![CDATA[");
+				sbuff.append(map.get("priceSource"));
+				sbuff.append("]]></Value>               </Property>");
+				
+				sbuff.append("<Property path='sellingPrice'>               <Value><![CDATA[");
+				sbuff.append(map.get("sellingPrice"));
+				sbuff.append("]]></Value>               </Property>");
+
+		sbuff.append("<Property path='requestDate'>               <Value><![CDATA[");
+		sbuff.append(map.get("requestDate"));
+		sbuff.append("]]></Value>               </Property>");
+
+		sbuff.append("<Property path='promiseDate'>               <Value><![CDATA[");
+		sbuff.append(map.get("promiseDate"));
+		sbuff.append("]]></Value>               </Property>");
+		
+		sbuff.append("<Property path='manufacturingDueDate'>               <Value><![CDATA[");
+		sbuff.append(map.get("manufacturingDueDate"));
+		sbuff.append("]]></Value>               </Property>");
+		
+		sbuff.append("</DomainEntity>      </Update>   </Request><Logout sessionHandle='*current'/></System-Link>");
+		//		map.put("systemLinkStr", sbuff.toString());
+		//		return postXMLRequest((String)map.get("slurl"), sbuff.toString());
+		String retStr = postXMLRequest((String)map.get("slurl"), sbuff.toString());
+		System.out.println( sbuff.toString());
+		map.put("systemLinkStr", retStr);
+		return sbuff.toString();
+	}
+	
+	public static String systemLinkMcd(Map map){
+		StringBuffer sbuff = new StringBuffer();
+		sbuff.append("<?xml version='1.0' encoding='UTF-8'?>");
+		sbuff.append("<!DOCTYPE System-Link SYSTEM 'SystemLinkRequest.dtd'>");
+		sbuff.append("<System-Link>");
+		sbuff.append("<Login userId='");
+		sbuff.append(map.get("sluserId"));
+		sbuff.append("' password='");
+		sbuff.append(map.get("slpassword"));
+		sbuff.append("' maxIdle='900000' properties='com.pjx.cas.domain.EnvironmentId=MC,com.pjx.cas.domain.SystemName=SZERP.MARKWINS.COM,com.pjx.cas.user.LanguageId=zh'/>");
+		sbuff.append("<Request sessionHandle='*current' workHandle='*new' broker='EJB' maxIdle='1000'>");
+		sbuff.append(" <Delete name='deleteObject_CustomerOrder' domainClass='com.mapics.csm.CustomerOrder'>");
+		sbuff.append("<DomainEntity>            <Key>");
+		sbuff.append("<Property path='company'><Value><![CDATA[");
+		sbuff.append(map.get("company"));
+		sbuff.append("]]></Value>               </Property>");
+		sbuff.append("<Property path='orderType'><Value><![CDATA[");
+		sbuff.append(map.get("orderType"));
+		sbuff.append("]]></Value>               </Property>");
+		sbuff.append("<Property path='order'><Value><![CDATA[");
+		sbuff.append(map.get("order"));
+		sbuff.append("]]></Value>               </Property>");
+		
+		sbuff.append("</Key>");
+
+		
+		sbuff.append("</DomainEntity>      </Delete>   </Request><Logout sessionHandle='*current'/></System-Link>");
+		//		map.put("systemLinkStr", sbuff.toString());
+		//		return postXMLRequest((String)map.get("slurl"), sbuff.toString());
+		String retStr = postXMLRequest((String)map.get("slurl"), sbuff.toString());
+		System.out.println( sbuff.toString());
+		map.put("systemLinkStr", retStr);
+		return sbuff.toString();
+	}
+	
+	public static String systemLinkMcdd(Map map){
+		StringBuffer sbuff = new StringBuffer();
+		sbuff.append("<?xml version='1.0' encoding='UTF-8'?>");
+		sbuff.append("<!DOCTYPE System-Link SYSTEM 'SystemLinkRequest.dtd'>");
+		sbuff.append("<System-Link>");
+		sbuff.append("<Login userId='");
+		sbuff.append(map.get("sluserId"));
+		sbuff.append("' password='");
+		sbuff.append(map.get("slpassword"));
+		sbuff.append("' maxIdle='900000' properties='com.pjx.cas.domain.EnvironmentId=MC,com.pjx.cas.domain.SystemName=SZERP.MARKWINS.COM,com.pjx.cas.user.LanguageId=zh'/>");
+		sbuff.append("<Request sessionHandle='*current' workHandle='*new' broker='EJB' maxIdle='1000'>");
+		sbuff.append(" <Delete name='deleteObject_COLineItem' domainClass='com.mapics.csm.CoLineItem'>");
+		sbuff.append("<DomainEntity>            <Key>");
+		sbuff.append("<Property path='company'><Value><![CDATA[");
+		sbuff.append(map.get("company"));
+		sbuff.append("]]></Value>               </Property>");
+		sbuff.append("<Property path='orderType'><Value><![CDATA[");
+		sbuff.append(map.get("orderType"));
+		sbuff.append("]]></Value>               </Property>");
+		sbuff.append("<Property path='order'><Value><![CDATA[");
+		sbuff.append(map.get("order"));
+		sbuff.append("]]></Value>               </Property>");
+		sbuff.append("<Property path='lineItemSequence'><Value><![CDATA[");
+		sbuff.append(map.get("lineItemSequence"));
+		sbuff.append("]]></Value>               </Property>");
+		
+		sbuff.append("</Key>");
+
+		
+		sbuff.append("</DomainEntity>      </Delete>   </Request><Logout sessionHandle='*current'/></System-Link>");
+		//		map.put("systemLinkStr", sbuff.toString());
+		//		return postXMLRequest((String)map.get("slurl"), sbuff.toString());
+		String retStr = postXMLRequest((String)map.get("slurl"), sbuff.toString());
+		System.out.println( sbuff.toString());
+		map.put("systemLinkStr", retStr);
+		return sbuff.toString();
+	}
+	
+	public static String systemLinkM4c(Map map){
+		StringBuffer sbuff = new StringBuffer();
+		sbuff.append("<?xml version='1.0' encoding='UTF-8'?>");
+		sbuff.append("<!DOCTYPE System-Link SYSTEM 'SystemLinkRequest.dtd'>");
+		sbuff.append("<System-Link>");
+		sbuff.append("<Login userId='");
+		sbuff.append(map.get("sluserId"));
+		sbuff.append("' password='");
+		sbuff.append(map.get("slpassword"));
+		sbuff.append("' maxIdle='900000' properties='com.pjx.cas.domain.EnvironmentId=M4,com.pjx.cas.domain.SystemName=SZERP.MARKWINS.COM,com.pjx.cas.user.LanguageId=zh'/>");
+		sbuff.append("<Request sessionHandle='*current' workHandle='*new' broker='EJB' maxIdle='1000'>");
+		sbuff.append("<Create name = 'createPurchaseOrder' domainClass='com.mapics.pm.PurchaseOrder'>");
+		sbuff.append("<DomainEntity>            <Key>");
+		sbuff.append("</Key>");
+
+		sbuff.append("<Property path='billToId'><Value><![CDATA[");
+		sbuff.append(map.get("billToId"));
+		sbuff.append("]]></Value>               </Property>");
+		
+		sbuff.append("<Property path='currency'><Value><![CDATA[");
+		sbuff.append(map.get("currency"));
+		sbuff.append("]]></Value>               </Property>");
+		
+			sbuff.append("<Property path='shipToId'>               <Value><![CDATA[");
+			sbuff.append(map.get("shipToId"));
+			sbuff.append("]]></Value>               </Property>");
+
+				sbuff.append("<Property path='userFieldCodeA'>               <Value><![CDATA[");
+				sbuff.append(map.get("userFieldCodeA"));
+				sbuff.append("]]></Value>               </Property>");
+				
+				sbuff.append("<Property path='warehouse'>               <Value><![CDATA[");
+				sbuff.append(map.get("warehouse"));
+				sbuff.append("]]></Value>               </Property>");
+
+		sbuff.append("<Property path='vendor'>               <Value><![CDATA[");
+		sbuff.append(map.get("vendor"));
+		sbuff.append("]]></Value>               </Property>");
+
+		sbuff.append("<Property path='buyer'>               <Value><![CDATA[");
+		sbuff.append(map.get("buyer"));
+		sbuff.append("]]></Value>               </Property>");
+
+
+		sbuff.append("</DomainEntity>      </Create>   </Request><Logout sessionHandle='*current'/></System-Link>");
+		//		map.put("systemLinkStr", sbuff.toString());
+		//		return postXMLRequest((String)map.get("slurl"), sbuff.toString());
+		String retStr = postXMLRequest((String)map.get("slurl"), sbuff.toString());
+		System.out.println( sbuff.toString());
+		map.put("systemLinkStr", retStr);
+		return sbuff.toString();
+	}
+	
+	public static String systemLinkM4cd(Map map){
+		StringBuffer sbuff = new StringBuffer();
+		sbuff.append("<?xml version='1.0' encoding='UTF-8'?>");
+		sbuff.append("<!DOCTYPE System-Link SYSTEM 'SystemLinkRequest.dtd'>");
+		sbuff.append("<System-Link>");
+		sbuff.append("<Login userId='");
+		sbuff.append(map.get("sluserId"));
+		sbuff.append("' password='");
+		sbuff.append(map.get("slpassword"));
+		sbuff.append("' maxIdle='900000' properties='com.pjx.cas.domain.EnvironmentId=M4,com.pjx.cas.domain.SystemName=SZERP.MARKWINS.COM,com.pjx.cas.user.LanguageId=zh'/>");
+		sbuff.append("<Request sessionHandle='*current' workHandle='*new' broker='EJB' maxIdle='1000'>");
+		sbuff.append("<Create name = 'createPoItem' domainClass='com.mapics.pm.PoItem'>");
+		sbuff.append("<DomainEntity>            <Key>");
+		sbuff.append("<Property path='order'><Value><![CDATA[");
+		sbuff.append(map.get("order"));
+		sbuff.append("]]></Value>               </Property>");
+		
+		sbuff.append("</Key>");
+
+		sbuff.append("<Property path='blanketItem'><Value><![CDATA[");
+		sbuff.append(map.get("blanketItem"));
+		sbuff.append("]]></Value>               </Property>");
+		
+		sbuff.append("<Property path='dueToDockDate'><Value><![CDATA[");
+		sbuff.append(map.get("dueToDockDate"));
+		sbuff.append("]]></Value>               </Property>");
+		
+			sbuff.append("<Property path='dueToStockDate'>               <Value><![CDATA[");
+			sbuff.append(map.get("dueToStockDate"));
+			sbuff.append("]]></Value>               </Property>");
+
+				sbuff.append("<Property path='item'>               <Value><![CDATA[");
+				sbuff.append(map.get("item"));
+				sbuff.append("]]></Value>               </Property>");
+				
+				sbuff.append("<Property path='orderUm'>               <Value><![CDATA[");
+				sbuff.append(map.get("orderUm"));
+				sbuff.append("]]></Value>               </Property>");
+
+		sbuff.append("<Property path='warehouse'>               <Value><![CDATA[");
+		sbuff.append(map.get("warehouse"));
+		sbuff.append("]]></Value>               </Property>");
+
+		sbuff.append("<Property path='orderQuantityRequested'>               <Value><![CDATA[");
+		sbuff.append(map.get("orderQuantityRequested"));
+		sbuff.append("]]></Value>               </Property>");
+
+		sbuff.append("<Property path='unitPriceRequested'>               <Value><![CDATA[");
+		sbuff.append(map.get("unitPriceRequested"));
+		sbuff.append("]]></Value>               </Property>");
+		
+		sbuff.append("</DomainEntity>      </Create>   </Request><Logout sessionHandle='*current'/></System-Link>");
+		//		map.put("systemLinkStr", sbuff.toString());
+		//		return postXMLRequest((String)map.get("slurl"), sbuff.toString());
+		String retStr = postXMLRequest((String)map.get("slurl"), sbuff.toString());
+		System.out.println( sbuff.toString());
+		map.put("systemLinkStr", retStr);
+		return sbuff.toString();
+	}
+	
+	public static String systemLinkM4cr(Map map){
+		StringBuffer sbuff = new StringBuffer();
+		sbuff.append("<?xml version='1.0' encoding='UTF-8'?>");
+		sbuff.append("<!DOCTYPE System-Link SYSTEM 'SystemLinkRequest.dtd'>");
+		sbuff.append("<System-Link>");
+		sbuff.append("<Login userId='");
+		sbuff.append(map.get("sluserId"));
+		sbuff.append("' password='");
+		sbuff.append(map.get("slpassword"));
+		sbuff.append("' maxIdle='900000' properties='com.pjx.cas.domain.EnvironmentId=M4,com.pjx.cas.domain.SystemName=SZERP.MARKWINS.COM,com.pjx.cas.user.LanguageId=zh'/>");
+		sbuff.append("<Request sessionHandle='*current' workHandle='*new' broker='EJB' maxIdle='1000'>");
+		sbuff.append("<Create name = 'createPoItemRelease' domainClass='com.mapics.pm.PoItemRelease'>");
+		sbuff.append("<DomainEntity>            <Key>");
+		sbuff.append("<Property path='order'><Value><![CDATA[");
+		sbuff.append(map.get("order"));
+		sbuff.append("]]></Value>               </Property>");
+		sbuff.append("<Property path='line'><Value><![CDATA[");
+		sbuff.append(map.get("line"));
+		sbuff.append("]]></Value>               </Property>");
+		
+		sbuff.append("</Key>");
+
+		sbuff.append("<Property path='unitPrice'><Value><![CDATA[");
+		sbuff.append(map.get("unitPrice"));
+		sbuff.append("]]></Value>               </Property>");
+		
+				sbuff.append("<Property path='item'>               <Value><![CDATA[");
+				sbuff.append(map.get("item"));
+				sbuff.append("]]></Value>               </Property>");
+				
+				sbuff.append("<Property path='releaseQuantity'>               <Value><![CDATA[");
+				sbuff.append(map.get("releaseQuantity"));
+				sbuff.append("]]></Value>               </Property>");
+
+		sbuff.append("<Property path='warehouse'>               <Value><![CDATA[");
+		sbuff.append(map.get("warehouse"));
+		sbuff.append("]]></Value>               </Property>");
+
+		sbuff.append("<Property path='dueToStockDate'>               <Value><![CDATA[");
+		sbuff.append(map.get("dueToStockDate"));
+		sbuff.append("]]></Value>               </Property>");
+
+		sbuff.append("<Property path='userFieldCodeA'>               <Value><![CDATA[");
+		sbuff.append(map.get("userFieldCodeA"));
+		sbuff.append("]]></Value>               </Property>");
+		
+		sbuff.append("</DomainEntity>      </Create>   </Request><Logout sessionHandle='*current'/></System-Link>");
+		//		map.put("systemLinkStr", sbuff.toString());
+		//		return postXMLRequest((String)map.get("slurl"), sbuff.toString());
+		String retStr = postXMLRequest((String)map.get("slurl"), sbuff.toString());
+		System.out.println( sbuff.toString());
+		map.put("systemLinkStr", retStr);
+		return sbuff.toString();
+	}
+	
+	public static String systemLinkM4u(Map map){
+		StringBuffer sbuff = new StringBuffer();
+		sbuff.append("<?xml version='1.0' encoding='UTF-8'?>");
+		sbuff.append("<!DOCTYPE System-Link SYSTEM 'SystemLinkRequest.dtd'>");
+		sbuff.append("<System-Link>");
+		sbuff.append("<Login userId='");
+		sbuff.append(map.get("sluserId"));
+		sbuff.append("' password='");
+		sbuff.append(map.get("slpassword"));
+		sbuff.append("' maxIdle='900000' properties='com.pjx.cas.domain.EnvironmentId=M4,com.pjx.cas.domain.SystemName=SZERP.MARKWINS.COM,com.pjx.cas.user.LanguageId=zh'/>");
+		sbuff.append("<Request sessionHandle='*current' workHandle='*new' broker='EJB' maxIdle='1000'>");
+		sbuff.append("<Update name = 'updateObject_PurchaseOrder' domainClass='updateObject_PurchaseOrder'>");
+		sbuff.append("<DomainEntity>            <Key>");
+		sbuff.append("<Property path='order'><Value><![CDATA[");
+		sbuff.append(map.get("order"));
+		sbuff.append("]]></Value>               </Property>");		
+		
+		sbuff.append("</Key>");
+
+		sbuff.append("<Property path='buyer'><Value><![CDATA[");
+		sbuff.append(map.get("buyer"));
+		sbuff.append("]]></Value>               </Property>");
+		
+		
+		sbuff.append("</DomainEntity>      </Update>   </Request><Logout sessionHandle='*current'/></System-Link>");
+		//		map.put("systemLinkStr", sbuff.toString());
+		//		return postXMLRequest((String)map.get("slurl"), sbuff.toString());
+		String retStr = postXMLRequest((String)map.get("slurl"), sbuff.toString());
+		System.out.println( sbuff.toString());
+		map.put("systemLinkStr", retStr);
+		return sbuff.toString();
+	}
+	
+	public static String systemLinkM4ud(Map map){
+		StringBuffer sbuff = new StringBuffer();
+		sbuff.append("<?xml version='1.0' encoding='UTF-8'?>");
+		sbuff.append("<!DOCTYPE System-Link SYSTEM 'SystemLinkRequest.dtd'>");
+		sbuff.append("<System-Link>");
+		sbuff.append("<Login userId='");
+		sbuff.append(map.get("sluserId"));
+		sbuff.append("' password='");
+		sbuff.append(map.get("slpassword"));
+		sbuff.append("' maxIdle='900000' properties='com.pjx.cas.domain.EnvironmentId=M4,com.pjx.cas.domain.SystemName=SZERP.MARKWINS.COM,com.pjx.cas.user.LanguageId=zh'/>");
+		sbuff.append("<Request sessionHandle='*current' workHandle='*new' broker='EJB' maxIdle='1000'>");
+		sbuff.append("<Update name = 'updateObject_PurchaseOrderItem' domainClass='com.mapics.pm.PoItem'>");
+		sbuff.append("<DomainEntity>            <Key>");
+		sbuff.append("<Property path='order'><Value><![CDATA[");
+		sbuff.append(map.get("order"));
+		sbuff.append("]]></Value>               </Property>");
+		sbuff.append("<Property path='line'><Value><![CDATA[");
+		sbuff.append(map.get("line"));
+		sbuff.append("]]></Value>               </Property>");
+		sbuff.append("</Key>");
+
+		sbuff.append("<Property path='orderQuantityRequested'><Value><![CDATA[");
+		sbuff.append(map.get("orderQuantityRequested"));
+		sbuff.append("]]></Value>               </Property>");
+		
+		sbuff.append("<Property path='unitPriceRequested'><Value><![CDATA[");
+		sbuff.append(map.get("unitPriceRequested"));
+		sbuff.append("]]></Value>               </Property>");
+		
+			sbuff.append("<Property path='dueToStockDate'>               <Value><![CDATA[");
+			sbuff.append(map.get("dueToStockDate"));
+			sbuff.append("]]></Value>               </Property>");
+		
+		sbuff.append("</DomainEntity>      </Update>   </Request><Logout sessionHandle='*current'/></System-Link>");
+		//		map.put("systemLinkStr", sbuff.toString());
+		//		return postXMLRequest((String)map.get("slurl"), sbuff.toString());
+		String retStr = postXMLRequest((String)map.get("slurl"), sbuff.toString());
+		System.out.println( sbuff.toString());
+		map.put("systemLinkStr", retStr);
+		return sbuff.toString();
+	}
+	
+	public static String systemLinkM4ur(Map map){
+		StringBuffer sbuff = new StringBuffer();
+		sbuff.append("<?xml version='1.0' encoding='UTF-8'?>");
+		sbuff.append("<!DOCTYPE System-Link SYSTEM 'SystemLinkRequest.dtd'>");
+		sbuff.append("<System-Link>");
+		sbuff.append("<Login userId='");
+		sbuff.append(map.get("sluserId"));
+		sbuff.append("' password='");
+		sbuff.append(map.get("slpassword"));
+		sbuff.append("' maxIdle='900000' properties='com.pjx.cas.domain.EnvironmentId=M4,com.pjx.cas.domain.SystemName=SZERP.MARKWINS.COM,com.pjx.cas.user.LanguageId=zh'/>");
+		sbuff.append("<Request sessionHandle='*current' workHandle='*new' broker='EJB' maxIdle='1000'>");
+		sbuff.append("<Update name = 'updateObject_PoItemRelease' domainClass='com.mapics.pm.PoItemRelease'>");
+		sbuff.append("<DomainEntity>            <Key>");
+		sbuff.append("<Property path='order'><Value><![CDATA[");
+		sbuff.append(map.get("order"));
+		sbuff.append("]]></Value>               </Property>");
+		sbuff.append("<Property path='line'><Value><![CDATA[");
+		sbuff.append(map.get("line"));
+		sbuff.append("]]></Value>               </Property>");
+		sbuff.append("<Property path='release'><Value><![CDATA[");
+		sbuff.append(map.get("release"));
+		sbuff.append("]]></Value>               </Property>");
+		sbuff.append("</Key>");
+
+		sbuff.append("<Property path='releaseQuantity'><Value><![CDATA[");
+		sbuff.append(map.get("releaseQuantity"));
+		sbuff.append("]]></Value>               </Property>");
+		
+		sbuff.append("<Property path='dueToStockDate'><Value><![CDATA[");
+		sbuff.append(map.get("dueToStockDate"));
+		sbuff.append("]]></Value>               </Property>");
+		
+		
+		sbuff.append("</DomainEntity>      </Update>   </Request><Logout sessionHandle='*current'/></System-Link>");
+		//		map.put("systemLinkStr", sbuff.toString());
+		//		return postXMLRequest((String)map.get("slurl"), sbuff.toString());
+		String retStr = postXMLRequest((String)map.get("slurl"), sbuff.toString());
+		System.out.println( sbuff.toString());
+		map.put("systemLinkStr", retStr);
+		return sbuff.toString();
+	}
+	
+	public static String systemLinkM4d(Map map){
+		StringBuffer sbuff = new StringBuffer();
+		sbuff.append("<?xml version='1.0' encoding='UTF-8'?>");
+		sbuff.append("<!DOCTYPE System-Link SYSTEM 'SystemLinkRequest.dtd'>");
+		sbuff.append("<System-Link>");
+		sbuff.append("<Login userId='");
+		sbuff.append(map.get("sluserId"));
+		sbuff.append("' password='");
+		sbuff.append(map.get("slpassword"));
+		sbuff.append("' maxIdle='900000' properties='com.pjx.cas.domain.EnvironmentId=M4,com.pjx.cas.domain.SystemName=SZERP.MARKWINS.COM,com.pjx.cas.user.LanguageId=zh'/>");
+		sbuff.append("<Request sessionHandle='*current' workHandle='*new' broker='EJB' maxIdle='1000'>");
+		sbuff.append(" <Delete name='deletePurchaseOrder' domainClass='com.mapics.pm.PurchaseOrder'>");
+		sbuff.append("<DomainEntity>            <Key>");
+		sbuff.append("<Property path='order'><Value><![CDATA[");
+		sbuff.append(map.get("order"));
+		sbuff.append("]]></Value>               </Property>");
+		
+		sbuff.append("</Key>");
+
+		
+		sbuff.append("</DomainEntity>      </Delete>   </Request><Logout sessionHandle='*current'/></System-Link>");
+		//		map.put("systemLinkStr", sbuff.toString());
+		//		return postXMLRequest((String)map.get("slurl"), sbuff.toString());
+		String retStr = postXMLRequest((String)map.get("slurl"), sbuff.toString());
+		System.out.println( sbuff.toString());
+		map.put("systemLinkStr", retStr);
+		return sbuff.toString();
+	}
+	
+	public static String systemLinkM4dd(Map map){
+		StringBuffer sbuff = new StringBuffer();
+		sbuff.append("<?xml version='1.0' encoding='UTF-8'?>");
+		sbuff.append("<!DOCTYPE System-Link SYSTEM 'SystemLinkRequest.dtd'>");
+		sbuff.append("<System-Link>");
+		sbuff.append("<Login userId='");
+		sbuff.append(map.get("sluserId"));
+		sbuff.append("' password='");
+		sbuff.append(map.get("slpassword"));
+		sbuff.append("' maxIdle='900000' properties='com.pjx.cas.domain.EnvironmentId=M4,com.pjx.cas.domain.SystemName=SZERP.MARKWINS.COM,com.pjx.cas.user.LanguageId=zh'/>");
+		sbuff.append("<Request sessionHandle='*current' workHandle='*new' broker='EJB' maxIdle='1000'>");
+		sbuff.append(" <Delete name='deletePoItem' domainClass='com.mapics.pm.PoItem'>");
+		sbuff.append("<DomainEntity>            <Key>");
+		sbuff.append("<Property path='order'><Value><![CDATA[");
+		sbuff.append(map.get("order"));
+		sbuff.append("]]></Value>               </Property>");
+		sbuff.append("<Property path='line'><Value><![CDATA[");
+		sbuff.append(map.get("line"));
+		sbuff.append("]]></Value>               </Property>");
+		
+		sbuff.append("</Key>");
+
+		
+		sbuff.append("</DomainEntity>      </Delete>   </Request><Logout sessionHandle='*current'/></System-Link>");
+		//		map.put("systemLinkStr", sbuff.toString());
+		//		return postXMLRequest((String)map.get("slurl"), sbuff.toString());
+		String retStr = postXMLRequest((String)map.get("slurl"), sbuff.toString());
+		System.out.println( sbuff.toString());
+		map.put("systemLinkStr", retStr);
+		return sbuff.toString();
+	}
+	
+	public static String systemLinkM4dr(Map map){
+		StringBuffer sbuff = new StringBuffer();
+		sbuff.append("<?xml version='1.0' encoding='UTF-8'?>");
+		sbuff.append("<!DOCTYPE System-Link SYSTEM 'SystemLinkRequest.dtd'>");
+		sbuff.append("<System-Link>");
+		sbuff.append("<Login userId='");
+		sbuff.append(map.get("sluserId"));
+		sbuff.append("' password='");
+		sbuff.append(map.get("slpassword"));
+		sbuff.append("' maxIdle='900000' properties='com.pjx.cas.domain.EnvironmentId=M4,com.pjx.cas.domain.SystemName=SZERP.MARKWINS.COM,com.pjx.cas.user.LanguageId=zh'/>");
+		sbuff.append("<Request sessionHandle='*current' workHandle='*new' broker='EJB' maxIdle='1000'>");
+		sbuff.append(" <Delete name='DeleteObject_PoItemRelease' domainClass='com.mapics.pm.PoItemRelease'>");
+		sbuff.append("<DomainEntity>            <Key>");
+		sbuff.append("<Property path='order'><Value><![CDATA[");
+		sbuff.append(map.get("order"));
+		sbuff.append("]]></Value>               </Property>");
+		sbuff.append("<Property path='line'><Value><![CDATA[");
+		sbuff.append(map.get("line"));
+		sbuff.append("]]></Value>               </Property>");
+		sbuff.append("<Property path='release'><Value><![CDATA[");
+		sbuff.append(map.get("release"));
+		sbuff.append("]]></Value>               </Property>");
+		
+		sbuff.append("</Key>");
+
+		
+		sbuff.append("</DomainEntity>      </Delete>   </Request><Logout sessionHandle='*current'/></System-Link>");
+		//		map.put("systemLinkStr", sbuff.toString());
+		//		return postXMLRequest((String)map.get("slurl"), sbuff.toString());
+		String retStr = postXMLRequest((String)map.get("slurl"), sbuff.toString());
+		System.out.println( sbuff.toString());
+		map.put("systemLinkStr", retStr);
+		return sbuff.toString();
+	}
+	
 	/**
 	 * 
 	 * @Description: 发送XML请求
@@ -1338,7 +2067,353 @@ public  boolean insertOffShip(String lib, String env, List<Map> pmaps, String li
 
 		}
 	}
+	
+	public  Map getZCOEXT(String lib,Map pmap) throws Exception{
+		Connection conn = null;
+		InputStream is =null;
+		Statement stmt = null;
+		OutputStream os = null;
+		try{
+			is = new BufferedInputStream(new FileInputStream(this.getClass().getResource("").getPath()+ "/config.properties"));
+			Properties properties = new Properties();
+			properties.load(is);
+			//			Class.forName("");
+			Class.forName(properties.getProperty("DRIVER_NAME"));
+			java.sql.DriverManager.registerDriver (new com.ibm.as400.access.AS400JDBCDriver ()); 
+			//			Class.forName("com.ibm.as400.access.AS400JDBCDriver");	
+			//			conn=DriverManager.getConnection("jdbc:mysql://localhost:3306/QGPL", "", "");
+			String dburl=properties.getProperty("DBURL");
+			String dbip=dburl.split("/")[2];
+			Map rmap = new HashMap();
+			conn=DriverManager.getConnection("jdbc:as400://"+dbip+"/"+lib+";translate binary=true", properties.getProperty("DBUSER"), properties.getProperty("DBPASSWORD"));
+			if(conn!=null){
+					String sql = "select * from ZCOEXT where C6AENB="+pmap.get("C6AENB")+" and C6DCCD='"+(String)pmap.get("C6DCCD")+"' and C6CVNB='"+(String)pmap.get("C6CVNB")+"'";
+					System.out.println("find is "+sql);
+					stmt = (Statement) conn.createStatement();
+					ResultSet executeQuery = stmt.executeQuery(sql);
+					if(executeQuery.next()){
+						rmap.put("FDCUST", executeQuery.getString("FDCUST"));
+						rmap.put("MLCODE", executeQuery.getString("MLCODE"));
+						rmap.put("MLSTS", executeQuery.getString("MLSTS"));
+						rmap.put("MLUS", executeQuery.getString("MLUS"));
+						rmap.put("CMMT", executeQuery.getString("CMMT"));
+					}
 
+			}else{
+				throw new Exception("conn is null");	
+			}
+			return rmap;
+		}catch(Exception e){
+			e.printStackTrace();
+			return null;
+		}finally{
+			try{
+				if(os!=null){
+					os.close();
+				}
+				if(is!=null){
+					is.close();
+				}
+				if(stmt!=null){
+					stmt.close();
+				}
+				if(conn!=null){
+					conn.close();
+				}
+			}catch(Exception e){
+				e.printStackTrace();
+			}
+
+		}
+	}
+	
+	public  Map getZMLDTL(String lib,Map pmap) throws Exception{
+		Connection conn = null;
+		InputStream is =null;
+		Statement stmt = null;
+		OutputStream os = null;
+		try{
+			is = new BufferedInputStream(new FileInputStream(this.getClass().getResource("").getPath()+ "/config.properties"));
+			Properties properties = new Properties();
+			properties.load(is);
+			//			Class.forName("");
+			Class.forName(properties.getProperty("DRIVER_NAME"));
+			java.sql.DriverManager.registerDriver (new com.ibm.as400.access.AS400JDBCDriver ()); 
+			//			Class.forName("com.ibm.as400.access.AS400JDBCDriver");	
+			//			conn=DriverManager.getConnection("jdbc:mysql://localhost:3306/QGPL", "", "");
+			String dburl=properties.getProperty("DBURL");
+			String dbip=dburl.split("/")[2];
+			Map rmap = new HashMap();
+			conn=DriverManager.getConnection("jdbc:as400://"+dbip+"/"+lib+";translate binary=true", properties.getProperty("DBUSER"), properties.getProperty("DBPASSWORD"));
+			if(conn!=null){
+					String sql = "select * from ZMLDTL where MLCODE='"+(String)pmap.get("MLCODE")+"'";
+					System.out.println("find is "+sql);
+					stmt = (Statement) conn.createStatement();
+					ResultSet executeQuery = stmt.executeQuery(sql);
+					if(executeQuery.next()){
+						rmap.put("MLSEQ", executeQuery.getString("MLSEQ"));
+						rmap.put("MLSID", executeQuery.getString("MLSID"));
+						rmap.put("POENV", executeQuery.getString("POENV"));
+						rmap.put("POWHS", executeQuery.getString("POWHS"));
+						rmap.put("POVND", executeQuery.getString("POVND"));
+						rmap.put("POCUR", executeQuery.getString("POCUR"));
+						rmap.put("POBUY", executeQuery.getString("POBUY"));
+						rmap.put("COENV", executeQuery.getString("COENV"));
+						rmap.put("COCMPY", executeQuery.getString("COCMPY"));
+						rmap.put("COWHS", executeQuery.getString("COWHS"));
+						rmap.put("COCUS", executeQuery.getString("COCUS"));
+						rmap.put("COCUR", executeQuery.getString("COCUR"));
+					}
+
+				
+			}else{
+				throw new Exception("conn is null");	
+			}
+			return rmap;
+		}catch(Exception e){
+			e.printStackTrace();
+			return null;
+		}finally{
+			try{
+				if(os!=null){
+					os.close();
+				}
+				if(is!=null){
+					is.close();
+				}
+				if(stmt!=null){
+					stmt.close();
+				}
+				if(conn!=null){
+					conn.close();
+				}
+			}catch(Exception e){
+				e.printStackTrace();
+			}
+
+		}
+	}
+	
+	public  int insertZMLTRN(String lib,Map pmap) throws Exception{
+		Connection conn = null;
+		InputStream is =null;
+		Statement stmt = null;
+		OutputStream os = null;
+		int count=0;
+		try{
+			is = new BufferedInputStream(new FileInputStream(this.getClass().getResource("").getPath()+ "/config.properties"));
+			Properties properties = new Properties();
+			properties.load(is);
+			//			Class.forName("");
+			Class.forName(properties.getProperty("DRIVER_NAME"));
+			java.sql.DriverManager.registerDriver (new com.ibm.as400.access.AS400JDBCDriver ()); 
+			//			Class.forName("com.ibm.as400.access.AS400JDBCDriver");	
+			//			conn=DriverManager.getConnection("jdbc:mysql://localhost:3306/QGPL", "", "");
+			String dburl=properties.getProperty("DBURL");
+			String dbip=dburl.split("/")[2];
+			conn=DriverManager.getConnection("jdbc:as400://"+dbip+"/"+lib+";translate binary=true", properties.getProperty("DBUSER"), properties.getProperty("DBPASSWORD"));
+			if(conn!=null){
+					stmt=conn.createStatement();
+					String sql = "insert into ZMLTRN(MLENV,MLCODE,MLSEQ,MLTYPE,MLCMPY,MLCTYP,MLCNUM,MLCCUS,MLPNUM,MLPVND,MLWHS,POENV,POWHS,POORD,POVNDR,COENV,COCMPY,COITYP,COORD,COCUS) values(";
+					sql=sql+"'"+(String)pmap.get("MLENV")+"','"+(String)pmap.get("MLCODE")+"',"+(Integer)pmap.get("MLSEQ")+",";
+					sql=sql+"'"+(String)pmap.get("MLTYPE")+"',"+(Integer)pmap.get("MLCMPY")+",'"+(String)pmap.get("MLCTYP")+"',";
+					sql=sql+"'"+(String)pmap.get("MLCNUM")+"',"+(Integer)pmap.get("MLCCUS")+",'"+(String)pmap.get("MLPNUM")+"',";
+					sql=sql+"'"+(String)pmap.get("MLPVND")+"','"+(String)pmap.get("MLWHS")+"','"+(String)pmap.get("POENV")+"',";
+					sql=sql+"'"+(String)pmap.get("POWHS")+"','"+(String)pmap.get("POORD")+"','"+(String)pmap.get("POVNDR")+"',";
+					sql=sql+"'"+(String)pmap.get("COENV")+"',"+(Integer)pmap.get("COCMPY")+",'"+(String)pmap.get("COITYP")+"',";
+					sql=sql+"'"+(String)pmap.get("COORD")+"',"+(Integer)pmap.get("COCUS");
+					sql=sql+")";
+					System.out.println("insertZMLTRN is "+sql);
+					stmt.executeUpdate(sql);
+
+			}else{
+				throw new Exception("conn is null");	
+			}
+			return count;
+		}catch(Exception e){
+			e.printStackTrace();
+			return 0;
+		}finally{
+			try{
+				if(os!=null){
+					os.close();
+				}
+				if(is!=null){
+					is.close();
+				}
+				if(stmt!=null){
+					stmt.close();
+				}
+				if(conn!=null){
+					conn.close();
+				}
+			}catch(Exception e){
+				e.printStackTrace();
+			}
+
+		}
+	}
+	public  Map getZMLTRN(String lib,Map pmap) throws Exception{
+		Connection conn = null;
+		InputStream is =null;
+		Statement stmt = null;
+		OutputStream os = null;
+		try{
+			is = new BufferedInputStream(new FileInputStream(this.getClass().getResource("").getPath()+ "/config.properties"));
+			Properties properties = new Properties();
+			properties.load(is);
+			//			Class.forName("");
+			Class.forName(properties.getProperty("DRIVER_NAME"));
+			java.sql.DriverManager.registerDriver (new com.ibm.as400.access.AS400JDBCDriver ()); 
+			//			Class.forName("com.ibm.as400.access.AS400JDBCDriver");	
+			//			conn=DriverManager.getConnection("jdbc:mysql://localhost:3306/QGPL", "", "");
+			String dburl=properties.getProperty("DBURL");
+			String dbip=dburl.split("/")[2];
+			Map rmap = new HashMap();
+			conn=DriverManager.getConnection("jdbc:as400://"+dbip+"/"+lib+";translate binary=true", properties.getProperty("DBUSER"), properties.getProperty("DBPASSWORD"));
+			if(conn!=null){
+					String sql = "select * from ZMLTRN where 1=1 ";
+					if(pmap.get("MLCNUM")!=null){
+						sql=sql+" and MLCNUM='"+(String)pmap.get("MLCNUM")+"'";
+					}
+					if(pmap.get("POORD")!=null){
+						sql=sql+" and POORD='"+(String)pmap.get("POORD")+"'";
+					}
+					System.out.println("find is "+sql);
+					stmt = (Statement) conn.createStatement();
+					ResultSet executeQuery = stmt.executeQuery(sql);
+					if(executeQuery.next()){
+						rmap.put("MLENV", executeQuery.getString("MLENV"));
+						rmap.put("MLCODE", executeQuery.getString("MLCODE"));
+						rmap.put("MLSEQ", executeQuery.getString("MLSEQ"));
+						rmap.put("MLTYPE", executeQuery.getString("MLTYPE"));
+						rmap.put("MLCMPY", executeQuery.getString("MLCMPY"));
+						rmap.put("MLCTYP", executeQuery.getString("MLCTYP"));
+						rmap.put("MLCNUM", executeQuery.getString("MLCNUM"));
+						rmap.put("MLCCUS", executeQuery.getString("MLCCUS"));
+						rmap.put("MLPNUM", executeQuery.getString("MLPNUM"));
+						rmap.put("MLPVND", executeQuery.getString("MLPVND"));
+						rmap.put("MLWHS", executeQuery.getString("MLWHS"));
+						rmap.put("POENV", executeQuery.getString("POENV"));
+						
+
+						rmap.put("POWHS", executeQuery.getString("POWHS"));
+						rmap.put("POORD", executeQuery.getString("POORD"));
+						rmap.put("POVNDR", executeQuery.getString("POVNDR"));
+						rmap.put("COENV", executeQuery.getString("COENV"));
+						rmap.put("COCMPY", executeQuery.getString("COCMPY"));
+						rmap.put("COITYP", executeQuery.getString("COITYP"));
+						rmap.put("COORD", executeQuery.getString("COORD"));
+						rmap.put("COCUS", executeQuery.getString("COCUS"));
+					}
+
+				
+			}else{
+				throw new Exception("conn is null");	
+			}
+			return rmap;
+		}catch(Exception e){
+			e.printStackTrace();
+			return null;
+		}finally{
+			try{
+				if(os!=null){
+					os.close();
+				}
+				if(is!=null){
+					is.close();
+				}
+				if(stmt!=null){
+					stmt.close();
+				}
+				if(conn!=null){
+					conn.close();
+				}
+			}catch(Exception e){
+				e.printStackTrace();
+			}
+
+		}
+	}
+	
+	public  Map getMlCO(String lib,Map pmap) throws Exception{
+		Connection conn = null;
+		InputStream is =null;
+		Statement stmt = null;
+		OutputStream os = null;
+		try{
+			is = new BufferedInputStream(new FileInputStream(this.getClass().getResource("").getPath()+ "/config.properties"));
+			Properties properties = new Properties();
+			properties.load(is);
+			//			Class.forName("");
+			Class.forName(properties.getProperty("DRIVER_NAME"));
+			java.sql.DriverManager.registerDriver (new com.ibm.as400.access.AS400JDBCDriver ()); 
+			//			Class.forName("com.ibm.as400.access.AS400JDBCDriver");	
+			//			conn=DriverManager.getConnection("jdbc:mysql://localhost:3306/QGPL", "", "");
+			String dburl=properties.getProperty("DBURL");
+			String dbip=dburl.split("/")[2];
+			Map rmap = new HashMap();
+			conn=DriverManager.getConnection("jdbc:as400://"+dbip+"/"+lib+";translate binary=true", properties.getProperty("DBUSER"), properties.getProperty("DBPASSWORD"));
+			if(conn!=null){
+					String sql = "select c.*,d.ADBIDT from MBCDREP c inner join MBADREP d on c.CDAENB=d.ADAENB and c.CDDCCD=d.ADDCCD and c.CDCVNB=d.ADCVNB and c.CDFCNB=d.ADFCNB where 1=1 ";
+					if(pmap.get("CDAENB")!=null){
+						sql=sql+" and c.CDAENB="+(Integer)pmap.get("CDAENB");
+					}
+					if(pmap.get("CDDCCD")!=null){
+						sql=sql+" and c.CDDCCD='"+(String)pmap.get("CDDCCD")+"'";
+					}
+					if(pmap.get("CDCVNB")!=null){
+						sql=sql+" and c.CDCVNB='"+(String)pmap.get("CDCVNB")+"'";
+					}
+					if(pmap.get("CDFCNB")!=null){
+						sql=sql+" and c.CDFCNB="+(Integer)pmap.get("CDFCNB");
+					}
+					System.out.println("find is "+sql);
+					stmt = (Statement) conn.createStatement();
+					ResultSet executeQuery = stmt.executeQuery(sql);
+					if(executeQuery.next()){
+						rmap.put("CDFCNB", executeQuery.getInt("CDFCNB"));
+						rmap.put("CDKTNB", executeQuery.getString("CDKTNB"));
+						rmap.put("CDACQT", executeQuery.getFloat("CDACQT"));
+						rmap.put("CDH3ST", executeQuery.getString("CDH3ST"));
+						rmap.put("CDFXVA", executeQuery.getFloat("CDFXVA"));
+						rmap.put("CDAITX", executeQuery.getString("CDAITX"));
+						rmap.put("CDDHCD", executeQuery.getString("CDDHCD"));
+						rmap.put("CDA3CD", executeQuery.getString("CDA3CD"));
+						rmap.put("ADBIDT", executeQuery.getInt("ADBIDT"));
+						rmap.put("CDDOVA", executeQuery.getFloat("CDDOVA"));
+						
+					}
+
+				
+			}else{
+				throw new Exception("conn is null");	
+			}
+			return rmap;
+		}catch(Exception e){
+			e.printStackTrace();
+			return null;
+		}finally{
+			try{
+				if(os!=null){
+					os.close();
+				}
+				if(is!=null){
+					is.close();
+				}
+				if(stmt!=null){
+					stmt.close();
+				}
+				if(conn!=null){
+					conn.close();
+				}
+			}catch(Exception e){
+				e.printStackTrace();
+			}
+
+		}
+	}
+	
 	// 生产发料 PMC/TRDATA 触发更新
 	public  void CallTamjuc(String host,String userName,String password,String env) throws Exception{
 
@@ -1457,6 +2532,7 @@ public  boolean insertOffShip(String lib, String env, List<Map> pmaps, String li
 	
 	public static void main(String[] args) {
 		//		String password = toMd5("admin" + "888888");
+		System.out.println("abcdefg".substring("abcdefg".indexOf("cd")+2));
 		System.out.println(round(BigDecimal.valueOf(1.36),1,"3"));
 		//		Map map = new HashMap();
 		//		Utils.systemLinkHouse(map);
