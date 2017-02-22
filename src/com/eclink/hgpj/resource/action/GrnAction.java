@@ -2,6 +2,7 @@ package com.eclink.hgpj.resource.action;
 
 import java.math.BigDecimal;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -201,7 +202,19 @@ public class GrnAction extends BaseAction {
 			if(query==0){
 				return "toGrn";
 			}
-			zgrnhdr.setOstat("40,50");
+			if(zgrnhdr.getOstat() == null || zgrnhdr.getOstat().isEmpty()){
+				zgrnhdr.setOstat("40,50");
+			}
+			
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			
+			if(zgrnhdr.getStartDate()!=null && !zgrnhdr.getStartDate().trim().equals("")){
+				zgrnhdr.setStartDate(("1"+Utils.formateDate(sdf.parse(zgrnhdr.getStartDate()), "yyMMdd")));
+			}
+			if(zgrnhdr.getEndDate()!=null && !zgrnhdr.getEndDate().trim().equals("")){
+				zgrnhdr.setEndDate((("1"+Utils.formateDate(sdf.parse(zgrnhdr.getEndDate()), "yyMMdd"))));
+			}
+			
 			results = this.zgrnhdrService.queryReceiptList(zgrnhdr);
 
 			for(ZGRNHDRVO zgrnhdrvo:results){

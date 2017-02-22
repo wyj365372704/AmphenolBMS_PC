@@ -47,10 +47,20 @@ String iptyp = request.getParameter("iptyp");
 		}
 		function checks(){
 			var seqnm=document.getElementsByName("seqnm")[0].value;
+			var shqty = document.getElementById("shqty").value; // 数量
 			if(seqnm==''){
 				alert("请选择物料！");
 				return false;
-			}else{
+			}
+		 	 if (!shqty) {
+				alert("数量不能为空!");
+				return false;
+			} 
+ 			if (isNaN(shqty)) {
+				alert("数量输入非法!");
+				return false;
+			} 
+			 {
 				return true;
 			}
 		}
@@ -94,6 +104,13 @@ String iptyp = request.getParameter("iptyp");
 						<td class="td_w_s text_r">行号：</td>
 						<td>
 							<input type="text" name="seqnm" class="input_s_1"  readonly="true" />
+						</td>
+						
+					</tr>
+						<tr>
+						<td class="td_w_s text_r">数量：</td>
+						<td>
+							<input type="text" name="shqty" id="shqty" class="input_s_1" value="${shqty }" />
 						</td>
 						
 					</tr>

@@ -113,14 +113,24 @@
 	</resultMap>
 
 	<!-- 查询收货单 -->
-	<select id="queryReceiptList" resultMap="ZGRNHDR2VOMap"
+	<select id="queryReceiptList" resultMap="ZGRNHDRVO"
 		parameterClass="ZGRNHDRVO">
 		<![CDATA[select  *
 		from  ZGRNHDR where   SHPNO like ('%'||#shpno#||'%')
 		]]>
+		<isNotEmpty prepend="AND" property="grnno">
+			GRNNO like ('%'||#"grnno"#||'%'))
+		</isNotEmpty>
 		<isNotEmpty prepend="AND" property="ostat">
 			OSTAT IN ($ostat$)
 		</isNotEmpty>
+			<isNotEmpty prepend="AND" property="startDate">
+				(CRDT >=
+				#startDate#)
+			</isNotEmpty>
+			<isNotEmpty prepend="AND" property="endDate">
+               <![CDATA[ (CRDT <= #endDate#)  ]]>
+			</isNotEmpty>
 		<![CDATA[
 			ORDER BY CRDT DESC ,CRTM DESC
 		]]>

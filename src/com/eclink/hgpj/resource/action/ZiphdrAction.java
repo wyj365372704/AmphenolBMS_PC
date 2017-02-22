@@ -76,6 +76,8 @@ public class ZiphdrAction extends BaseAction {
 	
 	private String data;
 	
+	private String shqty;
+	
 	private String reason;
 
 	private String flag;
@@ -104,6 +106,14 @@ public class ZiphdrAction extends BaseAction {
 
 	public void setZiphdrService(ZIPHDRService ziphdrService) {
 		this.ziphdrService = ziphdrService;
+	}
+
+	public String getShqty() {
+		return shqty;
+	}
+
+	public void setShqty(String shqty) {
+		this.shqty = shqty;
 	}
 
 	public String getOrdno() {
@@ -367,6 +377,7 @@ public class ZiphdrAction extends BaseAction {
 			ivo.setLstat("05");
 			ivo.setLprt("0");
 			ivo.setLvrfy("0");
+			ivo.setShqty(new BigDecimal(shqty));
 			ivo.setIpus2("");
 			ivo.setIpdp2("");
 			ivo.setIpdt2(BigDecimal.valueOf(0));

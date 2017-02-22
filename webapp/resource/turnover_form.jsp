@@ -27,7 +27,7 @@
 </head>
 
 <body>
-	<table cellpadding="5px" width="400" class="tb">
+	<table cellpadding="5px" width="400" height="250" align="center" class="tb">
 		<tbody>
 			<tr>
 				<td>
@@ -49,7 +49,7 @@
 			</tr>
 			<tr>
 				<td> 
-					<table width="100%" cellpadding="3px">
+					<table width="100%" height="100%" cellpadding="3px" border="0">
 						<tbody>
 							<tr>
 								<td>生产订单: <s:property value="ordno"/></td>

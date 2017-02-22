@@ -24,13 +24,13 @@ String ipdln = request.getParameter("ipdln");
 		var ipdno="<%=ipdno %>";
 		if(data=="success"){
 			//window.parent.opener.document.getElementsByName("queryform")[0].submit();
-		  	alert("物料添加成功");
+		  	alert("物料修改成功");
 			window.close();
 		}else if(data=="fail"){
-			alert("领料单添加失败,原因：${reason}");
+			alert("领料单修改失败,原因：${reason}");
 			window.close();
 		}else if(data=="other"){
-			alert("领料单添加失败,原因：${reason}");
+			alert("领料单修改失败,原因：${reason}");
 			window.close();
 		}
 		function selectI(){

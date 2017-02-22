@@ -18,9 +18,11 @@ import com.eclink.dfcm.paginator.tag.PageVO;
 import com.eclink.hgpj.base.BaseAction;
 import com.eclink.hgpj.common.HGPJConstant;
 import com.eclink.hgpj.resource.biz.XADATAService;
+import com.eclink.hgpj.resource.biz.ZBMSCTLService;
 import com.eclink.hgpj.resource.biz.ZITMEXTService;
 import com.eclink.hgpj.resource.vo.ITMRVAVO;
 import com.eclink.hgpj.resource.vo.ITMSITVO;
+import com.eclink.hgpj.resource.vo.ZBMSCTLVO;
 import com.eclink.hgpj.resource.vo.ZITMEXTVO;
 import com.eclink.hgpj.util.QRcoderUtil;
 import com.eclink.hgpj.util.Utils;
@@ -40,6 +42,7 @@ public class MaterialTagAction extends BaseAction {
 	private static final Logger log = Logger.getLogger(MaterialTagAction.class);
 	private XADATAService xadataService;
 	private ZITMEXTService zitmextService;
+	private ZBMSCTLService zbmsctlService;
 	private String itnot9;
 	private String fordrji = "";//物料
 	private String fds40ji = "";//描述
@@ -54,6 +57,14 @@ public class MaterialTagAction extends BaseAction {
 	private String outer_weight_unit = "kg";//包材重单位
 	private String fweight_unit = "g";//单重单位
 
+
+	public ZBMSCTLService getZbmsctlService() {
+		return zbmsctlService;
+	}
+
+	public void setZbmsctlService(ZBMSCTLService zbmsctlService) {
+		this.zbmsctlService = zbmsctlService;
+	}
 
 	public XADATAService getXadataService() {
 		return xadataService;
@@ -221,6 +232,8 @@ public class MaterialTagAction extends BaseAction {
 			String encoderQRCoder = QRcoderUtil.encoderQRCoder(result, ServletActionContext.getContext().getSession().get("username").toString(),getSession().getServletContext().getRealPath("/"));
 			System.out.println("encoderQRCoder is "+encoderQRCoder);
 
+			
+			
 
 			HttpServletRequest request = ServletActionContext.getRequest();
 			String path = request.getContextPath(); 
@@ -237,6 +250,14 @@ public class MaterialTagAction extends BaseAction {
 				totalweight +=Double.parseDouble(outer_weight);
 			}
 			ServletActionContext.getRequest().setAttribute("totalweight", totalweight);
+			
+			ZBMSCTLVO zbmsctl = new ZBMSCTLVO();
+			zbmsctl.setSite((String) getSession().getAttribute("stid"));
+			List<ZBMSCTLVO> bmsctlList = zbmsctlService.queryZbmsctl(zbmsctl);
+			if(bmsctlList!=null && bmsctlList.size()>0){
+				ServletActionContext.getRequest().setAttribute("nmchs", bmsctlList.get(0).getNmchs());
+			}
+			
 			return "toPrintMaterialTag";
 		}catch (Throwable e) {
 			e.printStackTrace();

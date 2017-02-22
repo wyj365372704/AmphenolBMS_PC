@@ -40,6 +40,10 @@ public class ZGRNHDRVO extends BaseVO{
 	
 	private BigDecimal crtm;
 	
+	private String startDate;
+	
+	private String endDate;
+	
 	private String chus;
 	
 	private BigDecimal chdt;
@@ -58,6 +62,22 @@ public class ZGRNHDRVO extends BaseVO{
 
 	public String getVndnr() {
 		return vndnr;
+	}
+
+	public String getStartDate() {
+		return startDate;
+	}
+
+	public void setStartDate(String startDate) {
+		this.startDate = startDate;
+	}
+
+	public String getEndDate() {
+		return endDate;
+	}
+
+	public void setEndDate(String endDate) {
+		this.endDate = endDate;
 	}
 
 	public String getScrdt() {

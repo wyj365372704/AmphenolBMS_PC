@@ -82,8 +82,21 @@
 
 			<ul>
 
+				<li><div class="w_s">到货单号：</div> <s:textfield
+						name="zgrnhdr.grnno" cssClass="input_w" /></li>
 				<li><div class="w_s">送货单号：</div> <s:textfield
 						name="zgrnhdr.shpno" cssClass="input_w" /></li>
+						
+					<li><div class="w_s">创建日期：</div> <s:textfield id="startDate"
+						name="zgrnhdr.startDate" cssClass="time_input"
+						onclick="WdatePicker()" autocomplete="on" /> - <s:textfield
+						id="endDate" name="zgrnhdr.endDate" cssClass="time_input"
+						onclick="WdatePicker()" autocomplete="on" /></li>
+						
+				<li><div class="w_s">到货单状态：</div> 
+				<s:select list="#{'':'全部','40':'部分收货','50':'已完成'}" name="zgrnhdr.ostat"
+				headerValue="zgrnhdr.ostat" style="width:80px" cssClass="select_s_2" ></s:select>
+				</li>
 
 			</ul>
 		</div>
