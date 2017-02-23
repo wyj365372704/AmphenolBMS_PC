@@ -17,7 +17,7 @@
 <script src="../js/alert/jquery.alerts.js" type="text/javascript"></script>
 <script src="../js/common.js" type="text/javascript"></script>
 <link href="../js/alert/alerts.css" rel="stylesheet" type="text/css" />
-<style type="text/css">
+<style type="text/css" lang="">
 .tb {
 	border: solid 1px;
 	margin-bottom: 50px;
@@ -27,6 +27,9 @@
 	border: 1px solid;
 }
 </style>
+<script type="text/javascript">
+window.resizeTo(800, 800);
+</script>
 </head>
 <body>
 		<!-- 领料单 -->

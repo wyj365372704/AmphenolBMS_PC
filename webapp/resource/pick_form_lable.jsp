@@ -25,6 +25,9 @@
 		border:1px solid;
 	}
 </style>
+<script type="text/javascript">
+window.resizeTo(800, 800);
+</script>
 </head>
 
 <body>

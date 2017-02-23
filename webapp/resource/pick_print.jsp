@@ -24,20 +24,20 @@ function radioChanged(){
 }
 </script>
 <body>
-	<s:form action="picklist!toPrintPick.action" method="post">
+	<form action="picklist!toPrintPick.action" method="post" name="myForm">
 		<div class="public_div">
 			<input type="hidden" name="grnno" value="<s:property value='grnno'/>" />
 			<div class="public_inner">
 				<table width="100%" border="0" cellspacing="1" cellpadding="0"
 					class="public_table">
 					<tbody>
-						<tr>
+					<!-- 	<tr>
 							<td class="td_w_s text_r">打印类型：</td>
 							<td><input id="printA" type="radio" name="input1" value="0"
 								onclick="radioChanged();" checked="checked" />打印领料单 <input
 								id="printB" type="radio" name="input1" value="1"
 								onclick="radioChanged();" />打印分装标签</td>
-						</tr>
+						</tr> -->
 						<tr>
 							<td class="td_w_s text_r">分仓打印：</td>
 							<td><input id="printA_type" type="checkbox" name="input2"
@@ -47,23 +47,24 @@ function radioChanged(){
 
 						<tr>
 
-							<td align="center" colspan="2"  ><s:submit id="queryId"
-									value="打印" onclick="return dosubmit()"></s:submit>
+							<td align="center" colspan="2"  >
+							<input type="button" value="打印" onclick="dosubmit();"/>
 							</td>
 							
 						</tr>
 					</tbody>
 				</table>
-				<div class="page" style="display: none;">
-					<page:paginator formName="queryform" nameInRequest="paginator" />
-				</div>
 			</div>
 		</div>
-	</s:form>
+	</form>
 </body>
 <script type="text/javascript">
 		function dosubmit(){
-			window.resizeTo(900, 750);
+			var grnno = document.getElementsByName("grnno")[0].value;
+			var input2 = document.getElementsByName("input2")[0].value;
+			window.open("picklist!toPrintPick.action?grnno="+grnno+"&input2="+input2+"&input1=1",'_blank','height=251,width=400,top='+ (window.outerHeight/3)+',left='+ (window.outerWidth/2)+',toolbar=no,menubar=no,scrollbars=no, resizable=no,location=no, status=no');
+			window.open("picklist!toPrintPick.action?grnno="+grnno+"&input2="+input2+"&input1=0",'_blank','height=251,width=400,top='+ (window.outerHeight/3)+',left='+ (window.outerWidth/2)+',toolbar=no,menubar=no,scrollbars=no, resizable=no,location=no, status=no');
+			window.close();
 		}
 		function sleep(n) {
 	   		var start = new Date().getTime();
