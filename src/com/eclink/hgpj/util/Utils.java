@@ -923,7 +923,7 @@ public class Utils {
 		sbuff.append(map.get("sluserId"));
 		sbuff.append("' password='");
 		sbuff.append(map.get("slpassword"));
-		sbuff.append("' maxIdle='900000' properties='com.pjx.cas.domain.EnvironmentId=MC,com.pjx.cas.domain.SystemName=SZERP.MARKWINS.COM,com.pjx.cas.user.LanguageId=zh'/>");
+		sbuff.append("' maxIdle='900000' properties='com.pjx.cas.domain.EnvironmentId="+(String)map.get("env")+",com.pjx.cas.domain.SystemName=SZERP.MARKWINS.COM,com.pjx.cas.user.LanguageId=zh'/>");
 		sbuff.append("<Request sessionHandle='*current' workHandle='*new' broker='EJB' maxIdle='1000'>");
 		sbuff.append("<Create name = 'createCustomerOrder' domainClass='com.mapics.csm.CustomerOrder'>");
 		sbuff.append("<DomainEntity>            <Key>");
@@ -1270,7 +1270,7 @@ public class Utils {
 		sbuff.append(map.get("sluserId"));
 		sbuff.append("' password='");
 		sbuff.append(map.get("slpassword"));
-		sbuff.append("' maxIdle='900000' properties='com.pjx.cas.domain.EnvironmentId=M4,com.pjx.cas.domain.SystemName=SZERP.MARKWINS.COM,com.pjx.cas.user.LanguageId=zh'/>");
+		sbuff.append("' maxIdle='900000' properties='com.pjx.cas.domain.EnvironmentId="+(String)map.get("env")+",com.pjx.cas.domain.SystemName=SZERP.MARKWINS.COM,com.pjx.cas.user.LanguageId=zh'/>");
 		sbuff.append("<Request sessionHandle='*current' workHandle='*new' broker='EJB' maxIdle='1000'>");
 		sbuff.append("<Create name = 'createPurchaseOrder' domainClass='com.mapics.pm.PurchaseOrder'>");
 		sbuff.append("<DomainEntity>            <Key>");
@@ -1323,7 +1323,7 @@ public class Utils {
 		sbuff.append(map.get("sluserId"));
 		sbuff.append("' password='");
 		sbuff.append(map.get("slpassword"));
-		sbuff.append("' maxIdle='900000' properties='com.pjx.cas.domain.EnvironmentId=M4,com.pjx.cas.domain.SystemName=SZERP.MARKWINS.COM,com.pjx.cas.user.LanguageId=zh'/>");
+		sbuff.append("' maxIdle='900000' properties='com.pjx.cas.domain.EnvironmentId="+(String)map.get("env")+",com.pjx.cas.domain.SystemName=SZERP.MARKWINS.COM,com.pjx.cas.user.LanguageId=zh'/>");
 		sbuff.append("<Request sessionHandle='*current' workHandle='*new' broker='EJB' maxIdle='1000'>");
 		sbuff.append("<Create name = 'createPoItem' domainClass='com.mapics.pm.PoItem'>");
 		sbuff.append("<DomainEntity>            <Key>");
@@ -1383,7 +1383,7 @@ public class Utils {
 		sbuff.append(map.get("sluserId"));
 		sbuff.append("' password='");
 		sbuff.append(map.get("slpassword"));
-		sbuff.append("' maxIdle='900000' properties='com.pjx.cas.domain.EnvironmentId=M4,com.pjx.cas.domain.SystemName=SZERP.MARKWINS.COM,com.pjx.cas.user.LanguageId=zh'/>");
+		sbuff.append("' maxIdle='900000' properties='com.pjx.cas.domain.EnvironmentId="+(String)map.get("env")+",com.pjx.cas.domain.SystemName=SZERP.MARKWINS.COM,com.pjx.cas.user.LanguageId=zh'/>");
 		sbuff.append("<Request sessionHandle='*current' workHandle='*new' broker='EJB' maxIdle='1000'>");
 		sbuff.append("<Create name = 'createPoItemRelease' domainClass='com.mapics.pm.PoItemRelease'>");
 		sbuff.append("<DomainEntity>            <Key>");
@@ -2194,6 +2194,68 @@ public  boolean insertOffShip(String lib, String env, List<Map> pmaps, String li
 		}
 	}
 	
+	public  Map getMBC6REP(String lib,Map pmap) throws Exception{
+		Connection conn = null;
+		InputStream is =null;
+		Statement stmt = null;
+		OutputStream os = null;
+		try{
+			is = new BufferedInputStream(new FileInputStream(this.getClass().getResource("").getPath()+ "/config.properties"));
+			Properties properties = new Properties();
+			properties.load(is);
+			//			Class.forName("");
+			Class.forName(properties.getProperty("DRIVER_NAME"));
+			java.sql.DriverManager.registerDriver (new com.ibm.as400.access.AS400JDBCDriver ()); 
+			//			Class.forName("com.ibm.as400.access.AS400JDBCDriver");	
+			//			conn=DriverManager.getConnection("jdbc:mysql://localhost:3306/QGPL", "", "");
+			String dburl=properties.getProperty("DBURL");
+			String dbip=dburl.split("/")[2];
+			Map rmap = new HashMap();
+			conn=DriverManager.getConnection("jdbc:as400://"+dbip+"/"+lib+";translate binary=true", properties.getProperty("DBUSER"), properties.getProperty("DBPASSWORD"));
+			if(conn!=null){
+					String sql = "select * from MBC6REP where C6AENB="+(Integer)pmap.get("C6AENB")+" and C6DCCD='"+(String)pmap.get("C6DCCD")+"' and C6CVNB='"+(String)pmap.get("C6CVNB")+"'";
+					System.out.println("find is "+sql);
+					stmt = (Statement) conn.createStatement();
+					ResultSet executeQuery = stmt.executeQuery(sql);
+					if(executeQuery.next()){
+						rmap.put("C6AENB", executeQuery.getInt("C6AENB"));
+						rmap.put("C6DCCD", executeQuery.getString("C6DCCD"));
+						rmap.put("C6CVNB", executeQuery.getString("C6CVNB"));
+						rmap.put("C6ACDT", executeQuery.getInt("C6ACDT"));
+						rmap.put("C6CHNB", executeQuery.getString("C6CHNB"));
+						rmap.put("C6D0NB", executeQuery.getInt("C6D0NB"));
+						rmap.put("C6BRCD", executeQuery.getInt("C6BRCD"));
+					}
+
+				
+			}else{
+				throw new Exception("conn is null");	
+			}
+			return rmap;
+		}catch(Exception e){
+			e.printStackTrace();
+			return null;
+		}finally{
+			try{
+				if(os!=null){
+					os.close();
+				}
+				if(is!=null){
+					is.close();
+				}
+				if(stmt!=null){
+					stmt.close();
+				}
+				if(conn!=null){
+					conn.close();
+				}
+			}catch(Exception e){
+				e.printStackTrace();
+			}
+
+		}
+	}
+	
 	public  int insertZMLTRN(String lib,Map pmap) throws Exception{
 		Connection conn = null;
 		InputStream is =null;
@@ -2336,11 +2398,12 @@ public  boolean insertOffShip(String lib, String env, List<Map> pmaps, String li
 		}
 	}
 	
-	public  Map getMlCO(String lib,Map pmap) throws Exception{
+	public  List getMlCO(String lib,Map pmap) throws Exception{
 		Connection conn = null;
 		InputStream is =null;
 		Statement stmt = null;
 		OutputStream os = null;
+		List results = new ArrayList();
 		try{
 			is = new BufferedInputStream(new FileInputStream(this.getClass().getResource("").getPath()+ "/config.properties"));
 			Properties properties = new Properties();
@@ -2352,10 +2415,10 @@ public  boolean insertOffShip(String lib, String env, List<Map> pmaps, String li
 			//			conn=DriverManager.getConnection("jdbc:mysql://localhost:3306/QGPL", "", "");
 			String dburl=properties.getProperty("DBURL");
 			String dbip=dburl.split("/")[2];
-			Map rmap = new HashMap();
+			Map rmap = null;
 			conn=DriverManager.getConnection("jdbc:as400://"+dbip+"/"+lib+";translate binary=true", properties.getProperty("DBUSER"), properties.getProperty("DBPASSWORD"));
 			if(conn!=null){
-					String sql = "select c.*,d.ADBIDT from MBCDREP c inner join MBADREP d on c.CDAENB=d.ADAENB and c.CDDCCD=d.ADDCCD and c.CDCVNB=d.ADCVNB and c.CDFCNB=d.ADFCNB where 1=1 ";
+					String sql = "select c.*,d.ADBIDT,d.ADAAN7 from MBCDREP c inner join MBADREP d on c.CDAENB=d.ADAENB and c.CDDCCD=d.ADDCCD and c.CDCVNB=d.ADCVNB and c.CDFCNB=d.ADFCNB where 1=1 ";
 					if(pmap.get("CDAENB")!=null){
 						sql=sql+" and c.CDAENB="+(Integer)pmap.get("CDAENB");
 					}
@@ -2368,10 +2431,12 @@ public  boolean insertOffShip(String lib, String env, List<Map> pmaps, String li
 					if(pmap.get("CDFCNB")!=null){
 						sql=sql+" and c.CDFCNB="+(Integer)pmap.get("CDFCNB");
 					}
+					sql=sql+" order by c.CDFCNB ";
 					System.out.println("find is "+sql);
 					stmt = (Statement) conn.createStatement();
 					ResultSet executeQuery = stmt.executeQuery(sql);
-					if(executeQuery.next()){
+					while(executeQuery.next()){
+						rmap = new HashMap();
 						rmap.put("CDFCNB", executeQuery.getInt("CDFCNB"));
 						rmap.put("CDKTNB", executeQuery.getString("CDKTNB"));
 						rmap.put("CDACQT", executeQuery.getFloat("CDACQT"));
@@ -2381,15 +2446,18 @@ public  boolean insertOffShip(String lib, String env, List<Map> pmaps, String li
 						rmap.put("CDDHCD", executeQuery.getString("CDDHCD"));
 						rmap.put("CDA3CD", executeQuery.getString("CDA3CD"));
 						rmap.put("ADBIDT", executeQuery.getInt("ADBIDT"));
+						rmap.put("ADAAN7", executeQuery.getInt("ADAAN7"));
+						rmap.put("ADAJDT", executeQuery.getInt("ADAAN7"));
+						rmap.put("ADAIDT", executeQuery.getInt("ADAAN7"));
 						rmap.put("CDDOVA", executeQuery.getFloat("CDDOVA"));
-						
+						results.add(rmap);
 					}
 
 				
 			}else{
 				throw new Exception("conn is null");	
 			}
-			return rmap;
+			return results;
 		}catch(Exception e){
 			e.printStackTrace();
 			return null;
