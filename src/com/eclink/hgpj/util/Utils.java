@@ -2146,7 +2146,7 @@ public  boolean insertOffShip(String lib, String env, List<Map> pmaps, String li
 			Map rmap = new HashMap();
 			conn=DriverManager.getConnection("jdbc:as400://"+dbip+"/"+lib+";translate binary=true", properties.getProperty("DBUSER"), properties.getProperty("DBPASSWORD"));
 			if(conn!=null){
-					String sql = "select * from ZMLDTL where MLCODE='"+(String)pmap.get("MLCODE")+"'";
+					String sql = "select d.*,h.TPCENT from ZMLDTL d inner join ZMLHDR h on d.MLCODE=h.MLCODE where MLCODE='"+(String)pmap.get("MLCODE")+"'";
 					System.out.println("find is "+sql);
 					stmt = (Statement) conn.createStatement();
 					ResultSet executeQuery = stmt.executeQuery(sql);
@@ -2163,6 +2163,7 @@ public  boolean insertOffShip(String lib, String env, List<Map> pmaps, String li
 						rmap.put("COWHS", executeQuery.getString("COWHS"));
 						rmap.put("COCUS", executeQuery.getString("COCUS"));
 						rmap.put("COCUR", executeQuery.getString("COCUR"));
+						rmap.put("TPCENT", executeQuery.getString("TPCENT"));
 					}
 
 				
@@ -2225,6 +2226,62 @@ public  boolean insertOffShip(String lib, String env, List<Map> pmaps, String li
 						rmap.put("C6CHNB", executeQuery.getString("C6CHNB"));
 						rmap.put("C6D0NB", executeQuery.getInt("C6D0NB"));
 						rmap.put("C6BRCD", executeQuery.getInt("C6BRCD"));
+					}
+
+				
+			}else{
+				throw new Exception("conn is null");	
+			}
+			return rmap;
+		}catch(Exception e){
+			e.printStackTrace();
+			return null;
+		}finally{
+			try{
+				if(os!=null){
+					os.close();
+				}
+				if(is!=null){
+					is.close();
+				}
+				if(stmt!=null){
+					stmt.close();
+				}
+				if(conn!=null){
+					conn.close();
+				}
+			}catch(Exception e){
+				e.printStackTrace();
+			}
+
+		}
+	}
+	
+	public  Map getBKD5NB(String lib,Map pmap) throws Exception{
+		Connection conn = null;
+		InputStream is =null;
+		Statement stmt = null;
+		OutputStream os = null;
+		try{
+			is = new BufferedInputStream(new FileInputStream(this.getClass().getResource("").getPath()+ "/config.properties"));
+			Properties properties = new Properties();
+			properties.load(is);
+			//			Class.forName("");
+			Class.forName(properties.getProperty("DRIVER_NAME"));
+			java.sql.DriverManager.registerDriver (new com.ibm.as400.access.AS400JDBCDriver ()); 
+			//			Class.forName("com.ibm.as400.access.AS400JDBCDriver");	
+			//			conn=DriverManager.getConnection("jdbc:mysql://localhost:3306/QGPL", "", "");
+			String dburl=properties.getProperty("DBURL");
+			String dbip=dburl.split("/")[2];
+			Map rmap = new HashMap();
+			conn=DriverManager.getConnection("jdbc:as400://"+dbip+"/"+lib+";translate binary=true", properties.getProperty("DBUSER"), properties.getProperty("DBPASSWORD"));
+			if(conn!=null){
+					String sql = "select * from YABKREP where BKF3CD='MAPICS' and BKI5CD ='"+(String)pmap.get("hkcocurrency")+"' and BKI6CD ='"+(String)pmap.get("POCUR")+"' order by BKA6DT desc";
+					System.out.println("find is "+sql);
+					stmt = (Statement) conn.createStatement();
+					ResultSet executeQuery = stmt.executeQuery(sql);
+					if(executeQuery.next()){
+						rmap.put("BKD5NB", executeQuery.getFloat("BKD5NB"));
 					}
 
 				

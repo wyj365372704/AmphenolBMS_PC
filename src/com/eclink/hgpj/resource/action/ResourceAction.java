@@ -7746,6 +7746,7 @@ public class ResourceAction extends BaseAction {
 							String mllib="";
 							String AMFLIB="";
 							String AMPHLIB="";
+							String stid = "";
 							System.out.println("jsondata="+json.toString()+";renv="+renv+";properties.elements()="+properties.size());
 							if(renv!=null && renv.trim().length()>0){
 								Set values = properties.keySet();	
@@ -7759,11 +7760,21 @@ public class ResourceAction extends BaseAction {
 										mllib=properties.getProperty("MLLIB"+idx);
 										AMFLIB=properties.getProperty("AMFLIB"+idx);
 										AMPHLIB=properties.getProperty("AMPHLIB"+idx);
-										
 										break;
 									}
 								}
 								System.out.println("AMFLIB="+AMFLIB);
+								Map mbc6reppm = new HashMap();
+								mbc6reppm.put("C6AENB", Integer.valueOf(C6AENB.trim()));
+								mbc6reppm.put("C6DCCD", C6DCCD);
+								mbc6reppm.put("C6CVNB", C6CVNB);
+								Map mbc6repm = utils.getMBC6REP(AMFLIB, mbc6reppm);
+								String hkcocurrency = "";
+								if(mbc6repm!=null){
+									hkcocurrency=(String)mbc6repm.get("C6BRCD");
+								}
+								
+								
 								Map zcoextpm = new HashMap();
 								zcoextpm.put("C6AENB", Integer.valueOf(C6AENB.trim()));
 								zcoextpm.put("C6DCCD", C6DCCD);
@@ -7843,7 +7854,19 @@ public class ResourceAction extends BaseAction {
 														copmap.put("orderUm", (String)comap0.get("CDDHCD"));
 														copmap.put("warehouse", (String)zmldtlrm.get("POWHS"));
 														copmap.put("orderQuantityRequested", allcount);
-														copmap.put("unitPriceRequested", Float.valueOf((String)comap0.get("CDDOVA"))*0.8);
+														if(hkcocurrency.equals((String)zmldtlrm.get("POCUR"))){
+															copmap.put("unitPriceRequested", Float.valueOf((String)comap0.get("CDDOVA")));
+															
+														}else{
+															Map bkd5nbpmap = new HashMap();
+															bkd5nbpmap.put("hkcocurrency", hkcocurrency);
+															bkd5nbpmap.put("POCUR", (String)zmldtlrm.get("POCUR"));
+															
+															Map bkd5nbrmap = utils.getBKD5NB(AMFLIB, bkd5nbpmap);
+															float exchangeprice = Float.valueOf((String)comap0.get("CDDOVA"))*Float.valueOf((String)zmldtlrm.get("TPCENT"))*Float.valueOf((String)bkd5nbrmap.get("BKD5NB"));
+															copmap.put("unitPriceRequested", BigDecimal.valueOf(exchangeprice).setScale(3, BigDecimal.ROUND_HALF_UP).floatValue());
+															
+														}
 														String codretxml = utils.systemLinkM4cd(copmap);
 														//根据返回的XML获取行号
 														String strline = "1";
