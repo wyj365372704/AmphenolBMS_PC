@@ -485,6 +485,12 @@
 			<isNotEmpty prepend="and" property="ponr">
 				a.PONR=#ponr#
 			</isNotEmpty>
+			<isNotEmpty prepend="and" property="pisq">
+				a.PISQ=#pisq#
+			</isNotEmpty>
+				<isNotEmpty prepend="and" property="lseq">
+				a.LSEQ=#lseq#
+			</isNotEmpty>
 		</dynamic>
 
 	</select>
