@@ -62,6 +62,10 @@ public class GrnAction extends BaseAction {
 	private String grnno;
 
 	private String grdte;
+	
+	private String startDate;
+	
+	private String endDate;
 
 	private List<ZGRNHDRVO> results;
 
@@ -77,6 +81,22 @@ public class GrnAction extends BaseAction {
 
 	public void setZgrnhdrService(ZGRNHDRService zgrnhdrService) {
 		this.zgrnhdrService = zgrnhdrService;
+	}
+
+	public String getStartDate() {
+		return startDate;
+	}
+
+	public void setStartDate(String startDate) {
+		this.startDate = startDate;
+	}
+
+	public String getEndDate() {
+		return endDate;
+	}
+
+	public void setEndDate(String endDate) {
+		this.endDate = endDate;
 	}
 
 	public ZBMSCTLService getZbmsctlService() {
@@ -199,21 +219,25 @@ public class GrnAction extends BaseAction {
 			// 分页对象保存至request
 			getRequest().setAttribute(HGPJConstant.PAGE_KEY, page);
 
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			
 			if(query==0){
+				endDate = Utils.formateDate(new Date(), "yyyy-MM-dd");
+				startDate = Utils.formateDate(new Date(), "yyyy-MM-dd");
 				return "toGrn";
 			}
 			if(zgrnhdr.getOstat() == null || zgrnhdr.getOstat().isEmpty()){
 				zgrnhdr.setOstat("40,50");
 			}
 			
-			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			if(startDate!=null && !startDate.trim().equals("")){
+				zgrnhdr.setStartDate(("1"+Utils.formateDate(sdf.parse(startDate), "yyMMdd")));
+			}
 			
-			if(zgrnhdr.getStartDate()!=null && !zgrnhdr.getStartDate().trim().equals("")){
-				zgrnhdr.setStartDate(("1"+Utils.formateDate(sdf.parse(zgrnhdr.getStartDate()), "yyMMdd")));
+			if(endDate!=null && !endDate.trim().equals("")){
+				zgrnhdr.setEndDate((("1"+Utils.formateDate(sdf.parse(endDate), "yyMMdd"))));
 			}
-			if(zgrnhdr.getEndDate()!=null && !zgrnhdr.getEndDate().trim().equals("")){
-				zgrnhdr.setEndDate((("1"+Utils.formateDate(sdf.parse(zgrnhdr.getEndDate()), "yyMMdd"))));
-			}
+			
 			
 			results = this.zgrnhdrService.queryReceiptList(zgrnhdr);
 

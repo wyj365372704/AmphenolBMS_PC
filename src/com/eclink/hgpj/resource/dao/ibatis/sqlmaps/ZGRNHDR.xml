@@ -113,13 +113,13 @@
 	</resultMap>
 
 	<!-- 查询收货单 -->
-	<select id="queryReceiptList" resultMap="ZGRNHDRVO"
+	<select id="queryReceiptList" resultClass="ZGRNHDRVO"
 		parameterClass="ZGRNHDRVO">
 		<![CDATA[select  *
 		from  ZGRNHDR where   SHPNO like ('%'||#shpno#||'%')
 		]]>
 		<isNotEmpty prepend="AND" property="grnno">
-			GRNNO like ('%'||#"grnno"#||'%'))
+			GRNNO like ('%'||#grnno#||'%')
 		</isNotEmpty>
 		<isNotEmpty prepend="AND" property="ostat">
 			OSTAT IN ($ostat$)

@@ -88,9 +88,9 @@
 						name="zgrnhdr.shpno" cssClass="input_w" /></li>
 						
 					<li><div class="w_s">创建日期：</div> <s:textfield id="startDate"
-						name="zgrnhdr.startDate" cssClass="time_input"
+						name="startDate" cssClass="time_input"
 						onclick="WdatePicker()" autocomplete="on" /> - <s:textfield
-						id="endDate" name="zgrnhdr.endDate" cssClass="time_input"
+						id="endDate" name="endDate" cssClass="time_input"
 						onclick="WdatePicker()" autocomplete="on" /></li>
 						
 				<li><div class="w_s">到货单状态：</div> 

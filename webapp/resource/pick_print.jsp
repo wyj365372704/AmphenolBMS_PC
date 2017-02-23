@@ -47,12 +47,10 @@ function radioChanged(){
 
 						<tr>
 
-							<td align="center"  ><s:submit id="queryId"
+							<td align="center" colspan="2"  ><s:submit id="queryId"
 									value="打印" onclick="return dosubmit()"></s:submit>
 							</td>
-							<td align="center"  ><input id="printid" type="button"  class="gray_button" 
-									value="批量打印" onclick="mulprint()" />
-							</td>
+							
 						</tr>
 					</tbody>
 				</table>
