@@ -4577,7 +4577,7 @@ public class ResourceAction extends BaseAction {
 				}
 				DataSourceUtil.setDataSource(dbconfigurl, idx);
 				String stid =Utils.getDataSourceS(dbconfigurl, "STID"+idx);
-
+				String lib = Utils.getDataSourceS(dbconfigurl, "AMPHLIB"+idx);
 				String now1 = Utils.formateDate(null, "yyyyMMdd");
 				String now2 = Utils.formateDate(null, "HHmmss");
 				String now3 = Utils.formateDate(null, "yyMMdd");
@@ -4606,10 +4606,13 @@ public class ResourceAction extends BaseAction {
 					MOMASTVO vo = results.get(0);
 					if("10, 40, 50".indexOf(vo.getOstat())>=0){
 						double rax = 1;
-						if(bmsctlList.size()>0){
-							rax +=bmsctlList.get(0).getPrslmt().doubleValue()*0.01f;
-						}
-						if(vo.getMoqty().multiply(new BigDecimal(Double.valueOf(rax))).compareTo(vo.getQtyrc().add(new BigDecimal(Double.parseDouble(quantity))))<0){
+//						if(bmsctlList.size()>0){
+//							rax +=bmsctlList.get(0).getPrslmt().doubleValue()*0.01f;
+//						}
+					
+						rax +=new Utils().getItemPrecIncome(lib, stid,vo.getFitem().trim())*0.01d;
+						System.out.println("rax is "+rax);
+						if(vo.getMoqty().multiply(new BigDecimal((rax))).compareTo(vo.getQtyrc().add(new BigDecimal(Double.parseDouble(quantity))))<0){
 							jo.put("code", 7);
 							jo.put("desc", "入库数量超过上限");
 							NumberFormat  numberFormat = NumberFormat.getNumberInstance();
