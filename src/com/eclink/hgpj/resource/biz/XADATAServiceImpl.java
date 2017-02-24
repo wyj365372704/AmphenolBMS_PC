@@ -238,10 +238,8 @@ public class XADATAServiceImpl implements XADATAService {
 		List<MODESCVO> list= xadataDao.queryModesc(map);
 		String result = "";
 		for(MODESCVO modescvo:list){
-			result+=modescvo.getAddsc().trim()+",";
+			result += "<br/>"+modescvo.getAddsc().trim();
 		}
-		if(result.length()>0)
-			result = result.substring(0,result.length()-1);
 		return result;
 	}
 
