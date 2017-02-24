@@ -891,6 +891,20 @@ public class PomastAction extends BaseAction {
 
 				}
 			}
+			map.put("sluserId", this.getSession().getServletContext().getAttribute("sluserId"));
+			map.put("slpassword", this.getSession().getServletContext().getAttribute("slpassword"));
+			map.put("slurl", this.getSession().getServletContext().getAttribute("slurl"));
+			map.put("order", ordno);
+			String xaret0 = Utils.systemLinkUpdateObjectPurchaseOrder(map);
+			String retVal = (String)map.get("systemLinkStr");
+
+			System.out.println("um:"+retVal);
+			String errorStr1 = retVal.substring(retVal.indexOf("hasErrors"), retVal.indexOf("hasErrors")+17);
+			String warnStr2 = retVal.substring(retVal.indexOf("hasWarnings"), retVal.indexOf("hasWarnings")+19);
+			if(errorStr1.indexOf("true")>=0){
+				throw new RuntimeException("更新打印状态错误");
+			}
+			
 		}catch(Exception e){
 			System.out.println(e);
 			log.error("printO error", e);

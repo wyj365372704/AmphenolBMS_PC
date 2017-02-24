@@ -203,7 +203,7 @@
 						<th>币种</th>
 						<th>采购员</th>
 						<th>订单状态</th>
-						<th>已打印</th>
+						<th>打印状态</th>
 						<th>创建日期</th>
 						<th>操作</th>
 						<!-- -->
@@ -245,7 +245,9 @@
 	  					已取消
 	  				</s:elseif>
 						</td>
-						<td><s:property value="uusapm" /></td>
+						<td>
+						<s:if test="uusapm == 1">已打印</s:if>
+						<s:else>未打印</s:else>
 						<td><s:property value="actdts" /></td>
 						<td><s:if
 								test='pstts=="10"||pstts=="20"||pstts=="30"||pstts=="40"||pstts=="35"'>
