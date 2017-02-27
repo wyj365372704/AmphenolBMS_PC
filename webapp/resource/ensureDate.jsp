@@ -96,7 +96,21 @@
 						cssClass="select_s_2" style="width:60px"></s:select></li>
 				<li><div class="w_s">采购单号：</div> <s:textfield name="ordrji"
 						cssClass="input_w"></s:textfield></li>
-
+				<li><div class="w_s">物料：</div> <s:textfield name="itnoji"
+						cssClass="input_w"></s:textfield>
+				</li>
+				<li><div class="w_s">供应商：</div> <s:textfield name="vn35"
+						cssClass="input_w"></s:textfield>
+				</li>
+				<li><div class="w_s">采购员：</div> <s:textfield name="buyrji"
+						cssClass="input_w"></s:textfield>
+				</li>
+				<li><div class="w_s">采购单创建日期：</div> <s:textfield id="startDateActdt"
+						name="startDateActdt" cssClass="time_input"
+						onclick="WdatePicker()" autocomplete="on" /> - <s:textfield
+						id="endDateActdt" name="endDateActdt" cssClass="time_input"
+						onclick="WdatePicker()" autocomplete="on" />
+				</li>
 			</ul>
 		</div>
 
@@ -113,13 +127,16 @@
 						<tr>
 							<th>工厂</th>
 							<th>采购单号 项次</th>
+							<th>供应商</th>
 							<th>物料</th>
 							<th>描述</th>
 							<th>采购单位</th>
 							<th>采购量</th>
 							<th>未交量(采购单位)</th>
+							<th>采购员</th>
 							<th>供应商回复交期</th>
 							<th>采购交期</th>
+							<th>采购单创建日期</th>
 							<th>操作</th>
 						</tr>
 						<s:iterator value="results" status="st" var="item">
@@ -132,13 +149,16 @@
 							<td><s:property value="whidji" /></td>
 							<td><s:property value="ordrji" /> - <s:property
 									value="pisqji" /> - <s:property value="bksqji" /></td>
+							<td><s:property value="vn35" /></td>
 							<td><s:property value="itnoji" /></td>
 							<td><s:property value="ds40ji" /></td>
 							<td><s:property value="orumji" /></td>
 							<td><s:property value="ucoqji" /></td>
 							<td><s:property value="qtyoji" /></td>
+							<td><s:property value="buyrji" /></td>
 							<td><s:property value="wkdtji" /></td>
 							<td><s:property value="dkdtji" /></td>
+							<td><s:property value="actdt" /></td>
 							<td><input type="button" value="通过"
 								onclick="allow('${item.ordrji}','${item.pisqji}','${item.bksqji}','${item.wkdtji }');"/>
 								<input type="button" value="拒绝"

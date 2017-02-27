@@ -401,7 +401,7 @@
 				('%'||#fitem#||'%' )
 			</isNotEmpty>
 		</dynamic>
-		
+
 		<dynamic>
 			<isNotEmpty prepend="AND" property="ordnoF">
 				<iterate property="ordnoF" conjunction="or" open="(" close=")">
@@ -409,7 +409,7 @@
 				</iterate>
 			</isNotEmpty>
 		</dynamic>
-			<dynamic>
+		<dynamic>
 			<isNotEmpty prepend="AND" property="ostat">
 				(a.OSTAT = #ostat#)
 			</isNotEmpty>
@@ -489,7 +489,7 @@
 			<isNotEmpty prepend="and" property="pisq">
 				a.PISQ=#pisq#
 			</isNotEmpty>
-				<isNotEmpty prepend="and" property="lseq">
+			<isNotEmpty prepend="and" property="lseq">
 				a.LSEQ=#lseq#
 			</isNotEmpty>
 		</dynamic>
@@ -546,8 +546,7 @@
 					a.ORDNO LIKE ('%'||#ordno[]#||'%')
 
 				</iterate>
-				<!-- (a.ORDNO IN ($ordno$)
-				or a.ORDNO like ('%'||#ordno#||'%')) -->
+				<!-- (a.ORDNO IN ($ordno$) or a.ORDNO like ('%'||#ordno#||'%')) -->
 			</isNotEmpty>
 		</dynamic>
 		<dynamic>
@@ -558,7 +557,7 @@
 		<dynamic>
 			<isNotEmpty prepend="AND" property="vn35">
 				c.vn35 like
-				('%'||#vn35#||'%' )
+				('%$vn35$%' )
 			</isNotEmpty>
 		</dynamic>
 		<dynamic>
@@ -734,7 +733,7 @@
 				OPSEQ = #opseq#
 			</isNotNull>
 		</dynamic>
-		ORDER BY OPSEQ 
+		ORDER BY OPSEQ
 	</select>
 
 	<select id="queryModesc" resultClass="MODESCVO" parameterClass="Map">
@@ -751,27 +750,44 @@
 	</select>
 
 	<select id="querySchrcp" resultClass="SCHRCPVO" parameterClass="SCHRCPVO">
-		<![CDATA[ Select * from SCHRCP 
+		<![CDATA[ Select A.*,B.ACTDT,C.VN35 from SCHRCP A LEFT JOIN POMAST B ON A.ORDRJI = B.ORDNO 
+		LEFT JOIN VENNAM C ON B.VNDNR = C.VNDNR
 		]]>
 		<dynamic prepend="WHERE">
 			<isNotNull prepend="AND" property="sctkji">
-				SCTKJI = #sctkji#
+				A.SCTKJI = #sctkji#
 			</isNotNull>
 			<isNotNull prepend="AND" property="ordrji">
-				ORDRJI = #ordrji#
+				A.ORDRJI = #ordrji#
 			</isNotNull>
 			<isNotNull prepend="AND" property="pisqji">
-				PISQJI = #pisqji#
+				A.PISQJI = #pisqji#
 			</isNotNull>
 			<isNotNull prepend="AND" property="bksqji">
-				BKSQJI = #bksqji#
+				A.BKSQJI = #bksqji#
 			</isNotNull>
+			<isNotNull prepend="AND" property="itnoji">
+				A.ITNOJI like
+				('%'||#itnoji#||'%' )
+			</isNotNull>
+			<isNotNull prepend="AND" property="vn35">
+				C.VN35 like
+				('%$vn35$%' )
+			</isNotNull>
+			<isNotNull prepend="AND" property="buyrji">
+				A.BUYRJI like
+				('%$buyrji$%' )
+			</isNotNull>
+			
 			<isNotNull prepend="AND" property="rcpsji">
-				RCPSJI in ($rcpsji$)
+				A.RCPSJI in ($rcpsji$)
+			</isNotNull>
+			<isNotNull prepend="AND" property="startDateActdt">
+				(B.ACTDT>=#startDateActdt#)
+			</isNotNull>
+			<isNotNull prepend="AND" property="endDateActdt">
+				<![CDATA[(B.ACTDT <= #endDateActdt#)]]>
 			</isNotNull>
 		</dynamic>
 	</select>
-
-
-
 </sqlMap>

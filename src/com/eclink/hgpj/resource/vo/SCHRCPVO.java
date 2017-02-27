@@ -41,6 +41,8 @@ public class SCHRCPVO extends BaseVO{
 	
 	private BigDecimal qtyoji;
 	
+	private BigDecimal actdt;
+	
 	private String stkqji;
 	
 	private String orumji;
@@ -52,8 +54,15 @@ public class SCHRCPVO extends BaseVO{
 	private String ds40ji;
 	
 	private BigDecimal dkdtji;
+
+	
+	private BigDecimal startDateActdt;
+
+	private BigDecimal endDateActdt;
 	
 	private String vndrji;
+	
+	private String vn35;
 	
 	private String rcpsji;
 	
@@ -65,8 +74,24 @@ public class SCHRCPVO extends BaseVO{
 		return sctkji;
 	}
 
+	public BigDecimal getActdt() {
+		return actdt;
+	}
+
+	public void setActdt(BigDecimal actdt) {
+		this.actdt = actdt;
+	}
+
 	public void setSctkji(String sctkji) {
 		this.sctkji = sctkji;
+	}
+
+	public String getVn35() {
+		return vn35;
+	}
+
+	public void setVn35(String vn35) {
+		this.vn35 = vn35;
 	}
 
 	public String getWhidji() {
@@ -83,6 +108,22 @@ public class SCHRCPVO extends BaseVO{
 
 	public void setOrdrji(String ordrji) {
 		this.ordrji = ordrji;
+	}
+
+	public BigDecimal getStartDateActdt() {
+		return startDateActdt;
+	}
+
+	public void setStartDateActdt(BigDecimal startDateActdt) {
+		this.startDateActdt = startDateActdt;
+	}
+
+	public BigDecimal getEndDateActdt() {
+		return endDateActdt;
+	}
+
+	public void setEndDateActdt(BigDecimal endDateActdt) {
+		this.endDateActdt = endDateActdt;
 	}
 
 	public BigDecimal getPisqji() {

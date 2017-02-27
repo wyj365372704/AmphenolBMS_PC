@@ -17,6 +17,7 @@
 				STAUS in ($staus$)
 			</isNotEmpty>
 		</dynamic>
+		ORDER BY ORDRJI DESC,PISQJI DESC,BKSQJI DESC
 	</select>
 
 	<update id="updateStaus" parameterClass="ZDELIDAVO">

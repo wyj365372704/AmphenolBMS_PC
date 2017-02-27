@@ -128,6 +128,8 @@ public class PomastAction extends BaseAction {
 
 	private String chk;
 
+	private String itnoji;
+	
 	private String buynm;
 
 	private String txsuf;
@@ -135,6 +137,10 @@ public class PomastAction extends BaseAction {
 	private String sctkji;
 
 	private String vndrji;
+	
+	private String vn35;
+
+	private String buyrji;
 
 	private String vrdno;
 
@@ -142,6 +148,10 @@ public class PomastAction extends BaseAction {
 
 	private String flag;
 
+	private String startDateActdt;
+	
+	private String endDateActdt;
+	
 	private String blksq;
 
 	private String returnType;
@@ -184,12 +194,55 @@ public class PomastAction extends BaseAction {
 		this.isOutSource = isOutSource;
 	}
 
+	public String getVn35() {
+		return vn35;
+	}
+
+	public void setVn35(String vn35) {
+		this.vn35 = vn35;
+	}
+
+
+
+	public String getStartDateActdt() {
+		return startDateActdt;
+	}
+
+	public void setStartDateActdt(String startDateActdt) {
+		this.startDateActdt = startDateActdt;
+	}
+
+	public String getEndDateActdt() {
+		return endDateActdt;
+	}
+
+	public void setEndDateActdt(String endDateActdt) {
+		this.endDateActdt = endDateActdt;
+	}
+
+	public String getBuyrji() {
+		return buyrji;
+	}
+
+	public void setBuyrji(String buyrji) {
+		this.buyrji = buyrji;
+	}
+
+
 	public ZITMEXTService getZitmextService() {
 		return zitmextService;
 	}
 
 	public String getFlag() {
 		return flag;
+	}
+
+	public String getItnoji() {
+		return itnoji;
+	}
+
+	public void setItnoji(String itnoji) {
+		this.itnoji = itnoji;
 	}
 
 	public void setFlag(String flag) {
@@ -1320,6 +1373,7 @@ public class PomastAction extends BaseAction {
 		NumberFormat numberFormat = NumberFormat.getNumberInstance();
 		numberFormat.setGroupingUsed(false);
 		numberFormat.setRoundingMode(RoundingMode.UP);
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		
 		try {
 			//momast.setSsstdt(ssstdt);
@@ -1339,7 +1393,8 @@ public class PomastAction extends BaseAction {
 			getRequest().setAttribute(HGPJConstant.PAGE_KEY, page);
 
 			if(!"1".equals(flag)){
-				
+				startDateActdt = (Utils.formateDate(null, "yyyy-MM-dd"));
+				endDateActdt = (Utils.formateDate(null, "yyyy-MM-dd"));
 			}else{
 
 				List<Map> results = new ArrayList();
@@ -1357,6 +1412,15 @@ public class PomastAction extends BaseAction {
 					 * XA只允许对状态为05/10/40 的采购单进行交期修改
 					 */
 					schrcpvo.setRcpsji("05,10,35,40");
+					schrcpvo.setItnoji(itnoji);
+					schrcpvo.setVn35(vn35);
+					schrcpvo.setBuyrji(buyrji);
+					if(startDateActdt!=null && !startDateActdt.trim().equals("")){
+						schrcpvo.setStartDateActdt(BigDecimal.valueOf(Long.valueOf("1"+Utils.formateDate(sdf.parse(startDateActdt), "yyMMdd"))));
+					}
+					if(endDateActdt!=null && !endDateActdt.trim().equals("")){
+						schrcpvo.setEndDateActdt(BigDecimal.valueOf(Long.valueOf("1"+Utils.formateDate(sdf.parse(endDateActdt), "yyMMdd"))));
+					}
 					List<SCHRCPVO> querySchrcp = xadataService.querySchrcp(schrcpvo);
 					if(querySchrcp.size()>0){
 						schrcpvo = querySchrcp.get(0);
@@ -1367,12 +1431,15 @@ public class PomastAction extends BaseAction {
 						item.put("bksqji", schrcpvo.getBksqji().intValue());
 						item.put("itnoji", schrcpvo.getItnoji());
 						item.put("ds40ji", schrcpvo.getDs40ji());
+						item.put("vn35", schrcpvo.getVn35());
+						item.put("buyrji", schrcpvo.getBuyrji());
 						item.put("orumji", schrcpvo.getOrumji());
 						numberFormat.setMaximumFractionDigits(1);
 						numberFormat.setMinimumFractionDigits(1);
 						item.put("ucoqji",numberFormat.format( schrcpvo.getUcoqji()));
 						item.put("qtyoji", numberFormat.format(schrcpvo.getQtyoji()));
 						item.put("wkdtji",Utils.db2DateFormat(zdelidavo.getWkdtji().add(new BigDecimal(19000000)).intValue()));
+						item.put("actdt",Utils.db2DateFormat(schrcpvo.getActdt().add(new BigDecimal(19000000)).intValue()));
 						item.put("dkdtji", Utils.db2DateFormat(schrcpvo.getDkdtji().add(new BigDecimal(19000000)).intValue()));
 						results.add(item);
 					}
