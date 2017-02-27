@@ -923,7 +923,7 @@ public class Utils {
 		sbuff.append(map.get("sluserId"));
 		sbuff.append("' password='");
 		sbuff.append(map.get("slpassword"));
-		sbuff.append("' maxIdle='900000' properties='com.pjx.cas.domain.EnvironmentId="+(String)map.get("env")+",com.pjx.cas.domain.SystemName=SZERP.MARKWINS.COM,com.pjx.cas.user.LanguageId=zh'/>");
+		sbuff.append("' maxIdle='900000' properties='com.pjx.cas.domain.EnvironmentId="+(String)map.get("env")+",com.pjx.cas.domain.SystemName=S844DD1W,com.pjx.cas.user.LanguageId=zh'/>");
 		sbuff.append("<Request sessionHandle='*current' workHandle='*new' broker='EJB' maxIdle='1000'>");
 		sbuff.append("<Create name = 'createCustomerOrder' domainClass='com.mapics.csm.CustomerOrder'>");
 		sbuff.append("<DomainEntity>            <Key>");
@@ -981,7 +981,7 @@ public class Utils {
 		String retStr = postXMLRequest((String)map.get("slurl"), sbuff.toString());
 		System.out.println( sbuff.toString());
 		map.put("systemLinkStr", retStr);
-		return sbuff.toString();
+		return retStr.toString();
 	}
 
 	public static String systemLinkMccd(Map map){
@@ -993,7 +993,7 @@ public class Utils {
 		sbuff.append(map.get("sluserId"));
 		sbuff.append("' password='");
 		sbuff.append(map.get("slpassword"));
-		sbuff.append("' maxIdle='900000' properties='com.pjx.cas.domain.EnvironmentId=MC,com.pjx.cas.domain.SystemName=SZERP.MARKWINS.COM,com.pjx.cas.user.LanguageId=zh'/>");
+		sbuff.append("' maxIdle='900000' properties='com.pjx.cas.domain.EnvironmentId="+(String)map.get("env")+",com.pjx.cas.domain.SystemName=S844DD1W,com.pjx.cas.user.LanguageId=zh'/>");
 		sbuff.append("<Request sessionHandle='*current' workHandle='*new' broker='EJB' maxIdle='1000'>");
 		sbuff.append("<Create name = 'CoLineItem' domainClass='com.mapics.csm.CoLineItem'>");
 		sbuff.append("<DomainEntity>            <Key>");
@@ -1060,7 +1060,7 @@ public class Utils {
 		String retStr = postXMLRequest((String)map.get("slurl"), sbuff.toString());
 		System.out.println( sbuff.toString());
 		map.put("systemLinkStr", retStr);
-		return sbuff.toString();
+		return retStr.toString();
 	}
 
 	public static String systemLinkMcu(Map map){
@@ -1072,7 +1072,7 @@ public class Utils {
 		sbuff.append(map.get("sluserId"));
 		sbuff.append("' password='");
 		sbuff.append(map.get("slpassword"));
-		sbuff.append("' maxIdle='900000' properties='com.pjx.cas.domain.EnvironmentId=MC,com.pjx.cas.domain.SystemName=SZERP.MARKWINS.COM,com.pjx.cas.user.LanguageId=zh'/>");
+		sbuff.append("' maxIdle='900000' properties='com.pjx.cas.domain.EnvironmentId="+(String)map.get("env")+",com.pjx.cas.domain.SystemName=S844DD1W,com.pjx.cas.user.LanguageId=zh'/>");
 		sbuff.append("<Request sessionHandle='*current' workHandle='*new' broker='EJB' maxIdle='1000'>");
 		sbuff.append("<Update name = 'updateObject_CustomerOrder' domainClass='com.mapics.csm.CustomerOrder'>");
 		sbuff.append("<DomainEntity>            <Key>");
@@ -1116,7 +1116,7 @@ public class Utils {
 		String retStr = postXMLRequest((String)map.get("slurl"), sbuff.toString());
 		System.out.println( sbuff.toString());
 		map.put("systemLinkStr", retStr);
-		return sbuff.toString();
+		return retStr.toString();
 	}
 
 	public static String systemLinkMcud(Map map){
@@ -1128,7 +1128,7 @@ public class Utils {
 		sbuff.append(map.get("sluserId"));
 		sbuff.append("' password='");
 		sbuff.append(map.get("slpassword"));
-		sbuff.append("' maxIdle='900000' properties='com.pjx.cas.domain.EnvironmentId=MC,com.pjx.cas.domain.SystemName=SZERP.MARKWINS.COM,com.pjx.cas.user.LanguageId=zh'/>");
+		sbuff.append("' maxIdle='900000' properties='com.pjx.cas.domain.EnvironmentId="+(String)map.get("env")+",com.pjx.cas.domain.SystemName=S844DD1W,com.pjx.cas.user.LanguageId=zh'/>");
 		sbuff.append("<Request sessionHandle='*current' workHandle='*new' broker='EJB' maxIdle='1000'>");
 		sbuff.append("<Update name = 'updateObject_COLineItem' domainClass='com.mapics.csm.CoLineItem'>");
 		sbuff.append("<DomainEntity>            <Key>");
@@ -1185,7 +1185,7 @@ public class Utils {
 		String retStr = postXMLRequest((String)map.get("slurl"), sbuff.toString());
 		System.out.println( sbuff.toString());
 		map.put("systemLinkStr", retStr);
-		return sbuff.toString();
+		return retStr.toString();
 	}
 
 	public static String systemLinkMcd(Map map){
@@ -1197,7 +1197,7 @@ public class Utils {
 		sbuff.append(map.get("sluserId"));
 		sbuff.append("' password='");
 		sbuff.append(map.get("slpassword"));
-		sbuff.append("' maxIdle='900000' properties='com.pjx.cas.domain.EnvironmentId=MC,com.pjx.cas.domain.SystemName=SZERP.MARKWINS.COM,com.pjx.cas.user.LanguageId=zh'/>");
+		sbuff.append("' maxIdle='900000' properties='com.pjx.cas.domain.EnvironmentId="+(String)map.get("env")+",com.pjx.cas.domain.SystemName=S844DD1W,com.pjx.cas.user.LanguageId=zh'/>");
 		sbuff.append("<Request sessionHandle='*current' workHandle='*new' broker='EJB' maxIdle='1000'>");
 		sbuff.append(" <Delete name='deleteObject_CustomerOrder' domainClass='com.mapics.csm.CustomerOrder'>");
 		sbuff.append("<DomainEntity>            <Key>");
@@ -1220,7 +1220,7 @@ public class Utils {
 		String retStr = postXMLRequest((String)map.get("slurl"), sbuff.toString());
 		System.out.println( sbuff.toString());
 		map.put("systemLinkStr", retStr);
-		return sbuff.toString();
+		return retStr.toString();
 	}
 
 	public static String systemLinkMcdd(Map map){
@@ -1232,7 +1232,7 @@ public class Utils {
 		sbuff.append(map.get("sluserId"));
 		sbuff.append("' password='");
 		sbuff.append(map.get("slpassword"));
-		sbuff.append("' maxIdle='900000' properties='com.pjx.cas.domain.EnvironmentId=MC,com.pjx.cas.domain.SystemName=SZERP.MARKWINS.COM,com.pjx.cas.user.LanguageId=zh'/>");
+		sbuff.append("' maxIdle='900000' properties='com.pjx.cas.domain.EnvironmentId="+(String)map.get("env")+",com.pjx.cas.domain.SystemName=S844DD1W,com.pjx.cas.user.LanguageId=zh'/>");
 		sbuff.append("<Request sessionHandle='*current' workHandle='*new' broker='EJB' maxIdle='1000'>");
 		sbuff.append(" <Delete name='deleteObject_COLineItem' domainClass='com.mapics.csm.CoLineItem'>");
 		sbuff.append("<DomainEntity>            <Key>");
@@ -1258,7 +1258,7 @@ public class Utils {
 		String retStr = postXMLRequest((String)map.get("slurl"), sbuff.toString());
 		System.out.println( sbuff.toString());
 		map.put("systemLinkStr", retStr);
-		return sbuff.toString();
+		return retStr.toString();
 	}
 
 	public static String systemLinkM4c(Map map){
@@ -1270,7 +1270,7 @@ public class Utils {
 		sbuff.append(map.get("sluserId"));
 		sbuff.append("' password='");
 		sbuff.append(map.get("slpassword"));
-		sbuff.append("' maxIdle='900000' properties='com.pjx.cas.domain.EnvironmentId="+(String)map.get("env")+",com.pjx.cas.domain.SystemName=SZERP.MARKWINS.COM,com.pjx.cas.user.LanguageId=zh'/>");
+		sbuff.append("' maxIdle='900000' properties='com.pjx.cas.domain.EnvironmentId="+(String)map.get("env")+",com.pjx.cas.domain.SystemName=S844DD1W,com.pjx.cas.user.LanguageId=zh'/>");
 		sbuff.append("<Request sessionHandle='*current' workHandle='*new' broker='EJB' maxIdle='1000'>");
 		sbuff.append("<Create name = 'createPurchaseOrder' domainClass='com.mapics.pm.PurchaseOrder'>");
 		sbuff.append("<DomainEntity>            <Key>");
@@ -1311,7 +1311,7 @@ public class Utils {
 		String retStr = postXMLRequest((String)map.get("slurl"), sbuff.toString());
 		System.out.println( sbuff.toString());
 		map.put("systemLinkStr", retStr);
-		return sbuff.toString();
+		return retStr.toString();
 	}
 
 	public static String systemLinkM4cd(Map map){
@@ -1323,7 +1323,7 @@ public class Utils {
 		sbuff.append(map.get("sluserId"));
 		sbuff.append("' password='");
 		sbuff.append(map.get("slpassword"));
-		sbuff.append("' maxIdle='900000' properties='com.pjx.cas.domain.EnvironmentId="+(String)map.get("env")+",com.pjx.cas.domain.SystemName=SZERP.MARKWINS.COM,com.pjx.cas.user.LanguageId=zh'/>");
+		sbuff.append("' maxIdle='900000' properties='com.pjx.cas.domain.EnvironmentId="+(String)map.get("env")+",com.pjx.cas.domain.SystemName=S844DD1W,com.pjx.cas.user.LanguageId=zh'/>");
 		sbuff.append("<Request sessionHandle='*current' workHandle='*new' broker='EJB' maxIdle='1000'>");
 		sbuff.append("<Create name = 'createPoItem' domainClass='com.mapics.pm.PoItem'>");
 		sbuff.append("<DomainEntity>            <Key>");
@@ -1371,7 +1371,7 @@ public class Utils {
 		String retStr = postXMLRequest((String)map.get("slurl"), sbuff.toString());
 		System.out.println( sbuff.toString());
 		map.put("systemLinkStr", retStr);
-		return sbuff.toString();
+		return retStr.toString();
 	}
 
 	public static String systemLinkM4cr(Map map){
@@ -1383,7 +1383,7 @@ public class Utils {
 		sbuff.append(map.get("sluserId"));
 		sbuff.append("' password='");
 		sbuff.append(map.get("slpassword"));
-		sbuff.append("' maxIdle='900000' properties='com.pjx.cas.domain.EnvironmentId="+(String)map.get("env")+",com.pjx.cas.domain.SystemName=SZERP.MARKWINS.COM,com.pjx.cas.user.LanguageId=zh'/>");
+		sbuff.append("' maxIdle='900000' properties='com.pjx.cas.domain.EnvironmentId="+(String)map.get("env")+",com.pjx.cas.domain.SystemName=S844DD1W,com.pjx.cas.user.LanguageId=zh'/>");
 		sbuff.append("<Request sessionHandle='*current' workHandle='*new' broker='EJB' maxIdle='1000'>");
 		sbuff.append("<Create name = 'createPoItemRelease' domainClass='com.mapics.pm.PoItemRelease'>");
 		sbuff.append("<DomainEntity>            <Key>");
@@ -1426,7 +1426,7 @@ public class Utils {
 		String retStr = postXMLRequest((String)map.get("slurl"), sbuff.toString());
 		System.out.println( sbuff.toString());
 		map.put("systemLinkStr", retStr);
-		return sbuff.toString();
+		return retStr.toString();
 	}
 
 	public static String systemLinkM4u(Map map){
@@ -1438,7 +1438,7 @@ public class Utils {
 		sbuff.append(map.get("sluserId"));
 		sbuff.append("' password='");
 		sbuff.append(map.get("slpassword"));
-		sbuff.append("' maxIdle='900000' properties='com.pjx.cas.domain.EnvironmentId=M4,com.pjx.cas.domain.SystemName=SZERP.MARKWINS.COM,com.pjx.cas.user.LanguageId=zh'/>");
+		sbuff.append("' maxIdle='900000' properties='com.pjx.cas.domain.EnvironmentId="+(String)map.get("env")+",com.pjx.cas.domain.SystemName=S844DD1W,com.pjx.cas.user.LanguageId=zh'/>");
 		sbuff.append("<Request sessionHandle='*current' workHandle='*new' broker='EJB' maxIdle='1000'>");
 		sbuff.append("<Update name = 'updateObject_PurchaseOrder' domainClass='updateObject_PurchaseOrder'>");
 		sbuff.append("<DomainEntity>            <Key>");
@@ -1459,7 +1459,7 @@ public class Utils {
 		String retStr = postXMLRequest((String)map.get("slurl"), sbuff.toString());
 		System.out.println( sbuff.toString());
 		map.put("systemLinkStr", retStr);
-		return sbuff.toString();
+		return retStr.toString();
 	}
 
 	public static String systemLinkM4ud(Map map){
@@ -1471,7 +1471,7 @@ public class Utils {
 		sbuff.append(map.get("sluserId"));
 		sbuff.append("' password='");
 		sbuff.append(map.get("slpassword"));
-		sbuff.append("' maxIdle='900000' properties='com.pjx.cas.domain.EnvironmentId=M4,com.pjx.cas.domain.SystemName=SZERP.MARKWINS.COM,com.pjx.cas.user.LanguageId=zh'/>");
+		sbuff.append("' maxIdle='900000' properties='com.pjx.cas.domain.EnvironmentId="+(String)map.get("env")+",com.pjx.cas.domain.SystemName=S844DD1W,com.pjx.cas.user.LanguageId=zh'/>");
 		sbuff.append("<Request sessionHandle='*current' workHandle='*new' broker='EJB' maxIdle='1000'>");
 		sbuff.append("<Update name = 'updateObject_PurchaseOrderItem' domainClass='com.mapics.pm.PoItem'>");
 		sbuff.append("<DomainEntity>            <Key>");
@@ -1501,7 +1501,7 @@ public class Utils {
 		String retStr = postXMLRequest((String)map.get("slurl"), sbuff.toString());
 		System.out.println( sbuff.toString());
 		map.put("systemLinkStr", retStr);
-		return sbuff.toString();
+		return retStr.toString();
 	}
 
 
@@ -1542,7 +1542,7 @@ public class Utils {
 		sbuff.append(map.get("sluserId"));
 		sbuff.append("' password='");
 		sbuff.append(map.get("slpassword"));
-		sbuff.append("' maxIdle='900000' properties='com.pjx.cas.domain.EnvironmentId=M4,com.pjx.cas.domain.SystemName=SZERP.MARKWINS.COM,com.pjx.cas.user.LanguageId=zh'/>");
+		sbuff.append("' maxIdle='900000' properties='com.pjx.cas.domain.EnvironmentId="+(String)map.get("env")+",com.pjx.cas.domain.SystemName=S844DD1W,com.pjx.cas.user.LanguageId=zh'/>");
 		sbuff.append("<Request sessionHandle='*current' workHandle='*new' broker='EJB' maxIdle='1000'>");
 		sbuff.append("<Update name = 'updateObject_PoItemRelease' domainClass='com.mapics.pm.PoItemRelease'>");
 		sbuff.append("<DomainEntity>            <Key>");
@@ -1572,7 +1572,7 @@ public class Utils {
 		String retStr = postXMLRequest((String)map.get("slurl"), sbuff.toString());
 		System.out.println( sbuff.toString());
 		map.put("systemLinkStr", retStr);
-		return sbuff.toString();
+		return retStr.toString();
 	}
 
 	public static String systemLinkM4d(Map map){
@@ -1584,7 +1584,7 @@ public class Utils {
 		sbuff.append(map.get("sluserId"));
 		sbuff.append("' password='");
 		sbuff.append(map.get("slpassword"));
-		sbuff.append("' maxIdle='900000' properties='com.pjx.cas.domain.EnvironmentId=M4,com.pjx.cas.domain.SystemName=SZERP.MARKWINS.COM,com.pjx.cas.user.LanguageId=zh'/>");
+		sbuff.append("' maxIdle='900000' properties='com.pjx.cas.domain.EnvironmentId="+(String)map.get("env")+",com.pjx.cas.domain.SystemName=S844DD1W,com.pjx.cas.user.LanguageId=zh'/>");
 		sbuff.append("<Request sessionHandle='*current' workHandle='*new' broker='EJB' maxIdle='1000'>");
 		sbuff.append(" <Delete name='deletePurchaseOrder' domainClass='com.mapics.pm.PurchaseOrder'>");
 		sbuff.append("<DomainEntity>            <Key>");
@@ -1601,7 +1601,7 @@ public class Utils {
 		String retStr = postXMLRequest((String)map.get("slurl"), sbuff.toString());
 		System.out.println( sbuff.toString());
 		map.put("systemLinkStr", retStr);
-		return sbuff.toString();
+		return retStr.toString();
 	}
 
 	public static String systemLinkM4dd(Map map){
@@ -1613,7 +1613,7 @@ public class Utils {
 		sbuff.append(map.get("sluserId"));
 		sbuff.append("' password='");
 		sbuff.append(map.get("slpassword"));
-		sbuff.append("' maxIdle='900000' properties='com.pjx.cas.domain.EnvironmentId=M4,com.pjx.cas.domain.SystemName=SZERP.MARKWINS.COM,com.pjx.cas.user.LanguageId=zh'/>");
+		sbuff.append("' maxIdle='900000' properties='com.pjx.cas.domain.EnvironmentId="+(String)map.get("env")+",com.pjx.cas.domain.SystemName=S844DD1W,com.pjx.cas.user.LanguageId=zh'/>");
 		sbuff.append("<Request sessionHandle='*current' workHandle='*new' broker='EJB' maxIdle='1000'>");
 		sbuff.append(" <Delete name='deletePoItem' domainClass='com.mapics.pm.PoItem'>");
 		sbuff.append("<DomainEntity>            <Key>");
@@ -1633,7 +1633,7 @@ public class Utils {
 		String retStr = postXMLRequest((String)map.get("slurl"), sbuff.toString());
 		System.out.println( sbuff.toString());
 		map.put("systemLinkStr", retStr);
-		return sbuff.toString();
+		return retStr.toString();
 	}
 
 	public static String systemLinkM4dr(Map map){
@@ -1645,7 +1645,7 @@ public class Utils {
 		sbuff.append(map.get("sluserId"));
 		sbuff.append("' password='");
 		sbuff.append(map.get("slpassword"));
-		sbuff.append("' maxIdle='900000' properties='com.pjx.cas.domain.EnvironmentId=M4,com.pjx.cas.domain.SystemName=SZERP.MARKWINS.COM,com.pjx.cas.user.LanguageId=zh'/>");
+		sbuff.append("' maxIdle='900000' properties='com.pjx.cas.domain.EnvironmentId="+(String)map.get("env")+",com.pjx.cas.domain.SystemName=S844DD1W,com.pjx.cas.user.LanguageId=zh'/>");
 		sbuff.append("<Request sessionHandle='*current' workHandle='*new' broker='EJB' maxIdle='1000'>");
 		sbuff.append(" <Delete name='DeleteObject_PoItemRelease' domainClass='com.mapics.pm.PoItemRelease'>");
 		sbuff.append("<DomainEntity>            <Key>");
@@ -1668,7 +1668,7 @@ public class Utils {
 		String retStr = postXMLRequest((String)map.get("slurl"), sbuff.toString());
 		System.out.println( sbuff.toString());
 		map.put("systemLinkStr", retStr);
-		return sbuff.toString();
+		return retStr.toString();
 	}
 
 	/**
@@ -2175,7 +2175,7 @@ public class Utils {
 			Map rmap = new HashMap();
 			conn=DriverManager.getConnection("jdbc:as400://"+dbip+"/"+lib+";translate binary=true", properties.getProperty("DBUSER"), properties.getProperty("DBPASSWORD"));
 			if(conn!=null){
-				String sql = "select d.*,h.TPCENT from ZMLDTL d inner join ZMLHDR h on d.MLCODE=h.MLCODE where MLCODE='"+(String)pmap.get("MLCODE")+"'";
+				String sql = "select d.*,h.TPCENT from ZMLDTL d inner join ZMLHDR h on d.MLCODE=h.MLCODE where d.MLCODE='"+(String)pmap.get("MLCODE")+"'";
 				System.out.println("find is "+sql);
 				stmt = (Statement) conn.createStatement();
 				ResultSet executeQuery = stmt.executeQuery(sql);
@@ -2193,6 +2193,8 @@ public class Utils {
 					rmap.put("COCUS", executeQuery.getString("COCUS"));
 					rmap.put("COCUR", executeQuery.getString("COCUR"));
 					rmap.put("TPCENT", executeQuery.getString("TPCENT"));
+				}else{
+					rmap=null;
 				}
 
 
@@ -2321,7 +2323,7 @@ public class Utils {
 					rmap.put("C6ACDT", executeQuery.getInt("C6ACDT"));
 					rmap.put("C6CHNB", executeQuery.getString("C6CHNB"));
 					rmap.put("C6D0NB", executeQuery.getInt("C6D0NB"));
-					rmap.put("C6BRCD", executeQuery.getInt("C6BRCD"));
+					rmap.put("C6BRCD", executeQuery.getString("C6BRCD"));
 				}
 
 
