@@ -92,6 +92,8 @@ public class MOMASTVO extends BaseVO{
 	
 	private String b2cqcd;
 	
+	private String itrv;
+	
 	private BigDecimal crdt;
 	
 	private String scrdt;
@@ -106,6 +108,14 @@ public class MOMASTVO extends BaseVO{
 
 	public String getScrdt() {
 		return scrdt;
+	}
+
+	public String getItrv() {
+		return itrv;
+	}
+
+	public void setItrv(String itrv) {
+		this.itrv = itrv;
 	}
 
 	public void setScrdt(String scrdt) {

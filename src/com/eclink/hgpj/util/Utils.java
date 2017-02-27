@@ -2353,6 +2353,62 @@ public class Utils {
 		}
 	}
 
+
+	public  String getUUGAM2(String lib,Map pmap) throws Exception{
+		String result = "";
+		Connection conn = null;
+		InputStream is =null;
+		Statement stmt = null;
+		OutputStream os = null;
+		try{
+			is = new BufferedInputStream(new FileInputStream(this.getClass().getResource("").getPath()+ "/config.properties"));
+			Properties properties = new Properties();
+			properties.load(is);
+			//			Class.forName("");
+			Class.forName(properties.getProperty("DRIVER_NAME"));
+			java.sql.DriverManager.registerDriver (new com.ibm.as400.access.AS400JDBCDriver ()); 
+			//			Class.forName("com.ibm.as400.access.AS400JDBCDriver");	
+			//			conn=DriverManager.getConnection("jdbc:mysql://localhost:3306/QGPL", "", "");
+			String dburl=properties.getProperty("DBURL");
+			String dbip=dburl.split("/")[2];
+			conn=DriverManager.getConnection("jdbc:as400://"+dbip+"/"+lib+";translate binary=true", properties.getProperty("DBUSER"), properties.getProperty("DBPASSWORD"));
+			if(conn!=null){
+				String sql = "SELECT h.uuga FROM (SELECT DISTINCT LEVEL, b.PINBR,b.cinbr,b.stid,b.pitr,b.alts,a.sbqty,b.qtypr,b.uuga " +
+						"FROM amflib1.psthdr a, amflib1.pstdtl b WHERE a.stid=b.stid AND a.pinbr=b.pinbr AND a.pitr=b.PITR AND a.alts=b.alts " +
+						"START WITH upper(b.pinbr) = '"+pmap.get("pinbr")+"' AND upper(b.stid) ='"+pmap.get("stid")+"' AND upper(b.PITR) ='"+
+						pmap.get("pitr")+"' CONNECT BY PRIOR b.CINBR  =  b.PINBR ) AS h WHERE h.cinbr = '"+pmap.get("cinbr")+"'";
+				System.out.println("find is "+sql);
+				stmt = (Statement) conn.createStatement();
+				ResultSet executeQuery = stmt.executeQuery(sql);
+				if(executeQuery.next()){
+					result = executeQuery.getString("uuga");
+				}
+			}else{
+				throw new Exception("conn is null");	
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+		}finally{
+			try{
+				if(os!=null){
+					os.close();
+				}
+				if(is!=null){
+					is.close();
+				}
+				if(stmt!=null){
+					stmt.close();
+				}
+				if(conn!=null){
+					conn.close();
+				}
+			}catch(Exception e){
+				e.printStackTrace();
+			}
+			return result;
+		}
+	}
+	
 	public  Map getBKD5NB(String lib,Map pmap) throws Exception{
 		Connection conn = null;
 		InputStream is =null;

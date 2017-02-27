@@ -31,8 +31,10 @@ import com.eclink.hgpj.resource.vo.SLQNTYVO;
 import com.eclink.hgpj.resource.vo.ZBMSCTLVO;
 import com.eclink.hgpj.resource.vo.ZIPDTLVO;
 import com.eclink.hgpj.resource.vo.ZIPHDRVO;
+import com.eclink.hgpj.util.DataSourceUtil;
 import com.eclink.hgpj.util.QRcoderUtil;
 import com.eclink.hgpj.util.Utils;
+import com.mysql.jdbc.Util;
 import com.opensymphony.xwork2.ActionContext;
 
 
@@ -298,6 +300,14 @@ public class PickListAction extends BaseAction {
 	}
 
 	public String toPrintPick() throws Exception {
+		
+		int idx = (Integer)this.getSession().getServletContext().getAttribute(getSession().getAttribute("BMSENV").toString());
+		String dbconfigurl=(String)this.getSession().getServletContext().getAttribute("dbconfigurl");
+		if(dbconfigurl==null || dbconfigurl.trim().equals("")){
+			dbconfigurl=this.getSession().getServletContext().getRealPath("/WEB-INF")+ "/classes/com/eclink/hgpj/util/dbconfig.properties";
+		}
+		String lib = Utils.getDataSourceS(dbconfigurl, "AMPHLIB"+idx);
+		
 		String result = "toPrintPick";
 		try {
 			List<Map<String, Object>> results = new ArrayList<Map<String, Object>>();
@@ -366,8 +376,18 @@ public class PickListAction extends BaseAction {
 							modatavo.setSeqnm(zipdtl.getSeqnm());
 							List<MODATAVO> modatas = xadataService.queryModatas(modatavo);
 							if(modatas.size()>0){
-								map.put("uugam2", modatas.get(0).getUugam2());
+//								以前文档中要求的做法,ivan取缔				
+//								map.put("uugam2", modatas.get(0).getUugam2());
 								map.put("cdesc", modatas.get(0).getCdesc());
+							}
+							
+							if(momasts.size()>0){
+								Map uugaMap = new HashMap();
+								uugaMap.put("pinbr", momasts.get(0).getFitem().trim());
+								uugaMap.put("stid",(String) getSession().getAttribute("stid"));
+								uugaMap.put("pitr", momasts.get(0).getItrv().trim());
+								uugaMap.put("cinbr",zipdtl.getCitem().trim());
+								map.put("uugam2",new Utils().getUUGAM2(Utils.getDataSourceS(dbconfigurl, "AMTLIB"+idx), uugaMap));
 							}
 
 							map.put("shqty", zipdtl.getShqty().floatValue()+"");

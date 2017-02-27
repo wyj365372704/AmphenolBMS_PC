@@ -174,6 +174,7 @@ public class LoginAction extends BaseAction {
 			}
 			ServletActionContext.getContext().getSession().put("username", user.getUserName());
 			getSession().setAttribute("stid", envStidMap.get(env));
+			getSession().setAttribute("BMSENV", env);
 			AUserVO au = this.auserService.queryUserByUserName(user.getUserName());
 			if(null==au){
 				setErrorMsg("用户未在系统中备案，请联系管理员！");

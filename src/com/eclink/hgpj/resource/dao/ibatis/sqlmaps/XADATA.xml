@@ -160,6 +160,7 @@
 		<result column="KTRL" property="ktrl" />
 		<result column="UUSAMY" property="uusamy" />
 		<result column="CRDT" property="crdt" />
+		<result column="ITRV" property="itrv" />
 
 		<result column="unmsr" property="unmsr" />
 		<result column="moqty" property="moqty" />
