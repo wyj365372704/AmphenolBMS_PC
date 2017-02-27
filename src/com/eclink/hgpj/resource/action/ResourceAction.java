@@ -7745,6 +7745,7 @@ public class ResourceAction extends BaseAction {
 							String C6AENB=(String)json.get("C6AENB");
 							String C6DCCD=(String)json.get("C6DCCD");
 							String C6CVNB=(String)json.get("C6CVNB");
+							String mlcode=(String)json.get("ML Code");
 							String renv=(String)json.get("env");
 							String mllib="";
 							String AMFLIB="";
@@ -7783,10 +7784,10 @@ public class ResourceAction extends BaseAction {
 								zcoextpm.put("C6DCCD", C6DCCD);
 								zcoextpm.put("C6CVNB", C6CVNB);
 								Map zcoextm = utils.getZCOEXT(AMPHLIB, zcoextpm);
-								String mlcode = "";
-								if(zcoextm!=null){
-									mlcode=(String)zcoextm.get("MLCODE");
-								}
+//								String mlcode = "";
+//								if(zcoextm!=null){
+//									mlcode=(String)zcoextm.get("MLCODE");
+//								}
 								if(mlcode!=null && mlcode.trim().length()>0){
 									Map zmldtlm = new HashMap();
 									zmldtlm.put("MLCODE", mlcode);
@@ -7943,9 +7944,77 @@ public class ResourceAction extends BaseAction {
 					}
 					
 				}else if("U".equals(paramName)){
-					
+					String systemlinkxml = this.getRequest().getParameter(paramName);
+					if(systemlinkxml!=null && systemlinkxml.trim().length()>0){
+						if(systemlinkxml.contains("<DataItem itemName='NotificationText'><![CDATA[")){
+							String jsondata = systemlinkxml.substring(systemlinkxml.indexOf("<DataItem itemName='NotificationText'><![CDATA[")+"<DataItem itemName='NotificationText'><![CDATA[".length(), systemlinkxml.indexOf("]]></DataItem>"));
+							System.out.println("jsondata="+jsondata);
+							JSONObject json = JSONObject.fromObject(jsondata);
+							String C6AENB=(String)json.get("C6AENB");
+							String C6DCCD=(String)json.get("C6DCCD");
+							String C6CVNB=(String)json.get("C6CVNB");
+							String mlcode=(String)json.get("ML Code");
+							String renv=(String)json.get("env");
+							String mllib="";
+							String AMFLIB="";
+							String AMPHLIB="";
+							String stid = "";
+							System.out.println("jsondata="+json.toString()+";renv="+renv+";properties.elements()="+properties.size());
+							if(renv!=null && renv.trim().length()>0){
+								Set values = properties.keySet();	
+								Iterator temp =values.iterator();
+								while(temp.hasNext()){
+									String key=(String)temp.next();
+									System.out.println("jsondata="+json.toString()+";key="+properties.getProperty(key));
+									if(renv.trim().equals(properties.getProperty(key))){
+										String idx = key.substring(key.indexOf("ENVID")+"ENVID".length());
+										System.out.println("MLLIB"+idx);
+										mllib=properties.getProperty("MLLIB"+idx);
+										AMFLIB=properties.getProperty("AMFLIB"+idx);
+										AMPHLIB=properties.getProperty("AMPHLIB"+idx);
+										break;
+									}
+								}
+								System.out.println("AMFLIB="+AMFLIB);
+							}
+						}
+					}
 				}else if("D".equals(paramName)){
-					
+					String systemlinkxml = this.getRequest().getParameter(paramName);
+					if(systemlinkxml!=null && systemlinkxml.trim().length()>0){
+						if(systemlinkxml.contains("<DataItem itemName='NotificationText'><![CDATA[")){
+							String jsondata = systemlinkxml.substring(systemlinkxml.indexOf("<DataItem itemName='NotificationText'><![CDATA[")+"<DataItem itemName='NotificationText'><![CDATA[".length(), systemlinkxml.indexOf("]]></DataItem>"));
+							System.out.println("jsondata="+jsondata);
+							JSONObject json = JSONObject.fromObject(jsondata);
+							String C6AENB=(String)json.get("C6AENB");
+							String C6DCCD=(String)json.get("C6DCCD");
+							String C6CVNB=(String)json.get("C6CVNB");
+							String mlcode=(String)json.get("ML Code");
+							String renv=(String)json.get("env");
+							String mllib="";
+							String AMFLIB="";
+							String AMPHLIB="";
+							String stid = "";
+							System.out.println("jsondata="+json.toString()+";renv="+renv+";properties.elements()="+properties.size());
+							if(renv!=null && renv.trim().length()>0){
+								Set values = properties.keySet();	
+								Iterator temp =values.iterator();
+								while(temp.hasNext()){
+									String key=(String)temp.next();
+									System.out.println("jsondata="+json.toString()+";key="+properties.getProperty(key));
+									if(renv.trim().equals(properties.getProperty(key))){
+										String idx = key.substring(key.indexOf("ENVID")+"ENVID".length());
+										System.out.println("MLLIB"+idx);
+										mllib=properties.getProperty("MLLIB"+idx);
+										AMFLIB=properties.getProperty("AMFLIB"+idx);
+										AMPHLIB=properties.getProperty("AMPHLIB"+idx);
+										break;
+									}
+								}
+								System.out.println("AMFLIB="+AMFLIB);
+							}
+						}
+					}
 				}
 			}  
 		} catch (Exception e) {e.printStackTrace();
