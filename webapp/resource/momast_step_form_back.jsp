@@ -101,6 +101,26 @@
 						</table></td>
 				</tr>
 				</s:if>
+				<tr>
+					<td>
+						<table width="100%">
+							<tr>
+								<td width="100%">备注:<s:property value="cnote" /></td>
+							</tr>
+						</table>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<table width="100%">
+							<tr>
+								<td width="33%">核准:</td>
+								<td width="33%">单位主管核准:</td>
+								<td width="33%">制表人:</td>
+							</tr>
+						</table>
+					</td>
+				</tr>
 			<tbody>
 		</table>
 
