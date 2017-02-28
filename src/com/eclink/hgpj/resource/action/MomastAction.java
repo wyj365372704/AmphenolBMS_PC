@@ -1145,10 +1145,10 @@ public class MomastAction extends BaseAction {
 					}
 				}
 
-				/*resultMap.put("dptno", momastList.get(0).getDptno());
+				/*resultMap.put("dptno", momastList.get(0).getDptno());*/
 				resultMap.put("quantity", numberFormat.format(momastList.get(0).getOrqty().add(momastList.get(0).getQtdev()).floatValue()));
 
-				d= (momastList.get(0).getSstdt()==null || momastList.get(0).getSstdt().doubleValue()==0.0)?"":momastList.get(0).getSstdt().add(BigDecimal.valueOf(19000000)).toString().trim();
+				/*d= (momastList.get(0).getSstdt()==null || momastList.get(0).getSstdt().doubleValue()==0.0)?"":momastList.get(0).getSstdt().add(BigDecimal.valueOf(19000000)).toString().trim();
 				resultMap.put("sstdt", d.length()<8?d: (d.substring(0, 4)+"-"+d.substring(4, 6)+"-"+d.substring(6, 8)+" "));
 
 				d= (momastList.get(0).getOdudt()==null || momastList.get(0).getOdudt().doubleValue()==0.0)?"":momastList.get(0).getOdudt().add(BigDecimal.valueOf(19000000)).toString().trim();

@@ -59,7 +59,7 @@
 							<tbody>
 								<tr>
 									<td>生产订单号: <s:property value="ordno" /></td>
-									<td>批量: <s:property value="branch" /></td>
+									<td>批量: <s:property value="quantity" /> (<s:property value="umstt9" />)</td>
 									<td rowspan="3"><img src="${resultMap.qrcodeurl }"
 										width="80px" height="80px" /></td>
 								</tr>
