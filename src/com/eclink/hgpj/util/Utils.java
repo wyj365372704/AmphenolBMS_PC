@@ -934,6 +934,10 @@ public class Utils {
 		sbuff.append("<Property path='customer'><Value><![CDATA[");
 		sbuff.append(map.get("customer"));
 		sbuff.append("]]></Value>               </Property>");
+		
+		sbuff.append("<Property path='relatedCustomerOrderExtension.mlcode'><Value><![CDATA[");
+		sbuff.append(map.get("mlcode"));
+		sbuff.append("]]></Value>               </Property>");
 
 		sbuff.append("<Property path='relatedCustomerOrderExtension.fdcust'><Value><![CDATA[");
 		sbuff.append(map.get("fdcust"));
@@ -2324,6 +2328,135 @@ public class Utils {
 					rmap.put("C6CHNB", executeQuery.getString("C6CHNB"));
 					rmap.put("C6D0NB", executeQuery.getInt("C6D0NB"));
 					rmap.put("C6BRCD", executeQuery.getString("C6BRCD"));
+					rmap.put("C6B9CD", executeQuery.getString("C6B9CD"));
+				}else{
+					rmap=null;
+				}
+
+
+			}else{
+				throw new Exception("conn is null");	
+			}
+			return rmap;
+		}catch(Exception e){
+			e.printStackTrace();
+			return null;
+		}finally{
+			try{
+				if(os!=null){
+					os.close();
+				}
+				if(is!=null){
+					is.close();
+				}
+				if(stmt!=null){
+					stmt.close();
+				}
+				if(conn!=null){
+					conn.close();
+				}
+			}catch(Exception e){
+				e.printStackTrace();
+			}
+
+		}
+	}
+	
+	public  Map getZBMSCTL(String lib,Map pmap) throws Exception{
+		Connection conn = null;
+		InputStream is =null;
+		Statement stmt = null;
+		OutputStream os = null;
+		try{
+			is = new BufferedInputStream(new FileInputStream(this.getClass().getResource("").getPath()+ "/config.properties"));
+			Properties properties = new Properties();
+			properties.load(is);
+			//			Class.forName("");
+			Class.forName(properties.getProperty("DRIVER_NAME"));
+			java.sql.DriverManager.registerDriver (new com.ibm.as400.access.AS400JDBCDriver ()); 
+			//			Class.forName("com.ibm.as400.access.AS400JDBCDriver");	
+			//			conn=DriverManager.getConnection("jdbc:mysql://localhost:3306/QGPL", "", "");
+			String dburl=properties.getProperty("DBURL");
+			String dbip=dburl.split("/")[2];
+			Map rmap = new HashMap();
+			conn=DriverManager.getConnection("jdbc:as400://"+dbip+"/"+lib+";translate binary=true", properties.getProperty("DBUSER"), properties.getProperty("DBPASSWORD"));
+			if(conn!=null){
+				String sql = "select * from ZBMSCTL where SITE='"+(String)pmap.get("stid")+"'";
+				System.out.println("find is "+sql);
+				stmt = (Statement) conn.createStatement();
+				ResultSet executeQuery = stmt.executeQuery(sql);
+				if(executeQuery.next()){
+					rmap.put("CURID", executeQuery.getString("CURID"));
+				}
+
+
+			}else{
+				throw new Exception("conn is null");	
+			}
+			return rmap;
+		}catch(Exception e){
+			e.printStackTrace();
+			return null;
+		}finally{
+			try{
+				if(os!=null){
+					os.close();
+				}
+				if(is!=null){
+					is.close();
+				}
+				if(stmt!=null){
+					stmt.close();
+				}
+				if(conn!=null){
+					conn.close();
+				}
+			}catch(Exception e){
+				e.printStackTrace();
+			}
+
+		}
+	}
+	
+	public  Map getMBS2REP(String lib,Map pmap) throws Exception{
+		Connection conn = null;
+		InputStream is =null;
+		Statement stmt = null;
+		OutputStream os = null;
+		try{
+			is = new BufferedInputStream(new FileInputStream(this.getClass().getResource("").getPath()+ "/config.properties"));
+			Properties properties = new Properties();
+			properties.load(is);
+			//			Class.forName("");
+			Class.forName(properties.getProperty("DRIVER_NAME"));
+			java.sql.DriverManager.registerDriver (new com.ibm.as400.access.AS400JDBCDriver ()); 
+			//			Class.forName("com.ibm.as400.access.AS400JDBCDriver");	
+			//			conn=DriverManager.getConnection("jdbc:mysql://localhost:3306/QGPL", "", "");
+			String dburl=properties.getProperty("DBURL");
+			String dbip=dburl.split("/")[2];
+			Map rmap = new HashMap();
+			conn=DriverManager.getConnection("jdbc:as400://"+dbip+"/"+lib+";translate binary=true", properties.getProperty("DBUSER"), properties.getProperty("DBPASSWORD"));
+			if(conn!=null){
+				String sql = "Select S2B9CD from MBS2REP where S2AENB='"+(String)pmap.get("company")+"'    ";
+				if(pmap.get("custno")!=null){
+					sql=sql+" and S2CANB='"+(String)pmap.get("custno")+"' ";
+				}
+				if(pmap.get("shipto")!=null){
+					sql=sql+" and S2B9CD='"+(String)pmap.get("shipto")+"' ";
+				}
+				if(pmap.get("S2E2ST")!=null){
+					sql=sql+" and S2E2ST = '"+(String)pmap.get("S2E2ST")+"' ";
+				}
+				if(pmap.get("S2AA9L")!=null){
+					sql=sql+" and S2AA9L = '"+(String)pmap.get("S2AA9L")+"' ";
+				}
+				System.out.println("find is "+sql);
+				stmt = (Statement) conn.createStatement();
+				ResultSet executeQuery = stmt.executeQuery(sql);
+				if(executeQuery.next()){
+					rmap.put("S2B9CD", executeQuery.getString("S2B9CD"));
+				}else{
+					rmap=null;
 				}
 
 
@@ -2355,6 +2488,63 @@ public class Utils {
 		}
 	}
 
+	public  Map getMBBMCPP(String lib,Map pmap) throws Exception{
+		Connection conn = null;
+		InputStream is =null;
+		Statement stmt = null;
+		OutputStream os = null;
+		try{
+			is = new BufferedInputStream(new FileInputStream(this.getClass().getResource("").getPath()+ "/config.properties"));
+			Properties properties = new Properties();
+			properties.load(is);
+			//			Class.forName("");
+			Class.forName(properties.getProperty("DRIVER_NAME"));
+			java.sql.DriverManager.registerDriver (new com.ibm.as400.access.AS400JDBCDriver ()); 
+			//			Class.forName("com.ibm.as400.access.AS400JDBCDriver");	
+			//			conn=DriverManager.getConnection("jdbc:mysql://localhost:3306/QGPL", "", "");
+			String dburl=properties.getProperty("DBURL");
+			String dbip=dburl.split("/")[2];
+			Map rmap = new HashMap();
+			conn=DriverManager.getConnection("jdbc:as400://"+dbip+"/"+lib+";translate binary=true", properties.getProperty("DBUSER"), properties.getProperty("DBPASSWORD"));
+			if(conn!=null){
+				String sql = "select * from MBBMCPP where BMAENB='"+(String)pmap.get("C6AENB")+"' AND BMDCCD='"+(String)pmap.get("C6DCCD")+"' AND BMCVNB='"+(String)pmap.get("C6CVNB")+"'";
+				System.out.println("find is "+sql);
+				stmt = (Statement) conn.createStatement();
+				ResultSet executeQuery = stmt.executeQuery(sql);
+				if(executeQuery.next()){
+					rmap.put("BMAKDT", executeQuery.getInt("BMAKDT"));
+				}else{
+					rmap=null;
+				}
+
+
+			}else{
+				throw new Exception("conn is null");	
+			}
+			return rmap;
+		}catch(Exception e){
+			e.printStackTrace();
+			return null;
+		}finally{
+			try{
+				if(os!=null){
+					os.close();
+				}
+				if(is!=null){
+					is.close();
+				}
+				if(stmt!=null){
+					stmt.close();
+				}
+				if(conn!=null){
+					conn.close();
+				}
+			}catch(Exception e){
+				e.printStackTrace();
+			}
+
+		}
+	}
 
 	public  String getUUGAM2(String lib,Map pmap) throws Exception{
 		String result = "";

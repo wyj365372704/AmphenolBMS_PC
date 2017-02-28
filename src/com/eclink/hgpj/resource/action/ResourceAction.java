@@ -7778,11 +7778,12 @@ public class ResourceAction extends BaseAction {
 									hkcocurrency=(String)mbc6repm.get("C6BRCD");
 								}
 								
-								
+								//ZCOEXT 和 ZCDEXT 分别在 AMPHLIB1 和 AMPHLIB3 两个环境中
 								Map zcoextpm = new HashMap();
 								zcoextpm.put("C6AENB", Integer.valueOf(C6AENB.trim()));
 								zcoextpm.put("C6DCCD", C6DCCD);
 								zcoextpm.put("C6CVNB", C6CVNB);
+//								Map zcoextm = utils.getZCOEXT("AMPHLIB1", zcoextpm);
 								Map zcoextm = utils.getZCOEXT(AMPHLIB, zcoextpm);
 //								String mlcode = "";
 //								if(zcoextm!=null){
@@ -7809,9 +7810,11 @@ public class ResourceAction extends BaseAction {
 										
 										String retxml = utils.systemLinkM4c(pomap);
 										System.out.println("retxml="+retxml);
+										boolean issuccess = retxml.indexOf("CreateResponse name='createPurchaseOrder' requestedDomainClass='com.mapics.pm.PurchaseOrder' actionSucceeded='true'")>=0;
 										String porderno = "";//根据返回XML解析得到订单号
 										//retxml包含状态或订单号
-										if("创建成功"==""){
+										if(issuccess){
+											porderno = retxml.substring(retxml.indexOf("<Key><Property path='order'><Value><![CDATA[")+"<Key><Property path='order'><Value><![CDATA[".length(), retxml.indexOf("]]></Value></Property></Key>"));//根据返回XML解析得到订单号
 											Map pmap = new HashMap();
 											pmap.put("CDAENB", Integer.valueOf(C6AENB.trim()));
 											pmap.put("CDDCCD", C6DCCD);
@@ -7852,48 +7855,62 @@ public class ResourceAction extends BaseAction {
 														copmap.put("slurl", slurl);
 														copmap.put("order", porderno);
 														copmap.put("blanketItem", 1);
-														copmap.put("dueToDockDate", (Integer)comap0.get("ADAAN7"));
-														copmap.put("dueToStockDate", (Integer)comap0.get("ADAAN7"));
+														copmap.put("dueToDockDate", (Integer)comap0.get("ADAAN7")+19000000);
+														copmap.put("dueToStockDate", (Integer)comap0.get("ADAAN7")+19000000);
 														copmap.put("item", (String)comap0.get("CDAITX"));
 														copmap.put("orderUm", (String)comap0.get("CDDHCD"));
 														copmap.put("warehouse", (String)zmldtlrm.get("POWHS"));
 														copmap.put("orderQuantityRequested", allcount);
-														if(hkcocurrency.equals((String)zmldtlrm.get("POCUR"))){
-															copmap.put("unitPriceRequested", Float.valueOf((String)comap0.get("CDDOVA")));
+														//测试程序，暂时注释
+//														if(hkcocurrency.equals((String)zmldtlrm.get("POCUR"))){
+															copmap.put("unitPriceRequested", Float.valueOf((Float)comap0.get("CDDOVA")));
 															
-														}else{
-															Map bkd5nbpmap = new HashMap();
-															bkd5nbpmap.put("hkcocurrency", hkcocurrency);
-															bkd5nbpmap.put("POCUR", (String)zmldtlrm.get("POCUR"));
-															
-															Map bkd5nbrmap = utils.getBKD5NB(AMFLIB, bkd5nbpmap);
-															float exchangeprice = Float.valueOf((String)comap0.get("CDDOVA"))*Float.valueOf((String)zmldtlrm.get("TPCENT"))*Float.valueOf((String)bkd5nbrmap.get("BKD5NB"));
-															copmap.put("unitPriceRequested", BigDecimal.valueOf(exchangeprice).setScale(3, BigDecimal.ROUND_HALF_UP).floatValue());
-															
-														}
+//														}else{
+//															Map bkd5nbpmap = new HashMap();
+//															bkd5nbpmap.put("hkcocurrency", hkcocurrency);
+//															bkd5nbpmap.put("POCUR", (String)zmldtlrm.get("POCUR"));
+//															
+//															Map bkd5nbrmap = utils.getBKD5NB(AMFLIB, bkd5nbpmap);
+//															float exchangeprice = Float.valueOf((Float)comap0.get("CDDOVA"))*Float.valueOf((String)zmldtlrm.get("TPCENT"))*Float.valueOf((Float)bkd5nbrmap.get("BKD5NB"));
+//															copmap.put("unitPriceRequested", BigDecimal.valueOf(exchangeprice).setScale(3, BigDecimal.ROUND_HALF_UP).floatValue());
+//															
+//														}
+														//注释结束
 														String codretxml = utils.systemLinkM4cd(copmap);
+														System.out.println("codretxml="+codretxml);
+														boolean isdetailsuccess=codretxml.indexOf("CreateResponse name='createPoItem' requestedDomainClass='com.mapics.pm.PoItem' actionSucceeded='true'")>=0;
 														//根据返回的XML获取行号
-														String strline = "1";
-														int line = Integer.valueOf(strline);
-														if(idx!=null && idx.length>0){
-															for(int q=1;q<idx.length;q++){
-																//新增下达
-																Map rcopmap = new HashMap();
-																rcopmap.put("env", renv);
-																rcopmap.put("sluserId", sluserId);
-																rcopmap.put("slpassword", slpassword);
-																rcopmap.put("slurl", slurl);
-																rcopmap.put("order", porderno);
-																rcopmap.put("line", line);
-																rcopmap.put("unitPrice", Float.valueOf((String)comap0.get("CDDOVA"))*0.8);
-																rcopmap.put("item", (String)comap0.get("CDAITX"));
-																rcopmap.put("releaseQuantity", (String)comap0.get("CDFXVA"));
-																rcopmap.put("warehouse", (String)zmldtlrm.get("POWHS"));
-																rcopmap.put("dueToStockDate", (Integer)comap0.get("ADAAN7"));
-																rcopmap.put("userFieldCodeA", (Integer)comap0.get("CDFCNB"));
-																utils.systemLinkM4cr(rcopmap);
+														String strline = "";
+														if(isdetailsuccess){
+															strline = codretxml.substring(codretxml.indexOf("<Property path='line'><Value>")+"<Property path='line'><Value>".length(), codretxml.indexOf("</Value></Property></Key>"));
+															int line = Integer.valueOf(strline);
+															if(idx!=null && idx.length>0){
+																for(int q=1;q<idx.length;q++){
+																	//新增下达
+																	Map rcopmap = new HashMap();
+																	rcopmap.put("env", renv);
+																	rcopmap.put("sluserId", sluserId);
+																	rcopmap.put("slpassword", slpassword);
+																	rcopmap.put("slurl", slurl);
+																	rcopmap.put("order", porderno);
+																	rcopmap.put("line", line);
+																	rcopmap.put("unitPrice", Float.valueOf((Float)copmap.get("unitPriceRequested")));
+																	rcopmap.put("item", (String)comap0.get("CDAITX"));
+																	rcopmap.put("releaseQuantity", (Float)comap0.get("CDFXVA"));
+																	rcopmap.put("warehouse", (String)zmldtlrm.get("POWHS"));
+																	rcopmap.put("dueToStockDate", (Integer)comap0.get("ADAAN7")+19000000);
+																	rcopmap.put("userFieldCodeA", (Integer)comap0.get("CDFCNB"));
+																	String reseasexml = utils.systemLinkM4cr(rcopmap);
+																	boolean isreseasesuccess = reseasexml.indexOf("CreateResponse name='createPoItemRelease' requestedDomainClass='com.mapics.pm.PoItemRelease' actionSucceeded='true'")>=0;
+																	if(!isreseasesuccess){
+																		return "info";
+																	}
+																}
 															}
+														}else{
+															return "info";
 														}
+														
 													}
 												}
 												Map hrpmap = new HashMap(0);
@@ -7901,37 +7918,68 @@ public class ResourceAction extends BaseAction {
 												hrpmap.put("C6DCCD", C6DCCD);
 												hrpmap.put("C6CVNB", C6CVNB);
 												
-												Map hrcomap = utils.getMBC6REP(mllib, hrpmap);
+												Map hrcomap = utils.getMBC6REP(AMFLIB, hrpmap);
+												Map mbs2repmap = new HashMap();
+												mbs2repmap.put("company", C6AENB.trim());
+												mbs2repmap.put("custno", (String)hrcomap.get("C6CANB"));
+												mbs2repmap.put("shipto", (String)hrcomap.get("shipto"));
+												mbs2repmap.put("S2E2ST", "2");
+												Map mbs2reprmap = utils.getMBS2REP("AMFLIB1", mbs2repmap);
+												String shipToInternal="";
+												if(mbs2reprmap==null || ((String)mbs2reprmap.get("S2B9CD")).trim().equals("")){
+													Map mbs2repmap2 = new HashMap();
+													mbs2repmap2.put("company", C6AENB.trim());
+													mbs2repmap2.put("custno", (String)hrcomap.get("C6CANB"));
+													mbs2repmap2.put("S2AA9L", "1");
+													Map mbs2reprmap2 = utils.getMBS2REP("AMPHLIB1", mbs2repmap2);
+													if(mbs2reprmap2!=null){
+														shipToInternal=(String)mbs2reprmap.get("S2B9CD");
+													}
+												}else{
+													shipToInternal=(String)mbs2reprmap.get("S2B9CD");
+												}
+												Map mbccppmap = new HashMap();
+												mbccppmap.put("C6AENB", C6AENB.trim());
+												mbccppmap.put("C6DCCD", C6DCCD);
+												mbccppmap.put("C6CVNB", C6CVNB);
+												Map mbccprmap = utils.getMBBMCPP(AMFLIB, mbccppmap);
+												
 												//创建深圳环境销售订单
 												Map comap = new HashMap();
 												comap.put("env", "M1");
 												comap.put("sluserId", sluserId);
 												comap.put("slpassword", slpassword);
 												comap.put("slurl", slurl);
+												comap.put("mlcode", mlcode);
 												comap.put("company", (String)zmldtlrm.get("COCMPY"));
 												comap.put("customer", (String)zmldtlrm.get("COCUS"));
 												comap.put("fdcust", (String)zcoextm.get("FDCUST"));
-												comap.put("shipToInternal", "");
-												comap.put("manufacturingDueDate", "");
-												comap.put("orderDate", "");
+												comap.put("shipToInternal", shipToInternal);
+												comap.put("manufacturingDueDate", mbccprmap==null?"":((Integer)mbccprmap.get("BMAKDT")+19000000));
+												comap.put("orderDate", hrcomap==null?"":((Integer)hrcomap.get("C6ACDT")+19000000));
 												comap.put("warehouse", (String)zmldtlrm.get("POWHS"));
 												comap.put("purchaseOrder", porderno);
-												comap.put("requestDate", "");
-												comap.put("salesrep", "");
+												comap.put("requestDate", hrcomap==null?"":((Integer)hrcomap.get("C6D0NB")+19000000));
+												comap.put("salesrep", hrcomap==null?"":hrcomap.get("C6CHNB"));
 												comap.put("userFieldCodeA", "ML");
 												comap.put("orderReference", C6CVNB);
 												
 												String cretxml = utils.systemLinkMcc(comap);
-												String hcoorderno = "";//从返回的xml中解析得到深圳环境销售订单号
-												if(idxss!=null && idxss.length>0){
-													for(int k=0;k<idxss.length;k++){
-														String[] idx = idxss[k].split("-");
-														//新增深圳环境销售订单明细
-														Map comap0 = (Map)rmap.get(Integer.valueOf(idx[0]));
-														float allcount = Float.valueOf(idx[idx.length-1]);
-														
+												boolean iscosuccess = cretxml.indexOf("CreateResponse name='createCustomerOrder' requestedDomainClass='com.mapics.csm.CustomerOrder' actionSucceeded='true'")>=0;
+												System.out.println("cretxml="+cretxml);
+												if(iscosuccess){
+													String hcoorderno = "";//从返回的xml中解析得到深圳环境销售订单号
+													if(idxss!=null && idxss.length>0){
+														for(int k=0;k<idxss.length;k++){
+															String[] idx = idxss[k].split("-");
+															//新增深圳环境销售订单明细
+															Map comap0 = (Map)rmap.get(Integer.valueOf(idx[0]));
+															float allcount = Float.valueOf(idx[idx.length-1]);
+															
+														}
 													}
 												}
+												
 											}
 											
 										}
