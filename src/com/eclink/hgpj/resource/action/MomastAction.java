@@ -823,6 +823,7 @@ public class MomastAction extends BaseAction {
 				resultMap.put("ordno", momastList.get(0).getOrdno());
 				resultMap.put("fitwh", momastList.get(0).getFitwh());
 				resultMap.put("fitem", momastList.get(0).getFitem());
+				resultMap.put("branch", "branch");
 
 				String qrMessage = "*W"+momastList.get(0).getOrdno();
 				String encoderQRCoder = QRcoderUtil.encoderQRCoder(qrMessage, ServletActionContext.getContext().getSession().get("username").toString(),getSession().getServletContext().getRealPath("/"));
@@ -1071,6 +1072,243 @@ public class MomastAction extends BaseAction {
 			}
 			ActionContext.getContext().getValueStack().set("results", results);
 			return "toPrintMomast";
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+			return ERROR;
+		}
+
+	}
+	
+	
+	
+	public String toPrintMomastStep() throws Exception{
+		NumberFormat numberFormat = NumberFormat.getNumberInstance();
+		numberFormat.setGroupingUsed(false);
+		numberFormat.setRoundingMode(RoundingMode.UP);
+		numberFormat.setMaximumFractionDigits(1);
+		numberFormat.setMinimumFractionDigits(1);
+		try {
+			List<Map<String, Object>> results = new ArrayList<Map<String, Object>>();
+			JSONArray jsonArray = JSONObject.fromObject(grnno).getJSONArray("grnnos");
+			for(int i = 0;i<jsonArray.size();i++){
+				Map<String,Object> resultMap = new HashMap<String, Object>();
+
+				ZBMSCTLVO zbmsctl = new ZBMSCTLVO();
+				zbmsctl.setSite((String) getSession().getAttribute("stid"));
+				List<ZBMSCTLVO> bmsctlList = zbmsctlService.queryZbmsctl(zbmsctl);
+				if(bmsctlList!=null && bmsctlList.size()>0){
+					resultMap.put("nmchs", bmsctlList.get(0).getNmchs());
+				}
+
+				resultMap.put("printDate", Utils.formateDate(null, "yyyy/MM/dd"));
+
+				MOMASTVO momastvo = new MOMASTVO();
+				momastvo.setOrdno(jsonArray.getString(i));
+				List<MOMASTVO> momastList = xadataService.queryMomastByordno(momastvo);
+
+				resultMap.put("ordno", momastList.get(0).getOrdno());
+				resultMap.put("fitwh", momastList.get(0).getFitwh());
+				resultMap.put("fitem", momastList.get(0).getFitem());
+				resultMap.put("branch", "branch");
+
+				String qrMessage = "*W"+momastList.get(0).getOrdno().trim();
+				qrMessage+="*M"+momastList.get(0).getFitwh().trim();
+				qrMessage+="*B"+momastList.get(0).getFitwh().trim();
+				String encoderQRCoder = QRcoderUtil.encoderQRCoder(qrMessage, ServletActionContext.getContext().getSession().get("username").toString(),getSession().getServletContext().getRealPath("/"));
+				HttpServletRequest request = ServletActionContext.getRequest();
+				String path = request.getContextPath(); 
+				String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+				resultMap.put("qrcodeurl", basePath+"/"+encoderQRCoder);
+
+
+				String d= (momastList.get(0).getCrdt()==null || momastList.get(0).getCrdt().doubleValue()==0.0)?"":momastList.get(0).getCrdt().add(BigDecimal.valueOf(19000000)).toString().trim();
+				resultMap.put("crdt", d.length()<8?d: (d.substring(0, 4)+"-"+d.substring(4, 6)+"-"+d.substring(6, 8)+" "));
+
+				resultMap.put("fdesc", momastList.get(0).getFdesc());
+				resultMap.put("fdesc", momastList.get(0).getFdesc());
+
+				ITMSITVO itmsitvo = new ITMSITVO();
+				itmsitvo.setHouse((String) getSession().getAttribute("stid"));
+				itmsitvo.setItnot9(momastList.get(0).getFitem());
+				List<ITMSITVO> itmsitList = xadataService.queryItrvtAll(itmsitvo);
+				if(itmsitList.size()>0){
+					resultMap.put("umstt9", itmsitList.get(0).getUmstt9());
+
+					ZITMEXTVO zitmextvo = new ZITMEXTVO();
+					zitmextvo.setStid(itmsitList.get(0).getHouse());
+					zitmextvo.setItnbr(itmsitList.get(0).getItnot9());
+					zitmextvo.setItrv(itmsitList.get(0).getItrvt9());
+					List<ZITMEXTVO> zitmextList = zitmextService.queryItemExt(zitmextvo);
+					if(zitmextList.size()>0){
+						resultMap.put("sdesc", zitmextList.get(0).getSdesc());
+					}
+				}
+
+				/*resultMap.put("dptno", momastList.get(0).getDptno());
+				resultMap.put("quantity", numberFormat.format(momastList.get(0).getOrqty().add(momastList.get(0).getQtdev()).floatValue()));
+
+				d= (momastList.get(0).getSstdt()==null || momastList.get(0).getSstdt().doubleValue()==0.0)?"":momastList.get(0).getSstdt().add(BigDecimal.valueOf(19000000)).toString().trim();
+				resultMap.put("sstdt", d.length()<8?d: (d.substring(0, 4)+"-"+d.substring(4, 6)+"-"+d.substring(6, 8)+" "));
+
+				d= (momastList.get(0).getOdudt()==null || momastList.get(0).getOdudt().doubleValue()==0.0)?"":momastList.get(0).getOdudt().add(BigDecimal.valueOf(19000000)).toString().trim();
+				resultMap.put("odudt", d.length()<8?d: (d.substring(0, 4)+"-"+d.substring(4, 6)+"-"+d.substring(6, 8)+" "));*/
+
+	/*			if(!momastList.get(0).getCono().equals("0")){//如果 MOMAST.CONO <> 0, 表示该生产订单由销售订单创建
+					Map<String,String> mbc6repParMap = new HashMap<String, String>();
+					mbc6repParMap.put("cono", momastList.get(0).getCono());
+					mbc6repParMap.put("ortp", momastList.get(0).getOrtp());
+					mbc6repParMap.put("ordnc", momastList.get(0).getOrdnc());
+					String c6canb = xadataService.queryMBC6REP(mbc6repParMap);
+					String bmcbtx = xadataService.queryBMCBTX(mbc6repParMap);
+					mbc6repParMap.put("c6canb", c6canb);
+					String cusnm = xadataService.queryCusnm(mbc6repParMap);
+					resultMap.put("c6canb", c6canb);
+					resultMap.put("bmcbtx", bmcbtx);
+					resultMap.put("cusnm", cusnm);
+
+					mbc6repParMap.put("itmsq", momastList.get(0).getItmsq());
+					String axhdtx = xadataService.queryAxhdtx(mbc6repParMap);
+					resultMap.put("axhdtx", axhdtx);
+				}*/
+
+			
+				//工序信息
+				{
+					List<Map<String, String>> morouts = new ArrayList<Map<String,String>>();
+					Map<String, String> moroutParMap = new HashMap<String, String>();
+					moroutParMap.put("ordno", momastList.get(0).getOrdno());
+					List<MOROUTVO> moroutList = xadataService.queryMorout(moroutParMap);
+					for(MOROUTVO morout:moroutList){
+						Map<String, String> moroutMap = new HashMap<String, String>();
+						moroutMap.put("opseq", morout.getOpseq());
+
+						String desc = morout.getOpdsc().trim();
+						if(morout.getTbcde().equals("C")){//外协工序
+							desc+="<br/>";
+							desc+="委外订单号:";
+							MOPORFVO moporfvo = new MOPORFVO();
+							moporfvo.setMonr(morout.getOrdno());
+							moporfvo.setOpsq(morout.getOpseq());
+							List<MOPORFVO> moporfList = xadataService.queryMoporfNormal(moporfvo);
+							if(moporfList.size()>0){
+								desc+=moporfList.get(0).getPonr().trim();//附加上委外订单号
+								if(moporfList.get(0).getPonr().trim().startsWith("P")){
+									desc+="<br/>";
+									desc+="委外供应商:";
+									
+									Map<String, String> parMap = new HashMap<String, String>();
+									parMap.put("ordnoO", moporfList.get(0).getPonr());
+									List<POMASTVO> queryPomast = xadataService.queryPomast(parMap);
+									if(queryPomast.size()>0){
+										desc+=queryPomast.get(0).getVndnr().trim();
+									
+										parMap.clear();
+										parMap.put("vndnr", queryPomast.get(0).getVndnr());
+										List<VENNAMVO> vennamList = xadataService.queryVennam(parMap);
+										if(vennamList.size()>0){
+											desc+=" ";
+											desc+=vennamList.get(0).getVn35().trim();
+										}
+									}
+									
+									parMap.clear();
+									parMap.put("ordno", moporfList.get(0).getPonr());
+									parMap.put("house", moporfList.get(0).getWhid());
+									parMap.put("poisq", moporfList.get(0).getPisq()+"");
+									parMap.put("linsq", moporfList.get(0).getBksq()+"");
+									List<POITEMVO> poitemList = xadataService.queryPoitem(parMap);
+									if(poitemList.size()>0){
+										desc+="<br/>";
+										desc+="采购价格:";
+										desc+=poitemList.get(0).getCurpr();
+										desc+=" ";
+										if(poitemList.get(0).getCurid().trim().isEmpty()){
+											desc+="CNY";
+										}else{
+											desc+=poitemList.get(0).getCurid().trim();
+										}
+									}
+//									desc+=moporfList.get(0).getVndr().trim();
+								}
+							}
+
+							desc+="<br/>";
+						}else{//非外协工序
+							BigDecimal orderQuantity = momastList.get(0).getOrqty().add(momastList.get(0).getQtdev());
+							desc+="<br/>";
+							desc+="标准人工时间:";
+							double time0 = 0;
+							if(morout.getTbcde() == null || morout.getTbcde().equals("")){
+								time0+=orderQuantity.multiply(morout.getSrlhu()).floatValue();
+							}else if(morout.getTbcde().equals("1")){
+								time0+=orderQuantity.multiply(morout.getSrlhu()).divide(BigDecimal.valueOf(10)).floatValue();
+							}else if(morout.getTbcde().equals("2")){
+								time0+=orderQuantity.multiply(morout.getSrlhu()).divide(BigDecimal.valueOf(100)).floatValue();
+							}else if(morout.getTbcde().equals("3")){
+								time0+=orderQuantity.multiply(morout.getSrlhu()).divide(BigDecimal.valueOf(1000)).floatValue();
+							}else if(morout.getTbcde().equals("4")){
+								time0+=orderQuantity.multiply(morout.getSrlhu()).divide(BigDecimal.valueOf(10000)).floatValue();
+							}else if(morout.getTbcde().equals("P")){
+								time0+=orderQuantity.divide(morout.getSrlhu()).floatValue();
+							}else if(morout.getTbcde().equals("M")){
+								time0+=orderQuantity.multiply(morout.getSrlhu()).divide(BigDecimal.valueOf(60)).floatValue();
+							}
+							desc+=numberFormat.format(time0);
+							desc+="小时";
+							desc+="<br/>";
+							desc+="标准机器时间:";
+							double time = 0.0;
+							if(morout.getTbcde() == null || morout.getTbcde().equals("")){
+								time+=orderQuantity.multiply(morout.getSrmhu()).floatValue();
+							}else if(morout.getTbcde().equals("1")){
+								time+=orderQuantity.multiply(morout.getSrmhu()).divide(BigDecimal.valueOf(10)).floatValue();
+							}else if(morout.getTbcde().equals("2")){
+								time+=orderQuantity.multiply(morout.getSrmhu()).divide(BigDecimal.valueOf(100)).floatValue();
+							}else if(morout.getTbcde().equals("3")){
+								time+=orderQuantity.multiply(morout.getSrmhu()).divide(BigDecimal.valueOf(1000)).floatValue();
+							}else if(morout.getTbcde().equals("4")){
+								time+=orderQuantity.multiply(morout.getSrmhu()).divide(BigDecimal.valueOf(10000)).floatValue();
+							}else if(morout.getTbcde().equals("P")){
+								time+=orderQuantity.divide(morout.getSrmhu()).floatValue();
+							}else if(morout.getTbcde().equals("M")){
+								time+=orderQuantity.multiply(morout.getSrmhu()).divide(BigDecimal.valueOf(60)).floatValue();
+							};
+							desc+=numberFormat.format(time);
+							desc+="小时";
+							desc+="<br/>";
+						}
+						desc+="工序附加说明:";
+						Map<String, String> parMap = new HashMap<String, String>();
+						parMap.put("ordno", morout.getOrdno());
+						parMap.put("opseq", morout.getOpseq());
+						String aadesc = xadataService.queryADDSC(parMap);
+						desc+=aadesc;
+						moroutMap.put("desc", desc);
+						morouts.add(moroutMap);
+
+						Map xamap0 = new HashMap();
+						xamap0.put("sluserId", this.getSession().getServletContext().getAttribute("sluserId"));
+						xamap0.put("slpassword", this.getSession().getServletContext().getAttribute("slpassword"));
+						xamap0.put("slurl", this.getSession().getServletContext().getAttribute("slurl"));
+						xamap0.put("order", momastList.get(0).getOrdno());
+
+						Utils.systemLinkOrder(xamap0);
+						String retStr =(String)xamap0.get("systemLinkStr");
+						System.out.println("Tw:"+retStr);
+						String errorStr1 = retStr.substring(retStr.indexOf("hasErrors"), retStr.indexOf("hasErrors")+17);
+						String warnStr2 = retStr.substring(retStr.indexOf("hasWarnings"), retStr.indexOf("hasWarnings")+19);
+						if(errorStr1.indexOf("true")>=0){
+							throw new RuntimeException();
+						}
+					}
+					resultMap.put("morouts", morouts);
+					resultMap.put("cnote", cnote);
+				}
+				results.add(resultMap);
+			}
+			ActionContext.getContext().getValueStack().set("results", results);
+			return "toPrintMomastStep";
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();

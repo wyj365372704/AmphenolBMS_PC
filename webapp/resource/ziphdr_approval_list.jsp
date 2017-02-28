@@ -63,10 +63,7 @@
 
 	<s:form action="ziphdr!toApproval.action" method="post" name="queryform">
 		<div class="path">您现在的位置： 首页 &gt; 生产 &gt; 领料单审批</div>
-
-
-
-		<div class="data_list">
+		<div class="public_div">
 			<h2>
 				<span class="fl">领料单审批</span>
 				<s:hidden name="ordno"></s:hidden>

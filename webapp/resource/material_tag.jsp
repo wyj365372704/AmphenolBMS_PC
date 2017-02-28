@@ -78,9 +78,6 @@
 		<div class="path">您现在的位置： 首页 &gt; 仓库 &gt; 物料标签</div>
 		<div class="public_div">
 			<h2>
-				<br> <span class="fl"></span>
-			</h2>
-			<h2>
 				<span class="fl">标签信息</span> <span class="fr"></span>
 				<!--  span里无内容时，此span不能删除  -->
 			</h2>

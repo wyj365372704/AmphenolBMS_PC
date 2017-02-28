@@ -6,7 +6,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>Amphenol</title>
+<title>物料工序流程卡</title>
 
 <link href="../css/global.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="../js/My97DatePicker/WdatePicker.js"></script>
@@ -44,7 +44,7 @@
 								</tr>
 								<tr>
 									<td align="center" width="100%"><span
-										style="font-weight: bold;font-size:18px;">生产订单</span>
+										style="font-weight: bold;font-size:18px;">物料工序流程卡</span>
 									</td>
 									<td align="right" nowrap="nowrap">打印日期: <s:property
 											value="printDate" /></td>
@@ -58,76 +58,33 @@
 						<table width="100%" cellpadding="3px">
 							<tbody>
 								<tr>
-									<td>仓库: <s:property value="fitwh" /></td>
 									<td>生产订单号: <s:property value="ordno" /></td>
-									<td>产品编号: <s:property value="fitem" /></td>
+									<td>批量: <s:property value="branch" /></td>
 									<td rowspan="3"><img src="${resultMap.qrcodeurl }"
 										width="80px" height="80px" /></td>
 								</tr>
 								<tr>
-									<td>开单日期: <s:property value="crdt" /></td>
-									<td>产品描述: <s:property value="fdesc" /></td>
+									<td>产品编号: <s:property value="fitem" /></td>
 									<td>产品规格: <s:property value="sdesc" /></td>
-								</tr>
-								<tr>
-									<td>生产部门: <s:property value="dptno" /></td>
-									<td>订单数量: <s:property value="quantity" /> (<s:property value="umstt9" />)</td>
-									<td>生产批号: <s:property value="branch" /></td>
-								</tr>
-								<tr>
-									<td>客户代码: <s:property value="c6canb" /></td>
-									<td>客户采购订单号: <s:property value="bmcbtx" /></td>
-									<td>客户名称: <s:property value="cusnm" /></td>
-									<td>客户订单: <s:property value="bmcbtx" /></td>
-								</tr>
-								<tr>
-									<td>预计开工日期: <s:property value="sstdt" /></td>
-									<td>预计完工日期: <s:property value="odudt" /></td>
-									<td colspan="2">客户订单备注: <s:property value="axhdtx" /></td>
 								</tr>
 							</tbody>
 						</table>
 					</td>
 				</tr>
-				<s:if test="#resultMap.modatas.size >0">
-				<tr>
-					<td>
-						<table width="100%" border="1" cellpadding="3px"
-							style="border-collapse: collapse; margin-bottom: 30px;">
-							<tr>
-								<td align="center" nowrap="nowrap">材料编号</td>
-								<td align="center" nowrap="nowrap">描述 / 规格</td>
-								<td align="center" nowrap="nowrap">单位</td>
-								<td align="center" nowrap="nowrap">需领用量</td>
-								<td align="center" nowrap="nowrap">已领用量</td>
-								<td align="center" nowrap="nowrap">子库</td>
-							</tr>
-							<s:iterator value="#resultMap.modatas" var="modata">
-								<tr>
-									<td align="center"><s:property value="citem" /></td>
-									<td align="center"><s:property value="cdesc" /> / <s:property value="sdesc" /></td>
-									<td align="center"><s:property value="unmsr" /></td>
-									<td align="center"><s:property value="qtreq" /></td>
-									<td align="center"><s:property value="isqty" /></td>
-									<td align="center"><s:property value="whsub2" /> <s:property value="dsp1" /></td>
-								</tr>
-							</s:iterator>
-
-						</table></td>
-				</tr>
-				</s:if>
+				
 				<s:if test="#resultMap.morouts.size >0">
 				<tr>
 					<td>
 						<table width="100%" border="1" cellpadding="3px"
 							style="border-collapse: collapse; margin-bottom: 30px;">
 							<tr>
-								<td align="center" nowrap="nowrap">工序号</td>
+								<td align="center" nowrap="nowrap">工序</td>
 								<td align="center" nowrap="nowrap">工序说明</td>
-								<td align="center" nowrap="nowrap">实际操作机台 / 产线</td>
-								<td align="center" nowrap="nowrap">实际作业人员</td>
-								<td align="center" nowrap="nowrap">实际完成数量</td>
-								<td align="center" nowrap="nowrap">实际耗用工时(小时)</td>
+								<td align="center" nowrap="nowrap">完成数量</td>
+								<td align="center" nowrap="nowrap">機臺號</td>
+								<td align="center" nowrap="nowrap">日期</td>
+								<td align="center" nowrap="nowrap">操作人员</td>
+								<td align="center" nowrap="nowrap">检验判定</td>
 							</tr>
 							<s:iterator value="#resultMap.morouts" var="morout">
 								<tr>
@@ -136,6 +93,7 @@
 									<td align="center"><s:property value="uugam2" /></td>
 									<td align="center"><s:property value="cdesc" /></td>
 									<td align="center"><s:property value="shqty" /></td>
+									<td align="center"><s:property value="whsub" /></td>
 									<td align="center"><s:property value="whsub" /></td>
 								</tr>
 							</s:iterator>

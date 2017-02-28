@@ -119,6 +119,38 @@
 
 		window.open('momast!momastPrint.action?grnno=' + grnnos, 'newwindow', 'height=200,width=400,top=60,left=200,toolbar=no,menubar=no,scrollbars=no, resizable=no,location=no, status=no');
 	}
+	
+	// 打印工序流程卡
+	function stepPrint() {
+		// 检查是否选中记录
+		var cbs = document.getElementsByName("chk");
+		if (!cbs) {
+			alert("未选中记录！");
+			return;
+		}
+
+		var gno = new Array();
+		var count = 0;
+		for(var i=0;i<cbs.length;i++){
+			if (!cbs[i].checked) {
+				bool = false;
+			} else {
+				count++;
+				gno.push($.trim(cbs[i].value));
+			}
+		}
+
+		if (count <= 0) {
+			alert("未选中记录！");
+			return;
+		}
+
+		var grnnos = JSON.stringify({
+			grnnos : gno
+		});
+
+		window.open('momast!toPrintMomastStep.action?grnno=' + grnnos, 'newwindow', 'height=900,width=750,top=60,left=200,toolbar=no,menubar=no,scrollbars=no, resizable=no,location=no, status=no');
+	}
 </script>
 
 
@@ -135,7 +167,9 @@
 						onclick="return dosubmit()"></s:submit> <s:reset value=""
 						cssClass="purge_button"></s:reset> <input type="button"
 					id="addOperM" value="批量生成领料单" onclick="addZiphdrM();" /> <input type="button"
-					cssClass="search_button" onclick="myPrint()" value="打印"></span>
+					cssClass="search_button" onclick="myPrint()" value="打印工单">
+					<input type="button" onclick="stepPrint()" value="打印工序流程卡">
+					</span>
 				<!--  span里无内容时，此span不能删除  -->
 			</h2>
 

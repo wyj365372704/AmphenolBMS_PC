@@ -54,12 +54,8 @@
 </script>
 <body class="right_body">
 	<s:form action="" method="post" name="makeMark">
-
 		<div class="path">您现在的位置： 首页 &gt; 系统设置 &gt; 生产入库限制</div>
 		<div class="public_div">
-			<h2>
-				<br> <span class="fl"></span>
-			</h2>
 			<h2>
 				<span class="fl">生产入库限制</span> <span class="fr"></span>
 				<!--  span里无内容时，此span不能删除  -->

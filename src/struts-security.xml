@@ -74,6 +74,7 @@
 			<result name="todata">/commons/data.jsp</result>
 			<result name="momastPrint">/resource/momast_print.jsp</result>
 			<result name="toPrintMomast">/resource/momast_form.jsp</result>
+			<result name="toPrintMomastStep">/resource/momast_step_form.jsp</result>
 
 		</action>
 		
